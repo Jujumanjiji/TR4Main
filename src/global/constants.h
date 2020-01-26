@@ -1,0 +1,48 @@
+#pragma once
+
+//#define DEBUG_MODE
+
+#define NO_FLY 0
+#define NO_HORIZON -1
+#define NO_CLIP -1
+
+#define ONE_DEGREE 182
+#define GAME_FOV 80
+#define DEFAULT_FOV (GAME_FOV * ONE_DEGREE)
+#define BADDIE_POISON_DAMAGE 1
+
+#define MAX_SHOCKWAVE 16
+#define MAX_BUBBLES 30
+#define MAX_DRIPS 32
+#define MAX_RIPPLES 16
+#define MAX_SPLASHES 4
+#define MAX_BLOOD 32
+#define MAX_DEBRIS 256
+#define MAX_GUNSHELLS 24
+#define MAX_SMOKESPARKS 32
+#define MAX_SPARKS 256
+#define MAX_GUNFLASH 4
+#define MAX_FIRE_SPARKS 20
+#define MAX_FIRE_LIST 32
+#define MAX_LIGHTNING 3
+#define MAX_DYNAMICS 64
+
+#define DONT_TARGET (-16384)
+#define NO_ROOM 255
+#define WALL_L 1024
+#define STEP_L 256
+#define FLY_ZONE 0x2000
+#define STEPUP_HEIGHT ((STEP_L*3)/2)
+
+#define NUM_SLOTS 5
+#define NO_BOX 0x7FF
+#define BOX_NUMBER 0x7FF
+#define BOX_END_BIT	0x8000
+
+#define BLOCKABLE 0x8000
+#define BLOCKED 0x4000
+#define OVERLAP_INDEX 0x3FFF
+#define SEARCH_NUMBER 0x7FFF
+#define BLOCKED_SEARCH 0x8000
+
+#define PREDICTIVE_SCALE_FACTOR 14

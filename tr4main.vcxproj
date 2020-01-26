@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{48D3B7D2-7E74-48AB-8EBA-0B20F6A02CDD}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tr4main</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)$(Configuration)\tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)Release/tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="framework.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\3dsystem\3d_gen.cpp" />
+    <ClCompile Include="src\3dsystem\3d_gen_a.cpp" />
+    <ClCompile Include="src\game\box.cpp" />
+    <ClCompile Include="src\game\collide.cpp" />
+    <ClCompile Include="src\game\control.cpp" />
+    <ClCompile Include="src\game\debug.cpp" />
+    <ClCompile Include="src\game\delstuff.cpp" />
+    <ClCompile Include="src\game\deltapak.cpp" />
+    <ClCompile Include="src\game\door.cpp" />
+    <ClCompile Include="src\game\draw.cpp" />
+    <ClCompile Include="src\game\effects.cpp" />
+    <ClCompile Include="src\game\entity\guide.cpp" />
+    <ClCompile Include="src\game\health.cpp" />
+    <ClCompile Include="src\game\items.cpp" />
+    <ClCompile Include="src\game\laraflare.cpp" />
+    <ClCompile Include="src\game\laramisc.cpp" />
+    <ClCompile Include="src\game\lot.cpp" />
+    <ClCompile Include="src\game\pickup.cpp" />
+    <ClCompile Include="src\game\puzzle.cpp" />
+    <ClCompile Include="src\game\rope.cpp" />
+    <ClCompile Include="src\game\sphere.cpp" />
+    <ClCompile Include="src\game\switchs.cpp" />
+    <ClCompile Include="src\game\tomb4fx.cpp" />
+    <ClCompile Include="src\game\traps.cpp" />
+    <ClCompile Include="src\game\vehicle\motorbike.cpp" />
+    <ClCompile Include="src\specific\drawprimitive.cpp" />
+    <ClCompile Include="src\specific\file.cpp" />
+    <ClCompile Include="src\specific\output.cpp" />
+    <ClCompile Include="src\specific\setup_object.cpp" />
+    <ClCompile Include="src\specific\setup_trap.cpp" />
+    <ClCompile Include="src\global\injector.cpp" />
+    <ClCompile Include="src\specific\setup.cpp" />
+    <ClCompile Include="src\specific\setup_entity.cpp" />
+    <ClCompile Include="src\specific\specific.cpp" />
+    <ClCompile Include="src\utils\utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="src\3dsystem\3d_gen.h" />
+    <ClInclude Include="src\3dsystem\3d_gen_a.h" />
+    <ClInclude Include="src\game\box.h" />
+    <ClInclude Include="src\game\collide.h" />
+    <ClInclude Include="src\game\control.h" />
+    <ClInclude Include="src\game\debug.h" />
+    <ClInclude Include="src\game\delstuff.h" />
+    <ClInclude Include="src\game\deltapak.h" />
+    <ClInclude Include="src\game\door.h" />
+    <ClInclude Include="src\game\draw.h" />
+    <ClInclude Include="src\game\effects.h" />
+    <ClInclude Include="src\game\health.h" />
+    <ClInclude Include="src\game\items.h" />
+    <ClInclude Include="src\game\laraflare.h" />
+    <ClInclude Include="src\game\laramisc.h" />
+    <ClInclude Include="src\game\lot.h" />
+    <ClInclude Include="src\game\oldobjects.h" />
+    <ClInclude Include="src\game\pickup.h" />
+    <ClInclude Include="src\game\puzzle.h" />
+    <ClInclude Include="src\game\rope.h" />
+    <ClInclude Include="src\game\sphere.h" />
+    <ClInclude Include="src\game\switchs.h" />
+    <ClInclude Include="src\game\tomb4fx.h" />
+    <ClInclude Include="src\game\traps.h" />
+    <ClInclude Include="src\specific\drawprimitive.h" />
+    <ClInclude Include="src\specific\file.h" />
+    <ClInclude Include="src\specific\output.h" />
+    <ClInclude Include="src\specific\setup_object.h" />
+    <ClInclude Include="src\specific\setup_trap.h" />
+    <ClInclude Include="src\global\constants.h" />
+    <ClInclude Include="src\global\enums.h" />
+    <ClInclude Include="src\global\injector.h" />
+    <ClInclude Include="src\global\macro.h" />
+    <ClInclude Include="src\global\objects.h" />
+    <ClInclude Include="src\global\types.h" />
+    <ClInclude Include="src\global\vars.h" />
+    <ClInclude Include="src\specific\setup.h" />
+    <ClInclude Include="src\specific\setup_entity.h" />
+    <ClInclude Include="src\specific\specific.h" />
+    <ClInclude Include="src\utils\utils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

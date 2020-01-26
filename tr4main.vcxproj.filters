@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{6eb7ea72-0a55-4fbd-95b1-bb0d82545782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3dsystem">
+      <UniqueIdentifier>{29c39fdc-1cfc-4ea5-86c9-97a0c1c4232e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\specific">
+      <UniqueIdentifier>{89b15726-d4cb-4a70-b51a-41d74400ccb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\global">
+      <UniqueIdentifier>{d652b2bb-ccb8-4c59-bde0-fb6a8a3b59a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game">
+      <UniqueIdentifier>{fac67024-bfef-4d0d-8328-583fcd8aa979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game\entity">
+      <UniqueIdentifier>{4a8abcf1-731c-4949-90a3-cfcda8eebd80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game\vehicles">
+      <UniqueIdentifier>{f69e64d2-a7db-4b8e-9d28-0ea2e657ed8a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="framework.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\3dsystem\3d_gen.cpp">
+      <Filter>src\3dsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\3dsystem\3d_gen_a.cpp">
+      <Filter>src\3dsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\setup.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\setup_entity.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\global\injector.cpp">
+      <Filter>src\global</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\utils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\setup_trap.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\setup_object.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\file.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\box.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\collide.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\delstuff.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\door.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\draw.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\items.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\laraflare.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\laramisc.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\pickup.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\puzzle.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\rope.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\switchs.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\traps.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\entity\guide.cpp">
+      <Filter>src\game\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\vehicle\motorbike.cpp">
+      <Filter>src\game\vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\deltapak.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\health.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\specific.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\debug.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\drawprimitive.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\output.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\tomb4fx.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\control.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\effects.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\lot.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\sphere.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\3dsystem\3d_gen.h">
+      <Filter>src\3dsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\3dsystem\3d_gen_a.h">
+      <Filter>src\3dsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\setup.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\setup_entity.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\constants.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\enums.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\injector.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\macro.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\objects.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\types.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\vars.h">
+      <Filter>src\global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\utils.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\setup_trap.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\setup_object.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\file.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\box.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\collide.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\delstuff.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\door.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\draw.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\items.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\laraflare.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\laramisc.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\oldobjects.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\pickup.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\puzzle.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\rope.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\switchs.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\traps.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\deltapak.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\health.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\specific.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\debug.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\output.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\drawprimitive.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\tomb4fx.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\control.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\effects.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\lot.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\sphere.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

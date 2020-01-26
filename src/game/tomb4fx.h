@@ -1,0 +1,3 @@
+#pragma once
+
+#define SetUpLensFlare ((void(__cdecl*)(int x, int y, int z, GAME_VECTOR* bulb)) 0x0048BC30)
