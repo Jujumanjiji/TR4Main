@@ -105,7 +105,7 @@
 #define static_objects                      ARRAY_(0x005333C0, STATIC_INFO, [NUMBER_STATIC_OBJECTS])
 #define meshes                              VAR_U_(0x00533A80, short**)
 #define rooms                               VAR_U_(0x00533A64, ROOM_INFO*)
-#define anim                                VAR_U_(0x00533A68, ANIM_STRUCT*)
+#define anims                               VAR_U_(0x00533A68, ANIM_STRUCT*)
 #define bones                               VAR_U_(0x00533A88, int*)
 #define frames                              VAR_U_(0x00533A84, short*)
 #define overlap                             VAR_U_(0x007FE9A8, short*)

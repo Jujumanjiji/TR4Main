@@ -7,9 +7,12 @@
 #include "lot.h"
 #include "utils/utils.h"
 
+
 void InitialiseCreature(short itemNumber)
 {
-	ITEM_INFO* item = &items[itemNumber];
+	ITEM_INFO* item;
+
+	item = &items[itemNumber];
 	item->data = NULL;
 	item->collidable = true;
 }
@@ -31,7 +34,7 @@ BOOL CreatureActive(short itemNumber)
 
 	return TRUE;
 }
-
+/*
 int UpdateLOT(LOT_INFO* LOT, int expansion)
 {
 	if (LOT->required_box != NO_BOX && LOT->required_box != LOT->target_box)
@@ -96,7 +99,7 @@ int SearchLOT(LOT_INFO* LOT, int expansion)
 				continue;
 
 			expand = &LOT->node[box_number];
-			if (node->search_number & SEARCH_NUMBER < (expand->search_number & SEARCH_NUMBER))
+			if ((node->search_number & SEARCH_NUMBER) < (expand->search_number & SEARCH_NUMBER))
 				continue;
 
 			if (node->search_number & BLOCKED_SEARCH)
@@ -220,7 +223,7 @@ void CreatureAIInfo(ITEM_INFO* item, AI_INFO* info)
 
 	if (enemy == lara_item)
 	{
-		laraState = lara_item->anim_state_current;
+		laraState = lara_item->state_current;
 		if (laraState == 71 &&
 			laraState == 72 &&
 			laraState == 80 &&
@@ -241,22 +244,21 @@ void CreatureAIInfo(ITEM_INFO* item, AI_INFO* info)
 	// TODO: change STEP_L*2 to a think like item->attack_distance
 	info->bite = (info->ahead && enemy->hit_points > 0 && abs(enemy->pos.y - item->pos.y) <= STEP_L*2);
 }
-
+*/
 void TargetBox(LOT_INFO* LOT, short box_number)
 {
-	BOX_INFO* box;
+	BOX_INFO* box = &boxes[box_number & NO_BOX];
 
-	box = &boxes[box_number & NO_BOX];
-
-	LOT->target.z = ((box->right  - box->left - 1) >> 5) * GetRandomControl() + ((box->left << WALL_SHIFT) + WALL_L/2);
-	LOT->target.x = ((box->bottom - box->top  - 1) >> 5) * GetRandomControl() + ((box->top << WALL_SHIFT)  + WALL_L/2);
+	LOT->target.x = ((box->top << WALL_SHIFT) + GetRandomControl() * ((box->bottom - box->top) - 1) >> 5) + WALL_L/2;
+	LOT->target.z = ((box->left << WALL_SHIFT) + GetRandomControl() * ((box->right - box->left) - 1) >> 5) + WALL_L/2;
+	LOT->required_box = box_number;
 
 	if (LOT->fly == NO_FLY)
 		LOT->target.y = box->height;
 	else
 		LOT->target.y = box->height - STEPUP_HEIGHT;
 }
-
+/*
 BOOL EscapeBox(ITEM_INFO *item, ITEM_INFO *enemy, short box_number)
 {
 	BOX_INFO* box;
@@ -275,7 +277,7 @@ BOOL EscapeBox(ITEM_INFO *item, ITEM_INFO *enemy, short box_number)
 
 	return TRUE;
 }
-
+*/
 BOOL ValidBox(ITEM_INFO* item, short zone_number, short box_number)
 {
 	if (item->data == NULL)
@@ -284,30 +286,27 @@ BOOL ValidBox(ITEM_INFO* item, short zone_number, short box_number)
 	CREATURE_INFO* creature;
 	BOX_INFO* box;
 	short* zone;
-	int x, z;
 
 	creature = (CREATURE_INFO*)item->data;
 	zone = ground_zone[creature->LOT.zone][flip_status];
-
-	if (!creature->LOT.fly && zone[box_number] != zone_number)
+	if (creature->LOT.fly == NO_FLY && zone[box_number] != zone_number)
 		return FALSE;
 
 	box = &boxes[box_number];
-	if (creature->LOT.block_mask & boxes[box_number].overlap_index)
+	if (box->overlap_index & creature->LOT.block_mask)
 		return FALSE;
 
-	x = item->pos.x;
-	z = item->pos.z;
-
-	if (z > box->left << WALL_SHIFT && z < box->right << WALL_SHIFT)
+	if (item->pos.z > box->left << WALL_SHIFT && item->pos.z < box->right  << WALL_SHIFT &&
+		item->pos.x > box->top  << WALL_SHIFT && item->pos.x < box->bottom << WALL_SHIFT)
 		return FALSE;
 
-	if (x > box->top << WALL_SHIFT && x < box->bottom << WALL_SHIFT)
+	int waterHeight = GetWaterHeight(item->pos.x, item->pos.y, item->pos.z, item->room_number);
+	if (waterHeight > creature->LOT.drop && creature->LOT.zone != ZONE_WATER)
 		return FALSE;
 
 	return TRUE;
 }
-
+/*
 BOOL StalkBox(ITEM_INFO* item, ITEM_INFO* enemy, short box_number)
 {
 	if (enemy == NULL)
@@ -347,36 +346,45 @@ BOOL StalkBox(ITEM_INFO* item, ITEM_INFO* enemy, short box_number)
 
 	return TRUE;
 }
-
+*/
 BOOL BadFloor(int x, int y, int z, int box_height, int next_height, short roomNumber, LOT_INFO* LOT)
 {
 	FLOOR_INFO* floor;
-	BOX_INFO* box;
+	int height;
+	int waterHeight;
 
 	floor = GetFloor(x, y, z, &roomNumber);
-	box = &boxes[(floor->box >> 4) & BOX_NUMBER];
+	if (floor->box == WALL_FLOOR)
+		return TRUE;
 
-	if ((floor->box & 0x7FF0) != 0x7FF0)
-		return FALSE;
+	waterHeight = GetWaterHeight(x, y, z, roomNumber);
+	if (waterHeight > LOT->drop && LOT->zone != ZONE_WATER) // dont permit the entity to drop in water from a high place !!
+		return TRUE;
 
 	if (LOT->is_jumping)
 		return FALSE;
 
-	if (!(box->overlap_index & LOT->block_mask))
-		return FALSE;
+	if (boxes[floor->box].overlap_index & LOT->block_mask)
+		return TRUE;
 
-	if (box->height - box_height > LOT->drop || box_height - box->height < LOT->step)
-		return FALSE;
+	height = boxes[floor->box].height;
+	if (box_height - height > LOT->step || box_height - height < LOT->drop)
+		return TRUE;
 
-	if (box_height - box->height > -LOT->step && box->height < next_height)
-		return FALSE;
+	if (box_height - height < -LOT->step && height > next_height)
+		return TRUE;
 
-	if (LOT->fly == NO_FLY && y < box->height + LOT->fly)
-		return FALSE;
+	if (LOT->fly != NO_FLY && y > height + LOT->fly)
+		return TRUE;
 
-	return TRUE;
+	//FLOOR_INFO* floor2;
+	//int height2;
+	// extensive check about water creature
+	
+
+	return FALSE;
 }
-
+/*
 void CreatureDie(short itemNumber, BOOL explode)
 {
 	ITEM_INFO* item, *pickup;
@@ -407,7 +415,7 @@ void CreatureDie(short itemNumber, BOOL explode)
 
 	SpawnPickup(item);
 }
-
+*/
 BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item)
 {
 	ITEM_INFO* item;
@@ -431,21 +439,21 @@ BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item)
 
 void injector::inject_box()
 {
-	this->inject(0x0043FB30, InitialiseCreature);
-	this->inject(0x0043FB70, CreatureActive);
-	this->inject(0x0043FBE0, CreatureAIInfo);
-	this->inject(0x0043FF70, UpdateLOT);
-	this->inject(0x0043FFF0, SearchLOT);
+	//this->inject(0x0043FB30, InitialiseCreature);
+	//this->inject(0x0043FB70, CreatureActive);
+	//this->inject(0x0043FBE0, CreatureAIInfo);
+	//this->inject(0x0043FF70, UpdateLOT);
+	//this->inject(0x0043FFF0, SearchLOT);
 	this->inject(0x004401F0, TargetBox);
-	this->inject(0x00440290, EscapeBox);
+	//this->inject(0x00440290, EscapeBox);
 	this->inject(0x00440340, ValidBox);
 	//this->inject(0x004403E0, GetCreatureMood);
 	//this->inject(0x00440620, CreatureMood);
-	this->inject(0x00440940, StalkBox);
+	//this->inject(0x00440940, StalkBox);
 	//this->inject(0x00440A40, CalculateTarget);
 	//this->inject(0x00440E90, CreatureCreature);
 	this->inject(0x00440FD0, BadFloor);
-	this->inject(0x00441080, CreatureDie);
+	//this->inject(0x00441080, CreatureDie);
 	//this->inject(0x00441230, CreatureAnimation);
 	//this->inject(0x00441C60, CreatureTurn);
 	//this->inject(0x00441EE0, CreatureTilt);

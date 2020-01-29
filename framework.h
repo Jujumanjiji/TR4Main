@@ -4,6 +4,11 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sstream>
+
+#ifdef _WIN32
+#include <direct.h>
+#endif
 
 #define DLL_NAME "Tomb Raider IV - DLL"
 #include "global/injector.h"

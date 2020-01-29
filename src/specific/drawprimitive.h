@@ -31,14 +31,8 @@
 #define DrawLightning ((void(__cdecl*)(void)) 0x0040E630)
 #define DrawLaserSightSprite ((void(__cdecl*)(void)) 0x00489950)
 
-
-
 extern void SetGunFlash(int weapon_type);
 extern void SetupGunFlash(int* pos);
 extern void DrawGunFlashes(void);
-
 extern void DrawGunShells(void);
-
-
-
 extern void DrawFires(void);

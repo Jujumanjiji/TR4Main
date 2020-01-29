@@ -2,14 +2,40 @@
 
 //#define DEBUG_MODE
 
+#define SCRIPT_FUNCTION "scripts/function.json"
+
+#define LT_Default			(char*)0
+#define LT_Enter			(char*)1
+#define LT_Exit				(char*)2
+#define LT_Release			(char*)3
+#define LT_Info				(char*)4
+#define LT_WindowMessage	(char*)5
+#define LT_DXTry			(char*)6
+#define LT_Error			(char*)7
+#define LT_Warning			(char*)8
+#define LT_Version			(char*)9
+#define LT_Texture			(char*)10	// crappy temporary texture loading messages
+#define LT_Sound			(char*)11	// sample info
+
 #define NO_FLY 0
 #define NO_HORIZON -1
 #define NO_CLIP -1
+#define NOT_EXIST -1
+#define NO_TILT 0
 
 #define ONE_DEGREE 182
 #define GAME_FOV 80
 #define DEFAULT_FOV (GAME_FOV * ONE_DEGREE)
 #define BADDIE_POISON_DAMAGE 1
+
+#define AI_GUARD 0x0001
+#define AI_AMBRUSH 0x0002
+#define AI_PATROL1 0x0004
+#define AI_MODIFY 0x0008
+#define AI_FOLLOW 0x0010
+
+#define TIMID FALSE
+#define VIOLENT TRUE
 
 #define MAX_SHOCKWAVE 16
 #define MAX_BUBBLES 30
@@ -44,5 +70,6 @@
 #define OVERLAP_INDEX 0x3FFF
 #define SEARCH_NUMBER 0x7FFF
 #define BLOCKED_SEARCH 0x8000
+#define WALL_FLOOR -32512
 
 #define PREDICTIVE_SCALE_FACTOR 14

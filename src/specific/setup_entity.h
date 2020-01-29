@@ -56,6 +56,7 @@ public:
 
 private:
     OBJECT_INFO* obj;
+	OBJECT_INFO* objJzon;
 };
 
 extern SetupEntity setup_entity;

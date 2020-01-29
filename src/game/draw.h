@@ -8,7 +8,7 @@
 ///#define SetRoomBounds ((void(__cdecl*)(short *point, short roomNumber, ROOM_INFO* parent)) 0x0044F790)
 ///#define DrawEffect ((void(__cdecl*)(short fxNumber)) 0x0044FB10)
 #define DrawMovingItem ((void(__cdecl*)(ITEM_INFO* item, short *frame)) 0x0044FC00)
-///#define DrawAnimatingItem ((void(__cdecl*)(ITEM_INFO* item)) 0x0044FF60)
+#define DrawAnimatingItem ((void(__cdecl*)(ITEM_INFO* item)) 0x0044FF60)
 #define InitInterpolate ((void(__cdecl*)(int frac, int rate)) 0x00450520)
 #define phd_PopMatrix_I ((void(__cdecl*)(void)) 0x00450560)
 #define phd_PushMatrix_I ((void(__cdecl*)(void)) 0x00450590)
@@ -35,5 +35,4 @@ extern void PrintObjects(short roomNumber);
 extern void GetRoomBounds(void);
 extern void SetRoomBounds(short* door, int roomNumber, ROOM_INFO* parent);
 extern void DrawEffect(short fxNumber);
-
-extern void DrawAnimatingItem(ITEM_INFO* item);
+///extern void DrawAnimatingItem(ITEM_INFO* item);

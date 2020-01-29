@@ -39,8 +39,10 @@
 #define HorseManControl CONTROL(0x004080E0)
 #define InitialiseHammerhead INITIALISE(0x00407000)
 #define HammerheadControl CONTROL(0x00407060)
-#define InitialiseCrocodile INITIALISE(0x00402D90)
-#define CrocodileControl CONTROL(0x00402E30)
+///#define InitialiseCrocodile INITIALISE(0x00402D90)
+///#define CrocodileControl CONTROL(0x00402E30)
+extern void InitialiseCrocodile(short itemNumber); // 0x00402D90
+extern void CrocodileControl(short itemNumber); // 0x00402E30
 #define InitialiseDemigod INITIALISE(0x00404E00)
 #define DemigodControl CONTROL(0x00404EA0)
 #define InitialiseMutant INITIALISE(0x00403ED0)

@@ -1,6 +1,14 @@
 #pragma once
 #pragma pack(push, 1)
 
+struct BITE_INFO
+{
+	int x;
+	int y;
+	int z;
+	int mesh;
+};
+
 struct AIOBJECT
 {
 	short object_number;
@@ -67,14 +75,14 @@ struct PHD_VECTOR
 
 struct FLOOR_INFO
 {
-	unsigned short index;
-	unsigned short fx : 4;
-	unsigned short box : 11;
-	unsigned short stopper : 1;
-	unsigned char pit_room;
-	signed char floor;
-    unsigned char sky_room;
-	signed char ceiling;
+	WORD index;
+	WORD fx : 4;
+	WORD box : 11;
+	WORD stopper : 1;
+	BYTE pit_room;
+	char floor;
+	BYTE sky_room;
+	char ceiling;
 };
 
 struct LIGHT_INFO
@@ -191,14 +199,14 @@ struct ROOM_INFO
 struct ITEM_INFO
 {
     int floor;
-    unsigned int touch_bits;
-	unsigned int mesh_bits;
-    short object_number;
-    short anim_state_current;
-    short anim_state_goal;
-    short anim_state_required;
-    short anim_number;
-    short frame_number;
+    int touch_bits;
+	int mesh_bits;
+	short object_number;
+	short state_current;
+	short state_next;
+	short state_required;
+	short current_anim;
+	short current_frame;
     short room_number;
     short next_item;
     short next_free;
@@ -207,11 +215,11 @@ struct ITEM_INFO
     short hit_points;
     WORD box_number;
     short timer;
-    short flags;                       // For oneshot and code switches (i.e. NOT flags)
-    short shade;
-    short trigger_bits;
-    short carried_item;
-    short after_death;
+	short flags;                       // For oneshot and code switches (i.e. NOT flags)
+	short shade;
+	short trigger_bits;
+	short carried_item;
+	short after_death;
 	WORD fired_weapon;
     short item_flags[4];
     LPVOID data;
@@ -228,8 +236,8 @@ struct ITEM_INFO
 	unsigned int ai_bits : 5;
 	unsigned int really_active : 1;
 	unsigned int in_draw_room : 1;
-    int meshswap_meshbits;
-    short draw_room;
+	int meshswap_meshbits;
+	short drawRoom;
 	short TOSSPAD;
 };
 
@@ -268,53 +276,58 @@ struct COLL_INFO
     char tilt_x, tilt_z;        // Type of Tilt of Floor
     char hit_by_baddie;         // Flag to indicate Lara has been hit by a Baddie
     char hit_static;            // Flag to indicate Lara has collided with a Static object
-    unsigned short slopes_are_walls : 2;   // Treat big slopesUp as walls
-    unsigned short slopes_are_pits : 1;    // Treat big slopesDown as pits
-    unsigned short lava_is_pit : 1;        // Treat Lava as Bad place to go onto
-    unsigned short enable_baddie_push : 1; // Baddies can push Lara
-    unsigned short enable_spaz : 1;        // Spaz animations are enabled
-    unsigned short hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
+    WORD slopes_are_walls : 2;   // Treat big slopesUp as walls
+    WORD slopes_are_pits : 1;    // Treat big slopesDown as pits
+    WORD lava_is_pit : 1;        // Treat Lava as Bad place to go onto
+    WORD enable_baddie_push : 1; // Baddies can push Lara
+    WORD enable_spaz : 1;        // Spaz animations are enabled
+    WORD hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
 };
 
+typedef void(*LPINITIALISE)(short item_number);
+typedef void(*LPCONTROL)(short item_number);
+typedef void(*LPFLOOR)(ITEM_INFO* item, int x, int y, int z, int* height);
+typedef void(*LPCEILING)(ITEM_INFO* item, int x, int y, int z, int* height);
 typedef void(*LPDRAW)(ITEM_INFO* item);
+typedef void(*LPCOLLISION)(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll);
 typedef void(*LPDRAWEXTRA)(ITEM_INFO* item);
 
 struct OBJECT_INFO
 {
-    short nmeshes;
-    short mesh_index;
+	short nmeshes;
+	short mesh_index;
     int bone_index;
     short* frame_base;
-    LPVOID initialise;
-    LPVOID control;
-    LPVOID floor;
-    LPVOID ceiling;
+	LPINITIALISE initialise;
+	LPCONTROL control;
+	LPFLOOR floor;
+	LPCEILING ceiling;
 	LPDRAW draw_routine;
-    LPVOID collision;
-    short object_mip;
-    short anim_index;
+	LPCOLLISION collision;
+	short object_mip;
+	short anim_index;
     short hit_points;
-    short pivot_length;
-    short radius;
-    short shadow_size;
-    unsigned short bit_offset;
-    unsigned short loaded : 1;
-    unsigned short intelligent : 1;
-    unsigned short non_lot : 1;                // can fly correctly
-    unsigned short save_position : 1;
-    unsigned short save_hitpoints : 1;
-    unsigned short save_flags : 1;
-    unsigned short save_anim : 1;
-    unsigned short semi_transparent : 1;
-    unsigned short water_creature : 1;
-    unsigned short using_drawanimating_item : 1;
-    unsigned short hit_effect : 2;
-    unsigned short undead : 1;
-    unsigned short save_mesh : 1;
-	unsigned short unknown : 2;
+	short pivot_length;
+	short radius;
+	short shadow_size;
+    WORD bit_offset;
+    WORD loaded : 1;
+    WORD intelligent : 1;
+    WORD non_lot : 1;                // can fly correctly
+    WORD save_position : 1;
+    WORD save_hitpoints : 1;
+    WORD save_flags : 1;
+    WORD save_anim : 1;
+    WORD semi_transparent : 1;
+    WORD water_creature : 1;
+    WORD using_drawanimating_item : 1;
+    WORD hit_effect : 2;
+    WORD undead : 1;
+    WORD save_mesh : 1;
+	WORD unknown : 2;
 	LPDRAWEXTRA draw_routine_extra;
 	unsigned int explodable_meshbits;
-    int pad;
+	unsigned int pad;
 };
 
 struct RANGE_STRUCT
@@ -335,21 +348,21 @@ struct CHANGE_STRUCT
 struct ANIM_STRUCT
 {
     short* frame_ptr;
-    short  interpolation;
-    short  frame_size;
-    short  current_anim_state;
-    int   yspeed;
-    int   yfallspeed;
-    int   xspeed;
-    int   xfallspeed;
-    short  frame_base;
-    short  frame_end;
-    short  jump_anim_num;
-    short  jump_frame_num;
-    short  number_changes;
-    short  change_index;
-    short  number_commands;
-    short  command_index;
+	BYTE interpolation;
+	BYTE frame_size;
+    short current_anim_state;
+    int yspeed;
+    int yfallspeed;
+    int xspeed;
+    int xfallspeed;
+    short frame_base;
+    short frame_end;
+    short jump_anim_num;
+    short jump_frame_num;
+    short number_changes;
+    short change_index;
+    short number_commands;
+    short command_index;
 };
 
 struct STATIC_INFO
@@ -398,8 +411,8 @@ struct CAMERA_INFO
 struct LARA_ARM
 {
 	short *frame_base;
-	short frame_number;
-	short anim_number;
+	short frame_curr;
+	short anim_curr;
 	short y_rot;
 	short x_rot;
 	short z_rot;
@@ -437,7 +450,7 @@ struct LARA_INFO
 	short poison2;
 	unsigned char anxiety;
 	unsigned char wet[15];
-	unsigned short flags;
+	WORD flags;
 	int water_surface_dist;
 	PHD_VECTOR last_pos;
 	int* spaz_effect;
@@ -467,7 +480,7 @@ struct FX_INFO
 	short next_active;
 	short speed;
 	short fallspeed;
-	short frame_number;
+	short current_frame;
 	short counter;
 	short shade;
 	short flag1;
@@ -496,7 +509,7 @@ struct DYNAMIC
 	BYTE r;
 	BYTE g;
 	BYTE b;
-	unsigned short falloff;
+	WORD falloff;
 	unsigned char used;
 	unsigned char pad1[1];
 	int falloff_scale;
@@ -790,7 +803,7 @@ struct AI_INFO
 	short enemy_zone; // NUMBER
 	int distance;
 	int ahead;
-	BOOL bite;
+	int bite;
 	short angle;
 	short x_angle;
 	short enemy_facing;

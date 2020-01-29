@@ -4,6 +4,7 @@
 #include "game/box.h"
 #include "game/laramisc.h"
 #include "game/oldobjects.h"
+#include "specific/json/reader.h"
 #include "utils/utils.h"
 
 SetupEntity setup_entity;
@@ -14,7 +15,7 @@ void SetupEntity::lara_obj()
     {
         obj->initialise = InitialiseLaraLoad;
         obj->shadow_size = 160;
-        obj->hit_points = init_health(LARA);
+        obj->hit_points = initHealth(LARA);
         obj->hit_effect = HIT_BLOOD;
         obj->draw_routine = NULL; // custom render elsewhere !
         obj->using_drawanimating_item = false;
@@ -76,7 +77,7 @@ void SetupEntity::skeleton()
         obj->initialise = InitialiseSkeleton;
         obj->control = SkeletonControl;
         obj->collision = CreatureCollision;
-        obj->hit_points = init_health(SKELETON);
+        obj->hit_points = initHealth(SKELETON);
         obj->shadow_size = 128;
         obj->pivot_length = 50;
         obj->radius = 128;
@@ -104,7 +105,7 @@ void SetupEntity::von_croy()
             obj->control = VonCroyControlNormal;
         obj->collision = CreatureCollision;
         obj->pivot_length = 0;
-        obj->hit_points = init_health(VON_CROY);
+        obj->hit_points = initHealth(VON_CROY);
         obj->shadow_size = 128;
         obj->radius = 128;
         obj->intelligent = true;
@@ -140,7 +141,7 @@ void SetupEntity::guide()
         obj->control = GuideControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(GUIDE);
+        obj->hit_points = initHealth(GUIDE);
         obj->pivot_length = 0;
         obj->radius = 128;
         obj->object_mip = 5120;
@@ -177,7 +178,7 @@ void SetupEntity::baddy_1()
         obj->control = BaddyControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(BADDY_1);
+        obj->hit_points = initHealth(BADDY_1);
         obj->pivot_length = 50;
         obj->radius = 102;
         obj->object_mip = 5120;
@@ -216,7 +217,7 @@ void SetupEntity::baddy_2()
         obj->control = BaddyControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(BADDY_2);
+        obj->hit_points = initHealth(BADDY_2);
         obj->pivot_length = 50;
         obj->radius = 102;
         obj->object_mip = 5120;
@@ -251,7 +252,7 @@ void SetupEntity::scorpion()
         obj->control = ScorpionControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(SCORPION);
+        obj->hit_points = initHealth(SCORPION);
         obj->pivot_length = 50;
         obj->radius = 512;
         obj->object_mip = 5120;
@@ -273,7 +274,7 @@ void SetupEntity::small_scorpion()
         obj->control = SmallScorpionControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(SMALL_SCORPION);
+        obj->hit_points = initHealth(SMALL_SCORPION);
         obj->pivot_length = 20;
         obj->radius = 128;
         obj->intelligent = true;
@@ -294,7 +295,7 @@ void SetupEntity::mummy()
         obj->control = MummyControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(MUMMY);
+        obj->hit_points = initHealth(MUMMY);
         obj->radius = 170;
         obj->object_mip = 5120;
         obj->intelligent = true;
@@ -318,7 +319,7 @@ void SetupEntity::knight_templar()
         obj->control = KnightTemplarControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(KNIGHTS_TEMPLAR);
+        obj->hit_points = initHealth(KNIGHTS_TEMPLAR);
         obj->pivot_length = 0;
         obj->radius = 128;
         obj->object_mip = 5120;
@@ -342,7 +343,7 @@ void SetupEntity::sphinx()
         obj->control = SphinxControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(SPHINX);
+        obj->hit_points = initHealth(SPHINX);
         obj->pivot_length = 500;
         obj->radius = 512;
         obj->object_mip = 5120;
@@ -365,7 +366,7 @@ void SetupEntity::setha()
         obj->control = SethaControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(SETHA);
+        obj->hit_points = initHealth(SETHA);
         obj->pivot_length = 50;
         obj->radius = 341;
         obj->intelligent = true;
@@ -387,7 +388,7 @@ void SetupEntity::lara_double()
         obj->control = LaraDoubleControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(LARA_DOUBLE);
+        obj->hit_points = initHealth(LARA_DOUBLE);
         obj->pivot_length = 50;
         obj->radius = 128;
         obj->intelligent = true;
@@ -409,7 +410,7 @@ void SetupEntity::horseman()
         obj->control = HorseManControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(HORSEMAN);
+        obj->hit_points = initHealth(HORSEMAN);
         obj->pivot_length = 50;
         obj->radius = 409;
         obj->object_mip = 5120;
@@ -433,7 +434,7 @@ void SetupEntity::hammerhead()
         obj->control = HammerheadControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(HAMMERHEAD);
+        obj->hit_points = initHealth(HAMMERHEAD);
         obj->pivot_length = 300;
         obj->radius = 341;
         obj->object_mip = 5120;
@@ -456,18 +457,18 @@ void SetupEntity::crocodile()
     obj = &objects[CROCODILE];
     if (obj->loaded)
     {
-        obj->initialise = InitialiseCrocodile;
-        obj->control = CrocodileControl;
+		obj->initialise = InitialiseCrocodile;
+		obj->control = CrocodileControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(CROCODILE);
+        obj->hit_points = initHealth(CROCODILE);
         obj->pivot_length = 300;
-        obj->radius = 409;
+        obj->radius = 402;
         obj->object_mip = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
-        obj->save_hitpoints = true;
+		obj->save_hitpoints = true;
         obj->save_position = true;
         obj->water_creature = true;
         obj->hit_effect = HIT_BLOOD;
@@ -487,7 +488,7 @@ void SetupEntity::demigod1()
         obj->control = DemigodControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(DEMIGOD1);
+        obj->hit_points = initHealth(DEMIGOD1);
         obj->pivot_length = 0;
         obj->radius = 341;
         obj->object_mip = 5120;
@@ -512,7 +513,7 @@ void SetupEntity::demigod2()
         obj->control = DemigodControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(DEMIGOD2);
+        obj->hit_points = initHealth(DEMIGOD2);
         obj->pivot_length = 50;
         obj->radius = 341;
         obj->object_mip = 5120;
@@ -537,7 +538,7 @@ void SetupEntity::demigod3()
         obj->control = DemigodControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(DEMIGOD3);
+        obj->hit_points = initHealth(DEMIGOD3);
         obj->pivot_length = 50;
         obj->radius = 341;
         obj->object_mip = 5120;
@@ -562,7 +563,7 @@ void SetupEntity::mutant()
         obj->control = MutantControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(MUTANT);
+        obj->hit_points = initHealth(MUTANT);
         obj->pivot_length = 50;
         obj->radius = 128;
         obj->intelligent = true;
@@ -587,7 +588,7 @@ void SetupEntity::troops()
         obj->control = TroopsControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(TROOPS);
+        obj->hit_points = initHealth(TROOPS);
         obj->pivot_length = 50;
         obj->radius = 102;
         obj->object_mip = 5120;
@@ -612,7 +613,7 @@ void SetupEntity::sas()
         obj->control = SASControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(SAS);
+        obj->hit_points = initHealth(SAS);
         obj->pivot_length = 50;
         obj->radius = 102;
         obj->object_mip = 5120;
@@ -636,7 +637,7 @@ void SetupEntity::harpy()
         obj->control = HarpyControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
-        obj->hit_points = init_health(HARPY);
+        obj->hit_points = initHealth(HARPY);
         obj->pivot_length = 50;
         obj->radius = 409;
         obj->object_mip = 5120;
@@ -658,7 +659,7 @@ void SetupEntity::wild_boar()
 		obj->control = WildBoarControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(WILD_BOAR);
+		obj->hit_points = initHealth(WILD_BOAR);
 		obj->pivot_length = 50;
 		obj->radius = 102;
 		obj->intelligent = true;
@@ -681,7 +682,7 @@ void SetupEntity::dog()
 		obj->control = DogControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(DOG);
+		obj->hit_points = initHealth(DOG);
 		obj->pivot_length = 300;
 		obj->radius = 341;
 		obj->object_mip = 5120;
@@ -705,7 +706,7 @@ void SetupEntity::ahmet()
 		obj->control = AhmetControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(AHMET);
+		obj->hit_points = initHealth(AHMET);
 		obj->pivot_length = 300;
 		obj->radius = 341;
 		obj->object_mip = 5120;
@@ -728,7 +729,7 @@ void SetupEntity::baboon_normal()
 		obj->control = BaboonControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(BABOON_NORMAL);
+		obj->hit_points = initHealth(BABOON_NORMAL);
 		obj->pivot_length = 200;
 		obj->radius = 256;
 		obj->intelligent = true;
@@ -749,7 +750,7 @@ void SetupEntity::baboon_silent()
 		obj->control = BaboonControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(BABOON_SILENT);
+		obj->hit_points = initHealth(BABOON_SILENT);
 		obj->pivot_length = 200;
 		obj->radius = 256;
 		obj->intelligent = true;
@@ -773,7 +774,7 @@ void SetupEntity::baboon_inv()
 		obj->control = BaboonControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(BABOON_INV);
+		obj->hit_points = initHealth(BABOON_INV);
 		obj->pivot_length = 200;
 		obj->radius = 256;
 		obj->intelligent = true;
@@ -813,7 +814,7 @@ void SetupEntity::enemy_jeep()
 			obj->control = EnemyJeepControl;
 			obj->collision = CreatureCollision;
 			obj->shadow_size = 128;
-			obj->hit_points = init_health(ENEMY_JEEP);
+			obj->hit_points = initHealth(ENEMY_JEEP);
 			obj->pivot_length = 500;
 			obj->radius = 512;
 			obj->intelligent = true;
@@ -841,7 +842,7 @@ void SetupEntity::bat()
 		obj->control = BatControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(BAT);
+		obj->hit_points = initHealth(BAT);
 		obj->pivot_length = 10;
 		obj->radius = 102;
 		obj->intelligent = true;
@@ -862,7 +863,7 @@ void SetupEntity::big_beetle()
 		obj->control = BigBeetleControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(BIG_BEETLE);
+		obj->hit_points = initHealth(BIG_BEETLE);
 		obj->pivot_length = 50;
 		obj->radius = 204;
 		obj->object_mip = 5120;
@@ -884,7 +885,7 @@ void SetupEntity::sentry_gun()
 		obj->control = SentryGunControl;
 		obj->collision = CreatureCollision;
 		obj->shadow_size = 128;
-		obj->hit_points = init_health(SENTRY_GUN);
+		obj->hit_points = initHealth(SENTRY_GUN);
 		obj->pivot_length = 50;
 		obj->radius = 204;
 		obj->explodable_meshbits = 64;
@@ -1110,4 +1111,10 @@ void SetupEntity::fish()
 		obj->draw_routine = NULL;
 		obj->save_flags = true;
     }
+}
+
+void injector::inject_entity()
+{
+	this->inject(0x00402D90, InitialiseCrocodile);
+	this->inject(0x00402E30, CrocodileControl);
 }

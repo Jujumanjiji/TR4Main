@@ -1,10 +1,31 @@
 #include "framework.h"
 #include "utils.h"
+#include "game/oldobjects.h"
+#include "3dsystem/3d_gen.h"
 #include "game/control.h"
 #include "game/draw.h"
 #include "game/items.h"
 #include "game/sphere.h"
+#include "specific/json/reader.h"
 #include "specific/drawprimitive.h"
+
+bool isFolderExists(LPCSTR folder_name)
+{
+	struct stat st;
+	int ret = stat(folder_name, &st);
+	return (ret == 0) && (st.st_mode & S_IFDIR);
+}
+
+bool isFileExists(LPCSTR file_name)
+{
+	struct stat st;
+	return (stat(file_name, &st) == FALSE);
+}
+
+void createFolders(LPCSTR folder_name)
+{
+	_mkdir(folder_name);
+}
 
 void phd_SwapMatrix(int* dest, int* src)
 {
@@ -187,7 +208,7 @@ void SetGunFlash_Right(int weapon_type)
 	SetupGunFlash(pos);
 }
 
-short init_health(short objNumber)
+short initHealth(short objNumber)
 {
 #ifndef DEBUG_MODE
     switch (objNumber)

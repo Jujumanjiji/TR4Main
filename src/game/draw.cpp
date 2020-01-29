@@ -596,13 +596,14 @@ void DrawEffect(short fxNumber)
 			if (obj->nmeshes)
 				phd_PutPolygons(meshes[obj->mesh_index], NO_CLIP);
 			else
-				phd_PutPolygons(meshes[fx->frame_number], NO_CLIP);
+				phd_PutPolygons(meshes[fx->current_frame], NO_CLIP);
 		}
 
 		phd_PopMatrix();
 	}
 }
 
+/*
 void DrawAnimatingItem(ITEM_INFO* item)
 {
 	OBJECT_INFO* obj;
@@ -777,6 +778,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
 	phd_bottom = phd_winheight;
 	phd_PopMatrix();
 }
+*/
 
 void injector::inject_draw()
 {
@@ -788,7 +790,7 @@ void injector::inject_draw()
 	this->inject(0x0044F790, SetRoomBounds);
 	this->inject(0x0044FB10, DrawEffect);
 	//this->inject(0x0044FC00, DrawMovingItem);
-	this->inject(0x0044FF60, DrawAnimatingItem);
+	//this->inject(0x0044FF60, DrawAnimatingItem);
     //this->inject(0x00450520, InitInterpolate);
     //this->inject(0x00450560, phd_PopMatrix_I);
     //this->inject(0x00450590, phd_PushMatrix_I);

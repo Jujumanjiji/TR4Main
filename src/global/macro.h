@@ -4,11 +4,11 @@
 #define S_MemCpy(A,B,C) 		memcpy(A,B,C)
 #define S_LongMemCpy(A,B,C)		memcpy(A,B,C*4)
 
-#define Log ((HWND(__cdecl*)(char* LT_flags, LPCSTR format, ...)) 0x00499EC0)
+#define Log ((int(__cdecl*)(char* LT_flags, LPCSTR format, ...)) 0x0049C750)
 
 #define BOX_DEFFLAG(icon) (MB_OK | icon | MB_SETFOREGROUND | MB_SYSTEMMODAL) // set foreground, only ok button and with a icon.
 
-#define ZONE(x) (flip_status + 2 * x)
+#define ANGLE(x) (x * ONE_DEGREE)
 #define SQUARE(x) ((x)*(x))
 #define CLAMP(x, a, b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
 #define SIGN(x) ((0 < (x)) - ((x) < 0))
@@ -23,6 +23,9 @@
 
 #define SIN(x) (4 * rcossin_tbl[(x >> 3) & 0x1FFE])
 #define COS(x) (4 * rcossin_tbl[((x >> 3) & 0x1FFE) + 1])
+
+#define SINN(x) (rcossin_tbl[(x >> 3) & 0x1FFE])
+#define COSN(x) (rcossin_tbl[((x >> 3) & 0x1FFE) + 1])
 
 #ifndef ABS
 #define ABS(x) (((x)<0)?(-(x)):(x))
@@ -59,6 +62,14 @@
 #define DRAW(add) ((void(__cdecl*)(ITEM_INFO* item)) add)
 #define FLOOR(add) ((void(__cdecl*)(ITEM_INFO* item, int x, int y, int z, int* height)) add)
 #define CEILING(add) ((void(__cdecl*)(ITEM_INFO* item, int x, int y, int z, int* height)) add)
+
+#define RWATER(room_number) rooms[room_number].flags & ROOM_WATER
+#define RNOT_WATER(room_number) !(rooms[room_number].flags & ROOM_WATER)
+#define AI(item, ai_flags) item->ai_bits & ai_flags
+#define NOT_AI(item, ai_flags) !(item->ai_bits & ai_flags)
+
+#define JZON_INT(rtrn, from, name, to) if (from.has(name)) to = (rtrn)from.get(name).toInt()
+#define JZON_BOOL(rtrn, from, name, to) if (from.has(name)) to = (rtrn)from.get(name).toBoolean()
 
 #define INIT_PICKUP(slotID)\
 obj = &objects[slotID];\

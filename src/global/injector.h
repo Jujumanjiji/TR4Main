@@ -25,6 +25,9 @@ private:
 	void inject_file();
     void inject_setup();
 
+	// OTHER
+	void inject_entity();
+
 public:
     void inject_3dsystem();
     void inject_game();

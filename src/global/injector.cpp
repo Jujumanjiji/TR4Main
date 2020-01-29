@@ -32,6 +32,10 @@ void injector::inject_3dsystem()
 
 void injector::inject_game()
 {
+	// other:
+	this->inject_entity();
+
+	// main:
 	this->inject_box();
 	this->inject_draw();
 }
