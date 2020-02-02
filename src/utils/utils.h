@@ -8,4 +8,5 @@ extern void phd_SwapGunMatrix(PHD_MATRIX& dest, int* src, bool swap);
 extern void SpawnPickup(ITEM_INFO* item);
 extern void SetGunFlash_Left(int weapon_type);
 extern void SetGunFlash_Right(int weapon_type);
+extern ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget);
 extern short initHealth(short objNumber);

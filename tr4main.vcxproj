@@ -103,6 +103,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\game\effect2.cpp" />
+    <ClCompile Include="src\game\entity\bat.cpp" />
     <ClCompile Include="src\game\people.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="framework.cpp">
@@ -121,7 +122,6 @@
     <ClCompile Include="src\game\draw.cpp" />
     <ClCompile Include="src\game\effects.cpp" />
     <ClCompile Include="src\game\entity\crocodile.cpp" />
-    <ClCompile Include="src\game\entity\guide.cpp" />
     <ClCompile Include="src\game\health.cpp" />
     <ClCompile Include="src\game\items.cpp" />
     <ClCompile Include="src\game\laraflare.cpp" />

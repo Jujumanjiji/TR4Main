@@ -403,16 +403,19 @@ void CrocodileControl(short itemNumber)
 
     CreatureTilt(item, NO_TILT);
 
-    if (CHK_NOP(item->ai_bits, GUARD) && info.ahead)
+    if (item->hit_points > 0)
     {
-        CreatureJoint(item, 0, head_y);
-    }
-    else
-    {
-        CreatureJoint(item, 0, guard);
-        CreatureJoint(item, 1, guard);
-        CreatureJoint(item, 2, -guard);
-        CreatureJoint(item, 3, -guard);
+        if (CHK_NOP(item->ai_bits, GUARD) && info.ahead) // not guard or else it will destroy the guard AI
+        {
+            CreatureJoint(item, 1, head_y);
+        }
+        else if (CHK_ANY(item->ai_bits, GUARD))
+        {
+            CreatureJoint(item, 0, guard);
+            CreatureJoint(item, 1, guard);
+            CreatureJoint(item, 2, -guard);
+            CreatureJoint(item, 3, -guard);
+        }
     }
 
     //CalcCrocodilePosToFloor(item);

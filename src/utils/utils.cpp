@@ -208,6 +208,41 @@ void SetGunFlash_Right(int weapon_type)
     SetupGunFlash(pos);
 }
 
+ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget)
+{
+    ITEM_INFO* target;
+    CREATURE_INFO* cinfo;
+    int dist, bestdist;
+    int x, z;
+    int i;
+
+    bestdist = 0x7FFFFFFF;
+    cinfo = baddie_slots;
+    for (i = 0; i < NUM_SLOTS; i++, cinfo++)
+    {
+        if (cinfo->item_number != NO_ITEM && cinfo->item_number != itemNumber)
+        {
+            target = &items[cinfo->item_number];
+            if (target->status == FITEM_ACTIVE && target->object_number == objectToTarget)
+            {
+                x = target->pos.x - src->pos.x;
+                z = target->pos.z - src->pos.z;
+                dist = SQUARE(x) + SQUARE(z);
+                if (dist < bestdist)
+                {
+                    bestdist = dist;
+                    return target;
+                }
+            }
+        }
+    }
+
+    // target is not found ?
+    // so select lara !
+    target = lara_item;
+    return target;
+}
+
 short initHealth(short objNumber)
 {
 #ifndef DEBUG_MODE
