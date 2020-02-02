@@ -457,8 +457,8 @@ void SetupEntity::crocodile()
     obj = &objects[CROCODILE];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseCrocodile;
-		obj->control = CrocodileControl;
+        obj->initialise = InitialiseCrocodile;
+        obj->control = CrocodileControl;
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
         obj->hit_points = initHealth(CROCODILE);
@@ -468,7 +468,7 @@ void SetupEntity::crocodile()
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
-		obj->save_hitpoints = true;
+        obj->save_hitpoints = true;
         obj->save_position = true;
         obj->water_creature = true;
         obj->hit_effect = HIT_BLOOD;
@@ -655,21 +655,21 @@ void SetupEntity::wild_boar()
     obj = &objects[WILD_BOAR];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseWildBoar;
-		obj->control = WildBoarControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(WILD_BOAR);
-		obj->pivot_length = 50;
-		obj->radius = 102;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
-		bones[obj->bone_index + 48] |= ROT_Z | ROT_Y;
-		bones[obj->bone_index + 52] |= ROT_Z | ROT_Y;
+        obj->initialise = InitialiseWildBoar;
+        obj->control = WildBoarControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(WILD_BOAR);
+        obj->pivot_length = 50;
+        obj->radius = 102;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
+        bones[obj->bone_index + 48] |= ROT_Z | ROT_Y;
+        bones[obj->bone_index + 52] |= ROT_Z | ROT_Y;
     }
 }
 
@@ -678,22 +678,22 @@ void SetupEntity::dog()
     obj = &objects[DOG];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseDog;
-		obj->control = DogControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(DOG);
-		obj->pivot_length = 300;
-		obj->radius = 341;
-		obj->object_mip = 5120;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
-		bones[obj->bone_index + 0] |= ROT_Y;
-		bones[obj->bone_index + 8] |= ROT_Y | ROT_X;
+        obj->initialise = InitialiseDog;
+        obj->control = DogControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(DOG);
+        obj->pivot_length = 300;
+        obj->radius = 341;
+        obj->object_mip = 5120;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
+        bones[obj->bone_index + 0] |= ROT_Y;
+        bones[obj->bone_index + 8] |= ROT_Y | ROT_X;
     }
 }
 
@@ -702,21 +702,21 @@ void SetupEntity::ahmet()
     obj = &objects[AHMET];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseAhmet;
-		obj->control = AhmetControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(AHMET);
-		obj->pivot_length = 300;
-		obj->radius = 341;
-		obj->object_mip = 5120;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
-		bones[obj->bone_index + 36] |= ROT_Y;
+        obj->initialise = InitialiseAhmet;
+        obj->control = AhmetControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(AHMET);
+        obj->pivot_length = 300;
+        obj->radius = 341;
+        obj->object_mip = 5120;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
+        bones[obj->bone_index + 36] |= ROT_Y;
     }
 }
 
@@ -725,19 +725,19 @@ void SetupEntity::baboon_normal()
     obj = &objects[BABOON_NORMAL];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseBaboon;
-		obj->control = BaboonControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(BABOON_NORMAL);
-		obj->pivot_length = 200;
-		obj->radius = 256;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
+        obj->initialise = InitialiseBaboon;
+        obj->control = BaboonControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(BABOON_NORMAL);
+        obj->pivot_length = 200;
+        obj->radius = 256;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
     }
 }
 
@@ -746,22 +746,22 @@ void SetupEntity::baboon_silent()
     obj = &objects[BABOON_SILENT];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseBaboon;
-		obj->control = BaboonControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(BABOON_SILENT);
-		obj->pivot_length = 200;
-		obj->radius = 256;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
+        obj->initialise = InitialiseBaboon;
+        obj->control = BaboonControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(BABOON_SILENT);
+        obj->pivot_length = 200;
+        obj->radius = 256;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
 
-		if (objects[BABOON_NORMAL].loaded)
-			objects[BABOON_SILENT].anim_index = objects[BABOON_NORMAL].anim_index;
+        if (objects[BABOON_NORMAL].loaded)
+            objects[BABOON_SILENT].anim_index = objects[BABOON_NORMAL].anim_index;
     }
 }
 
@@ -770,22 +770,22 @@ void SetupEntity::baboon_inv()
     obj = &objects[BABOON_INV];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseBaboon;
-		obj->control = BaboonControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(BABOON_INV);
-		obj->pivot_length = 200;
-		obj->radius = 256;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
+        obj->initialise = InitialiseBaboon;
+        obj->control = BaboonControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(BABOON_INV);
+        obj->pivot_length = 200;
+        obj->radius = 256;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
 
-		if (objects[BABOON_NORMAL].loaded)
-			objects[BABOON_SILENT].anim_index = objects[BABOON_NORMAL].anim_index;
+        if (objects[BABOON_NORMAL].loaded)
+            objects[BABOON_SILENT].anim_index = objects[BABOON_NORMAL].anim_index;
     }
 }
 
@@ -795,40 +795,40 @@ void SetupEntity::enemy_jeep()
     obj = &objects[ENEMY_JEEP];
     if (obj->loaded)
     {
-		// the train level consider it as not a entity !
-		if (gf_level_flags & SLEV_TRAIN)
-		{
-			obj->initialise = InitialiseEnemyJeepTrain;
-			obj->control = EnemyJeepTrainControl;
-			obj->collision = CreatureCollision;
-			obj->shadow_size = 128; // not exist in TR4 Train level by default !!
-			obj->save_anim = true;
-			obj->save_flags = true;
-			obj->save_hitpoints = true;
-			obj->save_position = true;
-			obj->hit_effect = HIT_FRAGMENT;
-		}
-		else
-		{
-			obj->initialise = InitialiseEnemyJeep;
-			obj->control = EnemyJeepControl;
-			obj->collision = CreatureCollision;
-			obj->shadow_size = 128;
-			obj->hit_points = initHealth(ENEMY_JEEP);
-			obj->pivot_length = 500;
-			obj->radius = 512;
-			obj->intelligent = true;
-			obj->save_anim = true;
-			obj->save_flags = true;
-			obj->save_hitpoints = true;
-			obj->save_mesh = true;
-			obj->save_position = true;
-			obj->hit_effect = HIT_FRAGMENT;
-			bones[obj->bone_index + 32] |= ROT_X;
-			bones[obj->bone_index + 36] |= ROT_X;
-			bones[obj->bone_index + 44] |= ROT_X;
-			bones[obj->bone_index + 48] |= ROT_X;
-		}
+        // the train level consider it as not a entity !
+        if (gf_level_flags & SLEV_TRAIN)
+        {
+            obj->initialise = InitialiseEnemyJeepTrain;
+            obj->control = EnemyJeepTrainControl;
+            obj->collision = CreatureCollision;
+            obj->shadow_size = 128; // not exist in TR4 Train level by default !!
+            obj->save_anim = true;
+            obj->save_flags = true;
+            obj->save_hitpoints = true;
+            obj->save_position = true;
+            obj->hit_effect = HIT_FRAGMENT;
+        }
+        else
+        {
+            obj->initialise = InitialiseEnemyJeep;
+            obj->control = EnemyJeepControl;
+            obj->collision = CreatureCollision;
+            obj->shadow_size = 128;
+            obj->hit_points = initHealth(ENEMY_JEEP);
+            obj->pivot_length = 500;
+            obj->radius = 512;
+            obj->intelligent = true;
+            obj->save_anim = true;
+            obj->save_flags = true;
+            obj->save_hitpoints = true;
+            obj->save_mesh = true;
+            obj->save_position = true;
+            obj->hit_effect = HIT_FRAGMENT;
+            bones[obj->bone_index + 32] |= ROT_X;
+            bones[obj->bone_index + 36] |= ROT_X;
+            bones[obj->bone_index + 44] |= ROT_X;
+            bones[obj->bone_index + 48] |= ROT_X;
+        }
     }
 }
 
@@ -837,19 +837,19 @@ void SetupEntity::bat()
     obj = &objects[BAT];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseBat;
-		obj->control = BatControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(BAT);
-		obj->pivot_length = 10;
-		obj->radius = 102;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
+        obj->initialise = InitialiseBat;
+        obj->control = BatControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(BAT);
+        obj->pivot_length = 10;
+        obj->radius = 102;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
     }
 }
 
@@ -858,20 +858,20 @@ void SetupEntity::big_beetle()
     obj = &objects[BIG_BEETLE];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseBigBeetle;
-		obj->control = BigBeetleControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(BIG_BEETLE);
-		obj->pivot_length = 50;
-		obj->radius = 204;
-		obj->object_mip = 5120;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
-		obj->hit_effect = HIT_BLOOD;
+        obj->initialise = InitialiseBigBeetle;
+        obj->control = BigBeetleControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(BIG_BEETLE);
+        obj->pivot_length = 50;
+        obj->radius = 204;
+        obj->object_mip = 5120;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
+        obj->hit_effect = HIT_BLOOD;
     }
 }
 
@@ -880,26 +880,26 @@ void SetupEntity::sentry_gun()
     obj = &objects[SENTRY_GUN];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseSentryGun;
-		obj->control = SentryGunControl;
-		obj->collision = CreatureCollision;
-		obj->shadow_size = 128;
-		obj->hit_points = initHealth(SENTRY_GUN);
-		obj->pivot_length = 50;
-		obj->radius = 204;
-		obj->explodable_meshbits = 64;
-		obj->intelligent = true;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_mesh = true;
-		obj->save_position = true;
-		obj->undead = true; // only killable by grenadegun or crossbow
-		obj->hit_effect = HIT_FRAGMENT;
-		bones[obj->bone_index + 0] |= ROT_Y;
-		bones[obj->bone_index + 4] |= ROT_X;
-		bones[obj->bone_index + 8] |= ROT_Z;
-		bones[obj->bone_index + 12] |= ROT_Z;
+        obj->initialise = InitialiseSentryGun;
+        obj->control = SentryGunControl;
+        obj->collision = CreatureCollision;
+        obj->shadow_size = 128;
+        obj->hit_points = initHealth(SENTRY_GUN);
+        obj->pivot_length = 50;
+        obj->radius = 204;
+        obj->explodable_meshbits = 64;
+        obj->intelligent = true;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_mesh = true;
+        obj->save_position = true;
+        obj->undead = true; // only killable by grenadegun or crossbow
+        obj->hit_effect = HIT_FRAGMENT;
+        bones[obj->bone_index + 0] |= ROT_Y;
+        bones[obj->bone_index + 4] |= ROT_X;
+        bones[obj->bone_index + 8] |= ROT_Z;
+        bones[obj->bone_index + 12] |= ROT_Z;
     }
 }
 
@@ -908,39 +908,39 @@ void SetupEntity::horse()
     obj = &objects[HORSE];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseHorse;
-		obj->collision = ObjectCollision;
-		obj->save_anim = true;
-		obj->save_flags = true;
+        obj->initialise = InitialiseHorse;
+        obj->collision = ObjectCollision;
+        obj->save_anim = true;
+        obj->save_flags = true;
     }
 }
 
 void SetupEntity::sas_dying()
 {
-	obj = &objects[SAS_DYING];
-	if (obj->loaded)
-	{
-		obj->initialise = InitialiseSasDying;
-		obj->control = SasDyingControl;
-		obj->collision = ObjectCollision;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_position = true;
-	}
+    obj = &objects[SAS_DYING];
+    if (obj->loaded)
+    {
+        obj->initialise = InitialiseSasDying;
+        obj->control = SasDyingControl;
+        obj->collision = ObjectCollision;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_position = true;
+    }
 }
 
 void SetupEntity::sas_captain()
 {
-	obj = &objects[SAS_CAPTAIN];
-	if (obj->loaded)
-	{
-		obj->initialise = InitialiseSasDying;
-		obj->control = SasDyingControl;
-		obj->collision = ObjectCollision;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_position = true;
-	}
+    obj = &objects[SAS_CAPTAIN];
+    if (obj->loaded)
+    {
+        obj->initialise = InitialiseSasDying;
+        obj->control = SasDyingControl;
+        obj->collision = ObjectCollision;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_position = true;
+    }
 }
 
 void SetupEntity::jean_yves()
@@ -948,13 +948,13 @@ void SetupEntity::jean_yves()
     obj = &objects[JEAN_YVES];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseJeanYves;
-		obj->control = JeanYvesControl;
-		obj->collision = ObjectCollision;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_position = true;
-		obj->object_mip = 10240;
+        obj->initialise = InitialiseJeanYves;
+        obj->control = JeanYvesControl;
+        obj->collision = ObjectCollision;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_position = true;
+        obj->object_mip = 10240;
     }
 }
 
@@ -963,12 +963,12 @@ void SetupEntity::game_piece1()
     obj = &objects[GAME_PIECE1];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseGamePiece;
-		obj->control = GamePieceControl;
-		obj->collision = ObjectCollision;
-		obj->save_hitpoints = true;
-		obj->save_flags = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseGamePiece;
+        obj->control = GamePieceControl;
+        obj->collision = ObjectCollision;
+        obj->save_hitpoints = true;
+        obj->save_flags = true;
+        obj->save_position = true;
     }
 }
 
@@ -977,12 +977,12 @@ void SetupEntity::game_piece2()
     obj = &objects[GAME_PIECE2];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseGamePiece;
-		obj->control = GamePieceControl;
-		obj->collision = ObjectCollision;
-		obj->save_hitpoints = true;
-		obj->save_flags = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseGamePiece;
+        obj->control = GamePieceControl;
+        obj->collision = ObjectCollision;
+        obj->save_hitpoints = true;
+        obj->save_flags = true;
+        obj->save_position = true;
     }
 }
 
@@ -991,12 +991,12 @@ void SetupEntity::game_piece3()
     obj = &objects[GAME_PIECE3];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseGamePiece;
-		obj->control = GamePieceControl;
-		obj->collision = ObjectCollision;
-		obj->save_hitpoints = true;
-		obj->save_flags = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseGamePiece;
+        obj->control = GamePieceControl;
+        obj->collision = ObjectCollision;
+        obj->save_hitpoints = true;
+        obj->save_flags = true;
+        obj->save_position = true;
     }
 }
 
@@ -1005,9 +1005,9 @@ void SetupEntity::enemy_piece()
     obj = &objects[ENEMY_PIECE];
     if (obj->loaded)
     {
-		obj->collision = ObjectCollision;
-		obj->save_flags = true;
-		obj->save_position = true;
+        obj->collision = ObjectCollision;
+        obj->save_flags = true;
+        obj->save_position = true;
     }
 }
 
@@ -1016,16 +1016,16 @@ void SetupEntity::wheel_of_fortune()
     obj = &objects[WHEEL_OF_FORTUNE];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseWheelOfFortune;
-		obj->control = WheelOfFortuneControl;
-		obj->collision = WheelOfFortuneCollision;
-		obj->hit_points = 1;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		bones[obj->bone_index + 0] |= ROT_Z;
-		bones[obj->bone_index + 4] |= ROT_Z;
-		bones[obj->bone_index + 8] |= ROT_Z;
-		bones[obj->bone_index + 12] |= ROT_Z;
+        obj->initialise = InitialiseWheelOfFortune;
+        obj->control = WheelOfFortuneControl;
+        obj->collision = WheelOfFortuneCollision;
+        obj->hit_points = 1;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        bones[obj->bone_index + 0] |= ROT_Z;
+        bones[obj->bone_index + 4] |= ROT_Z;
+        bones[obj->bone_index + 8] |= ROT_Z;
+        bones[obj->bone_index + 12] |= ROT_Z;
     }
 }
 
@@ -1034,13 +1034,13 @@ void SetupEntity::wraith1()
     obj = &objects[WRAITH1];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseWraith;
-		obj->control = WraithControl;
-		obj->draw_routine = DrawWraith;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseWraith;
+        obj->control = WraithControl;
+        obj->draw_routine = DrawWraith;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
     }
 }
 
@@ -1049,13 +1049,13 @@ void SetupEntity::wraith2()
     obj = &objects[WRAITH2];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseWraith;
-		obj->control = WraithControl;
-		obj->draw_routine = DrawWraith;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseWraith;
+        obj->control = WraithControl;
+        obj->draw_routine = DrawWraith;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
     }
 }
 
@@ -1064,13 +1064,13 @@ void SetupEntity::wraith3()
     obj = &objects[WRAITH3];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseWraith;
-		obj->control = WraithControl;
-		obj->draw_routine = DrawWraith;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseWraith;
+        obj->control = WraithControl;
+        obj->draw_routine = DrawWraith;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
     }
 }
 
@@ -1079,13 +1079,13 @@ void SetupEntity::wraith4()
     obj = &objects[WRAITH4];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseWraith;
-		obj->control = WraithControl;
-		obj->draw_routine = DrawWraith;
-		obj->save_anim = true;
-		obj->save_flags = true;
-		obj->save_hitpoints = true;
-		obj->save_position = true;
+        obj->initialise = InitialiseWraith;
+        obj->control = WraithControl;
+        obj->draw_routine = DrawWraith;
+        obj->save_anim = true;
+        obj->save_flags = true;
+        obj->save_hitpoints = true;
+        obj->save_position = true;
     }
 }
 
@@ -1094,9 +1094,9 @@ void SetupEntity::little_beetle()
     obj = &objects[LITTLE_BEETLE];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseLittleBeetle;
-		obj->control = LittleBeetleControl;
-		obj->draw_routine = NULL;
+        obj->initialise = InitialiseLittleBeetle;
+        obj->control = LittleBeetleControl;
+        obj->draw_routine = NULL;
     }
 }
 
@@ -1105,15 +1105,15 @@ void SetupEntity::fish()
     obj = &objects[FISH];
     if (obj->loaded)
     {
-		obj->initialise = InitialiseFish;
-		obj->control = FishControl;
-		obj->draw_routine = NULL;
-		obj->save_flags = true;
+        obj->initialise = InitialiseFish;
+        obj->control = FishControl;
+        obj->draw_routine = NULL;
+        obj->save_flags = true;
     }
 }
 
 void injector::inject_entity()
 {
-	this->inject(0x00402D90, InitialiseCrocodile);
-	this->inject(0x00402E30, CrocodileControl);
+    this->inject(0x00402D90, InitialiseCrocodile);
+    this->inject(0x00402E30, CrocodileControl);
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#define VAR_U_(address, type)			(*(type*)(address))				// uninitialized variable
-#define VAR_I_(address, type, value)	(*(type*)(address))				// initialized variable (value is just for info)
-#define ARRAY_(address, type, length)	(*(type(*)length)(address))		// array (can be multidimensional)
+#define VAR_U_(address, type)            (*(type*)(address))                // uninitialized variable
+#define VAR_I_(address, type, value)    (*(type*)(address))                // initialized variable (value is just for info)
+#define ARRAY_(address, type, length)    (*(type(*)length)(address))        // array (can be multidimensional)
 
 
 ///===============================///
@@ -76,9 +76,9 @@
 #define LightningRandom                     VAR_U_(0x007FDF5C, short)
 #define LightningStart                      VAR_U_(0x007FE14C, short)
 #define LightningTimer                      VAR_I_(0x004BF624, short, 0)
-#define gfLayer1Red							VAR_U_(0x007FD2F8, unsigned short)
-#define gfLayer1Green						VAR_U_(0x007FD2FA, unsigned short)
-#define gfLayer1Blue						VAR_U_(0x007FD2FC, unsigned short)
+#define gfLayer1Red                            VAR_U_(0x007FD2F8, unsigned short)
+#define gfLayer1Green                        VAR_U_(0x007FD2FA, unsigned short)
+#define gfLayer1Blue                        VAR_U_(0x007FD2FC, unsigned short)
 #define gfLayer1Color                       VAR_U_(0x007FD264, unsigned short)
 #define gfLayer1Color2                      VAR_U_(0x007FE128, unsigned short)
 #define gfLayer2Color                       VAR_U_(0x007FD25C, unsigned short)
@@ -88,13 +88,13 @@
 #define TargetType                          VAR_U_(0x007FE9B8, short) // use TARGET_TYPE enum
 #define vbufdoor                            ARRAY_(0x007FDF20, DOOR_VBUF, [4])
 #define GunFlashColor                       VAR_U_(0x005C047C, unsigned int)
-#define next_firesparks						VAR_I_(0x004ADF5C, int, 0)
-#define next_smokesparks					VAR_I_(0x004BF390, int, 0)
-#define next_gunshell						VAR_I_(0x004BF398, int, 0)
-#define next_bubbles						VAR_I_(0x004BF39C, int, 0)
-#define next_drip							VAR_I_(0x004BF3A0, int, 0)
-#define next_debris							VAR_I_(0x004BF358, int, 0)
-#define next_blood							VAR_I_(0x004BF394, int, 0)
+#define next_firesparks                        VAR_I_(0x004ADF5C, int, 0)
+#define next_smokesparks                    VAR_I_(0x004BF390, int, 0)
+#define next_gunshell                        VAR_I_(0x004BF398, int, 0)
+#define next_bubbles                        VAR_I_(0x004BF39C, int, 0)
+#define next_drip                            VAR_I_(0x004BF3A0, int, 0)
+#define next_debris                            VAR_I_(0x004BF358, int, 0)
+#define next_blood                            VAR_I_(0x004BF394, int, 0)
 #define dummy_rotation                      ARRAY_(0x004BF630, short, [12])
 #define Setting_MusicVolume                 VAR_U_(0x004B38AC, int)
 #define Setting_SFXVolume                   VAR_U_(0x004B38B0, int)
@@ -107,7 +107,7 @@
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
 #define dynamics                            ARRAY_(0x00804860, DYNAMIC, [MAX_DYNAMICS])
-#define lara								VAR_U_(0x0080DFE0, LARA_INFO)
+#define lara                                VAR_U_(0x0080DFE0, LARA_INFO)
 #define lara_item                           VAR_U_(0x0080E13C, ITEM_INFO*)
 #define items                               VAR_U_(0x007FE28C, ITEM_INFO*)
 #define objects                             ARRAY_(0x0052B850, OBJECT_INFO, [NUMBER_OBJECTS])

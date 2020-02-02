@@ -39,8 +39,8 @@ public:
     void big_beetle();
     void sentry_gun();
     void horse();
-	void sas_dying();
-	void sas_captain();
+    void sas_dying();
+    void sas_captain();
     void jean_yves();
     void game_piece1();
     void game_piece2();
@@ -56,7 +56,7 @@ public:
 
 private:
     OBJECT_INFO* obj;
-	OBJECT_INFO* objJzon;
+    OBJECT_INFO* objJzon;
 };
 
 extern SetupEntity setup_entity;

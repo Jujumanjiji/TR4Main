@@ -32,14 +32,14 @@ void injector::inject_3dsystem()
 
 void injector::inject_game()
 {
-	// other:
-	this->inject_entity();
+    // other:
+    this->inject_entity();
 
-	// main:
-	this->inject_box();
-	this->inject_draw();
-	this->inject_lot();
-	this->inject_sound();
+    // main:
+    this->inject_box();
+    this->inject_draw();
+    this->inject_lot();
+    this->inject_sound();
 }
 
 ///====================================///
@@ -48,7 +48,7 @@ void injector::inject_game()
 
 void injector::inject_specific()
 {
-	this->inject_drawprimitive();
-	this->inject_file();
+    this->inject_drawprimitive();
+    this->inject_file();
     this->inject_setup();
 }
