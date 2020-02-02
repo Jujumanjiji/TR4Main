@@ -26,14 +26,14 @@ void InitialiseObjects(void)
         obj->pivot_length = 0;
         obj->radius = 10; // default value
         obj->shadow_size = 0;
-        obj->intelligent = false;
-        obj->water_creature = false;
-        obj->save_position = false;
-        obj->save_anim = false;
-        obj->save_flags = false;
-        obj->save_mesh = false;
-        obj->save_hitpoints = false;
-        obj->using_drawanimating_item = true;
+        obj->intelligent = FALSE;
+        obj->water_creature = FALSE;
+        obj->save_position = FALSE;
+        obj->save_anim = FALSE;
+        obj->save_flags = FALSE;
+        obj->save_mesh = FALSE;
+        obj->save_hitpoints = FALSE;
+        obj->using_drawanimating_item = TRUE;
 		obj->frame_base += *frames;
     }
 

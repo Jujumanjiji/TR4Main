@@ -58,12 +58,14 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bass.lib;bass_fx.lib;bassmix.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)$(Configuration)\tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
@@ -80,7 +82,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,6 +90,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bass.lib;bass_fx.lib;bassmix.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)Release/tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
@@ -126,6 +130,7 @@
     <ClCompile Include="src\game\pickup.cpp" />
     <ClCompile Include="src\game\puzzle.cpp" />
     <ClCompile Include="src\game\rope.cpp" />
+    <ClCompile Include="src\game\sound.cpp" />
     <ClCompile Include="src\game\sphere.cpp" />
     <ClCompile Include="src\game\switchs.cpp" />
     <ClCompile Include="src\game\tomb4fx.cpp" />
@@ -133,6 +138,7 @@
     <ClCompile Include="src\game\vehicle\motorbike.cpp" />
     <ClCompile Include="src\specific\drawprimitive.cpp" />
     <ClCompile Include="src\specific\file.cpp" />
+    <ClCompile Include="src\specific\init.cpp" />
     <ClCompile Include="src\specific\json\reader.cpp" />
     <ClCompile Include="src\specific\json\scripts.cpp" />
     <ClCompile Include="src\specific\json\writer.cpp" />
@@ -146,6 +152,18 @@
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\extern\bass\bass.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\extern\bass\bassmix.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\extern\bass\bass_fx.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\extern\json\Jzon.h" />
     <ClInclude Include="src\game\effect2.h" />
     <ClInclude Include="src\game\people.h" />
@@ -170,12 +188,14 @@
     <ClInclude Include="src\game\pickup.h" />
     <ClInclude Include="src\game\puzzle.h" />
     <ClInclude Include="src\game\rope.h" />
+    <ClInclude Include="src\game\sound.h" />
     <ClInclude Include="src\game\sphere.h" />
     <ClInclude Include="src\game\switchs.h" />
     <ClInclude Include="src\game\tomb4fx.h" />
     <ClInclude Include="src\game\traps.h" />
     <ClInclude Include="src\specific\drawprimitive.h" />
     <ClInclude Include="src\specific\file.h" />
+    <ClInclude Include="src\specific\init.h" />
     <ClInclude Include="src\specific\json\reader.h" />
     <ClInclude Include="src\specific\json\scripts.h" />
     <ClInclude Include="src\specific\json\writer.h" />
@@ -194,7 +214,17 @@
     <ClInclude Include="src\specific\specific.h" />
     <ClInclude Include="src\utils\utils.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\dirent.1.13.1\build\native\dirent.targets" Condition="Exists('packages\dirent.1.13.1\build\native\dirent.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\dirent.1.13.1\build\native\dirent.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\dirent.1.13.1\build\native\dirent.targets'))" />
+  </Target>
 </Project>

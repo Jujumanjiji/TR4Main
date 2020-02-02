@@ -16,16 +16,18 @@ private:
     void inject_3d_gen();
     void inject_3d_gen_a();
 
-    // GAME
+    /// GAME
 	void inject_box();
     void inject_draw();
+	void inject_lot();
+	void inject_sound();
 
-    // SPECIFIC
+    /// SPECIFIC
 	void inject_drawprimitive();
 	void inject_file();
     void inject_setup();
 
-	// OTHER
+	/// OTHER
 	void inject_entity();
 
 public:

@@ -8,7 +8,6 @@
 
 #define BOX_DEFFLAG(icon) (MB_OK | icon | MB_SETFOREGROUND | MB_SYSTEMMODAL) // set foreground, only ok button and with a icon.
 
-#define ANGLE(x) (x * ONE_DEGREE)
 #define SQUARE(x) ((x)*(x))
 #define CLAMP(x, a, b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
 #define SIGN(x) ((0 < (x)) - ((x) < 0))
@@ -23,13 +22,16 @@
 
 #define SIN(x) (4 * rcossin_tbl[(x >> 3) & 0x1FFE])
 #define COS(x) (4 * rcossin_tbl[((x >> 3) & 0x1FFE) + 1])
+#define SINN(x)    (rcossin_tbl[(x >> 3) & 0x1FFE])       // not multiplied by 4
+#define COSN(x)    (rcossin_tbl[((x >> 3) & 0x1FFE) + 1]) // not multiplied by 4
 
-#define SINN(x) (rcossin_tbl[(x >> 3) & 0x1FFE])
-#define COSN(x) (rcossin_tbl[((x >> 3) & 0x1FFE) + 1])
-
-#ifndef ABS
-#define ABS(x) (((x)<0)?(-(x)):(x))
-#endif
+#define CustABS(A, B)\
+{\
+if (A > B)\
+	A = B; \
+else if (A < -B)\
+	A = -B; \
+}
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -48,6 +50,8 @@
 #endif
 
 #define SECTOR(x) ((x) * WALL_L)
+#define CLICK(x) ((x) * STEP_L)
+#define STEP(x) ((x) * STEP_L / 2)
 
 #define TRIGMULT2(a, b) (((a) * (b)) >> W2V_SHIFT)
 #define TRIGMULT2F(a, b) (((a) * (b)) / 16384.0f)
@@ -70,6 +74,8 @@
 
 #define JZON_INT(rtrn, from, name, to) if (from.has(name)) to = (rtrn)from.get(name).toInt()
 #define JZON_BOOL(rtrn, from, name, to) if (from.has(name)) to = (rtrn)from.get(name).toBoolean()
+
+#define CHECK_REACHED_GOAL(item, enemy, range) abs(enemy->pos.x - item->pos.x) < range && abs(enemy->pos.z - item->pos.z) < range &&  abs(enemy->pos.y - item->pos.y) < range
 
 #define INIT_PICKUP(slotID)\
 obj = &objects[slotID];\

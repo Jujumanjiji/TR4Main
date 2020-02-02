@@ -39,6 +39,9 @@
     <Filter Include="src\utils\json">
       <UniqueIdentifier>{3249153e-c467-41ce-bd61-f84fb91b1651}</UniqueIdentifier>
     </Filter>
+    <Filter Include="extern\bass">
+      <UniqueIdentifier>{f751061f-1432-4054-b3a2-12a3fdb91331}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -172,6 +175,12 @@
     </ClCompile>
     <ClCompile Include="src\specific\json\scripts.cpp">
       <Filter>src\utils\json</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\sound.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\init.cpp">
+      <Filter>src\specific</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,5 +325,23 @@
     <ClInclude Include="src\specific\json\scripts.h">
       <Filter>src\utils\json</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\sound.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\init.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\extern\bass\bass.h">
+      <Filter>extern\bass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\extern\bass\bass_fx.h">
+      <Filter>extern\bass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\extern\bass\bassmix.h">
+      <Filter>extern\bass</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

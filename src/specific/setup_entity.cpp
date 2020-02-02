@@ -823,7 +823,6 @@ void SetupEntity::enemy_jeep()
 			obj->save_hitpoints = true;
 			obj->save_mesh = true;
 			obj->save_position = true;
-			obj->undead = true;
 			obj->hit_effect = HIT_FRAGMENT;
 			bones[obj->bone_index + 32] |= ROT_X;
 			bones[obj->bone_index + 36] |= ROT_X;

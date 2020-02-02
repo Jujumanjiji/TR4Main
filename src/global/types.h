@@ -75,13 +75,13 @@ struct PHD_VECTOR
 
 struct FLOOR_INFO
 {
-	WORD index;
-	WORD fx : 4;
-	WORD box : 11;
-	WORD stopper : 1;
-	BYTE pit_room;
+	unsigned short index;
+	unsigned short fx : 4;
+	unsigned short box : 11;
+	unsigned short stopper : 1;
+	unsigned char pit_room;
 	char floor;
-	BYTE sky_room;
+	unsigned char sky_room;
 	char ceiling;
 };
 
@@ -133,14 +133,14 @@ struct FLOAT_VECTOR
 
 struct DOOR_INFO
 {
-	WORD room_number;
+	unsigned short room_number;
 	short point[3];
 	short corner[12];
 };
 
 struct DOORS
 {
-	WORD number_door;
+	unsigned short number_door;
 	DOOR_INFO doors[256];
 };
 
@@ -158,11 +158,11 @@ struct ROOM_INFO
     int maxceiling;
     short x_size;
     short y_size;
-	DWORD ambiant;
+	unsigned long ambiant;
     short num_light;
     short num_meshes;
-    BYTE reverb_type;
-    BYTE flip_number;
+    unsigned char reverb_type;
+    unsigned char flip_number;
     char mesh_effect;
     char bound_active;
     short left;
@@ -176,7 +176,7 @@ struct ROOM_INFO
     short item_number;
     short fx_number;
     short flipped_room;
-    WORD flags; // ROOM_INFO_Flags
+    unsigned short flags; // ROOM_INFO_Flags
     int vertice_amount;
     int vertice_water_amount;
     int vertice_dry_amount;
@@ -213,18 +213,18 @@ struct ITEM_INFO
     short speed;
     short fallspeed;
     short hit_points;
-    WORD box_number;
+    unsigned short box_number;
     short timer;
 	short flags;                       // For oneshot and code switches (i.e. NOT flags)
 	short shade;
 	short trigger_bits;
 	short carried_item;
 	short after_death;
-	WORD fired_weapon;
+	unsigned short fired_weapon;
     short item_flags[4];
-    LPVOID data;
+    void* data;
     PHD_3DPOS pos;
-    BYTE light_data[5528];
+    unsigned char light_data[5528];
 	unsigned int active : 1;
 	unsigned int status : 2;
 	unsigned int gravity_status : 1;
@@ -276,12 +276,12 @@ struct COLL_INFO
     char tilt_x, tilt_z;        // Type of Tilt of Floor
     char hit_by_baddie;         // Flag to indicate Lara has been hit by a Baddie
     char hit_static;            // Flag to indicate Lara has collided with a Static object
-    WORD slopes_are_walls : 2;   // Treat big slopesUp as walls
-    WORD slopes_are_pits : 1;    // Treat big slopesDown as pits
-    WORD lava_is_pit : 1;        // Treat Lava as Bad place to go onto
-    WORD enable_baddie_push : 1; // Baddies can push Lara
-    WORD enable_spaz : 1;        // Spaz animations are enabled
-    WORD hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
+    unsigned short slopes_are_walls : 2;   // Treat big slopesUp as walls
+    unsigned short slopes_are_pits : 1;    // Treat big slopesDown as pits
+    unsigned short lava_is_pit : 1;        // Treat Lava as Bad place to go onto
+    unsigned short enable_baddie_push : 1; // Baddies can push Lara
+    unsigned short enable_spaz : 1;        // Spaz animations are enabled
+    unsigned short hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
 };
 
 typedef void(*LPINITIALISE)(short item_number);
@@ -310,21 +310,21 @@ struct OBJECT_INFO
 	short pivot_length;
 	short radius;
 	short shadow_size;
-    WORD bit_offset;
-    WORD loaded : 1;
-    WORD intelligent : 1;
-    WORD non_lot : 1;                // can fly correctly
-    WORD save_position : 1;
-    WORD save_hitpoints : 1;
-    WORD save_flags : 1;
-    WORD save_anim : 1;
-    WORD semi_transparent : 1;
-    WORD water_creature : 1;
-    WORD using_drawanimating_item : 1;
-    WORD hit_effect : 2;
-    WORD undead : 1;
-    WORD save_mesh : 1;
-	WORD unknown : 2;
+    unsigned short bit_offset;
+    unsigned short loaded : 1;
+    unsigned short intelligent : 1;
+    unsigned short non_lot : 1;                // can fly correctly
+    unsigned short save_position : 1;
+    unsigned short save_hitpoints : 1;
+    unsigned short save_flags : 1;
+    unsigned short save_anim : 1;
+    unsigned short semi_transparent : 1;
+    unsigned short water_creature : 1;
+    unsigned short using_drawanimating_item : 1;
+    unsigned short hit_effect : 2;
+    unsigned short undead : 1;
+    unsigned short save_mesh : 1;
+	unsigned short unknown : 2;
 	LPDRAWEXTRA draw_routine_extra;
 	unsigned int explodable_meshbits;
 	unsigned int pad;
@@ -348,8 +348,8 @@ struct CHANGE_STRUCT
 struct ANIM_STRUCT
 {
     short* frame_ptr;
-	BYTE interpolation;
-	BYTE frame_size;
+	unsigned char interpolation;
+	unsigned char frame_size;
     short current_anim_state;
     int yspeed;
     int yfallspeed;
@@ -406,6 +406,13 @@ struct CAMERA_INFO
 	short speed;
 	ITEM_INFO* item;
 	ITEM_INFO* last_item;
+	OBJECT_VECTOR* fixed;
+	int dword_7FE880;
+	int dword_7FE884;
+	int dword_7FE888;
+	int mike_at_lara;
+	PHD_VECTOR mike_pos;
+	short mike_pos_room;
 };
 
 struct LARA_ARM
@@ -450,7 +457,7 @@ struct LARA_INFO
 	short poison2;
 	unsigned char anxiety;
 	unsigned char wet[15];
-	WORD flags;
+	unsigned short flags;
 	int water_surface_dist;
 	PHD_VECTOR last_pos;
 	int* spaz_effect;
@@ -506,10 +513,10 @@ struct DYNAMIC
 	int y;
 	int z;
 	unsigned char on;
-	BYTE r;
-	BYTE g;
-	BYTE b;
-	WORD falloff;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned short falloff;
 	unsigned char used;
 	unsigned char pad1[1];
 	int falloff_scale;
@@ -526,28 +533,28 @@ struct FIRE_SPARKS
 	short gravity;
 	short rotang;
 	short flags;
-	BYTE sSize;
-	BYTE dSize;
-	BYTE Size;
-	BYTE friction;
-	BYTE scalar;
-	BYTE def;
+	unsigned char sSize;
+	unsigned char dSize;
+	unsigned char Size;
+	unsigned char friction;
+	unsigned char scalar;
+	unsigned char def;
 	char rotadd;
 	char maxyvel;
-	BYTE on;
-	BYTE sR;
-	BYTE sG;
-	BYTE sB;
-	BYTE dR;
-	BYTE dG;
-	BYTE dB;
-	BYTE R;
-	BYTE G;
-	BYTE B;
-	BYTE colfadespeed;
-	BYTE fadetoblack;
-	BYTE slife;
-	BYTE life;
+	unsigned char on;
+	unsigned char sR;
+	unsigned char sG;
+	unsigned char sB;
+	unsigned char dR;
+	unsigned char dG;
+	unsigned char dB;
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
+	unsigned char colfadespeed;
+	unsigned char fadetoblack;
+	unsigned char slife;
+	unsigned char life;
 };
 
 struct GUNSHELL_STRUCT
@@ -572,26 +579,26 @@ struct SMOKE_SPARKS
 	short gravity;
 	short rotang;
 	short flags;
-	BYTE sSize;
-	BYTE dSize;
-	BYTE size;
-	BYTE friction;
-	BYTE scalar;
-	BYTE def;
+	unsigned char sSize;
+	unsigned char dSize;
+	unsigned char size;
+	unsigned char friction;
+	unsigned char scalar;
+	unsigned char def;
 	char rotadd;
 	char maxyvel;
-	BYTE on;
-	BYTE sShade;
-	BYTE dShade;
-	BYTE shade;
-	BYTE colfadespeed;
-	BYTE fadetoblack;
+	unsigned char on;
+	unsigned char sShade;
+	unsigned char dShade;
+	unsigned char shade;
+	unsigned char colfadespeed;
+	unsigned char fadetoblack;
 	char sLife;
 	char life;
-	BYTE transtype;
-	BYTE fx_obj;
-	BYTE node_number;
-	BYTE mirror;
+	unsigned char transtype;
+	unsigned char fx_obj;
+	unsigned char node_number;
+	unsigned char mirror;
 };
 
 struct SPARKS
@@ -605,34 +612,34 @@ struct SPARKS
 	short gravity;
 	short rotang;
 	short flags;
-	BYTE sSize;
-	BYTE dSize;
-	BYTE size;
-	BYTE friction;
-	BYTE scalar;
-	BYTE def;
+	unsigned char sSize;
+	unsigned char dSize;
+	unsigned char size;
+	unsigned char friction;
+	unsigned char scalar;
+	unsigned char def;
 	char rotadd;
 	char maxyvel;
-	BYTE on;
-	BYTE sR;
-	BYTE sG;
-	BYTE sB;
-	BYTE dR;
-	BYTE dG;
-	BYTE dB;
-	BYTE r;
-	BYTE g;
-	BYTE b;
-	BYTE colfadespeed;
-	BYTE fadetoblack;
-	BYTE sLife;
-	BYTE life;
-	BYTE transtype;
-	BYTE extras;
+	unsigned char on;
+	unsigned char sR;
+	unsigned char sG;
+	unsigned char sB;
+	unsigned char dR;
+	unsigned char dG;
+	unsigned char dB;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned char colfadespeed;
+	unsigned char fadetoblack;
+	unsigned char sLife;
+	unsigned char life;
+	unsigned char transtype;
+	unsigned char extras;
 	char dynamic;
-	BYTE fx_obj;
-	BYTE room_number;
-	BYTE node_number;
+	unsigned char fx_obj;
+	unsigned char room_number;
+	unsigned char node_number;
 };
 
 struct BLOOD_STRUCT
@@ -645,17 +652,17 @@ struct BLOOD_STRUCT
 	short zvel;
 	short gravity;
 	short rotang;
-	BYTE sSize;
-	BYTE dSize;
-	BYTE size;
-	BYTE friction;
+	unsigned char sSize;
+	unsigned char dSize;
+	unsigned char size;
+	unsigned char friction;
 	char rotadd;
-	BYTE on;
-	BYTE sShade;
-	BYTE dShade;
-	BYTE shade;
-	BYTE colfadespeed;
-	BYTE fadetoblack;
+	unsigned char on;
+	unsigned char sShade;
+	unsigned char dShade;
+	unsigned char shade;
+	unsigned char colfadespeed;
+	unsigned char fadetoblack;
 	char sLife;
 	char life;
 	char pad;
@@ -680,7 +687,7 @@ struct SPLASH_STRUCT
 	short outer_size;
 	short outer_radvel;
 	char flags;
-	BYTE life;
+	unsigned char life;
 };
 
 struct BUBBLE_STRUCT
@@ -690,9 +697,9 @@ struct BUBBLE_STRUCT
 	short speed;
 	short size;
 	short dSize;
-	BYTE shade;
-	BYTE vel;
-	BYTE y_rot;
+	unsigned char shade;
+	unsigned char vel;
+	unsigned char y_rot;
 	char flags;
 	short xvel;
 	short yvel;
@@ -705,16 +712,16 @@ struct DRIP_STRUCT
 	int x;
 	int y;
 	int z;
-	BYTE on;
-	BYTE r;
-	BYTE g;
-	BYTE b;
+	unsigned char on;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
 	short yvel;
-	BYTE gravity;
-	BYTE life;
+	unsigned char gravity;
+	unsigned char life;
 	short room_number;
-	BYTE outside;
-	BYTE pad;
+	unsigned char outside;
+	unsigned char pad;
 };
 
 struct SHOCKWAVE_STRUCT
@@ -726,10 +733,10 @@ struct SHOCKWAVE_STRUCT
 	short outer_rad;
 	short x_rot;
 	short flags;
-	BYTE r;
-	BYTE g;
-	BYTE b;
-	BYTE life;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned char life;
 	short speed;
 	short temp;
 };
@@ -741,14 +748,14 @@ struct RIPPLE_STRUCT
 	int y;
 	int z;
 	char flags;
-	BYTE life;
-	BYTE size;
-	BYTE init;
+	unsigned char life;
+	unsigned char size;
+	unsigned char init;
 };
 
 struct DEBRIS_STRUCT
 {
-	LPVOID textinfo;
+	void* textinfo;
 	int x;
 	int y;
 	int z;
@@ -760,13 +767,13 @@ struct DEBRIS_STRUCT
 	short yvel;
 	short gravity;
 	short room_number;
-	BYTE on;
-	BYTE x_rot;
-	BYTE y_rot;
-	BYTE r;
-	BYTE g;
-	BYTE b;
-	BYTE pad[22];
+	unsigned char on;
+	unsigned char x_rot;
+	unsigned char y_rot;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned char pad[22];
 };
 
 struct FIRE_LIST
@@ -774,25 +781,25 @@ struct FIRE_LIST
 	int x;
 	int y;
 	int z;
-	BYTE on;
-	BYTE size;
+	unsigned char on;
+	unsigned char size;
 	short room_number;
 };
 
 struct BOX_NODE
 {
 	short exit_box;
-	WORD search_number;
+	unsigned short search_number;
 	short next_expansion;
 	short box_number;
 };
 
 struct BOX_INFO
 {
-	BYTE left;
-	BYTE right;
-	BYTE top;
-	BYTE bottom;
+	unsigned char left;
+	unsigned char right;
+	unsigned char top;
+	unsigned char bottom;
 	short height;
 	short overlap_index;
 };
@@ -814,19 +821,19 @@ struct LOT_INFO
 	BOX_NODE *node;
 	short head;
 	short tail;
-	WORD search_number;
-	WORD block_mask;
+	unsigned short search_number;
+	unsigned short block_mask;
 	short step;
 	short drop;
 	short zone_count;
 	short target_box;
 	short required_box;
 	short fly;
-	WORD can_jump : 1;
-	WORD can_monkey : 1;
-	WORD is_amphibious : 1;
-	WORD is_jumping : 1;
-	WORD is_monkeying : 1;
+	unsigned short can_jump : 1;
+	unsigned short can_monkey : 1;
+	unsigned short is_amphibious : 1;
+	unsigned short is_jumping : 1;
+	unsigned short is_monkeying : 1;
 	PHD_VECTOR target;
 	int zone;
 };
@@ -836,14 +843,14 @@ struct CREATURE_INFO
 	short joint_rotation[4];
 	short maximum_turn;
 	short flags;
-	WORD alerted : 1;
-	WORD head_left : 1;
-	WORD head_right : 1;
-	WORD reached_goal : 1;
-	WORD hurt_by_lara : 1;
-	WORD patrol2 : 1;
-	WORD jump_ahead : 1;
-	WORD monkey_ahead : 1;
+	unsigned short alerted : 1;
+	unsigned short head_left : 1;
+	unsigned short head_right : 1;
+	unsigned short reached_goal : 1;
+	unsigned short hurt_by_lara : 1;
+	unsigned short patrol2 : 1;
+	unsigned short jump_ahead : 1;
+	unsigned short monkey_ahead : 1;
 	MOOD_TYPE mood;
 	ITEM_INFO *enemy;
 	ITEM_INFO ai_target;
@@ -853,4 +860,5 @@ struct CREATURE_INFO
 	LOT_INFO LOT;
 };
 
+typedef short(*lpEffect)(int x, int y, int z, short speed, short y_rot, short roomNumber);
 #pragma pack(pop)

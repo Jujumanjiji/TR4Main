@@ -1,12 +1,13 @@
 #pragma once
 
 #define SetLaraUnderwaterNodes ((void(__cdecl*)(void)) 0x0041F260)
-///#define DrawRooms ((void(__cdecl*)(short currentRoom)) 0x0044EC10)
-///#define PrintRooms ((void(__cdecl*)(short roomNumber)) 0x0044F2D0)
-///#define PrintObjects ((void(__cdecl*)(short roomNumber)) 0x0044F330)
-///#define GetRoomBounds ((void(__cdecl*)(void)) 0x0044F5D0)
-///#define SetRoomBounds ((void(__cdecl*)(short *point, short roomNumber, ROOM_INFO* parent)) 0x0044F790)
-///#define DrawEffect ((void(__cdecl*)(short fxNumber)) 0x0044FB10)
+#define DrawPhaseGame ((int(__cdecl*)(void)) 0x0044EBA0)
+#define DrawRooms ((void(__cdecl*)(short currentRoom)) 0x0044EC10)
+#define PrintRooms ((void(__cdecl*)(short roomNumber)) 0x0044F2D0)
+#define PrintObjects ((void(__cdecl*)(short roomNumber)) 0x0044F330)
+#define GetRoomBounds ((void(__cdecl*)(void)) 0x0044F5D0)
+#define SetRoomBounds ((void(__cdecl*)(short *point, short roomNumber, ROOM_INFO* parent)) 0x0044F790)
+#define DrawEffect ((void(__cdecl*)(short fxNumber)) 0x0044FB10)
 #define DrawMovingItem ((void(__cdecl*)(ITEM_INFO* item, short *frame)) 0x0044FC00)
 #define DrawAnimatingItem ((void(__cdecl*)(ITEM_INFO* item)) 0x0044FF60)
 #define InitInterpolate ((void(__cdecl*)(int frac, int rate)) 0x00450520)
@@ -29,10 +30,10 @@
 #define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
 #define GetBestFrame ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450EE0)
 
-extern void DrawRooms(short current_room);
-extern void PrintRooms(short roomNumber);
-extern void PrintObjects(short roomNumber);
-extern void GetRoomBounds(void);
-extern void SetRoomBounds(short* door, int roomNumber, ROOM_INFO* parent);
-extern void DrawEffect(short fxNumber);
+///extern void DrawRooms(short current_room);
+///extern void PrintRooms(short roomNumber);
+///extern void PrintObjects(short roomNumber);
+///extern void GetRoomBounds(void);
+///extern void SetRoomBounds(short* door, int roomNumber, ROOM_INFO* parent);
+///extern void DrawEffect(short fxNumber);
 ///extern void DrawAnimatingItem(ITEM_INFO* item);

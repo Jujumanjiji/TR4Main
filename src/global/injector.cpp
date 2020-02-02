@@ -38,6 +38,8 @@ void injector::inject_game()
 	// main:
 	this->inject_box();
 	this->inject_draw();
+	this->inject_lot();
+	this->inject_sound();
 }
 
 ///====================================///

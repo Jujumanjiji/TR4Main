@@ -17,7 +17,8 @@
 ///===============================///
 
 #define dword_4BF300                        VAR_I_(0x004BF300, int, 0)
-
+#define WinInstance                         VAR_U_(0x00753980, HINSTANCE)
+#define WinHandle                           VAR_U_(0x00753984, HWND)
 #define phd_laralefthand                    ARRAY_(0x0080E9C0, int, [12])
 #define phd_lararighthand                   ARRAY_(0x0080E930, int, [12])
 #define phd_left                            VAR_U_(0x00753C78, int)
@@ -84,6 +85,7 @@
 #define gfLayer2Color2                      VAR_U_(0x007FDF5E, unsigned short)
 #define CurrentDeathItemRoom                VAR_U_(0x007FDF50, short)
 #define CurrentDeathItemColor               VAR_I_(0x004AD7D4, unsigned int, 0x0FF000000)
+#define TargetType                          VAR_U_(0x007FE9B8, short) // use TARGET_TYPE enum
 #define vbufdoor                            ARRAY_(0x007FDF20, DOOR_VBUF, [4])
 #define GunFlashColor                       VAR_U_(0x005C047C, unsigned int)
 #define next_firesparks						VAR_I_(0x004ADF5C, int, 0)
@@ -94,6 +96,13 @@
 #define next_debris							VAR_I_(0x004BF358, int, 0)
 #define next_blood							VAR_I_(0x004BF394, int, 0)
 #define dummy_rotation                      ARRAY_(0x004BF630, short, [12])
+#define Setting_MusicVolume                 VAR_U_(0x004B38AC, int)
+#define Setting_SFXVolume                   VAR_U_(0x004B38B0, int)
+#define UseForcedFixedCamera                VAR_U_(0x007FE8C0, BOOL)
+#define baddie_slots                        VAR_U_(0x007FD1FC, CREATURE_INFO*)
+///#define baddie_count                        VAR_I_(0x004BF690, int, 0)
+#define trigger_index                       VAR_U_(0x007FE248, short*)
+#define number_boxes                        VAR_U_(0x007FE9B4, int)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
@@ -108,13 +117,13 @@
 #define anims                               VAR_U_(0x00533A68, ANIM_STRUCT*)
 #define bones                               VAR_U_(0x00533A88, int*)
 #define frames                              VAR_U_(0x00533A84, short*)
-#define overlap                             VAR_U_(0x007FE9A8, short*)
+#define overlaps                            VAR_U_(0x007FE9A8, short*)
 #define boxes                               VAR_U_(0x007FE9B0, BOX_INFO*)
 #define floor_data                          VAR_U_(0x00533A78, short*)
 #define camera                              VAR_U_(0x007FE820, CAMERA_INFO) // not finished !!!
 #define effects                             VAR_U_(0x008012E0, FX_INFO*)
 #define flip_status                         VAR_U_(0x007FE218, int)
-#define ground_zone                         ARRAY_(0x007FE980, short*, [5][2])
+#define ground_zone                         ARRAY_(0x007FE980, short*, [MAX_ZONE][2]) // [ZONE_TYPE][flip_status] (return short*)
 #define gunshells                           ARRAY_(0x007FF680, GUNSHELL_STRUCT, [MAX_GUNSHELLS])
 #define sparks                              ARRAY_(0x00801400, SPARKS, [MAX_SPARKS])
 #define gunflashes                          ARRAY_(0x00800CE0, GUNFLASH_STRUCT, [MAX_GUNFLASH])

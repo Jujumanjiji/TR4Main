@@ -104,8 +104,11 @@ void SpawnPickup(ITEM_INFO *item)
 	}
 
 	pickup_number = item->carried_item;
-	while (pickup_number != NO_ITEM)
+	do
 	{
+		if (pickup_number == NO_ITEM)
+			break;
+
 		pickup = &items[pickup_number];
 		floor = GetFloor(pos.x, pos.y, pos.z, &item->room_number);
 
@@ -120,12 +123,9 @@ void SpawnPickup(ITEM_INFO *item)
 			pickup->pos.y_rot = item->pos.y_rot;
 
 		ItemNewRoom(pickup_number, item->room_number);
-
-		if (pickup->carried_item == NO_ITEM)
-			break;
-
 		pickup_number = pickup->carried_item;
 	}
+	while (pickup_number != NO_ITEM);
 }
 
 #define PISTOLS_GUNPOS_X 10

@@ -20,6 +20,7 @@ DOOR_VBUF vbuf[4];
 #define Draw403C10 ((void(__cdecl*)(void)) 0x00403C10)
 #define Draw48D9B0 ((void(__cdecl*)(void)) 0x0048D9B0)
 
+/*
 int DrawPhaseGame(void)
 {
 	CalcLaraMatrices(FALSE);
@@ -384,13 +385,13 @@ void PrintObjects(short roomNumber)
 	r->right = 0;
 	r->bottom = 0;
 }
-
+*/
+/*
 void GetRoomBounds(void)
 {
 	ROOM_INFO* r;
 	short* door;
-	int room_number;
-	int i;
+	int i, room_number;
 
 	while (bound_start != bound_end)
 	{
@@ -405,7 +406,7 @@ void GetRoomBounds(void)
 
 		if (!(r->bound_active & 1))
 		{
-			draw_rooms[draw_rooms_number++] = (short)room_number;
+			draw_rooms[draw_rooms_number++] = room_number;
 			r->bound_active |= 1;
 
 			if (r->flags & ROOM_HORIZON)
@@ -427,7 +428,7 @@ void GetRoomBounds(void)
 		{
 			for (i = *(door++); i > 0; i--, door += 15)
 			{
-				room_number = (int)*(door++);
+				room_number = *(door++);
 				if (((int)(*(door + 0) * (r->x + *(door + 3) - w2v_matrix[M03])) +
 					 (int)(*(door + 1) * (r->y + *(door + 4) - w2v_matrix[M13])) +
 					 (int)(*(door + 2) * (r->z + *(door + 5) - w2v_matrix[M23]))) >= 0)
@@ -438,8 +439,6 @@ void GetRoomBounds(void)
 		}
 
 		phd_PopMatrix();
-		if (bound_start == bound_end)
-			return;
 	}
 }
 
@@ -577,6 +576,7 @@ void SetRoomBounds(short* door, int roomNumber, ROOM_INFO* parent)
 	}
 }
 
+
 void DrawEffect(short fxNumber)
 {
 	FX_INFO* fx;
@@ -602,7 +602,7 @@ void DrawEffect(short fxNumber)
 		phd_PopMatrix();
 	}
 }
-
+*/
 /*
 void DrawAnimatingItem(ITEM_INFO* item)
 {
@@ -782,13 +782,13 @@ void DrawAnimatingItem(ITEM_INFO* item)
 
 void injector::inject_draw()
 {
-	this->inject(0x0044EBA0, DrawPhaseGame);
-    this->inject(0x0044EC10, DrawRooms);
-	this->inject(0x0044F2D0, PrintRooms);
-	this->inject(0x0044F330, PrintObjects);
-	this->inject(0x0044F5D0, GetRoomBounds);
-	this->inject(0x0044F790, SetRoomBounds);
-	this->inject(0x0044FB10, DrawEffect);
+	//this->inject(0x0044EBA0, DrawPhaseGame);
+    //this->inject(0x0044EC10, DrawRooms);
+	//this->inject(0x0044F2D0, PrintRooms);
+	//this->inject(0x0044F330, PrintObjects);
+	//this->inject(0x0044F5D0, GetRoomBounds);
+	//this->inject(0x0044F790, SetRoomBounds);
+	//this->inject(0x0044FB10, DrawEffect);
 	//this->inject(0x0044FC00, DrawMovingItem);
 	//this->inject(0x0044FF60, DrawAnimatingItem);
     //this->inject(0x00450520, InitInterpolate);

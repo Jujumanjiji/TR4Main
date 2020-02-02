@@ -255,6 +255,9 @@ void CrocodileControl(short itemNumber)
 		CreatureMood(item, &info, VIOLENT);
 		angle = CreatureTurn(item, croc->maximum_turn);
 
+		if (CHK_NOP(item->ai_bits, GUARD) && info.ahead) // no guard ? then look at lara !
+			head_y = info.angle;
+
 		if (item->hit_status || info.distance < CROC_DETECT_RANGE || (TargetVisible(item, &info) && info.distance < CROC_VISIBILITY_DISTANCE))
 		{
 			if (!croc->alerted)
@@ -268,15 +271,28 @@ void CrocodileControl(short itemNumber)
 			case CROC_IDLE:
 				croc->maximum_turn = 0;
 
-				if (item->ai_bits & AI_GUARD)
+				if (item->ai_bits & GUARD)
 				{
 					item->state_next = CROC_IDLE;
 					item->item_flags[0] = item->item_flags[1] + guard;
 
+					if (!(GetRandomControl() & 0x1F))
+					{
+						if (GetRandomControl() & 1)
+							item->item_flags[1] = 0;
+						else
+							item->item_flags[1] = (GetRandomControl() & 1) != 0 ? 12 : -12;
+					}
 
-
-
-
+					if (item->item_flags[0] <= WALL_L)
+					{
+						if (item->item_flags[0] < -WALL_L)
+							item->item_flags[0] = -WALL_L;
+					}
+					else
+					{
+						item->item_flags[0] = WALL_L;
+					}
 				}
 				else if (info.bite && info.distance < CROC_ATTACK_RANGE)
 				{
@@ -292,6 +308,8 @@ void CrocodileControl(short itemNumber)
 				break;
 			case CROC_WALK:
 				croc->maximum_turn = CROC_ANGLE;
+				croc->LOT.step = CLICK(1);
+				croc->LOT.drop = -CLICK(1);
 
 				if (item->state_required)
 					item->state_next = item->state_required;
@@ -331,9 +349,28 @@ void CrocodileControl(short itemNumber)
 			case CROC_ATK:
 				croc->maximum_turn = 0;
 
+				if (item->current_frame == anims[item->current_anim].frame_base)
+					item->state_required = CROC_RESET;
+
+				if (info.bite && CHK_ANY(item->touch_bits, (CROC_TOUCHBIT1 | CROC_TOUCHBIT2)))
+				{
+					if (!item->state_required)
+					{
+						CreatureEffectAlternate(item, &crocBite, 10, -1, DoBloodSplat);
+						lara_item->hit_points -= CROC_DAMAGE;
+						lara_item->hit_status = TRUE;
+						item->state_required = CROC_IDLE;
+					}
+				}
+				else
+				{
+					item->state_next = CROC_IDLE;
+				}
 				break;
 			case WCROC_SWIM:
 				croc->maximum_turn = CROC_ANGLE;
+				croc->LOT.step = SECTOR(20);
+				croc->LOT.drop = -SECTOR(20);
 
 				if (item->state_required)
 					item->state_next = item->state_required;
@@ -343,17 +380,42 @@ void CrocodileControl(short itemNumber)
 			case WCROC_ATK:
 				croc->maximum_turn = 0;
 
+				if (item->current_frame == anims[item->current_anim].frame_base)
+					item->state_required = CROC_RESET;
+
+				if (info.bite && CHK_ANY(item->touch_bits, (CROC_TOUCHBIT1 | CROC_TOUCHBIT2)))
+				{
+					if (!item->state_required)
+					{
+						CreatureEffectAlternate(item, &crocBite, 10, -1, DoBloodSplat);
+						lara_item->hit_points -= CROC_DAMAGE;
+						lara_item->hit_status = TRUE;
+						item->state_required = WCROC_SWIM;
+					}
+				}
+				else
+				{
+					item->state_next = WCROC_SWIM;
+				}
 				break;
 		}
 	}
 
 	CreatureTilt(item, NO_TILT);
-	CreatureJoint(item, 0, guard);
-	CreatureJoint(item, 1, guard);
-	CreatureJoint(item, 2, -guard);
-	CreatureJoint(item, 3, -guard);
 
-	CalcCrocodilePosToFloor(item);
+	if (CHK_NOP(item->ai_bits, GUARD) && info.ahead)
+	{
+		CreatureJoint(item, 0, head_y);
+	}
+	else
+	{
+		CreatureJoint(item, 0, guard);
+		CreatureJoint(item, 1, guard);
+		CreatureJoint(item, 2, -guard);
+		CreatureJoint(item, 3, -guard);
+	}
+
+	//CalcCrocodilePosToFloor(item);
 	SwapCrocodileType(item, croc);
 
 	if (RWATER(item->room_number))
