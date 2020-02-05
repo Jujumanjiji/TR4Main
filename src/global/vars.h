@@ -103,6 +103,7 @@
 ///#define baddie_count                        VAR_I_(0x004BF690, int, 0)
 #define trigger_index                       VAR_U_(0x007FE248, short*)
 #define number_boxes                        VAR_U_(0x007FE9B4, int)
+#define EntityBlindTimer                    VAR_U_(0x0080E136, char)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

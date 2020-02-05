@@ -1,10 +1,11 @@
 #include "framework.h"
 #include "utils.h"
-#include "game/oldobjects.h"
 #include "3dsystem/3d_gen.h"
+#include "3dsystem/3d_gen_a.h"
 #include "game/control.h"
 #include "game/draw.h"
 #include "game/items.h"
+#include "game/oldobjects.h"
 #include "game/sphere.h"
 #include "specific/json/reader.h"
 #include "specific/drawprimitive.h"
@@ -25,6 +26,11 @@ bool isFileExists(LPCSTR file_name)
 void createFolders(LPCSTR folder_name)
 {
     _mkdir(folder_name);
+}
+
+short GetCurrentFrame(ITEM_INFO * item)
+{
+    return (item->current_frame - anims[item->current_anim].frame_base);
 }
 
 void phd_SwapMatrix(int* dest, int* src)
@@ -323,4 +329,86 @@ short initHealth(short objNumber)
 
     return 1; // only 1 hp for entity in debug mode ! (immortal entity ignored !)
 #endif
+}
+
+void phd_SwapPushMatrix(int frac)
+{
+    if (frac) // interpolate
+        phd_PushMatrix_I();
+    else
+        phd_PushMatrix();
+}
+
+void phd_SwapPopMatrix(int frac)
+{
+    if (frac)
+        phd_PopMatrix_I();
+    else
+        phd_PopMatrix();
+}
+
+void phd_SwapTranslateRel(int frac, int bone1, int bone2, int bone3, short* frame1, short* frame2, bool ID)
+{
+    if (frac)
+    {
+        if (ID)
+            phd_TranslateRel_ID((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8), (int)*(frame2 + 6), (int)*(frame2 + 7), (int)*(frame2 + 8));
+        else
+            phd_TranslateRel_I(bone1, bone2, bone3);
+    }
+    else
+    {
+        if (ID)
+            phd_TranslateRel((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8));
+        else
+            phd_TranslateRel(bone1, bone2, bone3);
+    }
+}
+
+void phd_SwapGarYXZsuperpack(int frac, short** rotation1, short** rotation2)
+{
+    if (frac)
+        gar_RotYXZsuperpack_I(rotation1, rotation2, 0);
+    else
+        gar_RotYXZsuperpack(rotation1, 0);
+}
+
+void phd_SwapRotY(int frac, short y)
+{
+    if (frac)
+        phd_RotY_I(y);
+    else
+        phd_RotY(y);
+}
+
+void phd_SwapRotX(int frac, short x)
+{
+    if (frac)
+        phd_RotX_I(x);
+    else
+        phd_RotX(x);
+}
+
+void phd_SwapRotZ(int frac, short z)
+{
+    if (frac)
+        phd_RotZ_I(z);
+    else
+        phd_RotZ(z);
+}
+
+void phd_SwapRotYXZ(int frac, short y, short x, short z)
+{
+    if (frac)
+        phd_RotYXZ_I(y, x, z);
+    else
+        phd_RotYXZ(y, x, z);
+}
+
+void phd_SwapPutPolygons(int frac, int clip, short** mesh)
+{
+    if (frac)
+        phd_PutPolygons_I(*mesh, clip);
+    else
+        phd_PutPolygons(*mesh, clip);
 }

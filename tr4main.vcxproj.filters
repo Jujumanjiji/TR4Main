@@ -116,9 +116,6 @@
     <ClCompile Include="src\game\traps.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\vehicle\motorbike.cpp">
-      <Filter>src\game\vehicles</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\deltapak.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -180,6 +177,9 @@
       <Filter>src\specific</Filter>
     </ClCompile>
     <ClCompile Include="src\game\entity\bat.cpp">
+      <Filter>src\game\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\entity\baddy.cpp">
       <Filter>src\game\entity</Filter>
     </ClCompile>
   </ItemGroup>

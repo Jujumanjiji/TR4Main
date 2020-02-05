@@ -174,8 +174,9 @@ void SetupEntity::baddy_1()
     if (obj->loaded)
     {
         obj->bit_offset = 1;
-        obj->initialise = InitialiseBaddy;
-        obj->control = BaddyControl;
+        obj->initialise = InitialiseBaddy1;
+        obj->control = Baddy1Control;
+        obj->draw_routine = DrawBaddy1; // custom render to switch between uzi & sword.
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
         obj->hit_points = initHealth(BADDY_1);
@@ -187,13 +188,14 @@ void SetupEntity::baddy_1()
         obj->save_flags = true;
         obj->save_hitpoints = true;
         obj->save_position = true;
+        obj->using_drawanimating_item = false;
         obj->hit_effect = HIT_BLOOD;
         bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
         bones[obj->bone_index + 88] |= ROT_Y | ROT_X;
 
         // TODO: swap not working correctly !
-        meshes[obj->mesh_index + 4 * 2] = meshes[objects[MESHSWAP3].mesh_index + 4 * 2]; // enable swap ?
-        meshes[obj->mesh_index + 7 * 2] = meshes[objects[MESHSWAP3].mesh_index + 7 * 2]; //
+        //meshes[obj->mesh_index + 4 * 2] = meshes[objects[MESHSWAP3].mesh_index + 4 * 2]; // enable swap ?
+        //meshes[obj->mesh_index + 7 * 2] = meshes[objects[MESHSWAP3].mesh_index + 7 * 2]; //
 
         if (objects[BADDY_2].loaded)
             obj->anim_index = objects[BADDY_2].anim_index;

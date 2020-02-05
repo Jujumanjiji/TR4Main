@@ -170,7 +170,7 @@ void CreatureAIInfo(ITEM_INFO* item, AI_INFO* info)
     ITEM_INFO* enemy;
     OBJECT_INFO* obj;
     ROOM_INFO* r;
-    short* zone, angle, laraState;
+    short* zone, angle = 0, laraState;
     int x, y, z;
 
     creature = (CREATURE_INFO*)item->data;
@@ -214,17 +214,8 @@ void CreatureAIInfo(ITEM_INFO* item, AI_INFO* info)
             info->enemy_zone |= BLOCKED;
     }
     
-    if (enemy == lara_item)
-    {
-        z = (enemy->pos.z + (enemy->speed * PREDICTIVE_SCALE_FACTOR * COS(lara.move_angle) >> W2V_SHIFT)) - (item->pos.z + (obj->pivot_length * COS(item->pos.y_rot) >> W2V_SHIFT));
-        x = (enemy->pos.x + (enemy->speed * PREDICTIVE_SCALE_FACTOR * SIN(lara.move_angle) >> W2V_SHIFT)) - (item->pos.x + (obj->pivot_length * SIN(item->pos.y_rot) >> W2V_SHIFT));
-    }
-    else
-    {
-        z = (enemy->pos.z + (enemy->speed * PREDICTIVE_SCALE_FACTOR * COS(enemy->pos.y_rot) >> W2V_SHIFT)) - (item->pos.z + (obj->pivot_length * COS(item->pos.y_rot) >> W2V_SHIFT));
-        x = (enemy->pos.x + (enemy->speed * PREDICTIVE_SCALE_FACTOR * SIN(enemy->pos.y_rot) >> W2V_SHIFT)) - (item->pos.x + (obj->pivot_length * SIN(item->pos.y_rot) >> W2V_SHIFT));
-    }
-
+    z = (enemy->pos.z + (enemy->speed * PREDICTIVE_SCALE_FACTOR * COS(enemy->pos.y_rot) >> W2V_SHIFT)) - (item->pos.z + (obj->pivot_length * COS(item->pos.y_rot) >> W2V_SHIFT));
+    x = (enemy->pos.x + (enemy->speed * PREDICTIVE_SCALE_FACTOR * SIN(enemy->pos.y_rot) >> W2V_SHIFT)) - (item->pos.x + (obj->pivot_length * SIN(item->pos.y_rot) >> W2V_SHIFT));
     y = item->pos.y - enemy->pos.y;
     angle = phd_atan(z, x);
 
@@ -265,7 +256,7 @@ void CreatureAIInfo(ITEM_INFO* item, AI_INFO* info)
     else
         info->x_angle = phd_atan(z + (x >> 1), y);
 
-    info->ahead = (info->angle > -0x4000 && info->angle < 0x4000);
+    info->ahead = (info->angle > -ANGLE(45) && info->angle < ANGLE(45));
     // TODO: change STEP_L*2 to a think like item->attack_distance
     info->bite = (info->ahead && enemy->hit_points > 0 && abs(enemy->pos.y - item->pos.y) <= STEP_L*2);
 }
@@ -275,10 +266,11 @@ void TargetBox(LOT_INFO* LOT, short box_number)
 {
     BOX_INFO* box;
 
-    box = &boxes[box_number & BOX_NUMBER];
-    LOT->target.z = ((box->left << WALL_SHIFT)) + GetRandomControl() * ((box->right - box->left - 1) >> (15 - WALL_SHIFT)) + WALL_L / 2;
-    LOT->target.x = ((box->top << WALL_SHIFT)) + GetRandomControl() * ((box->bottom - box->top - 1) >> (15 - WALL_SHIFT)) + WALL_L / 2;
-    LOT->required_box = box_number & BOX_NUMBER;
+    box_number &= BOX_NUMBER;
+    box = &boxes[box_number];
+    LOT->target.z = (box->left << WALL_SHIFT) + GetRandomControl() * ((box->right - box->left - 1) >> (15 - WALL_SHIFT)) + WALL_L / 2;
+    LOT->target.x = (box->top << WALL_SHIFT) + GetRandomControl() * ((box->bottom - box->top - 1) >> (15 - WALL_SHIFT)) + WALL_L / 2;
+    LOT->required_box = box_number;
 
     if (LOT->fly == NO_FLY)
         LOT->target.y = box->height;
@@ -546,6 +538,9 @@ void CreatureMood(ITEM_INFO* item, AI_INFO* info, int violent)
     if (LOT->required_box == NO_BOX)
         TargetBox(LOT, item->box_number);
 
+    // Got target based on mood, now calculate intermediate target to get there
+    TargetType = CalculateTarget(&creature->target, item, LOT);
+
     creature->jump_ahead = false;
     creature->monkey_ahead = false;
 
@@ -569,9 +564,6 @@ void CreatureMood(ITEM_INFO* item, AI_INFO* info, int violent)
                 creature->monkey_ahead = true;
         }
     }
-
-    // Got target based on mood, now calculate intermediate target to get there
-    TargetType = CalculateTarget(&creature->target, item, LOT);
 }
 
 // Valid box for stalking is one close to enemy and not in its forward quadrant.
@@ -676,10 +668,7 @@ BOOL BadFloor(int x, int y, int z, int box_height, int next_height, short roomNu
 
     // Get adjacent box
     floor = GetFloor(x, y, z, &roomNumber);
-    if (floor->box == WALL_FLOOR) // not exist in TR4
-        return TRUE;
-
-    if ((floor->index & 0x7FF0) == 0x7FF0)
+    if (floor->box == NO_BOX)
         return TRUE;
 
     if (LOT->is_jumping)
@@ -1565,7 +1554,7 @@ void FindAITargetObject(CREATURE_INFO* creature, short objectNumber)
 
     for (int i = 0; i < nAIObjects; i++, ai++)
     {
-        if (ai->object_number == objectNumber && ai->trigger_flags == item->item_flags[3] && ai->room_number != NO_ROOM)
+        if (ai->object_number == objectNumber && ai->trigger_flags == item->reserved_4 && ai->room_number != NO_ROOM)
         {
             zone = ground_zone[creature->LOT.zone][flip_status];
 
@@ -1588,7 +1577,7 @@ void FindAITargetObject(CREATURE_INFO* creature, short objectNumber)
     ai_target->pos.z = ai->z;
     ai_target->pos.y_rot = ai->y_rot;
     ai_target->flags = ai->flags;
-    ai_target->trigger_bits = ai->trigger_flags;
+    ai_target->ocb_bits = ai->trigger_flags;
     ai_target->box_number = ai->box_number;
     if (!ai_target->collidable)
     {

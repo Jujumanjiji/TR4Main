@@ -187,6 +187,13 @@ void InitialiseSlot(short itemNumber, int slots)
             creature->LOT.drop = -CLICK(2);
             creature->LOT.zone = ZONE_BASIC;
             break;
+        case HAMMERHEAD:
+            creature->LOT.step = SECTOR(20);
+            creature->LOT.drop = -SECTOR(20);
+            creature->LOT.fly = CREATURE_FLOAT_SPEED;
+            creature->LOT.is_amphibious = FALSE;
+            creature->LOT.zone = ZONE_WATER;
+            break;
         case CROCODILE:
             creature->LOT.step = SECTOR(20);
             creature->LOT.drop = -SECTOR(20);
@@ -196,14 +203,15 @@ void InitialiseSlot(short itemNumber, int slots)
             break;
         case HARPY:
         case BIG_BEETLE:
-        case HAMMERHEAD:
+            creature->LOT.step = SECTOR(20);
+            creature->LOT.drop = -SECTOR(20);
+            creature->LOT.fly = 32;
+            creature->LOT.zone = ZONE_FLYER;
+            break;
         case BAT:
             creature->LOT.step = SECTOR(20);
             creature->LOT.drop = -SECTOR(20);
-            if (item->object_number == BAT)
-                creature->LOT.fly = 16;
-            else
-                creature->LOT.fly = 32;
+            creature->LOT.fly = 16;
             creature->LOT.zone = ZONE_FLYER;
             break;
     }

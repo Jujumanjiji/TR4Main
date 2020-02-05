@@ -56,7 +56,7 @@ using namespace std;
 #define MAX_FIRE_SPARKS 20
 #define MAX_FIRE_LIST 32
 #define MAX_LIGHTNING 3
-#define MAX_DYNAMICS 64
+#define MAX_DYNAMICS 32
 
 #define SFX_ALWAYS 2
 #define DONT_TARGET (-16384)

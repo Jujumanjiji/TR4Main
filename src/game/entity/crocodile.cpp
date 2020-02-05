@@ -158,11 +158,9 @@ void SwapCrocodileType(ITEM_INFO* item, CREATURE_INFO* creature)
         {
             item->state_next = CROC_WALK;
         }
-        else if (item->current_anim != objects[item->object_number].anim_index + ACROC_LAND_MODE)
-        {
-            SwitchCrocodileLOT(creature, ZONE_BASIC);
-            CreatureUnderwater(item, NULL);
-        }
+        
+        SwitchCrocodileLOT(creature, ZONE_BASIC);
+        CreatureUnderwater(item, NULL);
     }
 }
 
@@ -255,9 +253,6 @@ void CrocodileControl(short itemNumber)
         CreatureMood(item, &info, VIOLENT);
         angle = CreatureTurn(item, croc->maximum_turn);
 
-        if (CHK_NOP(item->ai_bits, GUARD) && info.ahead) // no guard ? then look at lara !
-            head_y = info.angle;
-
         if (item->hit_status || info.distance < CROC_DETECT_RANGE || (TargetVisible(item, &info) && info.distance < CROC_VISIBILITY_DISTANCE))
         {
             if (!croc->alerted)
@@ -265,33 +260,33 @@ void CrocodileControl(short itemNumber)
             AlertAllGuards(itemNumber);
         }
 
-        guard = 4 * angle;
         switch (item->state_current)
         {
             case CROC_IDLE:
+                guard = 4 * angle;
                 croc->maximum_turn = 0;
 
                 if (item->ai_bits & GUARD)
                 {
                     item->state_next = CROC_IDLE;
-                    item->item_flags[0] = item->item_flags[1] + guard;
+                    item->reserved_1 = item->reserved_2 + guard;
 
                     if (!(GetRandomControl() & 0x1F))
                     {
                         if (GetRandomControl() & 1)
-                            item->item_flags[1] = 0;
+                            item->reserved_2 = 0;
                         else
-                            item->item_flags[1] = (GetRandomControl() & 1) != 0 ? 12 : -12;
+                            item->reserved_2 = (GetRandomControl() & 1) != 0 ? 12 : -12;
                     }
 
-                    if (item->item_flags[0] <= WALL_L)
+                    if (item->reserved_1 <= WALL_L)
                     {
-                        if (item->item_flags[0] < -WALL_L)
-                            item->item_flags[0] = -WALL_L;
+                        if (item->reserved_1 < -WALL_L)
+                            item->reserved_1 = -WALL_L;
                     }
                     else
                     {
-                        item->item_flags[0] = WALL_L;
+                        item->reserved_1 = WALL_L;
                     }
                 }
                 else if (info.bite && info.distance < CROC_ATTACK_RANGE)
@@ -341,10 +336,6 @@ void CrocodileControl(short itemNumber)
                     else if (info.ahead && info.distance < CROC_RUN_DISTANCE)
                         item->state_next = CROC_WALK;
                 }
-                break;
-            case CROC_HIT: // not in the current code !
-                croc->maximum_turn = 0;
-
                 break;
             case CROC_ATK:
                 croc->maximum_turn = 0;
@@ -402,21 +393,10 @@ void CrocodileControl(short itemNumber)
     }
 
     CreatureTilt(item, NO_TILT);
-
-    if (item->hit_points > 0)
-    {
-        if (CHK_NOP(item->ai_bits, GUARD) && info.ahead) // not guard or else it will destroy the guard AI
-        {
-            CreatureJoint(item, 1, head_y);
-        }
-        else if (CHK_ANY(item->ai_bits, GUARD))
-        {
-            CreatureJoint(item, 0, guard);
-            CreatureJoint(item, 1, guard);
-            CreatureJoint(item, 2, -guard);
-            CreatureJoint(item, 3, -guard);
-        }
-    }
+    CreatureJoint(item, 0, guard);
+    CreatureJoint(item, 1, guard);
+    CreatureJoint(item, 2, -guard);
+    CreatureJoint(item, 3, -guard);
 
     //CalcCrocodilePosToFloor(item);
     SwapCrocodileType(item, croc);

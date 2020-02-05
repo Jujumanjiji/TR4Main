@@ -21,6 +21,9 @@
 #define VonCroyControlNormal CONTROL(0x0041AF00)
 #define InitialiseBaddy INITIALISE(0x0040B3C0)
 #define BaddyControl CONTROL(0x0040B600)
+extern void InitialiseBaddy1(short itemNumber);
+extern void Baddy1Control(short itemNumber);
+extern void DrawBaddy1(ITEM_INFO* item);
 #define InitialiseScorpion INITIALISE(0x0040E780)
 #define ScorpionControl CONTROL(0x0040E800)
 #define InitialiseSmallScorpion INITIALISE(0x0040EFD0)

@@ -7,8 +7,6 @@
 #include "game/people.h"
 #include "utils/utils.h"
 
-// TODO: the bat when attacking is progressivly attracted to the floor !!!!
-
 enum BAT_ANIM
 {
     ABAT_START,
@@ -33,7 +31,6 @@ enum BAT_VALUE
 {
     BAT_ANGLE = ANGLE(20),
     BAT_ATTACK_RANGE = SQUARE(STEP_L),
-    BAT_RESET_RANGE = SQUARE(WALL_L * 5),
     BAT_DAMAGE = 2,
     BAT_VISIBILITY_DISTANCE = SQUARE(WALL_L * 5),
 };
@@ -61,7 +58,7 @@ void BatControl(short itemNumber)
     if (!CreatureActive(itemNumber))
         return;
 
-    ITEM_INFO* item;
+    ITEM_INFO* item, *enemy;
     OBJECT_INFO* obj;
     CREATURE_INFO* bat;
     AI_INFO info;
@@ -102,10 +99,11 @@ void BatControl(short itemNumber)
 
         CreatureAIInfo(item, &info);
         GetCreatureMood(item, &info, TIMID);
-        if (bat->hurt_by_lara)
+        if (bat->flags)
             bat->mood = ESCAPE_MOOD;
         CreatureMood(item, &info, TIMID);
         angle = CreatureTurn(item, BAT_ANGLE);
+        enemy = bat->enemy;
 
         switch (item->state_current)
         {
@@ -139,7 +137,7 @@ void BatControl(short itemNumber)
                     else
                     {
                         item->state_next = SBAT_FLY;
-                        //bat->mood = BORED_MOOD;
+                        bat->mood = BORED_MOOD;
                     }
                 }
                 else

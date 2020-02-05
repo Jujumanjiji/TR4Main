@@ -8,6 +8,7 @@
 
 #define BOX_DEFFLAG(icon) (MB_OK | icon | MB_SETFOREGROUND | MB_SYSTEMMODAL) // set foreground, only ok button and with a icon.
 
+#define OCB_MODE(x) ((x) % 1000)
 #define SQUARE(x) ((x)*(x))
 #define CLAMP(x, a, b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
 #define SIGN(x) ((0 < (x)) - ((x) < 0))
@@ -20,10 +21,13 @@
 #define CLIPUP(a, b) if (a > b) a = b
 #define XZ_GET_SECTOR(room, xPos, zPos) (room->floor[((zPos - room->z) >> WALL_SHIFT) + ((xPos - room->x) >> WALL_SHIFT) * room->x_size])
 
-#define SIN(x) (4 * rcossin_tbl[(x >> 3) & 0x1FFE])
-#define COS(x) (4 * rcossin_tbl[((x >> 3) & 0x1FFE) + 1])
-#define SINN(x)    (rcossin_tbl[(x >> 3) & 0x1FFE])       // not multiplied by 4
-#define COSN(x)    (rcossin_tbl[((x >> 3) & 0x1FFE) + 1]) // not multiplied by 4
+#define SIN(x) (4 * rcossin_tbl[(x >> 3) & ANGLE(45)])
+#define COS(x) (4 * rcossin_tbl[((x >> 3) & ANGLE(45)) + 1])
+#define SINN(x)    (rcossin_tbl[(x >> 3) & ANGLE(45)])       // not multiplied by 4
+#define COSN(x)    (rcossin_tbl[((x >> 3) & ANGLE(45)) + 1]) // not multiplied by 4
+
+#define BONE(id, add) *(bone + (id + (add * 4)))
+#define MESH(object, x) (object->mesh_index + x * 2)
 
 #define CustABS(A, B)\
 {\

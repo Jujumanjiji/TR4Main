@@ -22,6 +22,14 @@ struct AIOBJECT
     short box_number;
 };
 
+struct OBJ_ROTATION
+{
+    short torso_y;
+    short torso_x;
+    short head_y;
+    short head_x;
+};
+
 struct PHD_MATRIX
 {
     int m00;
@@ -217,11 +225,14 @@ struct ITEM_INFO
     short timer;
     short flags;                       // For oneshot and code switches (i.e. NOT flags)
     short shade;
-    short trigger_bits;
+    short ocb_bits;
     short carried_item;
     short after_death;
     unsigned short fired_weapon;
-    short item_flags[4];
+    short reserved_1;
+    short reserved_2;
+    short reserved_3;
+    short reserved_4;
     void* data;
     PHD_3DPOS pos;
     unsigned char light_data[5528];
