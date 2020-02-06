@@ -4,6 +4,7 @@
 #include "3dsystem/3d_gen_a.h"
 #include "game/control.h"
 #include "game/draw.h"
+#include "game/effect2.h"
 #include "game/items.h"
 #include "game/oldobjects.h"
 #include "game/sphere.h"
@@ -331,6 +332,21 @@ short initHealth(short objNumber)
 #endif
 }
 
+void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite)
+{
+    if (item->fired_weapon)
+    {
+        PHD_VECTOR pos;
+        pos.x = bite->x;
+        pos.y = bite->y;
+        pos.z = bite->z;
+        GetJointAbsPosition(item, &pos, bite->mesh);
+
+        TriggerDynamic(pos.x, pos.y, pos.z, 12, 24, 16, 4);
+        // TODO: (for later: TriggerGunSmoke())
+    }
+}
+
 void phd_SwapPushMatrix(int frac)
 {
     if (frac) // interpolate
@@ -347,18 +363,18 @@ void phd_SwapPopMatrix(int frac)
         phd_PopMatrix();
 }
 
-void phd_SwapTranslateRel(int frac, int bone1, int bone2, int bone3, short* frame1, short* frame2, bool ID)
+void phd_SwapTranslateRel(int frac, int bone1, int bone2, int bone3, short* frame1, short* frame2, bool start)
 {
     if (frac)
     {
-        if (ID)
+        if (start)
             phd_TranslateRel_ID((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8), (int)*(frame2 + 6), (int)*(frame2 + 7), (int)*(frame2 + 8));
         else
             phd_TranslateRel_I(bone1, bone2, bone3);
     }
     else
     {
-        if (ID)
+        if (start)
             phd_TranslateRel((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8));
         else
             phd_TranslateRel(bone1, bone2, bone3);

@@ -256,7 +256,7 @@ void CreatureAIInfo(ITEM_INFO* item, AI_INFO* info)
     else
         info->x_angle = phd_atan(z + (x >> 1), y);
 
-    info->ahead = (info->angle > -ANGLE(45) && info->angle < ANGLE(45));
+    info->ahead = (info->angle > -ANGLE(90) && info->angle < ANGLE(90));
     // TODO: change STEP_L*2 to a think like item->attack_distance
     info->bite = (info->ahead && enemy->hit_points > 0 && abs(enemy->pos.y - item->pos.y) <= STEP_L*2);
 }

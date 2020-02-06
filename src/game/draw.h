@@ -26,7 +26,7 @@
 #define InterpolateArmMatrix ((void(__cdecl*)(void)) 0x00450AB0)
 #define CalculateObjectLighting ((void(__cdecl*)(ITEM_INFO* item, short* frame)) 0x00450BB0)
 #define CalculateObjectLightingLara ((void(__cdecl*)(void)) 0x00450CB0)
-#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[], int *rate)) 0x00450DC0)
+#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[2], int *rate)) 0x00450DC0)
 #define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
 #define GetBestFrame ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450EE0)
 
