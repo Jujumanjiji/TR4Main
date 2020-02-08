@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "3dsystem/3d_gen.h"
 #include "3dsystem/3d_gen_a.h"
+#include "game/box.h"
 #include "game/control.h"
 #include "game/draw.h"
 #include "game/effect2.h"
@@ -345,6 +346,65 @@ void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite)
         TriggerDynamic(pos.x, pos.y, pos.z, 12, 24, 16, 4);
         // TODO: (for later: TriggerGunSmoke())
     }
+}
+
+ENTITY_JUMP CheckJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
+{
+    ENTITY_JUMP jump;
+    FLOOR_INFO* floor;
+    int height = 0, height1, height2, height3;
+    int x, y, z;
+    int cos, sin;
+    short roomNumber;
+
+    x = item->pos.x;
+    y = item->pos.y;
+    z = item->pos.z;
+    sin = 942 * SIN(item->pos.y_rot) >> W2V_SHIFT;
+    cos = 942 * COS(item->pos.y_rot) >> W2V_SHIFT;
+
+    x += sin;
+    z += cos;
+
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height1 = GetHeight(floor, x, y, z);
+
+    x += sin;
+    z += cos;
+
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height2 = GetHeight(floor, x, y, z);
+
+    x += sin;
+    z += cos;
+
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height3 = GetHeight(floor, x, y, z);
+
+    jump.can_jump_1click = true;
+    if (creature->enemy && item->box_number == creature->enemy->box_number
+    ||  y >= height1 - STEP_L
+    ||  y >= height2 + STEP_L
+    ||  y <= height2 - STEP_L)
+    {
+        height = height2;
+        jump.can_jump_1click = false;
+    }
+
+    jump.can_jump_2click = true;
+    if (creature->enemy && item->box_number == creature->enemy->box_number
+    ||  y >= height1 - STEPUP_HEIGHT
+    ||  y >= height - STEPUP_HEIGHT
+    ||  y >= height3 + STEP_L
+    ||  y <= height3 - STEP_L)
+    {
+        jump.can_jump_2click = false;
+    }
+
+    return jump;
 }
 
 void phd_SwapPushMatrix(int frac)

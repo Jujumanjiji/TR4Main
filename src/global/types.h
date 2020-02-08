@@ -9,6 +9,12 @@ struct BITE_INFO
     int mesh;
 };
 
+struct ENTITY_JUMP
+{
+    bool can_jump_1click;
+    bool can_jump_2click;
+};
+
 struct AIOBJECT
 {
     short object_number;

@@ -534,18 +534,19 @@ void Baddy1Control(short itemNumber)
     if (!CreatureActive(itemNumber))
         return;
 
-    ITEM_INFO* item, *target;
-    CREATURE_INFO* bad;
     FLOOR_INFO* floor;
+    ITEM_INFO* item;//, *target;
+    CREATURE_INFO* bad;
     OBJECT_INFO* obj;
     PHD_VECTOR pos;
     OBJ_ROTATION rot;
+    ENTITY_JUMP* pjump;
     AI_INFO info, lara_info;
-    int height, ceiling, at;
-    int height2, ceiling2;
+    int height, ceiling;
+    short roomNumber;
+    short at;
     short tilt, angle;
-    short ai;
-    bool canMonkey, canJump, roll, jump;
+    bool roll, jump;
 
     item = &items[itemNumber];
     if (item->data == NULL)
@@ -558,11 +559,10 @@ void Baddy1Control(short itemNumber)
     rot.head_y = 0;
     rot.torso_x = 0;
     rot.torso_y = 0;
-    canMonkey = false;
-    canJump = false;
     roll = false;
     jump = false;
 
+    pjump = &CheckJumpPossibility(item, bad);
     if (item->hit_points <= 0)
     {
         bad->LOT.is_jumping = FALSE;
@@ -609,6 +609,7 @@ void Baddy1Control(short itemNumber)
         {
             /// BASIC
             case SBAD1_IDLE:
+                bad->LOT.can_jump = TRUE;
                 bad->LOT.is_jumping = FALSE;
                 bad->LOT.is_monkeying = FALSE;
                 bad->maximum_turn = 0;
@@ -644,6 +645,11 @@ void Baddy1Control(short itemNumber)
                 {
                     item->state_next = SBAD1_DRAWSWORD;
                 }
+                else if (CHK_ANY(item->ai_bits, GUARD))
+                {
+                    rot.head_y = AIGuard(bad);
+                    item->state_next = SBAD1_IDLE;
+                }
                 else if (Targetable(item, &info) && item->reserved_3 > 0)
                 {
                     if (item->reserved_4 == WBAD1_UZI)
@@ -655,11 +661,46 @@ void Baddy1Control(short itemNumber)
                 {
                     if (CHK_ANY(item->ai_bits, MODIFY))
                     {
-
+                        item->state_next = SBAD1_IDLE;
+                        if (item->floor > item->pos.y + (STEP_L * 3))
+                            item->ai_bits &= ~(MODIFY);
                     }
-                    else if (canJump || canMonkey)
+                    else if (bad->monkey_ahead)
                     {
+                        // the baddy need to have no weapon to handle the monkey animation
+                        if (item->reserved_4 == WBAD1_SWORD || item->reserved_4 == WBAD1_UZI)
+                        {
+                            if (item->reserved_4 == WBAD1_SWORD)
+                                item->state_next = SBAD1_UNDRAWSWORD;
+                            else if (item->reserved_4 == WBAD1_UZI)
+                                item->state_next = SBAD1_UNDRAWGUN;
+                            item->reserved_4 = WBAD1_EMPTY;
+                        }
+                        // when the baddy is hand free
+                        else
+                        {
+                            roomNumber = item->room_number;
+                            floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+                            height = GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
+                            ceiling = GetCeiling(floor, item->pos.x, item->pos.y, item->pos.z);
+                            if (ceiling == height - 1536)
+                                item->state_next = SBAD1_MONKEYGRAB;
+                            else
+                                item->state_next = SBAD1_WALK;
+                        }
+                    }
+                    else if (pjump->can_jump_1click || pjump->can_jump_2click)
+                    {
+                        bad->maximum_turn = 0;
 
+                        item->current_anim = obj->anim_index + ABAD1_IDLE_TO_JUMP_FORWARD;
+                        item->current_frame = anims[item->current_anim].frame_base;
+                        item->state_current = SBAD1_JUMPFORWARD_1BLOCK;
+                        if (!pjump->can_jump_2click)
+                            item->state_next = SBAD1_JUMPFORWARD_1BLOCK;
+                        else
+                            item->state_next = SBAD1_JUMPFORWARD_2BLOCK;
+                        bad->LOT.is_jumping = TRUE;
                     }
                     // check if enemy is smallmedikit or uzi ammo
                     // if true and the distance if correct go pickup animation
@@ -668,37 +709,39 @@ void Baddy1Control(short itemNumber)
                     {
 
                     }
-                    else if (bad->monkey_ahead)
+                    else
                     {
+                        if (roll)
+                        {
 
-                    }
-                    else if (roll)
-                    {
-                        
-                    }
-                    else if (jump)
-                    {
+                        }
+                        else if (jump)
+                        {
 
-                    }
-                    else if (!bad->enemy || bad->enemy <= 0 || info.distance >= VBAD1_WALK_RANGE)
-                    {
-                        item->state_next = SBAD1_WALK;
-                    }
-                    else if (info.distance >= VBAD1_ATTACK_RANGE && item->reserved_4 == WBAD1_SWORD)
-                    {
-                        item->state_next = SBAD1_SWORDHITFRONT;
-                    }
-                    else if (GetRandomControl() & 1 && item->reserved_4 == WBAD1_SWORD)
-                    {
-                        item->state_next = SBAD1_SWORDHITLEFT;
-                    }
-                    else if (item->reserved_4 == WBAD1_SWORD)
-                    {
-                        item->state_next = SBAD1_SWORDHITRIGHT;
+                        }
+                        else if (!bad->enemy || bad->enemy <= 0 || info.distance >= VBAD1_WALK_RANGE)
+                        {
+                            item->state_next = SBAD1_WALK;
+                        }
+                        else if (info.distance >= VBAD1_ATTACK_RANGE && item->reserved_4 == WBAD1_SWORD)
+                        {
+                            item->state_next = SBAD1_SWORDHITFRONT;
+                        }
+                        else if ((GetRandomControl() & 1) && item->reserved_4 == WBAD1_SWORD)
+                        {
+                            item->state_next = SBAD1_SWORDHITLEFT;
+                        }
+                        else if (item->reserved_4 == WBAD1_SWORD)
+                        {
+                            item->state_next = SBAD1_SWORDHITRIGHT;
+                        }
                     }
                 }
                 break;
             case SBAD1_WALK:
+                bad->LOT.is_jumping = FALSE;
+                bad->LOT.is_monkeying = FALSE;
+                bad->LOT.can_jump = FALSE;
                 bad->maximum_turn = VBAD1_ANGLE_WALK;
                 bad->flags = 0;
 
@@ -732,15 +775,16 @@ void Baddy1Control(short itemNumber)
                 {
                     item->state_next = SBAD1_IDLE;
                 }
+                else if(pjump->can_jump_1click || pjump->can_jump_2click)
+                {
+                    bad->maximum_turn = 0;
+                    item->state_next = SBAD1_IDLE;
+                }
                 else
                 {
-                    if (canJump || canMonkey)
+                    if (bad->monkey_ahead || bad->reached_goal)
                     {
-
-                    }
-                    else if (bad->jump_ahead || bad->monkey_ahead)
-                    {
-
+                        item->state_next = SBAD1_IDLE;
                     }
                     else if (info.ahead && info.distance < VBAD1_ATTACK_RANGE)
                     {
@@ -757,13 +801,9 @@ void Baddy1Control(short itemNumber)
                     else
                     {
                         if (roll || jump)
-                        {
                             item->state_next = SBAD1_IDLE;
-                        }
                         else if (bad->mood == ATTACK_MOOD && !bad->jump_ahead && info.distance > VBAD1_RUN_RANGE)
-                        {
                             item->state_next = SBAD1_RUN;
-                        }
                     }
                 }
                 break;
@@ -771,7 +811,13 @@ void Baddy1Control(short itemNumber)
                 bad->maximum_turn = VBAD1_ANGLE_RUN;
                 tilt = (angle / 2);
 
-                if (Targetable(item, &info) && item->reserved_3 >= 1)
+                if ((Targetable(item, &info) && item->reserved_3 >= 1)
+                ||  (pjump->can_jump_1click
+                ||   pjump->can_jump_2click
+                ||   bad->monkey_ahead
+                ||   CHK_ANY(item->ai_bits, GUARD)
+                ||   info.distance < 0x5C0A4)
+                ||   bad->jump_ahead)
                 {
                     item->state_next = SBAD1_IDLE;
                 }
@@ -809,7 +855,7 @@ void Baddy1Control(short itemNumber)
                 // 1 - 3 - 5 - 7 - 9 - 11
                 if (GetBaddyFrameToShot(item))
                 {
-                    item->fired_weapon = TRUE;
+                    item->fired_weapon = 1;
                     if (CHK_NOP(item->ai_bits, MODIFY))
                         item->reserved_3--; // decrease ammo.
                     if (!ShotLara(item, &info, &baddy_gun, rot.torso_y, VBAD1_GUN_DAMAGE))
@@ -881,10 +927,9 @@ void Baddy1Control(short itemNumber)
 
                 break;
             case SBAD1_JUMPFORWARD_1BLOCK:
-
-                break;
             case SBAD1_JUMPFORWARD_2BLOCK:
-
+                if (item->reserved_1 < 0 && item->current_anim != (obj->anim_index + ABAD1_IDLE_TO_JUMP_FORWARD))
+                    item->reserved_1 += 2; // ??
                 break;
 
             /// CROUCH
@@ -953,7 +998,7 @@ void Baddy1Control(short itemNumber)
         item->state_next = SBAD1_BLIND;
     }
     // can climb ?
-    else if (!(item->state_current >= SBAD1_CLIMB4 && item->state_current <= SBAD1_JUMPOFF3))
+    else if (!(item->state_current >= SBAD1_CLIMB4 && item->state_current <= SBAD1_JUMPOFF3) && item->state_current != SBAD1_JUMPFORWARD_1BLOCK && item->state_current != SBAD1_JUMPFORWARD_2BLOCK)
     {
         switch (CreatureVault(itemNumber, angle, 2, VBAD1_SHIFT))
         {
