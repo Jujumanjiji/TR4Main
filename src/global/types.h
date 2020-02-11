@@ -9,12 +9,6 @@ struct BITE_INFO
     int mesh;
 };
 
-struct ENTITY_JUMP
-{
-    bool can_jump_1click;
-    bool can_jump_2click;
-};
-
 struct AIOBJECT
 {
     short object_number;
@@ -878,4 +872,17 @@ struct CREATURE_INFO
 };
 
 typedef short(*lpEffect)(int x, int y, int z, short speed, short y_rot, short roomNumber);
+
+struct ENTITY_JUMP
+{
+    bool can_jump_1click;
+    bool can_jump_2click;
+};
+
+struct OBJECT_FOUND
+{
+    short item_number;
+    ITEM_INFO* target;
+};
+
 #pragma pack(pop)

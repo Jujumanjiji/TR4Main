@@ -190,12 +190,8 @@ void SetupEntity::baddy_1()
         obj->save_position = true;
         obj->using_drawanimating_item = false;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 88] |= ROT_Y | ROT_X;
-
-        // TODO: swap not working correctly !
-        //meshes[obj->mesh_index + 4 * 2] = meshes[objects[MESHSWAP3].mesh_index + 4 * 2]; // enable swap ?
-        //meshes[obj->mesh_index + 7 * 2] = meshes[objects[MESHSWAP3].mesh_index + 7 * 2]; //
+        bones[obj->bone_index + 7 * 4]  |= ROT_Y | ROT_X; // TORSO
+        bones[obj->bone_index + 22 * 4] |= ROT_Y | ROT_X; // HEAD
 
         if (objects[BADDY_2].loaded)
             obj->anim_index = objects[BADDY_2].anim_index;

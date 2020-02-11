@@ -8,19 +8,19 @@
 
 #define DrawLara ((void(__cdecl*)(ITEM_INFO* item, int flags)) 0x0041D140)
 #define DrawLara_Mirror ((void(__cdecl*)(void)) 0x00455800)
-///#define SetGunFlash ((void(__cdecl*)(int weapon_type)) 0x00439B80)
-///#define SetupGunFlash ((void(__cdecl*)(short *pos)) 0x00439AE0)
-///#define DrawGunFlashes ((void(__cdecl*)(void)) 0x00439C00)
+#define SetGunFlash ((void(__cdecl*)(int weapon_type)) 0x00439B80)
+#define SetupGunFlash ((void(__cdecl*)(short *pos)) 0x00439AE0)
+#define DrawGunFlashes ((void(__cdecl*)(void)) 0x00439C00)
 
 #define InitialiseFogBulbs ((void(__cdecl*)(void)) 0x00481DF0)
 #define CreateFXBulbs ((void(__cdecl*)(void)) 0x004819B0)
 #define InitDynamicLighting ((void(__cdecl*)(void)) 0x004790F0)
 #define DrawTrainEffect ((void(__cdecl*)(void)) 0x00464030)
-///#define DrawGunShells ((void(__cdecl*)(void)) 0x004395B0)
+#define DrawGunShells ((void(__cdecl*)(void)) 0x004395B0)
 #define DrawRope ((void(__cdecl*)(void)) 0x00459410)
 #define DrawSparks ((void(__cdecl*)(void)) 0x0043A1B0)
 #define DrawWeather ((void(__cdecl*)(void)) 0x0048A840)
-///#define DrawFires ((void(__cdecl*)(void)) 0x00438560)
+#define DrawFires ((void(__cdecl*)(void)) 0x00438560)
 #define DrawSmoke ((void(__cdecl*)(void)) 0x00487260)
 #define DrawSplashes ((void(__cdecl*)(void)) 0x00486430)
 #define DrawBubbles ((void(__cdecl*)(void)) 0x004860D0)
@@ -31,8 +31,10 @@
 #define DrawLightning ((void(__cdecl*)(void)) 0x0040E630)
 #define DrawLaserSightSprite ((void(__cdecl*)(void)) 0x00489950)
 
+/*
 extern void SetGunFlash(int weapon_type);
 extern void SetupGunFlash(int* pos);
 extern void DrawGunFlashes(void);
 extern void DrawGunShells(void);
 extern void DrawFires(void);
+*/

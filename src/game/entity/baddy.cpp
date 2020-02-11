@@ -6,6 +6,7 @@
 #include "game/draw.h"
 #include "game/control.h"
 #include "game/effect2.h"
+#include "game/items.h"
 #include "game/people.h"
 #include "game/sphere.h"
 #include "specific/output.h"
@@ -147,7 +148,7 @@ enum BADDY1_VALUE
     VBAD1_TOUCHBITS = 0x1C000,
     VBAD1_DAMAGE = 120,
     VBAD1_GUN_DAMAGE = 15,
-    VBAD1_PICKUP_RANGE = SQUARE(STEP_L * 2),
+    VBAD1_PICKUP_RANGE = SQUARE(STEP_L * 3),
     VBAD1_ANGLE_WALK = ANGLE(7),
     VBAD1_ANGLE_RUN = ANGLE(11),
     VBAD1_RUN_RANGE = SQUARE(WALL_L),
@@ -227,6 +228,14 @@ void DrawBaddy1(ITEM_INFO* item)
         S_PrintShadow(obj->shadow_size, frame[0], item);
     obj_ms3 = &objects[MESHSWAP3];
     rot = (OBJ_ROTATION*)item->data;
+    if (rot == NULL)
+    {
+        rot = (OBJ_ROTATION*)malloc(sizeof(OBJ_ROTATION));
+        rot->head_x = 0;
+        rot->head_y = 0;
+        rot->torso_x = 0;
+        rot->torso_y = 0;
+    }
 
     phd_PushMatrix(); // world
     phd_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
@@ -535,9 +544,10 @@ void Baddy1Control(short itemNumber)
         return;
 
     FLOOR_INFO* floor;
-    ITEM_INFO* item;//, *target;
+    ITEM_INFO* item;
     CREATURE_INFO* bad;
     OBJECT_INFO* obj;
+    OBJECT_FOUND found;
     PHD_VECTOR pos;
     OBJ_ROTATION rot;
     ENTITY_JUMP* pjump;
@@ -559,20 +569,78 @@ void Baddy1Control(short itemNumber)
     rot.head_y = 0;
     rot.torso_x = 0;
     rot.torso_y = 0;
-    roll = false;
-    jump = false;
 
-    pjump = &CheckJumpPossibility(item, bad);
+    pjump = &CheckMegaJumpPossibility(item, bad);
     if (item->hit_points <= 0)
     {
+        rot.head_x = 0;
+        rot.head_y = 0;
+        rot.torso_x = 0;
+        rot.torso_y = 0;
         bad->LOT.is_jumping = FALSE;
+
+        roomNumber = item->room_number;
+        floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+        height = GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
+        item->floor = height;
+
+        switch (item->state_current)
+        {
+            case SBAD1_MONKEYGRAB:
+            case SBAD1_MONKEYFORWARD:
+            case SBAD1_MONKEYIDLE:
+                item->current_anim = obj->anim_index + ABAD1_MONKEY_TO_FREEFALL;
+                item->current_frame = anims[item->current_anim].frame_base;
+                item->state_current = SBAD1_MONKEY_TOFREEFALL;
+                item->speed = 0;
+                break;
+            case SBAD1_DEATH:
+                item->gravity_status = TRUE;
+                bad->LOT.is_jumping = TRUE;
+                if (item->pos.y >= item->floor)
+                {
+                    item->pos.y = item->floor;
+                    item->gravity_status = FALSE;
+                    item->fallspeed = 0;
+                }
+                break;
+            case SBAD1_MONKEY_TOFREEFALL:
+                item->state_next = SBAD1_FREEFALL;
+                item->gravity_status = FALSE;
+                break;
+            case SBAD1_FREEFALL:
+                item->gravity_status = TRUE;
+                if (item->pos.y >= height)
+                {
+                    item->pos.y = height;
+                    item->gravity_status = FALSE;
+                    item->fallspeed = 0;
+                    item->state_next = SBAD1_FREEFALL_DEATH;
+                }
+                break;
+            case SBAD1_FREEFALL_DEATH:
+                item->pos.y = height;
+                break;
+            default:
+                bad->LOT.is_jumping = TRUE; // permit the falling in pitfall instead of bugged move
+                item->current_anim = obj->anim_index + ABAD1_IDLE_DEATH;
+                item->current_frame = anims[item->current_anim].frame_base;
+                item->state_current = SBAD1_DEATH;
+                
+                BaddySpawner(item);
+                break;
+        }
     }
     else
     {
+        found = FoundItem(item, bad, SMALLMEDI_ITEM, UZI_AMMO_ITEM);
+
         if (item->ai_bits)
             GetAITarget(bad);
-        else if (!bad->enemy)
+        else if (!found.target)
             bad->enemy = lara_item;
+        else
+            bad->enemy = found.target;
 
         CreatureAIInfo(item, &info);
 
@@ -584,9 +652,18 @@ void Baddy1Control(short itemNumber)
         }
         else
         {
-            pos.x = lara_item->pos.x - item->pos.x;
-            pos.y = lara_item->pos.y - item->pos.y;
-            pos.z = lara_item->pos.z - item->pos.z;
+            if (found.target)
+            {
+                pos.x = found.target->pos.x - item->pos.x;
+                pos.y = found.target->pos.y - item->pos.y;
+                pos.z = found.target->pos.z - item->pos.z;
+            }
+            else
+            {
+                pos.x = lara_item->pos.x - item->pos.x;
+                pos.y = lara_item->pos.y - item->pos.y;
+                pos.z = lara_item->pos.z - item->pos.z;
+            }
             at = phd_atan(pos.z, pos.x) - item->pos.y_rot;
             lara_info.angle = at;
             lara_info.ahead = (at > -ANGLE(90) && at < ANGLE(90));
@@ -595,7 +672,7 @@ void Baddy1Control(short itemNumber)
 
         GetCreatureMood(item, &info, VIOLENT);
 
-        if (lara.skidoo != NO_ITEM && item->reserved_3 <= 0) // info.bite will not be ok !!
+        if (lara.skidoo != NO_ITEM) // info.bite will not be ok !!
             bad->mood = ESCAPE_MOOD;
 
         CreatureMood(item, &info, VIOLENT);
@@ -604,12 +681,23 @@ void Baddy1Control(short itemNumber)
         if (item->hit_status || (lara_info.distance < 0x100000 || (TargetVisible(item, &lara_info) && abs(lara_item->pos.y - item->pos.y) < WALL_L)))
             bad->alerted = TRUE;
 
+        // check for jump and roll
+        if (item != lara.target || lara_info.distance <= 942 || lara_info.angle <= -10240 || lara_info.angle >= 10240)
+        {
+            jump = false;
+            roll = false;
+        }
+        else
+        {
+            jump = CheckJumpPossibility(item);
+            roll = CheckRollPossibility(item);
+        }
+
         short frame = GetCurrentFrame(item); // get the current frame from the current anim.
         switch (item->state_current)
         {
             /// BASIC
             case SBAD1_IDLE:
-                bad->LOT.can_jump = TRUE;
                 bad->LOT.is_jumping = FALSE;
                 bad->LOT.is_monkeying = FALSE;
                 bad->maximum_turn = 0;
@@ -650,7 +738,7 @@ void Baddy1Control(short itemNumber)
                     rot.head_y = AIGuard(bad);
                     item->state_next = SBAD1_IDLE;
                 }
-                else if (Targetable(item, &info) && item->reserved_3 > 0)
+                else if (Targetable(item, &info) && item->reserved_3 >= 1)
                 {
                     if (item->reserved_4 == WBAD1_UZI)
                         item->state_next = SBAD1_AIM;
@@ -692,7 +780,6 @@ void Baddy1Control(short itemNumber)
                     else if (pjump->can_jump_1click || pjump->can_jump_2click)
                     {
                         bad->maximum_turn = 0;
-
                         item->current_anim = obj->anim_index + ABAD1_IDLE_TO_JUMP_FORWARD;
                         item->current_frame = anims[item->current_anim].frame_base;
                         item->state_current = SBAD1_JUMPFORWARD_1BLOCK;
@@ -705,19 +792,23 @@ void Baddy1Control(short itemNumber)
                     // check if enemy is smallmedikit or uzi ammo
                     // if true and the distance if correct go pickup animation
                     else if (bad->enemy &&
-                            (bad->enemy->object_number == SMALLMEDI_ITEM || bad->enemy->object_number == UZI_AMMO_ITEM))
+                            (bad->enemy->object_number == SMALLMEDI_ITEM || bad->enemy->object_number == UZI_AMMO_ITEM) && info.distance < VBAD1_PICKUP_RANGE)
                     {
-
+                        AlignItemToTarget(item, bad->enemy);
+                        item->state_next = SBAD1_IDLETOCROUCH;
+                        item->state_required = SBAD1_CROUCHPICKUP;
                     }
                     else
                     {
                         if (roll)
                         {
-
+                            bad->maximum_turn = 0;
+                            item->state_next = SBAD1_ROLLLEFT;
                         }
                         else if (jump)
                         {
-
+                            bad->maximum_turn = 0;
+                            item->state_next = SBAD1_JUMPRIGHT;
                         }
                         else if (!bad->enemy || bad->enemy <= 0 || info.distance >= VBAD1_WALK_RANGE)
                         {
@@ -741,7 +832,6 @@ void Baddy1Control(short itemNumber)
             case SBAD1_WALK:
                 bad->LOT.is_jumping = FALSE;
                 bad->LOT.is_monkeying = FALSE;
-                bad->LOT.can_jump = FALSE;
                 bad->maximum_turn = VBAD1_ANGLE_WALK;
                 bad->flags = 0;
 
@@ -921,10 +1011,10 @@ void Baddy1Control(short itemNumber)
             
             /// JUMP/ROLL
             case SBAD1_ROLLLEFT:
-
-                break;
             case SBAD1_JUMPRIGHT:
-
+                bad->alerted = FALSE;
+                bad->maximum_turn = 0;
+                item->status = FITEM_ACTIVE;
                 break;
             case SBAD1_JUMPFORWARD_1BLOCK:
             case SBAD1_JUMPFORWARD_2BLOCK:
@@ -934,10 +1024,49 @@ void Baddy1Control(short itemNumber)
 
             /// CROUCH
             case SBAD1_CROUCH:
-
+                if (item->reserved_1)
+                {
+                    if (info.distance < 0x718E4)
+                    {
+                        item->state_next = SBAD1_CROUCHTOIDLE;
+                        bad->enemy = nullptr;
+                    }
+                }
+                else if (bad->enemy &&
+                        (bad->enemy->object_number == SMALLMEDI_ITEM || bad->enemy->object_number == UZI_AMMO_ITEM) &&
+                        info.distance < VBAD1_PICKUP_RANGE)
+                {
+                    item->state_next = SBAD1_CROUCHPICKUP;
+                }
+                else if (bad->alerted)
+                {
+                    item->state_next = SBAD1_CROUCHTOIDLE;
+                }
                 break;
             case SBAD1_CROUCHPICKUP:
+                if (bad->enemy && frame == 9)
+                {
+                    if (bad->enemy->object_number != SMALLMEDI_ITEM && bad->enemy->object_number != UZI_AMMO_ITEM)
+                        break;
 
+                    if (bad->enemy->room_number == NO_ROOM || bad->enemy->status == FITEM_INVISIBLE || CHK_ANY(bad->enemy->flags, IFLAG_KILLED_ITEM))
+                    {
+                        bad->enemy = nullptr;
+                        break;
+                    }
+
+                    if (bad->enemy->object_number == SMALLMEDI_ITEM)
+                    {
+                        item->hit_points += objects[item->object_number].hit_points >> 1;
+                    }
+                    else if (bad->enemy->object_number == UZI_AMMO_ITEM)
+                    {
+                        item->reserved_3 += 24;
+                    }
+
+                    KillItem(found.item_number);
+                    bad->enemy = nullptr;
+                }
                 break;
 
             /// BLIND
@@ -998,7 +1127,9 @@ void Baddy1Control(short itemNumber)
         item->state_next = SBAD1_BLIND;
     }
     // can climb ?
-    else if (!(item->state_current >= SBAD1_CLIMB4 && item->state_current <= SBAD1_JUMPOFF3) && item->state_current != SBAD1_JUMPFORWARD_1BLOCK && item->state_current != SBAD1_JUMPFORWARD_2BLOCK)
+    else if (!(item->state_current >= SBAD1_CLIMB4 && item->state_current <= SBAD1_JUMPOFF3) &&
+               item->state_current != SBAD1_JUMPFORWARD_1BLOCK && item->state_current != SBAD1_JUMPFORWARD_2BLOCK &&
+               item->state_current != SBAD1_DEATH)
     {
         switch (CreatureVault(itemNumber, angle, 2, VBAD1_SHIFT))
         {

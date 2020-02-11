@@ -12,7 +12,17 @@ extern void SetGunFlash_Right(int weapon_type);
 extern ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget);
 extern short initHealth(short objNumber);
 extern void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite);
-extern ENTITY_JUMP CheckJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature);
+extern ENTITY_JUMP CheckMegaJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature);
+extern bool CheckRollPossibility(ITEM_INFO* item);
+extern bool CheckJumpPossibility(ITEM_INFO* item);
+extern OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short slotID, short slotID2);
+extern OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb);
+extern bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target);
+extern void ActivateEntity(short itemNumber);
+extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
+extern void BaddySpawner(ITEM_INFO* item);
+extern int CalculateLaraDistance(ITEM_INFO* item);
+extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
 
 /// new:
 extern void phd_SwapPushMatrix(int frac);

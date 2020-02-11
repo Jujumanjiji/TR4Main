@@ -7,6 +7,7 @@
 #include "game/draw.h"
 #include "game/effect2.h"
 #include "game/items.h"
+#include "game/lot.h"
 #include "game/oldobjects.h"
 #include "game/sphere.h"
 #include "specific/json/reader.h"
@@ -148,6 +149,7 @@ void SpawnPickup(ITEM_INFO *item)
 #define REVOLVER_GUNPOS_Y 215
 #define REVOLVER_GUNPOS_Z 65
 
+/*
 void SetGunFlash_Left(int weapon_type)
 {
     int pos[3];
@@ -215,6 +217,7 @@ void SetGunFlash_Right(int weapon_type)
 
     SetupGunFlash(pos);
 }
+*/
 
 ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget)
 {
@@ -348,7 +351,7 @@ void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite)
     }
 }
 
-ENTITY_JUMP CheckJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
+ENTITY_JUMP CheckMegaJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
 {
     ENTITY_JUMP jump;
     FLOOR_INFO* floor;
@@ -405,6 +408,214 @@ ENTITY_JUMP CheckJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
     }
 
     return jump;
+}
+
+bool CheckRollPossibility(ITEM_INFO* item)
+{
+    FLOOR_INFO* floor;
+    int height, height2;
+    int x, y, z;
+    int cos, sin;
+    int stage1, stage2;
+    short roomNumber;
+
+    // first height
+    sin = (942 * SIN(item->pos.y_rot - 8192));
+    cos = (942 * COS(item->pos.y_rot - 8192));
+    x = item->pos.x + (sin >> W2V_SHIFT);
+    y = item->pos.y;
+    z = item->pos.z + (cos >> W2V_SHIFT);
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height = GetHeight(floor, x, y, z);
+
+    // second height
+    sin = (942 * SIN(item->pos.y_rot - 14336));
+    cos = (942 * COS(item->pos.y_rot - 14336));
+    x = item->pos.x + (sin >> W2V_SHIFT);
+    y = item->pos.y;
+    z = item->pos.z + (cos >> W2V_SHIFT);
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height2 = GetHeight(floor, x, y, z) - y;
+
+    if (abs(height2) > STEP_L || ((height + (STEP_L * 2)) >= y))
+        return false;
+
+    return true;
+}
+
+bool CheckJumpPossibility(ITEM_INFO* item)
+{
+    FLOOR_INFO* floor;
+    int height, height2;
+    int x, y, z;
+    int cos, sin;
+    int stage1, stage2;
+    short roomNumber;
+
+    // first height
+    sin = (942 * SIN(item->pos.y_rot + 8192));
+    cos = (942 * COS(item->pos.y_rot + 8192));
+    x = item->pos.x + (sin >> W2V_SHIFT);
+    y = item->pos.y;
+    z = item->pos.z + (cos >> W2V_SHIFT);
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height = GetHeight(floor, x, y, z);
+
+    // second height
+    sin = (942 * SIN(item->pos.y_rot + 14336));
+    cos = (942 * COS(item->pos.y_rot + 14336));
+    x = item->pos.x + (sin >> W2V_SHIFT);
+    y = item->pos.y;
+    z = item->pos.z + (cos >> W2V_SHIFT);
+    roomNumber = item->room_number;
+    floor = GetFloor(x, y, z, &roomNumber);
+    height2 = GetHeight(floor, x, y, z) - y;
+
+    if (abs(height2) <= STEP_L || ((height + (STEP_L * 2)) < y))
+        return false;
+
+    return true;
+}
+
+OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID, short secondID)
+{
+    ITEM_INFO* target;
+    OBJECT_FOUND obj;
+    int i;
+    int item_distance, lara_distance;
+
+    target = &items[0];
+    for (i = 0; i < level_items; i++, target++)
+    {
+        if (target == nullptr)
+            break;
+
+        item_distance = CalculateItemDistanceToTarget(src, target);
+        lara_distance = CalculateLaraDistance(src);
+
+        // check if the targeted item is less distant than lara...
+        // now the entity will attack lara than pickup all item in the level. (maybe he will pickup the item if the distance is too long)
+        if (item_distance < lara_distance)
+        {
+            if ((target->object_number == primaryID || target->object_number == secondID) && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+            {
+                obj.item_number = i;
+                obj.target = target;
+                return obj;
+            }
+        }
+    }
+
+    obj.item_number = NO_ITEM;
+    obj.target = lara_item;
+    return obj;
+}
+
+OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
+{
+    ITEM_INFO* target;
+    OBJECT_FOUND entity;
+
+    target = &items[0];
+    for (int i = 0; i < level_items; i++, target++)
+    {
+        // check if the entity are in a correct room and not dead already.
+        // check if the ocb is not the same as the current src to not get the wrong ocb.
+        if (item->ocb_bits != target->ocb_bits && target->object_number == slotID && target->ocb_bits == ocb && target->room_number != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+        {
+            Log(LT_Info, "Found Entity with OCB: %d", target->ocb_bits);
+            entity.item_number = i;
+            entity.target = target;
+            return entity;
+        }
+    }
+
+    entity.item_number = NO_ITEM;
+    entity.target = nullptr;
+    return entity;
+}
+
+bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target)
+{
+    if (src->pos.x != target->pos.x)
+        src->pos.x = target->pos.x;
+    if (src->pos.y != target->pos.y)
+        src->pos.y = target->pos.y;
+    if (src->pos.z != target->pos.z)
+        src->pos.z = target->pos.z;
+    
+    if (src->pos.x == target->pos.x
+    &&  src->pos.y == target->pos.y
+    &&  src->pos.z == target->pos.z)
+        return true;
+    else
+        return false;
+}
+
+void ActivateEntity(short itemNumber)
+{
+    ITEM_INFO* item = &items[itemNumber];
+
+    if (item->status == FITEM_INVISIBLE)
+    {
+        ///item->touch_bits = 0;
+        if (EnableBaddieAI(itemNumber, FALSE))
+            item->status = FITEM_ACTIVE;
+        AddActiveItem(itemNumber);
+    }
+}
+
+bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb)
+{
+    OBJECT_FOUND baddy_spawn = FoundEntityWithOCB(item, slotid, ocb);
+    if (baddy_spawn.item_number != NO_ITEM && baddy_spawn.target != nullptr)
+    {
+        if (baddy_spawn.target->status == FITEM_INVISIBLE)
+        {
+            ActivateEntity(baddy_spawn.item_number);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void BaddySpawner(ITEM_INFO* item)
+{
+    short real_ocb = item->ocb_bits;
+
+    // delete the other ocb
+    if (item->ocb_bits & (1 | 2 | 3 | 4))
+        real_ocb &= ~(1 | 2 | 3 | 4);
+
+    for (int i = 1000; i < MAX_SPAWNER_ENTITY; i += 1000) // you can have 50 entity max with it !
+    {
+        if (real_ocb == i && FoundEntityAndActivate(item, BADDY_1, i + 1000))
+            break; // not activate the other ocb !
+    }
+}
+
+int CalculateLaraDistance(ITEM_INFO* item)
+{
+    int x, y, z, distance;
+    x = item->pos.x - lara_item->pos.x;
+    y = item->pos.y - lara_item->pos.y;
+    z = item->pos.z - lara_item->pos.z;
+    distance = SQUARE(x) + SQUARE(y) + SQUARE(z);
+    return distance;
+}
+
+int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
+{
+    int x, y, z, distance;
+    x = src->pos.x - target->pos.x;
+    y = src->pos.y - target->pos.y;
+    z = src->pos.z - target->pos.z;
+    distance = SQUARE(x) + SQUARE(y) + SQUARE(z);
+    return distance;
 }
 
 void phd_SwapPushMatrix(int frac)

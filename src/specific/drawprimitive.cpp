@@ -6,6 +6,7 @@
 #include "specific/specific.h"
 #include "utils/utils.h"
 
+/*
 // original function (now using SetGunFlash_Left/Right() in utils !)
 void SetGunFlash(int weapon_type)
 {
@@ -156,6 +157,7 @@ void DrawFires(void)
     phd_right = phd_winwidth;
     phd_bottom = phd_winheight;
 }
+*/
 
 void injector::inject_drawprimitive()
 {
