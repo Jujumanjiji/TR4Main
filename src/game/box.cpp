@@ -17,6 +17,7 @@
 #define MAX_X_ROT ANGLE(20)
 #define GUNFIRE_ALERT_RADIUS 8000
 
+/*
 // Default setup of creature structure
 void InitialiseCreature(short itemNumber)
 {
@@ -1104,7 +1105,7 @@ int CreatureAnimation(short itemNumber, short angle, short tilt)
 
     return TRUE;
 }
-*/
+
 // Calculate turning circle required to reach target and if this is less than twice
 // the maximum turn rate then turn quickly
 short CreatureTurn(ITEM_INFO* item, short maximum_turn)
@@ -1608,9 +1609,11 @@ BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item)
     // return true if the src and target are in the same zone !
     return (zone[item->box_number] == zone[target_item->box_number]);
 }
+*/
 
 void injector::inject_box()
 {
+    /*
     this->inject(0x0043FB30, InitialiseCreature);
     this->inject(0x0043FB70, CreatureActive);
     this->inject(0x0043FBE0, CreatureAIInfo);
@@ -1641,5 +1644,5 @@ void injector::inject_box()
     this->inject(0x00442670, AIGuard);
     this->inject(0x00442720, GetAITarget);
     this->inject(0x00442A60, FindAITargetObject);
-    this->inject(0x00442C40, SameZone);
+    this->inject(0x00442C40, SameZone);*/
 }

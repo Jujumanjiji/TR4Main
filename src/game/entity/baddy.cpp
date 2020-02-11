@@ -88,7 +88,7 @@ enum BADDY1_ANIMATION
     ABAD1_DEAD,
 };
 
-enum BADDY_STATE
+enum BADDY1_STATE
 {
     SBAD1_IDLE,
     SBAD1_WALK,
@@ -137,7 +137,7 @@ enum BADDY_STATE
     SBAD1_BLIND,
 };
 
-enum BADDY1_VALUE
+enum BADDY_VALUE
 {
     VBAD1_CLIMB2 = 2,
     VBAD1_CLIMB3 = 3,
@@ -167,16 +167,14 @@ enum BADDY1_OCB
     OCB_TRIGGER_BADDY = 0x3E8, // use OCB_TRIGGER()
 };
 
-// TODO: need to update DrawAnimatingItem() or Create DrawBaddy()
-// or using item->item_flags[] or directly use mesh_bits[] and meshes to switch it ?
-enum BADDY1_WEAPON
+enum BADDY_WEAPON
 {
-    WBAD1_EMPTY = 0,
-    WBAD1_UZI = 1,
-    WBAD1_SWORD = 2,
+    WBAD1_EMPTY,
+    WBAD1_UZI,
+    WBAD1_SWORD
 };
 
-enum BADDY1_MESH
+enum BADDY_MESH
 {
     BAD_MESH_BUTT,           // push
     BAD_MESH_LLEG1,          // push
@@ -206,8 +204,6 @@ enum BADDY1_MESH
     BAD_MESH_HEAD3,
     BAD_MESH_HEAD4,
 };
-
-#define OCB_TRIGGER(i) (i * OCB_TRIGGER_BADDY)
 
 static BITE_INFO baddy_gun = { 0, 185, 55, 11 };
 static BITE_INFO baddy_sword = { 0, 0, 0, 15 };
@@ -467,6 +463,16 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_PopMatrix(); // !world
 }
 
+// true if state_current is monkeying..
+static bool IsBaddyMonkey(ITEM_INFO* item)
+{
+    return (item->state_current == SBAD1_MONKEYGRAB
+    ||      item->state_current == SBAD1_MONKEYIDLE
+    ||      item->state_current == SBAD1_MONKEYFORWARD
+    ||      item->state_current == SBAD1_MONKEYPUSHOFF
+    ||      item->state_current == SBAD1_MONKEYFALLLAND);
+}
+
 static bool GetBaddyFrameToShot(ITEM_INFO* item)
 {
     short   frame = GetCurrentFrame(item);
@@ -553,10 +559,12 @@ void Baddy1Control(short itemNumber)
     ENTITY_JUMP* pjump;
     AI_INFO info, lara_info;
     int height, ceiling;
+    short* bounds;
     short roomNumber;
     short at;
     short tilt, angle;
     bool roll, jump;
+    short ls;
 
     item = &items[itemNumber];
     if (item->data == NULL)
@@ -627,7 +635,7 @@ void Baddy1Control(short itemNumber)
                 item->current_frame = anims[item->current_anim].frame_base;
                 item->state_current = SBAD1_DEATH;
                 
-                BaddySpawner(item);
+                Spawner(item);
                 break;
         }
     }
@@ -652,18 +660,9 @@ void Baddy1Control(short itemNumber)
         }
         else
         {
-            if (found.target != lara_item)
-            {
-                pos.x = found.target->pos.x - item->pos.x;
-                pos.y = found.target->pos.y - item->pos.y;
-                pos.z = found.target->pos.z - item->pos.z;
-            }
-            else
-            {
-                pos.x = lara_item->pos.x - item->pos.x;
-                pos.y = lara_item->pos.y - item->pos.y;
-                pos.z = lara_item->pos.z - item->pos.z;
-            }
+            pos.x = found.target->pos.x - item->pos.x;
+            pos.y = found.target->pos.y - item->pos.y;
+            pos.z = found.target->pos.z - item->pos.z;
             at = phd_atan(pos.z, pos.x) - item->pos.y_rot;
             lara_info.angle = at;
             lara_info.ahead = (at > -ANGLE(90) && at < ANGLE(90));
@@ -709,31 +708,38 @@ void Baddy1Control(short itemNumber)
                     rot.torso_x = info.x_angle;
                 }
 
-                // first: check if uzi ammo is not empty and it's not the uzi
-                // then: switch to uzi
-                if (item->reserved_4 == WBAD1_SWORD && item->reserved_3 >= 1)
+                if (item->state_required)
                 {
-                    item->state_next = SBAD1_UNDRAWSWORD;
+                    item->state_next = item->state_required;
+                    break;
                 }
-                // second: check if the item is weapon empty and this entity have ammo
-                // then: draw the uzi
-                else if (item->reserved_4 == WBAD1_EMPTY && item->reserved_3 >= 1)
+
+                // monkey state need to be unarmed !
+                // dont switch to another weapon
+                if (!bad->monkey_ahead || !IsBaddyMonkey(item))
                 {
-                    item->state_next = SBAD1_DRAWGUN;
+                    switch (item->reserved_4)
+                    {
+                        case WBAD1_EMPTY:
+                            if (item->reserved_3 >= 1)
+                                item->state_next = SBAD1_DRAWGUN;
+                            else
+                                item->state_next = SBAD1_DRAWSWORD;
+                            break;
+
+                        case WBAD1_SWORD:
+                            if (item->reserved_3 >= 1)
+                                item->state_next = SBAD1_UNDRAWSWORD;
+                            break;
+
+                        case WBAD1_UZI:
+                            if (item->reserved_3 <= 0)
+                                item->state_next = SBAD1_UNDRAWGUN;
+                            break;
+                    }
                 }
-                // third: check if the item weapon is uzi and this entity not have ammo
-                // then: undraw gun to draw sword
-                else if (item->reserved_4 == WBAD1_UZI && item->reserved_3 <= 0)
-                {
-                    item->state_next = SBAD1_UNDRAWGUN;
-                }
-                // fourth: check if the item weapon is empty and this entity not have ammo
-                // then: draw sword
-                else if (item->reserved_4 == WBAD1_EMPTY && item->reserved_3 <= 0)
-                {
-                    item->state_next = SBAD1_DRAWSWORD;
-                }
-                else if (CHK_ANY(item->ai_bits, GUARD))
+                
+                if (CHK_ANY(item->ai_bits, GUARD))
                 {
                     rot.head_y = AIGuard(bad);
                     item->state_next = SBAD1_IDLE;
@@ -764,18 +770,15 @@ void Baddy1Control(short itemNumber)
                                 item->state_next = SBAD1_UNDRAWGUN;
                             item->reserved_4 = WBAD1_EMPTY;
                         }
+
                         // when the baddy is hand free
-                        else
-                        {
-                            roomNumber = item->room_number;
-                            floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
-                            height = GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
-                            ceiling = GetCeiling(floor, item->pos.x, item->pos.y, item->pos.z);
-                            if (ceiling == height - 1536)
-                                item->state_next = SBAD1_MONKEYGRAB;
-                            else
-                                item->state_next = SBAD1_WALK;
-                        }
+                        roomNumber = item->room_number;
+                        floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+                        height = GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
+                        ceiling = GetCeiling(floor, item->pos.x, item->pos.y, item->pos.z);
+                        bounds = GetBoundsAccurate(item);
+
+                        // TODO: finish monkey
                     }
                     else if (pjump->can_jump_1click || pjump->can_jump_2click)
                     {
@@ -840,28 +843,45 @@ void Baddy1Control(short itemNumber)
                 else if (info.ahead)
                     rot.head_y = info.angle;
 
-                if (item->reserved_4 == WBAD1_SWORD && item->reserved_3 >= 1)
+                // monkey state need to be unarmed !
+                // dont switch to another weapon
+                if (!bad->monkey_ahead || !IsBaddyMonkey(item))
                 {
-                    item->state_next = SBAD1_IDLE;
-                    item->state_required = SBAD1_UNDRAWSWORD;
+                    switch (item->reserved_4)
+                    {
+                        case WBAD1_EMPTY:
+                            if (item->reserved_3 >= 1)
+                            {
+                                item->state_required = SBAD1_DRAWGUN;
+                                item->state_next = SBAD1_IDLE;
+                            }
+                            else
+                            {
+                                item->state_required = SBAD1_DRAWSWORD;
+                                item->state_next = SBAD1_IDLE;
+                            }
+                            break;
+
+                        case WBAD1_SWORD:
+                            if (item->reserved_3 >= 1)
+                            {
+                                item->state_required = SBAD1_UNDRAWSWORD;
+                                item->state_next = SBAD1_IDLE;
+                            }
+                            break;
+
+                        case WBAD1_UZI:
+                            if (item->reserved_3 <= 0)
+                            {
+                                item->state_required = SBAD1_UNDRAWGUN;
+                                item->state_next = SBAD1_IDLE;
+                            }
+                            break;
+                    }
                 }
-                else if (item->reserved_4 == WBAD1_EMPTY && item->reserved_3 >= 1)
-                {
-                    item->state_next = SBAD1_IDLE;
-                    item->state_required = SBAD1_DRAWGUN;
-                }
-                else if (item->reserved_4 == WBAD1_UZI && item->reserved_3 <= 0)
-                {
-                    item->state_next = SBAD1_IDLE;
-                    item->state_required = SBAD1_UNDRAWGUN;
-                }
-                else if (item->reserved_4 == WBAD1_EMPTY && item->reserved_3 <= 0)
-                {
-                    item->state_next = SBAD1_IDLE;
-                    item->state_required = SBAD1_DRAWSWORD;
-                }
+
                 // uzi have ammo ? then if lara can be targeted go to aim state
-                else if (Targetable(item, &info) && item->reserved_3 > 0)
+                if (Targetable(item, &info) && item->reserved_3 > 0)
                 {
                     item->state_next = SBAD1_IDLE;
                 }
@@ -998,13 +1018,81 @@ void Baddy1Control(short itemNumber)
 
             /// MONKEY
             case SBAD1_MONKEYIDLE:
+                rot.torso_y = 0;
+                rot.torso_x = 0;
+                rot.head_y = 0;
+                rot.head_x = 0;
+                bad->LOT.is_monkeying = TRUE;
+                bad->LOT.is_jumping = TRUE;
+                bad->maximum_turn = 0;
+                bad->flags = 0;
+
+                ls = lara_item->state_current;
+                if (lara_info.ahead && lara_info.distance < VBAD1_WALK_RANGE && ((ls > 74 && ls < 80) || ls == 82 || ls == 83))
+                {
+                    item->state_next = SBAD1_MONKEYPUSHOFF;
+                }
+                else if (item->box_number != bad->LOT.target_box)
+                {
+                    item->state_next = SBAD1_MONKEYFORWARD;
+                }
+                else
+                {
+                    item->state_next = SBAD1_MONKEYFALLLAND;
+                    bad->LOT.is_jumping = FALSE;
+                    bad->LOT.is_monkeying = FALSE;
+                }
 
                 break;
             case SBAD1_MONKEYFORWARD:
+                rot.torso_y = 0;
+                rot.torso_x = 0;
+                rot.head_y = 0;
+                rot.head_x = 0;
+                bad->maximum_turn = VBAD1_ANGLE_WALK;
+                bad->flags = 0;
 
+                roomNumber = item->room_number;
+                floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+                height = GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
+                ceiling = GetCeiling(floor, item->pos.x, item->pos.y, item->pos.z);
+                ls = lara_item->state_current;
+
+                if (item->box_number == bad->LOT.target_box || !bad->monkey_ahead)
+                {
+                    if (ceiling <= height - 1536)
+                        item->state_next = SBAD1_MONKEYIDLE;
+                }
+
+                if (lara_info.ahead && lara_info.distance < VBAD1_WALK_RANGE)
+                {
+                    if ((ls > 74 && ls < 80) || ls == 82 || ls == 83)
+                        item->state_next = SBAD1_MONKEYIDLE;
+                }
                 break;
             case SBAD1_MONKEYPUSHOFF:
+                rot.torso_y = 0;
+                rot.torso_x = 0;
+                rot.head_y = 0;
+                rot.head_x = 0;
+                bad->LOT.is_monkeying = TRUE;
+                bad->LOT.is_jumping = TRUE;
+                bad->maximum_turn = VBAD1_ANGLE_WALK;
+                bad->flags = 0;
 
+                if (!bad->flags && item->touch_bits)
+                {
+                    lara_item->state_current = 28;
+                    lara_item->state_next = 28;
+                    lara_item->current_anim = 28;
+                    lara_item->current_frame = anims[lara_item->current_anim].frame_base;
+                    lara_item->gravity_status = TRUE;
+                    lara_item->speed = 2;
+                    lara_item->fallspeed = 1;
+                    lara_item->pos.y += 192;
+                    lara.gun_status = 0;
+                    bad->flags = 1;
+                }
                 break;
             
             /// JUMP/ROLL
@@ -1125,7 +1213,7 @@ void Baddy1Control(short itemNumber)
         item->state_next = SBAD1_BLIND;
     }
     // can climb ?
-    else if (!(item->state_current >= SBAD1_DEATH && item->state_current <= SBAD1_JUMPOFF3))
+    else if (!(item->state_current >= SBAD1_DEATH && item->state_current <= SBAD1_JUMPOFF3) && !(item->state_current >= SBAD1_MONKEYGRAB && item->state_current <= SBAD1_MONKEYFALLLAND))
     {
         switch (CreatureVault(itemNumber, angle, 2, VBAD1_SHIFT))
         {

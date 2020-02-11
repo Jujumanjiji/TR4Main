@@ -20,7 +20,7 @@ extern OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
 extern bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target);
 extern void ActivateEntity(short itemNumber);
 extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
-extern void BaddySpawner(ITEM_INFO* item);
+extern void Spawner(ITEM_INFO* item);
 extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
 

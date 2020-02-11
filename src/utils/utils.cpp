@@ -580,7 +580,7 @@ bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb)
     return false;
 }
 
-void BaddySpawner(ITEM_INFO* item)
+void Spawner(ITEM_INFO* item)
 {
     short real_ocb = item->ocb_bits;
 
