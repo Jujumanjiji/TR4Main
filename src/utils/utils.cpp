@@ -485,7 +485,6 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
     ITEM_INFO* target;
     OBJECT_FOUND obj;
     int i;
-    int item_distance, lara_distance;
 
     target = &items[0];
     for (i = 0; i < level_items; i++, target++)
@@ -493,12 +492,9 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
         if (target == nullptr)
             break;
 
-        item_distance = CalculateItemDistanceToTarget(src, target);
-        lara_distance = CalculateLaraDistance(src);
-
         // check if the targeted item is less distant than lara...
         // now the entity will attack lara than pickup all item in the level. (maybe he will pickup the item if the distance is too long)
-        if (item_distance < lara_distance)
+        if (!creature->hurt_by_lara && !src->ocb_bits) // check if the entity as no ocb (stop crash (but the baddy will not pickup a item at 100%))
         {
             if ((target->object_number == primaryID || target->object_number == secondID) && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
             {
@@ -509,6 +505,7 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
         }
     }
 
+    // default target
     obj.item_number = NO_ITEM;
     obj.target = lara_item;
     return obj;
@@ -634,22 +631,20 @@ void phd_SwapPopMatrix(int frac)
         phd_PopMatrix();
 }
 
-void phd_SwapTranslateRel(int frac, int bone1, int bone2, int bone3, short* frame1, short* frame2, bool start)
+void phd_SwapTranslateRel(int frac, short* frame1, short* frame2)
 {
     if (frac)
-    {
-        if (start)
-            phd_TranslateRel_ID((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8), (int)*(frame2 + 6), (int)*(frame2 + 7), (int)*(frame2 + 8));
-        else
-            phd_TranslateRel_I(bone1, bone2, bone3);
-    }
+        phd_TranslateRel_ID((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8), (int)*(frame2 + 6), (int)*(frame2 + 7), (int)*(frame2 + 8));
     else
-    {
-        if (start)
-            phd_TranslateRel((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8));
-        else
-            phd_TranslateRel(bone1, bone2, bone3);
-    }
+        phd_TranslateRel((int)*(frame1 + 6), (int)*(frame1 + 7), (int)*(frame1 + 8));
+}
+
+void phd_SwapTranslateRel(int frac, BONE bone)
+{
+    if (frac)
+        phd_TranslateRel_I(bone.bone1, bone.bone2, bone.bone3);
+    else
+        phd_TranslateRel(bone.bone1, bone.bone2, bone.bone3);
 }
 
 void phd_SwapGarYXZsuperpack(int frac, short** rotation1, short** rotation2)

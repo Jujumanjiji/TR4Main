@@ -252,24 +252,24 @@ void DrawBaddy1(ITEM_INFO* item)
     // BONE 0 (ROOT)
     if (frac)
         InitInterpolate(frac, rate);
-    phd_SwapTranslateRel(frac, NULL, NULL, NULL, frame[0], frame[1], true); // ID use frame
+    phd_SwapTranslateRel(frac, frame[0], frame[1]);
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_BUTT)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
     // LEFT LEG
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 0), BONE(2, 0), BONE(3, 0), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 0));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_LLEG1)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 1), BONE(2, 1), BONE(3, 1), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 1));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_LLEG2)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 2), BONE(2, 2), BONE(3, 2), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 2));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_LFOOT)];
     phd_SwapPutPolygons(frac, clip, mesh);
@@ -277,7 +277,7 @@ void DrawBaddy1(ITEM_INFO* item)
 
     // RIGHT LEG
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 3), BONE(2, 3), BONE(3, 3), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 3));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_UZI)
         mesh = &meshes[MESH(obj_ms3, BAD_MESH_RLEG1)];
@@ -285,12 +285,12 @@ void DrawBaddy1(ITEM_INFO* item)
         mesh = &meshes[MESH(obj, BAD_MESH_RLEG1)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 4), BONE(2, 4), BONE(3, 4), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 4));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_RLEG2)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 5), BONE(2, 5), BONE(3, 5), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 5));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_RFOOT)];
     phd_SwapPutPolygons(frac, clip, mesh);
@@ -298,7 +298,7 @@ void DrawBaddy1(ITEM_INFO* item)
 
     // SWORD HOLSTERS
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 6), BONE(2, 6), BONE(3, 6), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 6));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj_ms3, BAD_MESH_HOLSTERS_SWORD)]; // if sword is drawed then empty holsters.
@@ -308,7 +308,7 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_SwapPopMatrix(frac); // TO HIPS
 
     // TORSO
-    phd_SwapTranslateRel(frac, BONE(1, 7), BONE(2, 7), BONE(3, 7), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 7));
     phd_SwapRotY(frac, rot->torso_y);
     phd_SwapRotX(frac, rot->torso_x);
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
@@ -317,17 +317,17 @@ void DrawBaddy1(ITEM_INFO* item)
 
     // LEFT ARM
     phd_SwapPushMatrix(frac); // START
-    phd_SwapTranslateRel(frac, BONE(1, 8), BONE(2, 8), BONE(3, 8), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 8));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_LARM1)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 9), BONE(2, 9), BONE(3, 9), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 9));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_LARM2)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 10), BONE(2, 10), BONE(3, 10), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 10));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_UZI)
         mesh = &meshes[MESH(obj, BAD_MESH_LHAND)];
@@ -338,7 +338,7 @@ void DrawBaddy1(ITEM_INFO* item)
     if (item->fired_weapon)
     {
         phd_SwapPushMatrix(frac);
-        phd_SwapTranslateRel(frac, baddy_gun.x, baddy_gun.y, baddy_gun.z, NULL, NULL, false);
+        phd_SwapTranslateRel(frac, BONE(baddy_gun.x, baddy_gun.y, baddy_gun.z));
         phd_SwapRotX(frac, -ANGLE(90));
         phd_SwapRotZ(frac, (GetRandomDraw() << 14) + (GetRandomDraw() >> 2) - 4096);
         phd_SwapPutPolygons(frac, clip, &meshes[objects[GUN_FLASH].mesh_index]);
@@ -349,17 +349,17 @@ void DrawBaddy1(ITEM_INFO* item)
 
     // RIGHT ARM
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 11), BONE(2, 11), BONE(3, 11), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 11));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_RARM1)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 12), BONE(2, 12), BONE(3, 12), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 12));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_RARM2)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 13), BONE(2, 13), BONE(3, 13), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 13));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RHAND)];
@@ -369,7 +369,7 @@ void DrawBaddy1(ITEM_INFO* item)
 
     // RIGHT ARM ADDON
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 14), BONE(2, 14), BONE(3, 14), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 14));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_1)];
@@ -377,7 +377,7 @@ void DrawBaddy1(ITEM_INFO* item)
         mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_1)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 15), BONE(2, 15), BONE(3, 15), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 15));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_2)];
@@ -387,7 +387,7 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_SwapPopMatrix(frac);
 
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 16), BONE(2, 16), BONE(3, 16), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 16));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_3)];
@@ -395,7 +395,7 @@ void DrawBaddy1(ITEM_INFO* item)
         mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_3)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 17), BONE(2, 17), BONE(3, 17), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 17));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_4)];
@@ -405,7 +405,7 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_SwapPopMatrix(frac);
 
     phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(1, 18), BONE(2, 18), BONE(3, 18), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 18));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_5)];
@@ -413,7 +413,7 @@ void DrawBaddy1(ITEM_INFO* item)
         mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_5)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 19), BONE(2, 19), BONE(3, 19), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 19));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_6)];
@@ -422,7 +422,7 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_SwapPutPolygons(frac, clip, mesh);
     phd_SwapPopMatrix(frac); // TO TORSO
 
-    phd_SwapTranslateRel(frac, BONE(1, 20), BONE(2, 20), BONE(3, 20), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 20));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_7)];
@@ -430,7 +430,7 @@ void DrawBaddy1(ITEM_INFO* item)
         mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_7)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 21), BONE(2, 21), BONE(3, 21), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 21));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     if (item->reserved_4 == WBAD1_SWORD)
         mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_8)];
@@ -440,7 +440,7 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_SwapPopMatrix(frac); // TO TORSO
 
     // HEAD
-    phd_SwapTranslateRel(frac, BONE(1, 22), BONE(2, 22), BONE(3, 22), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 22));
     phd_SwapRotY(frac, rot->head_y);
     phd_SwapRotX(frac, rot->head_x);
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
@@ -448,17 +448,17 @@ void DrawBaddy1(ITEM_INFO* item)
     phd_SwapPutPolygons(frac, clip, mesh);
 
     // HEAD ADDON
-    phd_SwapTranslateRel(frac, BONE(1, 23), BONE(2, 23), BONE(3, 23), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 23));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_HEAD2)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 24), BONE(2, 24), BONE(3, 24), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 24));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_HEAD3)];
     phd_SwapPutPolygons(frac, clip, mesh);
 
-    phd_SwapTranslateRel(frac, BONE(1, 25), BONE(2, 25), BONE(3, 25), NULL, NULL, false);
+    phd_SwapTranslateRel(frac, BONE(bone, 25));
     phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
     mesh = &meshes[MESH(obj, BAD_MESH_HEAD4)];
     phd_SwapPutPolygons(frac, clip, mesh);
@@ -642,7 +642,7 @@ void Baddy1Control(short itemNumber)
         else
             bad->enemy = found.target;
 
-        CreatureAIInfo(item, &info);
+        CreatureAIInfo(item, &info); // define the default target to lara.
 
         if (bad->enemy == lara_item)
         {
@@ -652,7 +652,7 @@ void Baddy1Control(short itemNumber)
         }
         else
         {
-            if (found.target)
+            if (found.target != lara_item)
             {
                 pos.x = found.target->pos.x - item->pos.x;
                 pos.y = found.target->pos.y - item->pos.y;
@@ -901,20 +901,18 @@ void Baddy1Control(short itemNumber)
                 bad->maximum_turn = VBAD1_ANGLE_RUN;
                 tilt = (angle / 2);
 
-                if ((Targetable(item, &info) && item->reserved_3 >= 1)
-                ||  (pjump->can_jump_1click
-                ||   pjump->can_jump_2click
-                ||   bad->monkey_ahead
-                ||   CHK_ANY(item->ai_bits, GUARD)
-                ||   info.distance < 0x5C0A4)
-                ||   bad->jump_ahead)
-                {
+                if (Targetable(item, &info) && item->reserved_3 >= 1)
                     item->state_next = SBAD1_IDLE;
-                }
+                else if (CHK_ANY(item->ai_bits, GUARD))
+                    item->state_next = SBAD1_IDLE;
+                else if (pjump->can_jump_1click || pjump->can_jump_2click)
+                    item->state_next = SBAD1_IDLE;
+                else if (bad->monkey_ahead || bad->jump_ahead)
+                    item->state_next = SBAD1_IDLE;
+                else if (info.distance < 0x5C0A4) // attack ?
+                    item->state_next = SBAD1_IDLE;
                 else if (info.distance < VBAD1_RUN_RANGE)
-                {
                     item->state_next = SBAD1_WALK;
-                }
                 break;
 
             /// ATTACK
@@ -1127,9 +1125,7 @@ void Baddy1Control(short itemNumber)
         item->state_next = SBAD1_BLIND;
     }
     // can climb ?
-    else if (!(item->state_current >= SBAD1_CLIMB4 && item->state_current <= SBAD1_JUMPOFF3) &&
-               item->state_current != SBAD1_JUMPFORWARD_1BLOCK && item->state_current != SBAD1_JUMPFORWARD_2BLOCK &&
-               item->state_current != SBAD1_DEATH)
+    else if (!(item->state_current >= SBAD1_DEATH && item->state_current <= SBAD1_JUMPOFF3))
     {
         switch (CreatureVault(itemNumber, angle, 2, VBAD1_SHIFT))
         {

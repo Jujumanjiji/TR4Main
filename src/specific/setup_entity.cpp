@@ -196,13 +196,6 @@ void SetupEntity::baddy_1()
         if (objects[BADDY_2].loaded)
             obj->anim_index = objects[BADDY_2].anim_index;
     }
-
-    obj = &objects[BADDY_1_MIP];
-    if (obj->loaded)
-    {
-        meshes[obj->mesh_index + 4 * 2] = meshes[objects[MESHSWAP3].mesh_index + 4 * 2]; // enable swap ?
-        meshes[obj->mesh_index + 7 * 2] = meshes[objects[MESHSWAP3].mesh_index + 7 * 2]; //
-    }
 }
 
 void SetupEntity::baddy_2()
@@ -225,12 +218,8 @@ void SetupEntity::baddy_2()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 88] |= ROT_Y | ROT_X;
-
-        // TODO: swap not working correctly !
-        meshes[obj->mesh_index + 4 * 2] = meshes[objects[MESHSWAP2].mesh_index + 4 * 2]; // enable swap ?
-        meshes[obj->mesh_index + 7 * 2] = meshes[objects[MESHSWAP2].mesh_index + 7 * 2]; //
+        bones[obj->bone_index + 7 * 4]  |= ROT_Y | ROT_X; // TORSO
+        bones[obj->bone_index + 22 * 4] |= ROT_Y | ROT_X; // HEAD
     }
 
     obj = &objects[BADDY_2_MIP];

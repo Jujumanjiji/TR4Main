@@ -885,4 +885,25 @@ struct OBJECT_FOUND
     ITEM_INFO* target;
 };
 
+struct BONE
+{
+    int bone1;
+    int bone2;
+    int bone3;
+
+    BONE(int* bone, int boneID)
+    {
+        bone1 = *(bone + 1 + (boneID * 4));
+        bone2 = *(bone + 2 + (boneID * 4));
+        bone3 = *(bone + 3 + (boneID * 4));
+    }
+
+    BONE(int boneX, int boneY, int boneZ)
+    {
+        bone1 = boneX;
+        bone2 = boneY;
+        bone3 = boneZ;
+    }
+};
+
 #pragma pack(pop)

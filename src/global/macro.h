@@ -26,7 +26,9 @@
 #define SINN(x)    (rcossin_tbl[(x >> 3) & ANGLE(45)])       // not multiplied by 4
 #define COSN(x)    (rcossin_tbl[((x >> 3) & ANGLE(45)) + 1]) // not multiplied by 4
 
-#define BONE(id, add) *(bone + (id + (add * 4)))
+#define BONE1(id) *(bone + (1 + (id * 4)))
+#define BONE2(id) *(bone + (2 + (id * 4)))
+#define BONE3(id) *(bone + (3 + (id * 4)))
 #define MESH(object, x) (object->mesh_index + x * 2)
 
 #define CustABS(A, B)\

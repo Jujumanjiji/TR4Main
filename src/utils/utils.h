@@ -27,7 +27,8 @@ extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
 /// new:
 extern void phd_SwapPushMatrix(int frac);
 extern void phd_SwapPopMatrix(int frac);
-extern void phd_SwapTranslateRel(int frac, int bone1, int bone2, int bone3, short* frame1, short* frame2, bool start);
+extern void phd_SwapTranslateRel(int frac, short* frame1, short* frame2);
+extern void phd_SwapTranslateRel(int frac, BONE bone);
 extern void phd_SwapGarYXZsuperpack(int frac, short** rotation1, short** rotation2);
 extern void phd_SwapRotY(int frac, short y);
 extern void phd_SwapRotX(int frac, short x);
