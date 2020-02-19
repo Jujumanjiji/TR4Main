@@ -22,8 +22,8 @@ void injector::inject(DWORD from, LPVOID to)
 
 void injector::inject_3dsystem()
 {
-    this->inject_3d_gen();                          // 0%
-    this->inject_3d_gen_a();                        // 100%
+    inject_3d_gen();                          // 0%
+    inject_3d_gen_a();                        // 100%
 }
 
 ///====================================///
@@ -32,14 +32,33 @@ void injector::inject_3dsystem()
 
 void injector::inject_game()
 {
-    // other:
-    this->inject_entity();
-
     // main:
-    this->inject_box();
-    this->inject_draw();
-    this->inject_lot();
-    this->inject_sound();
+    inject_box();
+    inject_collide();
+    inject_control();
+    inject_debug();
+    inject_delstuff();
+    inject_deltapak();
+    inject_door();
+    inject_draw();
+    inject_effect2();
+    inject_effects();
+    inject_health();
+    inject_items();
+    inject_lara1gun();
+    inject_larafire();
+    inject_laraflare();
+    inject_laramisc();
+    inject_lot();
+    inject_people();
+    inject_pickup();
+    inject_puzzle();
+    inject_rope();
+    inject_sound();
+    inject_sphere();
+    inject_switchs();
+    inject_tomb4fx();
+    inject_traps();
 }
 
 ///====================================///
@@ -48,7 +67,7 @@ void injector::inject_game()
 
 void injector::inject_specific()
 {
-    this->inject_drawprimitive();
-    this->inject_file();
-    this->inject_setup();
+    inject_drawprimitive();
+    inject_file();
+    inject_setup();
 }

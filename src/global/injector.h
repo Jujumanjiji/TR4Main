@@ -18,17 +18,36 @@ private:
 
     /// GAME
     void inject_box();
+    void inject_collide();
+    void inject_control();
+    void inject_debug();
+    void inject_delstuff();
+    void inject_deltapak();
+    void inject_door();
     void inject_draw();
+    void inject_effect2();
+    void inject_effects();
+    void inject_health();
+    void inject_items();
+    void inject_lara1gun();
+    void inject_larafire();
+    void inject_laraflare();
+    void inject_laramisc();
     void inject_lot();
+    void inject_people();
+    void inject_pickup();
+    void inject_puzzle();
+    void inject_rope();
     void inject_sound();
+    void inject_sphere();
+    void inject_switchs();
+    void inject_tomb4fx();
+    void inject_traps();
 
     /// SPECIFIC
     void inject_drawprimitive();
     void inject_file();
     void inject_setup();
-
-    /// OTHER
-    void inject_entity();
 
 public:
     void inject_3dsystem();

@@ -105,6 +105,8 @@
     <ClCompile Include="src\game\effect2.cpp" />
     <ClCompile Include="src\game\entity\baddy.cpp" />
     <ClCompile Include="src\game\entity\bat.cpp" />
+    <ClCompile Include="src\game\lara1gun.cpp" />
+    <ClCompile Include="src\game\larafire.cpp" />
     <ClCompile Include="src\game\people.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="framework.cpp">
@@ -168,6 +170,8 @@
     </ClInclude>
     <ClInclude Include="src\extern\json\Jzon.h" />
     <ClInclude Include="src\game\effect2.h" />
+    <ClInclude Include="src\game\lara1gun.h" />
+    <ClInclude Include="src\game\larafire.h" />
     <ClInclude Include="src\game\people.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="src\3dsystem\3d_gen.h" />

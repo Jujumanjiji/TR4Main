@@ -1098,9 +1098,3 @@ void SetupEntity::fish()
         obj->save_flags = true;
     }
 }
-
-void injector::inject_entity()
-{
-    this->inject(0x00402D90, InitialiseCrocodile);
-    this->inject(0x00402E30, CrocodileControl);
-}

@@ -188,6 +188,12 @@
     <ClCompile Include="src\utils\file_utils.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\lara1gun.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\larafire.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -351,6 +357,12 @@
     </ClInclude>
     <ClInclude Include="src\utils\file_utils.h">
       <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\lara1gun.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\larafire.h">
+      <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
