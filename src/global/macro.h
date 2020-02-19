@@ -171,3 +171,15 @@ if (obj->loaded)\
     obj->save_flags = true;\
     obj->hit_effect = HIT_FRAGMENT;\
 }
+
+#define GET_DD(a) App.DeviceInfo.DDInfo[a]
+#define GET_DS(a) App.DeviceInfo.DSInfo[a]
+#define GET_D3D(a) GET_DD(App.DXConfig.nDD).D3DInfo[a]
+#define GET_DM(a) GET_D3D(App.DXConfig.nD3D).DisplayMode[a]
+#define GET_TEX(a) GET_D3D(App.DXConfig.nD3D).Texture[a]
+
+#define CUR_DD GET_DD(App.DXConfig.nDD)
+#define CUR_DS GET_DS(App.DXConfig.nSoundCard)
+#define CUR_D3D GET_D3D(App.DXConfig.nD3D)
+#define CUR_DM GET_DM(App.DXConfig.nVMode)
+#define CUR_TEX GET_TEX(App.DXConfig.nTexture)

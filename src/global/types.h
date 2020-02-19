@@ -1,6 +1,26 @@
 #pragma once
 #pragma pack(push, 1)
 
+typedef FILE* LPFILE;
+
+/* // for later !
+struct LEVEL_DATA
+{
+    ///LPFILE fp_level;
+    ///LPCHAR fp_data;
+    int number_meshbase;
+    ///int number_meshes;
+    ///int number_anims;
+    int number_changes;
+    int number_ranges;
+    int number_commands;
+    int number_bones;
+    int number_frames;
+    int number_objects;
+    int number_statics;
+};
+*/
+
 struct BITE_INFO
 {
     int x;
@@ -904,6 +924,200 @@ struct BONE
         bone2 = boneY;
         bone3 = boneZ;
     }
+};
+
+typedef short**(*lpAddons)(ITEM_INFO* item, OBJECT_INFO* obj, OBJECT_INFO* obj_sec, int meshID);
+
+struct RENDER
+{
+    int meshID;
+    int boneID;
+    bool rotHead, rotTorso;
+    bool push, pop;
+    bool start;
+    lpAddons function;
+
+    // start for frame[]
+    RENDER(int meshID, bool push, bool pop)
+    {
+        this->start = true;
+        this->boneID = 0;
+        this->meshID = meshID;
+        this->rotHead = false;
+        this->rotTorso = false;
+        this->push = push;
+        this->pop = pop;
+        this->function = NULL;
+    }
+
+    RENDER(int boneID, int meshID, bool push, bool pop)
+    {
+        this->start = false;
+        this->boneID = boneID;
+        this->meshID = meshID;
+        this->rotHead = false;
+        this->rotTorso = false;
+        this->push = push;
+        this->pop = pop;
+        this->function = NULL;
+    }
+
+    RENDER(int boneID, int meshID, lpAddons function, bool push, bool pop)
+    {
+        this->start = false;
+        this->boneID = boneID;
+        this->meshID = meshID;
+        this->rotHead = false;
+        this->rotTorso = false;
+        this->push = push;
+        this->pop = pop;
+        this->function = function;
+    }
+
+    RENDER(int boneID, int meshID, bool rotHead, bool rotTorso, bool push, bool pop)
+    {
+        this->start = false;
+        this->boneID = boneID;
+        this->meshID = meshID;
+        this->rotHead = rotHead;
+        this->rotTorso = rotTorso;
+        this->push = push;
+        this->pop = pop;
+        this->function = NULL;
+    }
+
+    RENDER(int boneID, int meshID, lpAddons function, bool rotHead, bool rotTorso, bool push, bool pop)
+    {
+        this->start = false;
+        this->boneID = boneID;
+        this->meshID = meshID;
+        this->rotHead = rotHead;
+        this->rotTorso = rotTorso;
+        this->push = push;
+        this->pop = pop;
+        this->function = function;
+    }
+};
+
+struct D3DTEXTUREINFO
+{
+    DDPIXELFORMAT ddpf;
+    unsigned long bpp;
+    bool bPalette;
+    bool bAlpha;
+    unsigned char rbpp;
+    unsigned char gbpp;
+    unsigned char bbpp;
+    unsigned char abpp;
+    unsigned char rshift;
+    unsigned char gshift;
+    unsigned char bshift;
+    unsigned char ashift;
+};
+
+struct DISPLAYMODE
+{
+    int w;
+    int h;
+    unsigned long bpp;
+    unsigned int mipMapCount;
+    bool bPalette;
+    DDSURFACEDESC2 ddsd;
+    unsigned char rbpp;
+    unsigned char gbpp;
+    unsigned char bbpp;
+    unsigned char rshift;
+    unsigned char gshift;
+    unsigned char bshift;
+};
+
+struct DIRECTSOUNDINFO
+{
+    char Name[30];
+    char About[80];
+    LPGUID lpGuid;
+    GUID Guid;
+};
+
+struct DIRECTDRAWINFO
+{
+    char Name[30];
+    char About[80];
+    LPGUID lpGuid;
+    GUID Guid;
+    DDCAPS DDCaps;
+    DDDEVICEIDENTIFIER DDDevIdent;
+    int nDisplayMode;
+    DISPLAYMODE *DisplayMode;
+    int nD3DInfo;
+    D3DTEXTUREINFO *D3DInfo;
+};
+
+struct DEVICEINFO
+{
+    int nDDInfo;
+    int nDSInfo;
+    DIRECTDRAWINFO* DDInfo;
+    DIRECTSOUNDINFO* DSInfo;
+};
+
+struct DXCONFIG
+{
+    int nDD;
+    int nD3D;
+    int nVMode;
+    int nTexture;
+    int bZbuffer;
+    int nSoundCard;
+};
+
+struct WINAPP
+{
+    HINSTANCE hInstance;
+    HWND WindowHandle;
+    WNDCLASS WindowClass;
+    DEVICEINFO DeviceInfo;
+    DXCONFIG DXConfig;
+    char Unknown;
+    LPDIRECTDRAW4 lpDD;
+    LPDIRECT3D3 lpD3D;
+    LPDIRECT3DDEVICE3 lpD3DDevice;
+    LPDIRECT3DDEVICE3 lpD3DDevice_BIS;
+    LPDIRECTDRAWSURFACE4 lpFrontBuffer;
+    LPDIRECTDRAWSURFACE4 lpBackBuffer;
+    LPDIRECTDRAWSURFACE4 lpZBuffer;
+    LPDIRECT3DVIEWPORT3 lpViewPort;
+    LPDIRECTSOUND lpDS;
+    int WinWidth;
+    int WinHeight;
+    RECT GnWindowRect;
+    RECT GnClientRect;
+    unsigned int Flags;
+    unsigned int DXWndStyle;
+    unsigned int DXCoopLevel;
+    LPDIRECTINPUT7 lpDI;
+    LPDIRECTINPUTDEVICE2A lpDIKeyboard;
+    LPDIRECTINPUTDEVICE2A lpDIJoystick;
+    BOOL sceneEnabled;
+    BOOL bNoFocus;
+    BOOL sceneDone;
+    HANDLE hObject;
+    float fps;
+    DWORD dword753A51;
+    DWORD dword753A55;
+    HACCEL hAccTable;
+    BYTE gameInitialized;
+    BYTE settingBumpMap;
+    DWORD settingTextRes;
+    DWORD settingDumpRes;
+    BYTE mmxSupport;
+    BYTE settingFilter;
+    BYTE settingVolumetric;
+    BYTE disableSound;
+    DWORD settingHardware;
+    BYTE playFmv;
+    DWORD originalBPP;
+    BOOL autoTarget;
 };
 
 #pragma pack(pop)

@@ -5,6 +5,9 @@
 #define ARRAY_(address, type, length)    (*(type(*)length)(address))        // array (can be multidimensional)
 
 
+/// official app address
+#define App                                VAR_U_(0x00753980, WINAPP)
+
 ///===============================///
 ///             MATRIX            ///
 ///===============================///
@@ -17,8 +20,6 @@
 ///===============================///
 
 #define dword_4BF300                        VAR_I_(0x004BF300, int, 0)
-#define WinInstance                         VAR_U_(0x00753980, HINSTANCE)
-#define WinHandle                           VAR_U_(0x00753984, HWND)
 #define phd_laralefthand                    ARRAY_(0x0080E9C0, int, [12])
 #define phd_lararighthand                   ARRAY_(0x0080E930, int, [12])
 #define phd_left                            VAR_U_(0x00753C78, int)
@@ -100,11 +101,12 @@
 #define Setting_SFXVolume                   VAR_U_(0x004B38B0, int)
 #define UseForcedFixedCamera                VAR_U_(0x007FE8C0, BOOL)
 #define baddie_slots                        VAR_U_(0x007FD1FC, CREATURE_INFO*)
-///#define baddie_count                        VAR_I_(0x004BF690, int, 0)
 #define trigger_index                       VAR_U_(0x007FE248, short*)
 #define number_boxes                        VAR_U_(0x007FE9B4, int)
 #define EntityBlindTimer                    VAR_U_(0x0080E136, char)
 #define EnemyOffset                         ARRAY_(0x004AED00, BITE_INFO, [11])
+#define level_data                          VAR_U_(0x005333A4, char*)
+#define fp_level                            VAR_U_(0x00533A74, FILE*)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
@@ -114,9 +116,13 @@
 #define items                               VAR_U_(0x007FE28C, ITEM_INFO*)
 #define objects                             ARRAY_(0x0052B850, OBJECT_INFO, [NUMBER_OBJECTS])
 #define static_objects                      ARRAY_(0x005333C0, STATIC_INFO, [NUMBER_STATIC_OBJECTS])
+#define mesh_base                           VAR_U_(0x00533A7C, short*)
 #define meshes                              VAR_U_(0x00533A80, short**)
 #define rooms                               VAR_U_(0x00533A64, ROOM_INFO*)
 #define anims                               VAR_U_(0x00533A68, ANIM_STRUCT*)
+#define changes                             VAR_U_(0x00533A6C, CHANGE_STRUCT*)
+#define ranges                              VAR_U_(0x00533A70, RANGE_STRUCT*)
+#define commands                            VAR_U_(0x00533A8C, short*)
 #define bones                               VAR_U_(0x00533A88, int*)
 #define frames                              VAR_U_(0x00533A84, short*)
 #define overlaps                            VAR_U_(0x007FE9A8, short*)
@@ -125,7 +131,7 @@
 #define camera                              VAR_U_(0x007FE820, CAMERA_INFO) // not finished !!!
 #define effects                             VAR_U_(0x008012E0, FX_INFO*)
 #define flip_status                         VAR_U_(0x007FE218, int)
-#define ground_zone                         ARRAY_(0x007FE980, short*, [MAX_ZONE][2]) // [ZONE_TYPE][flip_status] (return short*)
+#define ground_zone                         ARRAY_(0x007FE980, short*, [5][2]) // [ZONE_TYPE][flip_status] (return short*)
 #define gunshells                           ARRAY_(0x007FF680, GUNSHELL_STRUCT, [MAX_GUNSHELLS])
 #define sparks                              ARRAY_(0x00801400, SPARKS, [MAX_SPARKS])
 #define gunflashes                          ARRAY_(0x00800CE0, GUNFLASH_STRUCT, [MAX_GUNFLASH])

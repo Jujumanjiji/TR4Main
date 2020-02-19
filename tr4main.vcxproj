@@ -58,14 +58,14 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bass.lib;bass_fx.lib;bassmix.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\lib_debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlibd.lib;bass.lib;bass_fx.lib;bassmix.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)$(Configuration)\tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
@@ -82,7 +82,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,8 +90,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bass.lib;bass_fx.lib;bassmix.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\lib_release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;bass.lib;bass_fx.lib;bassmix.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)Release/tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
@@ -149,7 +149,9 @@
     <ClCompile Include="src\specific\setup.cpp" />
     <ClCompile Include="src\specific\setup_entity.cpp" />
     <ClCompile Include="src\specific\specific.cpp" />
+    <ClCompile Include="src\utils\file_utils.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
+    <ClCompile Include="src\utils\utils_render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\extern\bass\bass.h">
@@ -212,7 +214,9 @@
     <ClInclude Include="src\specific\setup.h" />
     <ClInclude Include="src\specific\setup_entity.h" />
     <ClInclude Include="src\specific\specific.h" />
+    <ClInclude Include="src\utils\file_utils.h" />
     <ClInclude Include="src\utils\utils.h" />
+    <ClInclude Include="src\utils\utils_render.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -220,11 +224,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\dirent.1.13.1\build\native\dirent.targets" Condition="Exists('packages\dirent.1.13.1\build\native\dirent.targets')" />
+    <Import Project="packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets" Condition="Exists('packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\dirent.1.13.1\build\native\dirent.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\dirent.1.13.1\build\native\dirent.targets'))" />
+    <Error Condition="!Exists('packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets'))" />
   </Target>
 </Project>

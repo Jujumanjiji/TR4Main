@@ -182,6 +182,12 @@
     <ClCompile Include="src\game\entity\baddy.cpp">
       <Filter>src\game\entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\utils_render.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\file_utils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -339,6 +345,12 @@
     </ClInclude>
     <ClInclude Include="src\extern\bass\bassmix.h">
       <Filter>extern\bass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\utils_render.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\file_utils.h">
+      <Filter>src\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

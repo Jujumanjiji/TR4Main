@@ -416,25 +416,24 @@ bool CheckRollPossibility(ITEM_INFO* item)
     int height, height2;
     int x, y, z;
     int cos, sin;
-    int stage1, stage2;
     short roomNumber;
 
     // first height
-    sin = (942 * SIN(item->pos.y_rot - 8192));
-    cos = (942 * COS(item->pos.y_rot - 8192));
-    x = item->pos.x + (sin >> W2V_SHIFT);
+    sin = ((942 * SIN(item->pos.y_rot - 8192)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.y_rot - 8192)) >> W2V_SHIFT);
+    x = item->pos.x + sin;
     y = item->pos.y;
-    z = item->pos.z + (cos >> W2V_SHIFT);
+    z = item->pos.z + cos;
     roomNumber = item->room_number;
     floor = GetFloor(x, y, z, &roomNumber);
     height = GetHeight(floor, x, y, z);
 
     // second height
-    sin = (942 * SIN(item->pos.y_rot - 14336));
-    cos = (942 * COS(item->pos.y_rot - 14336));
-    x = item->pos.x + (sin >> W2V_SHIFT);
+    sin = ((942 * SIN(item->pos.y_rot - 14336)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.y_rot - 14336)) >> W2V_SHIFT);
+    x = item->pos.x + sin;
     y = item->pos.y;
-    z = item->pos.z + (cos >> W2V_SHIFT);
+    z = item->pos.z + cos;
     roomNumber = item->room_number;
     floor = GetFloor(x, y, z, &roomNumber);
     height2 = GetHeight(floor, x, y, z) - y;
@@ -451,25 +450,24 @@ bool CheckJumpPossibility(ITEM_INFO* item)
     int height, height2;
     int x, y, z;
     int cos, sin;
-    int stage1, stage2;
     short roomNumber;
 
     // first height
-    sin = (942 * SIN(item->pos.y_rot + 8192));
-    cos = (942 * COS(item->pos.y_rot + 8192));
-    x = item->pos.x + (sin >> W2V_SHIFT);
+    sin = ((942 * SIN(item->pos.y_rot + 8192)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.y_rot + 8192)) >> W2V_SHIFT);
+    x = item->pos.x + sin;
     y = item->pos.y;
-    z = item->pos.z + (cos >> W2V_SHIFT);
+    z = item->pos.z + cos;
     roomNumber = item->room_number;
     floor = GetFloor(x, y, z, &roomNumber);
     height = GetHeight(floor, x, y, z);
 
     // second height
-    sin = (942 * SIN(item->pos.y_rot + 14336));
-    cos = (942 * COS(item->pos.y_rot + 14336));
-    x = item->pos.x + (sin >> W2V_SHIFT);
+    sin = ((942 * SIN(item->pos.y_rot + 14336)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.y_rot + 14336)) >> W2V_SHIFT);
+    x = item->pos.x + sin;
     y = item->pos.y;
-    z = item->pos.z + (cos >> W2V_SHIFT);
+    z = item->pos.z + cos;
     roomNumber = item->room_number;
     floor = GetFloor(x, y, z, &roomNumber);
     height2 = GetHeight(floor, x, y, z) - y;

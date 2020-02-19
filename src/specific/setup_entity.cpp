@@ -174,7 +174,7 @@ void SetupEntity::baddy_1()
     if (obj->loaded)
     {
         obj->bit_offset = 1;
-        obj->initialise = InitialiseBaddy1;
+        obj->initialise = InitialiseBaddy;
         obj->control = Baddy1Control;
         obj->draw_routine = DrawBaddy1; // custom render to switch between uzi & sword.
         obj->collision = CreatureCollision;

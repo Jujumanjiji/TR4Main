@@ -1,159 +1,156 @@
 #include "framework.h"
 #include "../oldobjects.h"
 #include "3dsystem/3d_gen.h"
-#include "3dsystem/3d_gen_a.h"
 #include "game/box.h"
-#include "game/draw.h"
 #include "game/control.h"
-#include "game/effect2.h"
+#include "game/draw.h"
 #include "game/items.h"
+#include "game/effect2.h"
 #include "game/people.h"
-#include "game/sphere.h"
-#include "specific/output.h"
-#include "specific/specific.h"
 #include "utils/utils.h"
+#include "utils/utils_render.h"
 
-enum BADDY1_ANIMATION
+enum BADDY_ANIMATION
 {
-    ABAD1_RUN,
-    ABAD1_RUN_START,
-    ABAD1_RUN_END,
-    ABAD1_EMPTY3,
-    ABAD1_EMPTY4,
-    ABAD1_EMPTY5,
-    ABAD1_EMPTY6,
-    ABAD1_EMPTY7,
-    ABAD1_EMPTY8,
-    ABAD1_MONKEY_START,
-    ABAD1_MONKEY_IDLE,
-    ABAD1_MONKEY_FORWARD,
-    ABAD1_MONKEY_IDLE_TO_FORWARD,
-    ABAD1_MONKEY_STOP_LEFT,
-    ABAD1_MONKEY_STOP_RIGHT,
-    ABAD1_MONKEY_FALL_LAND,
-    ABAD1_MONKEY_PUSHOFF,
-    ABAD1_EMPTY9,
-    ABAD1_IDLE,
-    ABAD1_EMPTY10,
-    ABAD1_DRAWGUN,
-    ABAD1_UNDRAWGUN,
-    ABAD1_DRAWSWORD,
-    ABAD1_UNDRAWSWORD,
-    ABAD1_IDLE_TO_ROLLLEFT,
-    ABAD1_ROLL_LEFT_START,
-    ABAD1_ROLL_LEFT_MIDDLE,
-    ABAD1_ROLL_LEFT_END,
-    ABAD1_ROLL_LEFT_TO_CROUCH,
-    ABAD1_CROUCH_IDLE,
-    ABAD1_CROUCH_TO_IDLE,
-    ABAD1_IDLE_TO_WALK,
-    ABAD1_WALK,
-    ABAD1_WALK_TO_RUN,
-    ABAD1_IDLE_TO_AIM,
-    ABAD1_AIM,
-    ABAD1_FIRE,
-    ABAD1_FIRE_TO_IDLE,
-    ABAD1_ATK_FRONT,
-    ABAD1_CROUCH_PICKUP,
-    ABAD1_IDLE_TO_CROUCH,
-    ABAD1_HIT_RIGHT,
-    ABAD1_HIT_RIGHT_TO_LEFT,
-    ABAD1_HIT_RIGHT_TO_IDLE,
-    ABAD1_HIT_LEFT,
-    ABAD1_IDLE_DEATH,
-    ABAD1_WALK_SWORD_HIT_RIGHT,
-    ABAD1_IDLE_TO_JUMP_RIGHT,
-    ABAD1_JUMP_RIGHT_START,
-    ABAD1_JUMP_RIGHT_MIDDLE,
-    ABAD1_JUMP_RIGHT_END,
-    ABAD1_RUN_TO_WALK,
-    ABAD1_EMPTY11,
-    ABAD1_EMPTY12,
-    ABAD1_WALK_STOP_RIGHT,
-    ABAD1_IDLE_TO_JUMP_FORWARD,
-    ABAD1_JUMP_FORWARD_1BLOCK,
-    ABAD1_JUMP_FORWARD_FALL,
-    ABAD1_JUMP_FORWARD_LAND,
-    ABAD1_MONKEY_TO_FREEFALL,
-    ABAD1_FREEFALL,
-    ABAD1_FREEFALL_DEATH,
-    ABAD1_CLIMB4,
-    ABAD1_CLIMB3,
-    ABAD1_CLIMB2,
-    ABAD1_JUMPOFF4,
-    ABAD1_JUMPOFF3,
-    ABAD1_JUMP_FORWARD_2CLICK,
-    ABAD1_BLIND,
-    ABAD1_BLIND_TO_IDLE,
-    ABAD1_DEAD,
+    ABAD_RUN,
+    ABAD_RUN_START,
+    ABAD_RUN_END,
+    ABAD_EMPTY3,
+    ABAD_EMPTY4,
+    ABAD_EMPTY5,
+    ABAD_EMPTY6,
+    ABAD_EMPTY7,
+    ABAD_EMPTY8,
+    ABAD_MONKEY_START,
+    ABAD_MONKEY_IDLE,
+    ABAD_MONKEY_FORWARD,
+    ABAD_MONKEY_IDLE_TO_FORWARD,
+    ABAD_MONKEY_STOP_LEFT,
+    ABAD_MONKEY_STOP_RIGHT,
+    ABAD_MONKEY_FALL_LAND,
+    ABAD_MONKEY_PUSHOFF,
+    ABAD_EMPTY9,
+    ABAD_IDLE,
+    ABAD_EMPTY10,
+    ABAD_DRAWGUN,
+    ABAD_UNDRAWGUN,
+    ABAD_DRAWSWORD,
+    ABAD_UNDRAWSWORD,
+    ABAD_IDLE_TO_ROLLLEFT,
+    ABAD_ROLL_LEFT_START,
+    ABAD_ROLL_LEFT_MIDDLE,
+    ABAD_ROLL_LEFT_END,
+    ABAD_ROLL_LEFT_TO_CROUCH,
+    ABAD_CROUCH_IDLE,
+    ABAD_CROUCH_TO_IDLE,
+    ABAD_IDLE_TO_WALK,
+    ABAD_WALK,
+    ABAD_WALK_TO_RUN,
+    ABAD_IDLE_TO_AIM,
+    ABAD_AIM,
+    ABAD_FIRE,
+    ABAD_FIRE_TO_IDLE,
+    ABAD_ATK_FRONT,
+    ABAD_CROUCH_PICKUP,
+    ABAD_IDLE_TO_CROUCH,
+    ABAD_HIT_RIGHT,
+    ABAD_HIT_RIGHT_TO_LEFT,
+    ABAD_HIT_RIGHT_TO_IDLE,
+    ABAD_HIT_LEFT,
+    ABAD_IDLE_DEATH,
+    ABAD_WALK_SWORD_HIT_RIGHT,
+    ABAD_IDLE_TO_JUMP_RIGHT,
+    ABAD_JUMP_RIGHT_START,
+    ABAD_JUMP_RIGHT_MIDDLE,
+    ABAD_JUMP_RIGHT_END,
+    ABAD_RUN_TO_WALK,
+    ABAD_EMPTY11,
+    ABAD_EMPTY12,
+    ABAD_WALK_STOP_RIGHT,
+    ABAD_IDLE_TO_JUMP_FORWARD,
+    ABAD_JUMP_FORWARD_1BLOCK,
+    ABAD_JUMP_FORWARD_FALL,
+    ABAD_JUMP_FORWARD_LAND,
+    ABAD_MONKEY_TO_FREEFALL,
+    ABAD_FREEFALL,
+    ABAD_FREEFALL_DEATH,
+    ABAD_CLIMB4,
+    ABAD_CLIMB3,
+    ABAD_CLIMB2,
+    ABAD_JUMPOFF4,
+    ABAD_JUMPOFF3,
+    ABAD_JUMP_FORWARD_2CLICK,
+    ABAD_BLIND,
+    ABAD_BLIND_TO_IDLE,
+    ABAD_DEAD,
 };
 
-enum BADDY1_STATE
+enum BADDY_STATE
 {
-    SBAD1_IDLE,
-    SBAD1_WALK,
-    SBAD1_RUN,
-    SBAD1_NOSTATE3,
-    SBAD1_NOSTATE4,
-    SBAD1_NOSTATE5,
-    SBAD1_NOSTATE6,
-    SBAD1_NOSTATE7,
-    SBAD1_NOSTATE8,
-    SBAD1_NOSTATE9,
-    SBAD1_DRAWGUN,
-    SBAD1_UNDRAWGUN,
-    SBAD1_DRAWSWORD,
-    SBAD1_UNDRAWSWORD,
-    SBAD1_FIRE,
-    SBAD1_SWORDHITFRONT,
-    SBAD1_SWORDHITRIGHT,
-    SBAD1_SWORDHITLEFT,
-    SBAD1_MONKEYGRAB,
-    SBAD1_MONKEYIDLE,
-    SBAD1_MONKEYFORWARD,
-    SBAD1_MONKEYPUSHOFF,
-    SBAD1_MONKEYFALLLAND,
-    SBAD1_ROLLLEFT,
-    SBAD1_JUMPRIGHT,
-    SBAD1_IDLETOCROUCH,
-    SBAD1_CROUCH,
-    SBAD1_CROUCHPICKUP,
-    SBAD1_CROUCHTOIDLE,
-    SBAD1_WALKSWORDHITRIGHT,
-    SBAD1_NOSTATE30,
-    SBAD1_AIM,
-    SBAD1_DEATH,
-    SBAD1_JUMPFORWARD_1BLOCK,
-    SBAD1_JUMPFORWARD_FALL,
-    SBAD1_MONKEY_TOFREEFALL,
-    SBAD1_FREEFALL,
-    SBAD1_FREEFALL_DEATH,
-    SBAD1_JUMPFORWARD_2BLOCK,
-    SBAD1_CLIMB4,
-    SBAD1_CLIMB3,
-    SBAD1_CLIMB2,
-    SBAD1_JUMPOFF4,
-    SBAD1_JUMPOFF3,
-    SBAD1_BLIND,
+    SBAD_IDLE,
+    SBAD_WALK,
+    SBAD_RUN,
+    SBAD_NOSTATE3,
+    SBAD_NOSTATE4,
+    SBAD_NOSTATE5,
+    SBAD_NOSTATE6,
+    SBAD_NOSTATE7,
+    SBAD_NOSTATE8,
+    SBAD_NOSTATE9,
+    SBAD_DRAWGUN,
+    SBAD_UNDRAWGUN,
+    SBAD_DRAWSWORD,
+    SBAD_UNDRAWSWORD,
+    SBAD_FIRE,
+    SBAD_SWORDHITFRONT,
+    SBAD_SWORDHITRIGHT,
+    SBAD_SWORDHITLEFT,
+    SBAD_MONKEYGRAB,
+    SBAD_MONKEYIDLE,
+    SBAD_MONKEYFORWARD,
+    SBAD_MONKEYPUSHOFF,
+    SBAD_MONKEYFALLLAND,
+    SBAD_ROLLLEFT,
+    SBAD_JUMPRIGHT,
+    SBAD_IDLETOCROUCH,
+    SBAD_CROUCH,
+    SBAD_CROUCHPICKUP,
+    SBAD_CROUCHTOIDLE,
+    SBAD_WALKSWORDHITRIGHT,
+    SBAD_NOSTATE30,
+    SBAD_AIM,
+    SBAD_DEATH,
+    SBAD_JUMPFORWARD_1BLOCK,
+    SBAD_JUMPFORWARD_FALL,
+    SBAD_MONKEY_TOFREEFALL,
+    SBAD_FREEFALL,
+    SBAD_FREEFALL_DEATH,
+    SBAD_JUMPFORWARD_2BLOCK,
+    SBAD_CLIMB4,
+    SBAD_CLIMB3,
+    SBAD_CLIMB2,
+    SBAD_JUMPOFF4,
+    SBAD_JUMPOFF3,
+    SBAD_BLIND,
 };
 
 enum BADDY_VALUE
 {
-    VBAD1_CLIMB2 = 2,
-    VBAD1_CLIMB3 = 3,
-    VBAD1_CLIMB4 = 4,
-    VBAD1_FALL3 = -3,
-    VBAD1_FALL4 = -4,
-    VBAD1_SHIFT = 260,
-    VBAD1_TOUCHBITS = 0x1C000,
-    VBAD1_DAMAGE = 120,
-    VBAD1_GUN_DAMAGE = 15,
-    VBAD1_PICKUP_RANGE = SQUARE(STEP_L * 3),
-    VBAD1_ANGLE_WALK = ANGLE(7),
-    VBAD1_ANGLE_RUN = ANGLE(11),
-    VBAD1_RUN_RANGE = SQUARE(WALL_L),
-    VBAD1_WALK_RANGE = SQUARE(WALL_L * 2 / 3),
-    VBAD1_ATTACK_RANGE = SQUARE(STEP_L * 2),
+    VBAD_CLIMB2 = 2,
+    VBAD_CLIMB3 = 3,
+    VBAD_CLIMB4 = 4,
+    VBAD_FALL3 = -3,
+    VBAD_FALL4 = -4,
+    VBAD_SHIFT = 260,
+    VBAD_TOUCHBITS = 0x1C000,
+    VBAD_DAMAGE = 120,
+    VBAD_GUN_DAMAGE = 15,
+    VBAD_DETECT_RANGE = SQUARE(WALL_L),
+    VBAD_ANGLE_WALK = ANGLE(7),
+    VBAD_ANGLE_RUN = ANGLE(11),
+    VBAD_RUN_RANGE = SQUARE(WALL_L),
+    VBAD_WALK_RANGE = SQUARE(WALL_L * 2 / 3),
+    VBAD_ATTACK_RANGE = SQUARE(STEP_L * 2),
 };
 
 enum BADDY1_OCB
@@ -177,19 +174,19 @@ enum BADDY_WEAPON
 enum BADDY_MESH
 {
     BAD_MESH_BUTT,           // push
-    BAD_MESH_LLEG1,          // push
-    BAD_MESH_LLEG2,
+    BAD_MESH_LLEG,          // push
+    BAD_MESH_LKNEE,
     BAD_MESH_LFOOT,
-    BAD_MESH_RLEG1,          // pop/push
-    BAD_MESH_RLEG2,
+    BAD_MESH_RLEG,          // pop/push
+    BAD_MESH_RKNEE,
     BAD_MESH_RFOOT,
     BAD_MESH_HOLSTERS_SWORD, // pop/push
     BAD_MESH_TORSO,          // pop
-    BAD_MESH_LARM1,          // push
-    BAD_MESH_LARM2,
+    BAD_MESH_LSHOULDER,          // push
+    BAD_MESH_LELBOW,
     BAD_MESH_LHAND,
-    BAD_MESH_RARM1,          // push/pop
-    BAD_MESH_RARM2,
+    BAD_MESH_RSHOULDER,          // push/pop
+    BAD_MESH_RELBOW,
     BAD_MESH_RHAND,
     BAD_MESH_RSWORD_1,       // push
     BAD_MESH_RSWORD_2,
@@ -208,269 +205,92 @@ enum BADDY_MESH
 static BITE_INFO baddy_gun = { 0, 185, 55, 11 };
 static BITE_INFO baddy_sword = { 0, 0, 0, 15 };
 
+short** DrawUziHolsters(ITEM_INFO* item, OBJECT_INFO* obj, OBJECT_INFO* obj_sec, int meshID)
+{
+    if (item->reserved_4 == WBAD1_UZI)
+        return &meshes[MESH(obj_sec, meshID)]; // if sword is drawed then empty holsters.
+    else
+        return &meshes[MESH(obj, meshID)];
+}
+
+short** DrawSwordHolsters(ITEM_INFO* item, OBJECT_INFO* obj, OBJECT_INFO* obj_sec, int meshID)
+{
+    if (item->reserved_4 == WBAD1_SWORD)
+        return &meshes[MESH(obj_sec, meshID)]; // if sword is drawed then empty holsters.
+    else
+        return &meshes[MESH(obj, meshID)];
+}
+
+short** DrawUzi(ITEM_INFO* item, OBJECT_INFO* obj, OBJECT_INFO* obj_sec, int meshID)
+{
+    if (item->reserved_4 == WBAD1_UZI)
+        return &meshes[MESH(obj, meshID)];
+    else
+        return &meshes[MESH(obj_sec, meshID)];
+}
+
+short** DrawSword(ITEM_INFO* item, OBJECT_INFO* obj, OBJECT_INFO* obj_sec, int meshID)
+{
+    if (item->reserved_4 == WBAD1_SWORD)
+        return &meshes[MESH(obj, meshID)];
+    else
+        return &meshes[MESH(obj_sec, meshID)];
+}
+
 void DrawBaddy1(ITEM_INFO* item)
 {
-    OBJECT_INFO* obj, *obj_ms3;
-    OBJ_ROTATION* rot;
-    int* bone;
-    int clip, frac, rate;
-    short* frame[2];
-    short* rotation1, *rotation2;
-    short** mesh;
-
-    frac = GetFrames(item, frame, &rate);
-    obj = &objects[BADDY_1];
-    if (obj->shadow_size)
-        S_PrintShadow(obj->shadow_size, frame[0], item);
-    obj_ms3 = &objects[MESHSWAP3];
-    rot = (OBJ_ROTATION*)item->data;
-    if (rot == NULL)
-    {
-        rot = (OBJ_ROTATION*)malloc(sizeof(OBJ_ROTATION));
-        rot->head_x = 0;
-        rot->head_y = 0;
-        rot->torso_x = 0;
-        rot->torso_y = 0;
-    }
-
-    phd_PushMatrix(); // world
-    phd_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
-    phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
-
-    clip = S_GetObjectBounds(frame[0]);
-    CalculateObjectLighting(item, frame[0]);
-    bone = &bones[obj->bone_index];
-    phd_PushMatrix(); // list
-
-    rotation1 = (short*)(frame[0] + 9);
-    rotation2 = (short*)(frame[1] + 9);
-
-    // BONE 0 (ROOT)
-    if (frac)
-        InitInterpolate(frac, rate);
-    phd_SwapTranslateRel(frac, frame[0], frame[1]);
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_BUTT)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    // LEFT LEG
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 0));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_LLEG1)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 1));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_LLEG2)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 2));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_LFOOT)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac); // TO HIPS
-
-    // RIGHT LEG
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 3));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_UZI)
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RLEG1)];
-    else
-        mesh = &meshes[MESH(obj, BAD_MESH_RLEG1)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 4));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_RLEG2)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 5));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_RFOOT)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac); // TO HIPS
-
-    // SWORD HOLSTERS
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 6));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_HOLSTERS_SWORD)]; // if sword is drawed then empty holsters.
-    else
-        mesh = &meshes[MESH(obj, BAD_MESH_HOLSTERS_SWORD)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac); // TO HIPS
-
-    // TORSO
-    phd_SwapTranslateRel(frac, BONE(bone, 7));
-    phd_SwapRotY(frac, rot->torso_y);
-    phd_SwapRotX(frac, rot->torso_x);
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_TORSO)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    // LEFT ARM
-    phd_SwapPushMatrix(frac); // START
-    phd_SwapTranslateRel(frac, BONE(bone, 8));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_LARM1)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 9));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_LARM2)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 10));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_UZI)
-        mesh = &meshes[MESH(obj, BAD_MESH_LHAND)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_LHAND)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    if (item->fired_weapon)
-    {
-        phd_SwapPushMatrix(frac);
-        phd_SwapTranslateRel(frac, BONE(baddy_gun.x, baddy_gun.y, baddy_gun.z));
-        phd_SwapRotX(frac, -ANGLE(90));
-        phd_SwapRotZ(frac, (GetRandomDraw() << 14) + (GetRandomDraw() >> 2) - 4096);
-        phd_SwapPutPolygons(frac, clip, &meshes[objects[GUN_FLASH].mesh_index]);
-        phd_SwapPopMatrix(frac);
-        --item->fired_weapon;
-    }
-    phd_SwapPopMatrix(frac); // TO TORSO
-
-    // RIGHT ARM
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 11));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_RARM1)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 12));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_RARM2)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 13));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RHAND)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RHAND)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    // RIGHT ARM ADDON
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 14));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_1)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_1)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 15));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_2)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_2)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac);
-
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 16));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_3)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_3)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 17));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_4)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_4)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac);
-
-    phd_SwapPushMatrix(frac);
-    phd_SwapTranslateRel(frac, BONE(bone, 18));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_5)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_5)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 19));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_6)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_6)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac); // TO TORSO
-
-    phd_SwapTranslateRel(frac, BONE(bone, 20));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_7)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_7)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 21));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    if (item->reserved_4 == WBAD1_SWORD)
-        mesh = &meshes[MESH(obj, BAD_MESH_RSWORD_8)];
-    else
-        mesh = &meshes[MESH(obj_ms3, BAD_MESH_RSWORD_8)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-    phd_SwapPopMatrix(frac); // TO TORSO
-
-    // HEAD
-    phd_SwapTranslateRel(frac, BONE(bone, 22));
-    phd_SwapRotY(frac, rot->head_y);
-    phd_SwapRotX(frac, rot->head_x);
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_HEAD)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    // HEAD ADDON
-    phd_SwapTranslateRel(frac, BONE(bone, 23));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_HEAD2)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 24));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_HEAD3)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_SwapTranslateRel(frac, BONE(bone, 25));
-    phd_SwapGarYXZsuperpack(frac, &rotation1, &rotation2);
-    mesh = &meshes[MESH(obj, BAD_MESH_HEAD4)];
-    phd_SwapPutPolygons(frac, clip, mesh);
-
-    phd_PopMatrix(); // !list
-    phd_PopMatrix(); // !world
+    baddy1shape.assign_item(item);
+    baddy1shape.assign_object(BADDY_1);
+    baddy1shape.assign_object_second(MESHSWAP3);
+    baddy1shape.assign_bone();
+    baddy1shape.create_interpolate();
+    baddy1shape.create_shadow();
+    baddy1shape.create_rotation();
+    baddy1shape.set_world();
+    baddy1shape.set_clipping();
+    baddy1shape.set_light();
+    baddy1shape.set_list();
+    baddy1shape.assign_rotation();
+    baddy1shape.add_mesh(RENDER(BAD_MESH_BUTT, false, false));
+    baddy1shape.add_mesh(RENDER(0, BAD_MESH_LLEG, true, false));
+    baddy1shape.add_mesh(RENDER(1, BAD_MESH_LKNEE, false, false));
+    baddy1shape.add_mesh(RENDER(2, BAD_MESH_LFOOT, false, true));
+    baddy1shape.add_mesh(RENDER(3, BAD_MESH_RLEG, DrawUziHolsters, true, false));
+    baddy1shape.add_mesh(RENDER(4, BAD_MESH_RKNEE, false, false));
+    baddy1shape.add_mesh(RENDER(5, BAD_MESH_RFOOT, false, true));
+    baddy1shape.add_mesh(RENDER(6, BAD_MESH_HOLSTERS_SWORD, DrawSwordHolsters, true, true));
+    baddy1shape.add_mesh(RENDER(7, BAD_MESH_TORSO, false, true, false, false));
+    baddy1shape.add_mesh(RENDER(8, BAD_MESH_LSHOULDER, true, false));
+    baddy1shape.add_mesh(RENDER(9, BAD_MESH_LELBOW, false, false));
+    baddy1shape.add_mesh(RENDER(10, BAD_MESH_LHAND, DrawUzi, false, false));
+    baddy1shape.add_flash(&baddy_gun, true);
+    baddy1shape.add_mesh(RENDER(11, BAD_MESH_RSHOULDER, true, false));
+    baddy1shape.add_mesh(RENDER(12, BAD_MESH_RELBOW, false, false));
+    baddy1shape.add_mesh(RENDER(13, BAD_MESH_RHAND, DrawSword, false, false));
+    baddy1shape.add_mesh(RENDER(14, BAD_MESH_RSWORD_1, DrawSword, true, false));
+    baddy1shape.add_mesh(RENDER(15, BAD_MESH_RSWORD_2, DrawSword, false, true));
+    baddy1shape.add_mesh(RENDER(16, BAD_MESH_RSWORD_3, DrawSword, true, false));
+    baddy1shape.add_mesh(RENDER(17, BAD_MESH_RSWORD_4, DrawSword, false, true));
+    baddy1shape.add_mesh(RENDER(18, BAD_MESH_RSWORD_5, DrawSword, true, false));
+    baddy1shape.add_mesh(RENDER(19, BAD_MESH_RSWORD_6, DrawSword, false, true));
+    baddy1shape.add_mesh(RENDER(20, BAD_MESH_RSWORD_7, DrawSword, false, false));
+    baddy1shape.add_mesh(RENDER(21, BAD_MESH_RSWORD_8, DrawSword, false, true));
+    baddy1shape.add_mesh(RENDER(22, BAD_MESH_HEAD, false, true, false, false, false));
+    baddy1shape.add_mesh(RENDER(23, BAD_MESH_HEAD2, false, false));
+    baddy1shape.add_mesh(RENDER(24, BAD_MESH_HEAD3, false, false));
+    baddy1shape.add_mesh(RENDER(25, BAD_MESH_HEAD4, false, false));
+    baddy1shape.end_list();
+    baddy1shape.end_world();
 }
 
 // true if state_current is monkeying..
 static bool IsBaddyMonkey(ITEM_INFO* item)
 {
-    return (item->state_current == SBAD1_MONKEYGRAB
-    ||      item->state_current == SBAD1_MONKEYIDLE
-    ||      item->state_current == SBAD1_MONKEYFORWARD
-    ||      item->state_current == SBAD1_MONKEYPUSHOFF
-    ||      item->state_current == SBAD1_MONKEYFALLLAND);
+    return (item->state_current == SBAD_MONKEYGRAB
+    ||      item->state_current == SBAD_MONKEYIDLE
+    ||      item->state_current == SBAD_MONKEYFORWARD
+    ||      item->state_current == SBAD_MONKEYPUSHOFF
+    ||      item->state_current == SBAD_MONKEYFALLLAND);
 }
 
 static bool GetBaddyFrameToShot(ITEM_INFO* item)
@@ -485,11 +305,10 @@ static bool GetBaddyFrameToShot(ITEM_INFO* item)
     );
 }
 
-void InitialiseBaddy1(short itemNumber)
+void InitialiseBaddy(short itemNumber)
 {
     ITEM_INFO* item;
     OBJECT_INFO* obj;
-    short ocb;
 
     item = &items[itemNumber];
     item->reserved_2 = MAXSHORT;
@@ -497,49 +316,62 @@ void InitialiseBaddy1(short itemNumber)
     item->reserved_4 = WBAD1_UZI; // default weapon
 
     obj = &objects[item->object_number];
-    ocb = OCB_MODE(item->ocb_bits);
 
-    if (ocb == OCB_IDLE)
+    if (item->ocb_bits == OCB_IDLE)
     {
-        item->current_anim = obj->anim_index + ABAD1_IDLE;
+        item->current_anim = obj->anim_index + ABAD_IDLE;
         item->current_frame = anims[item->current_anim].frame_base;
-        item->state_current = SBAD1_IDLE;
-        item->state_next = SBAD1_IDLE;
+        item->state_current = SBAD_IDLE;
+        item->state_next = SBAD_IDLE;
         return;
     }
 
-    switch (ocb)
+    if (item->ocb_bits & OCB_JUMPRIGHT)
     {
-        case OCB_IDLE:
-
-            return;
-
-        case OCB_JUMPRIGHT:
-
-            return;
-
-        case OCB_LEFTROLL:
-
-            return;
-
-        case OCB_CROUCH:
-
-            return;
-
-        case OCB_CLIMB4: // work fine :D
-            item->current_anim = obj->anim_index + ABAD1_CLIMB4;
-            item->current_frame = anims[item->current_anim].frame_base;
-            item->state_next = SBAD1_CLIMB4;
-            item->state_current = SBAD1_CLIMB4;
-            item->pos.x += SINN(item->pos.y_rot) << WALL_SHIFT >> W2V_SHIFT;
-            item->pos.z += COSN(item->pos.y_rot) << WALL_SHIFT >> W2V_SHIFT;
-            return;
-           
+        item->current_anim = obj->anim_index + ABAD_IDLE_TO_JUMP_RIGHT;
+        item->current_frame = anims[item->current_anim].frame_base;
+        item->state_current = SBAD_JUMPRIGHT;
+        item->state_next = SBAD_JUMPRIGHT;
+        return;
+    }
+    
+    if (item->ocb_bits & OCB_LEFTROLL)
+    {
+        item->current_anim = obj->anim_index + ABAD_IDLE_TO_ROLLLEFT;
+        item->current_frame = anims[item->current_anim].frame_base;
+        item->state_current = SBAD_ROLLLEFT;
+        item->state_next = SBAD_ROLLLEFT;
+        return;
     }
 
-    if (ocb > OCB_SLIDE)
+    if (item->ocb_bits & OCB_CROUCH)
     {
+        item->current_anim = obj->anim_index + ABAD_CROUCH_IDLE;
+        item->current_frame = anims[item->current_anim].frame_base;
+        item->state_current = SBAD_CROUCH;
+        item->state_next = SBAD_CROUCH;
+        return;
+    }
 
+    if (item->ocb_bits & OCB_CLIMB4)
+    {
+        item->current_anim = obj->anim_index + ABAD_CLIMB4;
+        item->current_frame = anims[item->current_anim].frame_base;
+        item->state_next = SBAD_CLIMB4;
+        item->state_current = SBAD_CLIMB4;
+        item->pos.x += SINN(item->pos.y_rot) << WALL_SHIFT >> W2V_SHIFT;
+        item->pos.z += COSN(item->pos.y_rot) << WALL_SHIFT >> W2V_SHIFT;
+        return;
+    }
+
+    if (item->ocb_bits > OCB_SLIDE)
+    {
+        item->current_anim = obj->anim_index + ABAD_CROUCH_IDLE;
+        item->current_frame = anims[item->current_anim].frame_base;
+        item->state_next = SBAD_CROUCH;
+        item->state_current = SBAD_CROUCH;
+        item->pos.x += SINN(item->pos.y_rot) << WALL_SHIFT >> W2V_SHIFT;
+        item->pos.z += COSN(item->pos.y_rot) << WALL_SHIFT >> W2V_SHIFT;
     }
 }
 
@@ -594,15 +426,15 @@ void Baddy1Control(short itemNumber)
 
         switch (item->state_current)
         {
-            case SBAD1_MONKEYGRAB:
-            case SBAD1_MONKEYFORWARD:
-            case SBAD1_MONKEYIDLE:
-                item->current_anim = obj->anim_index + ABAD1_MONKEY_TO_FREEFALL;
+            case SBAD_MONKEYGRAB:
+            case SBAD_MONKEYFORWARD:
+            case SBAD_MONKEYIDLE:
+                item->current_anim = obj->anim_index + ABAD_MONKEY_TO_FREEFALL;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_MONKEY_TOFREEFALL;
+                item->state_current = SBAD_MONKEY_TOFREEFALL;
                 item->speed = 0;
                 break;
-            case SBAD1_DEATH:
+            case SBAD_DEATH:
                 item->gravity_status = TRUE;
                 bad->LOT.is_jumping = TRUE;
                 if (item->pos.y >= item->floor)
@@ -612,28 +444,28 @@ void Baddy1Control(short itemNumber)
                     item->fallspeed = 0;
                 }
                 break;
-            case SBAD1_MONKEY_TOFREEFALL:
-                item->state_next = SBAD1_FREEFALL;
+            case SBAD_MONKEY_TOFREEFALL:
+                item->state_next = SBAD_FREEFALL;
                 item->gravity_status = FALSE;
                 break;
-            case SBAD1_FREEFALL:
+            case SBAD_FREEFALL:
                 item->gravity_status = TRUE;
                 if (item->pos.y >= height)
                 {
                     item->pos.y = height;
                     item->gravity_status = FALSE;
                     item->fallspeed = 0;
-                    item->state_next = SBAD1_FREEFALL_DEATH;
+                    item->state_next = SBAD_FREEFALL_DEATH;
                 }
                 break;
-            case SBAD1_FREEFALL_DEATH:
+            case SBAD_FREEFALL_DEATH:
                 item->pos.y = height;
                 break;
             default:
                 bad->LOT.is_jumping = TRUE; // permit the falling in pitfall instead of bugged move
-                item->current_anim = obj->anim_index + ABAD1_IDLE_DEATH;
+                item->current_anim = obj->anim_index + ABAD_IDLE_DEATH;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_DEATH;
+                item->state_current = SBAD_DEATH;
                 
                 Spawner(item);
                 break;
@@ -677,7 +509,7 @@ void Baddy1Control(short itemNumber)
         CreatureMood(item, &info, VIOLENT);
         angle = CreatureTurn(item, bad->maximum_turn);
 
-        if (item->hit_status || (lara_info.distance < 0x100000 || (TargetVisible(item, &lara_info) && abs(lara_item->pos.y - item->pos.y) < WALL_L)))
+        if (item->hit_status || (lara_info.distance < VBAD_DETECT_RANGE || (TargetVisible(item, &lara_info) && abs(lara_item->pos.y - item->pos.y) < WALL_L)))
             bad->alerted = TRUE;
 
         // check for jump and roll
@@ -696,7 +528,7 @@ void Baddy1Control(short itemNumber)
         switch (item->state_current)
         {
             /// BASIC
-            case SBAD1_IDLE:
+            case SBAD_IDLE:
                 bad->LOT.is_jumping = FALSE;
                 bad->LOT.is_monkeying = FALSE;
                 bad->maximum_turn = 0;
@@ -722,19 +554,19 @@ void Baddy1Control(short itemNumber)
                     {
                         case WBAD1_EMPTY:
                             if (item->reserved_3 >= 1)
-                                item->state_next = SBAD1_DRAWGUN;
+                                item->state_next = SBAD_DRAWGUN;
                             else
-                                item->state_next = SBAD1_DRAWSWORD;
+                                item->state_next = SBAD_DRAWSWORD;
                             break;
 
                         case WBAD1_SWORD:
                             if (item->reserved_3 >= 1)
-                                item->state_next = SBAD1_UNDRAWSWORD;
+                                item->state_next = SBAD_UNDRAWSWORD;
                             break;
 
                         case WBAD1_UZI:
                             if (item->reserved_3 <= 0)
-                                item->state_next = SBAD1_UNDRAWGUN;
+                                item->state_next = SBAD_UNDRAWGUN;
                             break;
                     }
                 }
@@ -742,20 +574,20 @@ void Baddy1Control(short itemNumber)
                 if (CHK_ANY(item->ai_bits, GUARD))
                 {
                     rot.head_y = AIGuard(bad);
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 }
                 else if (Targetable(item, &info) && item->reserved_3 >= 1)
                 {
                     if (item->reserved_4 == WBAD1_UZI)
-                        item->state_next = SBAD1_AIM;
+                        item->state_next = SBAD_AIM;
                     else
-                        item->state_next = SBAD1_DRAWGUN;
+                        item->state_next = SBAD_DRAWGUN;
                 }
                 else
                 {
                     if (CHK_ANY(item->ai_bits, MODIFY))
                     {
-                        item->state_next = SBAD1_IDLE;
+                        item->state_next = SBAD_IDLE;
                         if (item->floor > item->pos.y + (STEP_L * 3))
                             item->ai_bits &= ~(MODIFY);
                     }
@@ -765,9 +597,9 @@ void Baddy1Control(short itemNumber)
                         if (item->reserved_4 == WBAD1_SWORD || item->reserved_4 == WBAD1_UZI)
                         {
                             if (item->reserved_4 == WBAD1_SWORD)
-                                item->state_next = SBAD1_UNDRAWSWORD;
+                                item->state_next = SBAD_UNDRAWSWORD;
                             else if (item->reserved_4 == WBAD1_UZI)
-                                item->state_next = SBAD1_UNDRAWGUN;
+                                item->state_next = SBAD_UNDRAWGUN;
                             item->reserved_4 = WBAD1_EMPTY;
                         }
 
@@ -783,59 +615,59 @@ void Baddy1Control(short itemNumber)
                     else if (pjump->can_jump_1click || pjump->can_jump_2click)
                     {
                         bad->maximum_turn = 0;
-                        item->current_anim = obj->anim_index + ABAD1_IDLE_TO_JUMP_FORWARD;
+                        item->current_anim = obj->anim_index + ABAD_IDLE_TO_JUMP_FORWARD;
                         item->current_frame = anims[item->current_anim].frame_base;
-                        item->state_current = SBAD1_JUMPFORWARD_1BLOCK;
+                        item->state_current = SBAD_JUMPFORWARD_1BLOCK;
                         if (!pjump->can_jump_2click)
-                            item->state_next = SBAD1_JUMPFORWARD_1BLOCK;
+                            item->state_next = SBAD_JUMPFORWARD_1BLOCK;
                         else
-                            item->state_next = SBAD1_JUMPFORWARD_2BLOCK;
+                            item->state_next = SBAD_JUMPFORWARD_2BLOCK;
                         bad->LOT.is_jumping = TRUE;
                     }
                     // check if enemy is smallmedikit or uzi ammo
                     // if true and the distance if correct go pickup animation
                     else if (bad->enemy &&
-                            (bad->enemy->object_number == SMALLMEDI_ITEM || bad->enemy->object_number == UZI_AMMO_ITEM) && info.distance < VBAD1_PICKUP_RANGE)
+                            (bad->enemy->object_number == SMALLMEDI_ITEM || bad->enemy->object_number == UZI_AMMO_ITEM) && info.distance < VBAD_DETECT_RANGE)
                     {
                         AlignItemToTarget(item, bad->enemy);
-                        item->state_next = SBAD1_IDLETOCROUCH;
-                        item->state_required = SBAD1_CROUCHPICKUP;
+                        item->state_next = SBAD_IDLETOCROUCH;
+                        item->state_required = SBAD_CROUCHPICKUP;
                     }
                     else
                     {
                         if (roll)
                         {
                             bad->maximum_turn = 0;
-                            item->state_next = SBAD1_ROLLLEFT;
+                            item->state_next = SBAD_ROLLLEFT;
                         }
                         else if (jump)
                         {
                             bad->maximum_turn = 0;
-                            item->state_next = SBAD1_JUMPRIGHT;
+                            item->state_next = SBAD_JUMPRIGHT;
                         }
-                        else if (!bad->enemy || bad->enemy <= 0 || info.distance >= VBAD1_WALK_RANGE)
+                        else if (!bad->enemy || bad->enemy <= 0 || info.distance >= VBAD_WALK_RANGE)
                         {
-                            item->state_next = SBAD1_WALK;
+                            item->state_next = SBAD_WALK;
                         }
-                        else if (info.distance >= VBAD1_ATTACK_RANGE && item->reserved_4 == WBAD1_SWORD)
+                        else if (info.distance >= VBAD_ATTACK_RANGE && item->reserved_4 == WBAD1_SWORD)
                         {
-                            item->state_next = SBAD1_SWORDHITFRONT;
+                            item->state_next = SBAD_SWORDHITFRONT;
                         }
                         else if ((GetRandomControl() & 1) && item->reserved_4 == WBAD1_SWORD)
                         {
-                            item->state_next = SBAD1_SWORDHITLEFT;
+                            item->state_next = SBAD_SWORDHITLEFT;
                         }
                         else if (item->reserved_4 == WBAD1_SWORD)
                         {
-                            item->state_next = SBAD1_SWORDHITRIGHT;
+                            item->state_next = SBAD_SWORDHITRIGHT;
                         }
                     }
                 }
                 break;
-            case SBAD1_WALK:
+            case SBAD_WALK:
                 bad->LOT.is_jumping = FALSE;
                 bad->LOT.is_monkeying = FALSE;
-                bad->maximum_turn = VBAD1_ANGLE_WALK;
+                bad->maximum_turn = VBAD_ANGLE_WALK;
                 bad->flags = 0;
 
                 if (lara_info.ahead)
@@ -852,29 +684,29 @@ void Baddy1Control(short itemNumber)
                         case WBAD1_EMPTY:
                             if (item->reserved_3 >= 1)
                             {
-                                item->state_required = SBAD1_DRAWGUN;
-                                item->state_next = SBAD1_IDLE;
+                                item->state_required = SBAD_DRAWGUN;
+                                item->state_next = SBAD_IDLE;
                             }
                             else
                             {
-                                item->state_required = SBAD1_DRAWSWORD;
-                                item->state_next = SBAD1_IDLE;
+                                item->state_required = SBAD_DRAWSWORD;
+                                item->state_next = SBAD_IDLE;
                             }
                             break;
 
                         case WBAD1_SWORD:
                             if (item->reserved_3 >= 1)
                             {
-                                item->state_required = SBAD1_UNDRAWSWORD;
-                                item->state_next = SBAD1_IDLE;
+                                item->state_required = SBAD_UNDRAWSWORD;
+                                item->state_next = SBAD_IDLE;
                             }
                             break;
 
                         case WBAD1_UZI:
                             if (item->reserved_3 <= 0)
                             {
-                                item->state_required = SBAD1_UNDRAWGUN;
-                                item->state_next = SBAD1_IDLE;
+                                item->state_required = SBAD_UNDRAWGUN;
+                                item->state_next = SBAD_IDLE;
                             }
                             break;
                     }
@@ -883,60 +715,60 @@ void Baddy1Control(short itemNumber)
                 // uzi have ammo ? then if lara can be targeted go to aim state
                 if (Targetable(item, &info) && item->reserved_3 > 0)
                 {
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 }
                 else if(pjump->can_jump_1click || pjump->can_jump_2click)
                 {
                     bad->maximum_turn = 0;
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 }
                 else
                 {
                     if (bad->monkey_ahead || bad->reached_goal)
                     {
-                        item->state_next = SBAD1_IDLE;
+                        item->state_next = SBAD_IDLE;
                     }
-                    else if (info.ahead && info.distance < VBAD1_ATTACK_RANGE)
+                    else if (info.ahead && info.distance < VBAD_ATTACK_RANGE)
                     {
-                        item->state_next = SBAD1_IDLE;
+                        item->state_next = SBAD_IDLE;
                     }
-                    else if (info.bite && info.distance < VBAD1_WALK_RANGE)
+                    else if (info.bite && info.distance < VBAD_WALK_RANGE)
                     {
-                        item->state_next = SBAD1_IDLE;
+                        item->state_next = SBAD_IDLE;
                     }
-                    else if (info.distance < VBAD1_RUN_RANGE && item->reserved_4 == WBAD1_SWORD)
+                    else if (info.distance < VBAD_RUN_RANGE && item->reserved_4 == WBAD1_SWORD)
                     {
-                        item->state_next = SBAD1_WALKSWORDHITRIGHT;
+                        item->state_next = SBAD_WALKSWORDHITRIGHT;
                     }
                     else
                     {
                         if (roll || jump)
-                            item->state_next = SBAD1_IDLE;
-                        else if (bad->mood == ATTACK_MOOD && !bad->jump_ahead && info.distance > VBAD1_RUN_RANGE)
-                            item->state_next = SBAD1_RUN;
+                            item->state_next = SBAD_IDLE;
+                        else if (bad->mood == ATTACK_MOOD && !bad->jump_ahead && info.distance > VBAD_RUN_RANGE)
+                            item->state_next = SBAD_RUN;
                     }
                 }
                 break;
-            case SBAD1_RUN:
-                bad->maximum_turn = VBAD1_ANGLE_RUN;
+            case SBAD_RUN:
+                bad->maximum_turn = VBAD_ANGLE_RUN;
                 tilt = (angle / 2);
 
                 if (Targetable(item, &info) && item->reserved_3 >= 1)
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 else if (CHK_ANY(item->ai_bits, GUARD))
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 else if (pjump->can_jump_1click || pjump->can_jump_2click)
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 else if (bad->monkey_ahead || bad->jump_ahead)
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 else if (info.distance < 0x5C0A4) // attack ?
-                    item->state_next = SBAD1_IDLE;
-                else if (info.distance < VBAD1_RUN_RANGE)
-                    item->state_next = SBAD1_WALK;
+                    item->state_next = SBAD_IDLE;
+                else if (info.distance < VBAD_RUN_RANGE)
+                    item->state_next = SBAD_WALK;
                 break;
 
             /// ATTACK
-            case SBAD1_AIM:
+            case SBAD_AIM:
                 bad->maximum_turn = 0;
 
                 if (info.ahead)
@@ -947,11 +779,11 @@ void Baddy1Control(short itemNumber)
 
                 // this baddy have ammo ?
                 if (Targetable(item, &info) && item->reserved_3 >= 1)
-                    item->state_next = SBAD1_FIRE;
+                    item->state_next = SBAD_FIRE;
                 else
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 break;
-            case SBAD1_FIRE:
+            case SBAD_FIRE:
                 bad->maximum_turn = 0;
 
                 if (info.ahead)
@@ -966,14 +798,14 @@ void Baddy1Control(short itemNumber)
                     item->fired_weapon = 1;
                     if (CHK_NOP(item->ai_bits, MODIFY))
                         item->reserved_3--; // decrease ammo.
-                    if (!ShotLara(item, &info, &baddy_gun, rot.torso_y, VBAD1_GUN_DAMAGE))
-                        item->state_next = SBAD1_IDLE;
+                    if (!ShotLara(item, &info, &baddy_gun, rot.torso_y, VBAD_GUN_DAMAGE))
+                        item->state_next = SBAD_IDLE;
                 }
                 break;
 
-            case SBAD1_SWORDHITFRONT:
-            case SBAD1_SWORDHITLEFT:
-            case SBAD1_WALKSWORDHITRIGHT:
+            case SBAD_SWORDHITFRONT:
+            case SBAD_SWORDHITLEFT:
+            case SBAD_WALKSWORDHITRIGHT:
                 bad->maximum_turn = 0;
                 if (info.ahead)
                 {
@@ -981,10 +813,10 @@ void Baddy1Control(short itemNumber)
                     rot.torso_x = info.x_angle;
                 }
 
-                if (!bad->flags && (item->touch_bits & VBAD1_TOUCHBITS))
+                if (!bad->flags && (item->touch_bits & VBAD_TOUCHBITS))
                 {
                     CreatureEffectAlternate(item, &baddy_sword, 10, item->pos.y_rot, DoBloodSplat);
-                    lara_item->hit_points -= VBAD1_DAMAGE;
+                    lara_item->hit_points -= VBAD_DAMAGE;
                     lara_item->hit_status = TRUE;
                     bad->flags = 1;
                 }
@@ -993,9 +825,9 @@ void Baddy1Control(short itemNumber)
                     bad->flags = 0;
                 break;
 
-            case SBAD1_SWORDHITRIGHT:
-                if (info.distance < VBAD1_ATTACK_RANGE)
-                    item->state_next = SBAD1_SWORDHITLEFT;
+            case SBAD_SWORDHITRIGHT:
+                if (info.distance < VBAD_ATTACK_RANGE)
+                    item->state_next = SBAD_SWORDHITLEFT;
 
                 bad->maximum_turn = 0;
                 if (info.ahead)
@@ -1004,10 +836,10 @@ void Baddy1Control(short itemNumber)
                     rot.torso_x = info.x_angle;
                 }
 
-                if (!bad->flags && (item->touch_bits & VBAD1_TOUCHBITS))
+                if (!bad->flags && (item->touch_bits & VBAD_TOUCHBITS))
                 {
                     CreatureEffectAlternate(item, &baddy_sword, 10, item->pos.y_rot, DoBloodSplat);
-                    lara_item->hit_points -= VBAD1_DAMAGE;
+                    lara_item->hit_points -= VBAD_DAMAGE;
                     lara_item->hit_status = TRUE;
                     bad->flags = 1;
                 }
@@ -1017,7 +849,7 @@ void Baddy1Control(short itemNumber)
                 break;
 
             /// MONKEY
-            case SBAD1_MONKEYIDLE:
+            case SBAD_MONKEYIDLE:
                 rot.torso_y = 0;
                 rot.torso_x = 0;
                 rot.head_y = 0;
@@ -1026,30 +858,30 @@ void Baddy1Control(short itemNumber)
                 bad->LOT.is_jumping = TRUE;
                 bad->maximum_turn = 0;
                 bad->flags = 0;
-
+                
                 ls = lara_item->state_current;
-                if (lara_info.ahead && lara_info.distance < VBAD1_WALK_RANGE && ((ls > 74 && ls < 80) || ls == 82 || ls == 83))
+                if (lara_info.ahead && lara_info.distance < VBAD_WALK_RANGE && ((ls > 74 && ls < 80) || ls == 82 || ls == 83))
                 {
-                    item->state_next = SBAD1_MONKEYPUSHOFF;
+                    item->state_next = SBAD_MONKEYPUSHOFF;
                 }
                 else if (item->box_number != bad->LOT.target_box)
                 {
-                    item->state_next = SBAD1_MONKEYFORWARD;
+                    item->state_next = SBAD_MONKEYFORWARD;
                 }
                 else
                 {
-                    item->state_next = SBAD1_MONKEYFALLLAND;
+                    item->state_next = SBAD_MONKEYFALLLAND;
                     bad->LOT.is_jumping = FALSE;
                     bad->LOT.is_monkeying = FALSE;
                 }
 
                 break;
-            case SBAD1_MONKEYFORWARD:
+            case SBAD_MONKEYFORWARD:
                 rot.torso_y = 0;
                 rot.torso_x = 0;
                 rot.head_y = 0;
                 rot.head_x = 0;
-                bad->maximum_turn = VBAD1_ANGLE_WALK;
+                bad->maximum_turn = VBAD_ANGLE_WALK;
                 bad->flags = 0;
 
                 roomNumber = item->room_number;
@@ -1061,23 +893,23 @@ void Baddy1Control(short itemNumber)
                 if (item->box_number == bad->LOT.target_box || !bad->monkey_ahead)
                 {
                     if (ceiling <= height - 1536)
-                        item->state_next = SBAD1_MONKEYIDLE;
+                        item->state_next = SBAD_MONKEYIDLE;
                 }
 
-                if (lara_info.ahead && lara_info.distance < VBAD1_WALK_RANGE)
+                if (lara_info.ahead && lara_info.distance < VBAD_WALK_RANGE)
                 {
                     if ((ls > 74 && ls < 80) || ls == 82 || ls == 83)
-                        item->state_next = SBAD1_MONKEYIDLE;
+                        item->state_next = SBAD_MONKEYIDLE;
                 }
                 break;
-            case SBAD1_MONKEYPUSHOFF:
+            case SBAD_MONKEYPUSHOFF:
                 rot.torso_y = 0;
                 rot.torso_x = 0;
                 rot.head_y = 0;
                 rot.head_x = 0;
                 bad->LOT.is_monkeying = TRUE;
                 bad->LOT.is_jumping = TRUE;
-                bad->maximum_turn = VBAD1_ANGLE_WALK;
+                bad->maximum_turn = VBAD_ANGLE_WALK;
                 bad->flags = 0;
 
                 if (!bad->flags && item->touch_bits)
@@ -1096,40 +928,40 @@ void Baddy1Control(short itemNumber)
                 break;
             
             /// JUMP/ROLL
-            case SBAD1_ROLLLEFT:
-            case SBAD1_JUMPRIGHT:
+            case SBAD_ROLLLEFT:
+            case SBAD_JUMPRIGHT:
                 bad->alerted = FALSE;
                 bad->maximum_turn = 0;
                 item->status = FITEM_ACTIVE;
                 break;
-            case SBAD1_JUMPFORWARD_1BLOCK:
-            case SBAD1_JUMPFORWARD_2BLOCK:
-                if (item->reserved_1 < 0 && item->current_anim != (obj->anim_index + ABAD1_IDLE_TO_JUMP_FORWARD))
+            case SBAD_JUMPFORWARD_1BLOCK:
+            case SBAD_JUMPFORWARD_2BLOCK:
+                if (item->reserved_1 < 0 && item->current_anim != (obj->anim_index + ABAD_IDLE_TO_JUMP_FORWARD))
                     item->reserved_1 += 2; // ??
                 break;
 
             /// CROUCH
-            case SBAD1_CROUCH:
+            case SBAD_CROUCH:
                 if (item->reserved_1)
                 {
                     if (info.distance < 0x718E4)
                     {
-                        item->state_next = SBAD1_CROUCHTOIDLE;
+                        item->state_next = SBAD_CROUCHTOIDLE;
                         bad->enemy = nullptr;
                     }
                 }
                 else if (bad->enemy &&
                         (bad->enemy->object_number == SMALLMEDI_ITEM || bad->enemy->object_number == UZI_AMMO_ITEM) &&
-                        info.distance < VBAD1_PICKUP_RANGE)
+                        info.distance < VBAD_DETECT_RANGE)
                 {
-                    item->state_next = SBAD1_CROUCHPICKUP;
+                    item->state_next = SBAD_CROUCHPICKUP;
                 }
                 else if (bad->alerted)
                 {
-                    item->state_next = SBAD1_CROUCHTOIDLE;
+                    item->state_next = SBAD_CROUCHTOIDLE;
                 }
                 break;
-            case SBAD1_CROUCHPICKUP:
+            case SBAD_CROUCHPICKUP:
                 if (bad->enemy && frame == 9)
                 {
                     if (bad->enemy->object_number != SMALLMEDI_ITEM && bad->enemy->object_number != UZI_AMMO_ITEM)
@@ -1156,36 +988,36 @@ void Baddy1Control(short itemNumber)
                 break;
 
             /// BLIND
-            case SBAD1_BLIND:
+            case SBAD_BLIND:
                 if (!EntityBlindTimer) // no random anymore, it's not like this in reality :D
-                    item->state_next = SBAD1_IDLE;
+                    item->state_next = SBAD_IDLE;
                 break;
 
             /// DRAW/UNDRAW
-            case SBAD1_DRAWGUN:
+            case SBAD_DRAWGUN:
                 if (frame == 21)
                     item->reserved_4 = WBAD1_UZI;
                 break;
-            case SBAD1_UNDRAWGUN:
+            case SBAD_UNDRAWGUN:
                 if (frame == 21)
                     item->reserved_4 = WBAD1_EMPTY; // to not switch the render directly
                 break;
 
-            case SBAD1_DRAWSWORD:
+            case SBAD_DRAWSWORD:
                 if (frame == 12)
                     item->reserved_4 = WBAD1_SWORD;
                 break;
-            case SBAD1_UNDRAWSWORD:
+            case SBAD_UNDRAWSWORD:
                 if (frame == 22)
                     item->reserved_4 = WBAD1_EMPTY; // to not switch the render directly
                 break;
 
             /// CLIMB/JUMPOFF (stop rotation)
-            case SBAD1_CLIMB2:
-            case SBAD1_CLIMB3:
-            case SBAD1_CLIMB4:
-            case SBAD1_JUMPOFF3:
-            case SBAD1_JUMPOFF4:
+            case SBAD_CLIMB2:
+            case SBAD_CLIMB3:
+            case SBAD_CLIMB4:
+            case SBAD_JUMPOFF3:
+            case SBAD_JUMPOFF4:
                 bad->maximum_turn = 0;
                 break;
         }
@@ -1207,45 +1039,45 @@ void Baddy1Control(short itemNumber)
     if (EntityBlindTimer > 16)
     {
         bad->maximum_turn = 0;
-        item->current_anim = obj->anim_index + ABAD1_BLIND;
+        item->current_anim = obj->anim_index + ABAD_BLIND;
         item->current_frame = anims[item->current_anim].frame_base;
-        item->state_current = SBAD1_BLIND;
-        item->state_next = SBAD1_BLIND;
+        item->state_current = SBAD_BLIND;
+        item->state_next = SBAD_BLIND;
     }
     // can climb ?
-    else if (!(item->state_current >= SBAD1_DEATH && item->state_current <= SBAD1_JUMPOFF3) && !(item->state_current >= SBAD1_MONKEYGRAB && item->state_current <= SBAD1_MONKEYFALLLAND))
+    else if (!(item->state_current >= SBAD_DEATH && item->state_current <= SBAD_JUMPOFF3) && !(item->state_current >= SBAD_MONKEYGRAB && item->state_current <= SBAD_MONKEYFALLLAND))
     {
-        switch (CreatureVault(itemNumber, angle, 2, VBAD1_SHIFT))
+        switch (CreatureVault(itemNumber, angle, 2, VBAD_SHIFT))
         {
-            case VBAD1_FALL3:
-                item->current_anim = obj->anim_index + ABAD1_JUMPOFF3;
+            case VBAD_FALL3:
+                item->current_anim = obj->anim_index + ABAD_JUMPOFF3;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_JUMPOFF3;
-                item->state_next = SBAD1_JUMPOFF3;
+                item->state_current = SBAD_JUMPOFF3;
+                item->state_next = SBAD_JUMPOFF3;
                 break;
-            case VBAD1_FALL4:
-                item->current_anim = obj->anim_index + ABAD1_JUMPOFF4;
+            case VBAD_FALL4:
+                item->current_anim = obj->anim_index + ABAD_JUMPOFF4;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_JUMPOFF4;
-                item->state_next = SBAD1_JUMPOFF4;
+                item->state_current = SBAD_JUMPOFF4;
+                item->state_next = SBAD_JUMPOFF4;
                 break;
-            case VBAD1_CLIMB2:
-                item->current_anim = obj->anim_index + ABAD1_CLIMB2;
+            case VBAD_CLIMB2:
+                item->current_anim = obj->anim_index + ABAD_CLIMB2;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_CLIMB2;
-                item->state_next = SBAD1_CLIMB2;
+                item->state_current = SBAD_CLIMB2;
+                item->state_next = SBAD_CLIMB2;
                 break;
-            case VBAD1_CLIMB3:
-                item->current_anim = obj->anim_index + ABAD1_CLIMB3;
+            case VBAD_CLIMB3:
+                item->current_anim = obj->anim_index + ABAD_CLIMB3;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_CLIMB3;
-                item->state_next = SBAD1_CLIMB3;
+                item->state_current = SBAD_CLIMB3;
+                item->state_next = SBAD_CLIMB3;
                 break;
-            case VBAD1_CLIMB4:
-                item->current_anim = obj->anim_index + ABAD1_CLIMB4;
+            case VBAD_CLIMB4:
+                item->current_anim = obj->anim_index + ABAD_CLIMB4;
                 item->current_frame = anims[item->current_anim].frame_base;
-                item->state_current = SBAD1_CLIMB4;
-                item->state_next = SBAD1_CLIMB4;
+                item->state_current = SBAD_CLIMB4;
+                item->state_next = SBAD_CLIMB4;
                 break;
         }
     }
