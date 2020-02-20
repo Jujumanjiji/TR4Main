@@ -4,6 +4,22 @@ using namespace std;
 
 //#define DEBUG_MODE
 
+#define PISTOLS_GUNPOS_X 10
+#define PISTOLS_GUNPOS_Y 190
+#define PISTOLS_GUNPOS_Z 40
+#define SHOTGUN_GUNPOS_X 0
+#define SHOTGUN_GUNPOS_Y 180
+#define SHOTGUN_GUNPOS_Z 80
+#define UZIS_GUNPOS_X 0
+#define UZIS_GUNPOS_Y 190
+#define UZIS_GUNPOS_Z 50
+#define REVOLVER_GUNPOS_X 0
+#define REVOLVER_GUNPOS_Y 215
+#define REVOLVER_GUNPOS_Z 65
+#define GRENADEGUN_GUNPOS_X -16
+#define GRENADEGUN_GUNPOS_Y 228
+#define GRENADEGUN_GUNPOS_Z 32
+
 #define LT_Default             (char*)0
 #define LT_Enter               (char*)1
 #define LT_Exit                (char*)2

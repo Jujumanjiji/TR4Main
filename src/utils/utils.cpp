@@ -137,18 +137,6 @@ void SpawnPickup(ITEM_INFO *item)
     while (pickup_number != NO_ITEM);
 }
 
-#define PISTOLS_GUNPOS_X 10
-#define PISTOLS_GUNPOS_Y 190
-#define PISTOLS_GUNPOS_Z 40
-
-#define UZIS_GUNPOS_X 0
-#define UZIS_GUNPOS_Y 190
-#define UZIS_GUNPOS_Z 50
-
-#define REVOLVER_GUNPOS_X 0
-#define REVOLVER_GUNPOS_Y 215
-#define REVOLVER_GUNPOS_Z 65
-
 /*
 void SetGunFlash_Left(int weapon_type)
 {
@@ -611,6 +599,11 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
     z = src->pos.z - target->pos.z;
     distance = SQUARE(x) + SQUARE(y) + SQUARE(z);
     return distance;
+}
+
+short* GetMeshes(short objNumber, short meshID)
+{
+    return meshes[objects[objNumber].mesh_index + meshID * 2];
 }
 
 void phd_SwapPushMatrix(int frac)

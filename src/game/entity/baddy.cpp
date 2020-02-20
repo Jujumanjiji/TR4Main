@@ -989,7 +989,7 @@ void Baddy1Control(short itemNumber)
 
             /// BLIND
             case SBAD_BLIND:
-                if (!EntityBlindTimer) // no random anymore, it's not like this in reality :D
+                if (!lara.blind_timer) // no random anymore, it's not like this in reality :D
                     item->state_next = SBAD_IDLE;
                 break;
 
@@ -1036,7 +1036,7 @@ void Baddy1Control(short itemNumber)
 
     }
 
-    if (EntityBlindTimer > 16)
+    if (lara.blind_timer > 16)
     {
         bad->maximum_turn = 0;
         item->current_anim = obj->anim_index + ABAD_BLIND;

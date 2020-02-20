@@ -23,6 +23,7 @@ extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
 extern void Spawner(ITEM_INFO* item);
 extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
+extern short* GetMeshes(short objNumber, short meshID);
 
 /// new:
 extern void phd_SwapPushMatrix(int frac);

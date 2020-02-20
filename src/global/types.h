@@ -21,6 +21,32 @@ struct LEVEL_DATA
 };
 */
 
+struct WEAPON_INFO
+{
+    short lock_angle[4];
+    short left_angle[4];
+    short right_angle[4];
+    short aim_speed;
+    short shot_accuracy;
+    short gun_height;
+    short target_dist;
+    char damage;
+    char recoil_frame;
+    char flash_time;
+    char draw_frame;
+    short sample_id;
+};
+
+struct PISTOL_DEF
+{
+    short object_number;
+    char draw1_anim2;
+    char draw1_anim;
+    char draw2_anim;
+    char recoil_anim;
+};
+
+
 struct BITE_INFO
 {
     int x;
@@ -451,10 +477,10 @@ struct LARA_ARM
     short *frame_base;
     short frame_curr;
     short anim_curr;
+    short lock;
     short y_rot;
     short x_rot;
     short z_rot;
-    short lock;
     short flash_gun;
 };
 
@@ -465,130 +491,23 @@ struct UnknownStruct
     char byte_80E139;
 };
 
-struct LARA_INFO
+struct LARA_MESH
 {
-    short item_number;
-    short gun_status;
-    short gun_type;
-    short gun_request_type;
-    short gun_last_type;
-    short calc_fallspeed;
-    short water_status;
-    short climb_status;
-    short pose_count;
-    short hit_frame;
-    short hit_direction;
-    short air;
-    short dive_count;
-    short death_count;
-    short current_active;
-    short current_xvel;
-    short current_yvel;
-    short current_zvel;
-    short spaz_effect_count;
-    short flare_age;
-    short skidoo;
-    short weapon_item;
-    short weapon_back_item;
-    short flare_frame;
-    short poison1;
-    short poison2;
-    unsigned char anxiety;
-    unsigned char wet[15];
-    WORD flare_control_left : 1; // LOBYTE
-    WORD flare_control_right : 1;
-    WORD look : 1;
-    WORD burn : 1;
-    WORD keep_ducked : 1;
-    WORD is_moving : 1;
-    WORD can_monkey_swing : 1;
-    WORD burn_blue : 1;
-    WORD burn_smoke : 1;         // HIBYTE
-    WORD is_ducked : 1;
-    WORD has_fired : 1;
-    WORD busy : 1;
-    WORD lit_torch : 1;
-    WORD is_climbing : 1;
-    WORD fired : 1;
-    long water_surface_dist;
-    PHD_VECTOR last_pos;
-    FX_INFO *spaz_effect;
-    int mesh_effects;
-    short *mesh[15];
-    ITEM_INFO *target;
-    short target_angles[2];
-    short turn_rate;
-    short move_angle;
-    short head_y_rot;
-    short head_x_rot;
-    short head_z_rot;
-    short torso_y_rot;
-    short torso_x_rot;
-    short torso_z_rot;
-    LARA_ARM left_arm;
-    LARA_ARM right_arm;
-    WORD current_holster;
-    CREATURE_INFO *creature;
-    long corner_x;
-    long corner_z;
-    char rope_segment;
-    char rope_direction;
-    short rope_arc_front;
-    short rope_arc_back;
-    short rope_last_x;
-    short rope_maxX_forward;
-    short rope_maxX_backward;
-    long rope_dframe;
-    long rope_frame;
-    WORD rope_framerate;
-    WORD rope_y;
-    long rope_ptr;
-    LPVOID general_ptr;
-    int rope_offset;
-    DWORD rope_downvel;
-    char rope_flag;
-    char move_count;
-    int rope_count;
-    char pistols_type_carried;
-    char uzi_type_carried;
-    char shotgun_type_carried;
-    char crossbow_type_carried;
-    char grenadegun_type_carried;
-    char sixshooter_type_carried;
-    char lasersight;
-    char binoculars;
-    char crowbar;
-    char clockwork_beetle;
-    char water_skin_empty1;
-    char water_skin_empty2;
-    char examine1;
-    char examine2;
-    char examine3;
-    char puzzleitems[12];
-    short puzzleitemscombo;
-    short keyitems;
-    short keyitemscombo;
-    short pickupitems;
-    short pickupitemscombo;
-    short questitems;
-    short small_medipack_count;
-    short large_medipack_count;
-    short flare_count;
-    short pistol_ammo_count;
-    short uzi_ammo_count;
-    short sixshooter_ammo_count;
-    short shotgun_ammo1_count;
-    short shotgun_ammo2_count;
-    short grenade_ammo1_count;
-    short grenade_ammo2_count;
-    short grenade_ammo3_count;
-    short crossbow_ammo1_count;
-    short crossbow_ammo2_count;
-    short crossbow_ammo3_count;
-    char location;
-    char blind_timer;
-    UnknownStruct unknown;
-    short dash_timer;
+    short *hips;
+    short *thigh_l;
+    short *calf_l;
+    short *foot_l;
+    short *thigh_r;
+    short *calf_r;
+    short *foot_r;
+    short *torso;
+    short *uarm_r;
+    short *larm_r;
+    short *hand_r;
+    short *uarm_l;
+    short *larm_l;
+    short *hand_l;
+    short *head;
 };
 
 struct FX_INFO
@@ -612,6 +531,26 @@ struct DOOR_VBUF
     int xv;
     int yv;
     int zv;
+};
+
+struct ROPE_STRUCT
+{
+    PHD_VECTOR seg[24];
+    PHD_VECTOR vel[24];
+    PHD_VECTOR normal[24];
+    PHD_VECTOR mesh[24];
+    PHD_VECTOR pos;
+    int segLength;
+    short active;
+    short coiled;
+};
+
+struct PENDULUM
+{
+    PHD_VECTOR pos;
+    PHD_VECTOR vel;
+    int node;
+    ROPE_STRUCT *rope;
 };
 
 struct GUNFLASH_STRUCT
@@ -985,6 +924,132 @@ struct OBJECT_FOUND
 {
     short item_number;
     ITEM_INFO* target;
+};
+
+struct LARA_INFO
+{
+    short item_number;
+    short gun_status;         // LHS_ enum
+    short gun_type;           // LG_ enum
+    short gun_request_type;   // LG_ enum
+    short gun_last_type;      // LG_ enum
+    short calc_fallspeed;
+    short water_status;       // LWS_ enum
+    short climb_status;
+    short pose_count;
+    short hit_frame;
+    short hit_direction;
+    short air;
+    short dive_count;
+    short death_count;
+    short current_active;
+    short current_xvel;
+    short current_yvel;
+    short current_zvel;
+    short spaz_effect_count;
+    short flare_age;
+    short skidoo;
+    short weapon_item;
+    short back_gun;
+    short flare_frame;
+    short poisoned;
+    short electric;
+    unsigned char anxiety;
+    unsigned char wet[15];
+    WORD flare_control_left : 1; // LOBYTE
+    WORD flare_control_right : 1;
+    WORD look : 1;
+    WORD burn : 1;
+    WORD keep_ducked : 1;
+    WORD is_moving : 1;
+    WORD can_monkey_swing : 1;
+    WORD burn_blue : 1;
+    WORD burn_smoke : 1;         // HIBYTE
+    WORD is_ducked : 1;
+    WORD has_fired : 1;
+    WORD busy : 1;
+    WORD lit_torch : 1;
+    WORD is_climbing : 1;
+    WORD fired : 1;
+    long water_surface_dist;
+    PHD_VECTOR last_pos;
+    FX_INFO *spaz_effect;
+    int mesh_effects;
+    LARA_MESH mesh;
+    ITEM_INFO *target;
+    short target_angles[2];
+    short turn_rate;
+    short move_angle;
+    short head_y_rot;
+    short head_x_rot;
+    short head_z_rot;
+    short torso_y_rot;
+    short torso_x_rot;
+    short torso_z_rot;
+    LARA_ARM l_arm;
+    LARA_ARM r_arm;
+    WORD current_holster;
+    CREATURE_INFO *creature;
+    long corner_x;
+    long corner_z;
+    char rope_segment;
+    char rope_direction;
+    short rope_arc_front;
+    short rope_arc_back;
+    short rope_last_x;
+    short rope_maxX_forward;
+    short rope_maxX_backward;
+    long rope_dframe;
+    long rope_frame;
+    WORD rope_framerate;
+    WORD rope_y;
+    long rope_ptr;
+    LPVOID general_ptr;
+    int rope_offset;
+    DWORD rope_downvel;
+    char rope_flag;
+    char move_count;
+    int rope_count;
+    char pistols_type_carried;
+    char uzi_type_carried;
+    char shotgun_type_carried;
+    char crossbow_type_carried;
+    char grenadegun_type_carried;
+    char sixshooter_type_carried;
+    char lasersight;
+    char binoculars;
+    char crowbar;
+    char clockwork_beetle;
+    char water_skin_empty1;
+    char water_skin_empty2;
+    char examine1;
+    char examine2;
+    char examine3;
+    char puzzleitems[12];
+    short puzzleitemscombo;
+    short keyitems;
+    short keyitemscombo;
+    short pickupitems;
+    short pickupitemscombo;
+    short questitems;
+    short small_medipack_count;
+    short large_medipack_count;
+    short flare_count;
+    short pistol_ammo_count;
+    short uzi_ammo_count;
+    short sixshooter_ammo_count;
+    short shotgun_ammo1_count;
+    short shotgun_ammo2_count;
+    short grenade_ammo1_count;
+    short grenade_ammo2_count;
+    short grenade_ammo3_count;
+    short crossbow_ammo1_count;
+    short crossbow_ammo2_count;
+    short crossbow_ammo3_count;
+    char location;
+    char blind_timer;
+    UnknownStruct unknown;
+    short dash_timer;
 };
 
 struct BONE
