@@ -36,6 +36,14 @@ short GetCurrentFrame(ITEM_INFO * item)
     return (item->current_frame - anims[item->current_anim].frame_base);
 }
 
+void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue)
+{
+    if (CHK_ANY(gf_level_flags, SLEV_MIRROR) && lara_item->room_number == short(gf_mirror_room))
+        TriggerDynamic_Mirror(x, y, z, intensity, red, green, blue);
+    else
+        TriggerDynamic(x, y, z, intensity, red, green, blue);
+}
+
 void phd_SwapMatrix(int* dest, int* src)
 {
     dest[M00] = src[M00];

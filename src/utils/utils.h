@@ -4,6 +4,7 @@ extern bool isFolderExists(LPCSTR folder_name);
 extern bool isFileExists(LPCSTR file_name);
 extern void createFolders(LPCSTR folder_name);
 extern short GetCurrentFrame(ITEM_INFO* item);
+extern void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue);
 extern void phd_SwapMatrix(int* dest, int* src);
 extern void phd_SwapGunMatrix(PHD_MATRIX& dest, int* src, bool swap);
 extern void SpawnPickup(ITEM_INFO* item);

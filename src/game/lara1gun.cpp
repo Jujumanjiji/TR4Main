@@ -169,20 +169,14 @@ void shotgun_handler(int weapon_type)
                 pos.y = SHOTGUN_GUNPOS_Y;
                 pos.z = SHOTGUN_GUNPOS_Z;
                 GetLaraHandAbsPosition(&pos, HAND_R);
-                if (CHK_ANY(gf_level_flags, SLEV_MIRROR) && lara_item->room_number == short(gf_mirror_room))
-                    TriggerDynamic_Mirror(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
-                else
-                    TriggerDynamic(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
+                TriggerDynamicSwap(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
                 break;
             case LG_REVOLVER:
                 pos.x = REVOLVER_GUNPOS_X;
                 pos.y = REVOLVER_GUNPOS_Y;
                 pos.z = REVOLVER_GUNPOS_Z;
                 GetLaraHandAbsPosition(&pos, HAND_R);
-                if (CHK_ANY(gf_level_flags, SLEV_MIRROR) && lara_item->room_number == short(gf_mirror_room))
-                    TriggerDynamic_Mirror(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) - 64, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
-                else
-                    TriggerDynamic(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) - 64, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
+                TriggerDynamicSwap(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) - 64, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
                 break;
         }
     }
