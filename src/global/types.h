@@ -458,6 +458,13 @@ struct LARA_ARM
     short flash_gun;
 };
 
+struct UnknownStruct
+{
+    char byte_80E137;
+    char byte_80E138;
+    char byte_80E139;
+};
+
 struct LARA_INFO
 {
     short item_number;
@@ -488,13 +495,27 @@ struct LARA_INFO
     short poison2;
     unsigned char anxiety;
     unsigned char wet[15];
-    unsigned short flags;
-    int water_surface_dist;
+    WORD flare_control_left : 1; // LOBYTE
+    WORD flare_control_right : 1;
+    WORD look : 1;
+    WORD burn : 1;
+    WORD keep_ducked : 1;
+    WORD is_moving : 1;
+    WORD can_monkey_swing : 1;
+    WORD burn_blue : 1;
+    WORD burn_smoke : 1;         // HIBYTE
+    WORD is_ducked : 1;
+    WORD has_fired : 1;
+    WORD busy : 1;
+    WORD lit_torch : 1;
+    WORD is_climbing : 1;
+    WORD fired : 1;
+    long water_surface_dist;
     PHD_VECTOR last_pos;
-    int* spaz_effect;
-    int mesh_effect;
-    short *meshes[15];
-    ITEM_INFO* target;
+    FX_INFO *spaz_effect;
+    int mesh_effects;
+    short *mesh[15];
+    ITEM_INFO *target;
     short target_angles[2];
     short turn_rate;
     short move_angle;
@@ -506,7 +527,68 @@ struct LARA_INFO
     short torso_z_rot;
     LARA_ARM left_arm;
     LARA_ARM right_arm;
-    short holster;
+    WORD current_holster;
+    CREATURE_INFO *creature;
+    long corner_x;
+    long corner_z;
+    char rope_segment;
+    char rope_direction;
+    short rope_arc_front;
+    short rope_arc_back;
+    short rope_last_x;
+    short rope_maxX_forward;
+    short rope_maxX_backward;
+    long rope_dframe;
+    long rope_frame;
+    WORD rope_framerate;
+    WORD rope_y;
+    long rope_ptr;
+    LPVOID general_ptr;
+    int rope_offset;
+    DWORD rope_downvel;
+    char rope_flag;
+    char move_count;
+    int rope_count;
+    char pistols_type_carried;
+    char uzi_type_carried;
+    char shotgun_type_carried;
+    char crossbow_type_carried;
+    char grenadegun_type_carried;
+    char sixshooter_type_carried;
+    char lasersight;
+    char binoculars;
+    char crowbar;
+    char clockwork_beetle;
+    char water_skin_empty1;
+    char water_skin_empty2;
+    char examine1;
+    char examine2;
+    char examine3;
+    char puzzleitems[12];
+    short puzzleitemscombo;
+    short keyitems;
+    short keyitemscombo;
+    short pickupitems;
+    short pickupitemscombo;
+    short questitems;
+    short small_medipack_count;
+    short large_medipack_count;
+    short flare_count;
+    short pistol_ammo_count;
+    short uzi_ammo_count;
+    short sixshooter_ammo_count;
+    short shotgun_ammo1_count;
+    short shotgun_ammo2_count;
+    short grenade_ammo1_count;
+    short grenade_ammo2_count;
+    short grenade_ammo3_count;
+    short crossbow_ammo1_count;
+    short crossbow_ammo2_count;
+    short crossbow_ammo3_count;
+    char location;
+    char blind_timer;
+    UnknownStruct unknown;
+    short dash_timer;
 };
 
 struct FX_INFO

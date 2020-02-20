@@ -35,7 +35,7 @@ void phd_PopMatrix(void)
 
 void injector::inject_3d_gen_a()
 {
-    this->inject(0x004902B0, phd_PushMatrix);
-    this->inject(0x00490310, phd_PushUnitMatrix);
-    this->inject(NULL,       phd_PopMatrix); // original are define !
+    //this->inject(0x004902B0, phd_PushMatrix);
+    //this->inject(0x00490310, phd_PushUnitMatrix);
+    //this->inject(NULL,       phd_PopMatrix); // original are define !
 }

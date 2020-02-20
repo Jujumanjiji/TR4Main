@@ -778,7 +778,46 @@ void DrawAnimatingItem(ITEM_INFO* item)
     phd_bottom = phd_winheight;
     phd_PopMatrix();
 }
-*/
+
+void gar_RotYXZsuperpack(short** pprot, int skip)
+{
+    short v2;
+    WORD *prot;
+    WORD shift;
+    int alt;
+
+    while (skip)
+    {
+        prot = (WORD*)*pprot; // get the current value.
+        if (*prot & (3 << 14))
+            (*pprot) += 1;
+        else
+            (*pprot) += 2;
+        --skip;
+        //*pprot = (short*)prot; // assign the new value.
+    }
+
+    prot = (WORD*)*pprot;
+    shift = (*prot >> W2V_SHIFT);
+    switch (shift)
+    {
+        case 0:
+            phd_RotYXZpack((*prot << 16) + *(prot + 1));
+            (*pprot) += 2;
+            return;
+        case 1:
+            phd_RotX(short(*prot) * 16);
+            break;
+        case 2:
+            phd_RotY(short(*prot) * 16);
+            break;
+        case 3:
+            phd_RotZ(short(*prot) * 16);
+            break;
+    }
+
+    (*pprot) += 1;
+}*/
 
 void injector::inject_draw()
 {
@@ -810,4 +849,5 @@ void injector::inject_draw()
     //this->inject(0x00450DC0, GetFrames);
     //this->inject(0x00450E60, GetBoundsAccurate);
     //this->inject(0x00450EE0, GetBestFrame);
+    
 }
