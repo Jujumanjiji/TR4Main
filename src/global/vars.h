@@ -111,6 +111,7 @@
 #define EnemyOffset                         ARRAY_(0x004AED00, BITE_INFO, [11])
 #define level_data                          VAR_U_(0x005333A4, char*)
 #define fp_level                            VAR_U_(0x00533A74, FILE*)
+#define savegame_ammoused                   VAR_U_(0x007F785A, int)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
@@ -136,6 +137,7 @@
 #define effects                             VAR_U_(0x008012E0, FX_INFO*)
 #define flip_status                         VAR_U_(0x007FE218, int)
 #define weapons                             ARRAY_(0x004AD848, WEAPON_INFO, [8])
+#define pistols_table                       ARRAY_(0x004AD820, PISTOL_DEF, [4])
 #define ground_zone                         ARRAY_(0x007FE980, short*, [5][2]) // [ZONE_TYPE][flip_status] (return short*)
 #define gunshells                           ARRAY_(0x007FF680, GUNSHELL_STRUCT, [MAX_GUNSHELLS])
 #define sparks                              ARRAY_(0x00801400, SPARKS, [MAX_SPARKS])

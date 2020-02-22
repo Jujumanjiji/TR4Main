@@ -988,7 +988,7 @@ struct LARA_INFO
     short torso_z_rot;
     LARA_ARM l_arm;
     LARA_ARM r_arm;
-    WORD current_holster;
+    WORD holsters;
     CREATURE_INFO *creature;
     long corner_x;
     long corner_z;
@@ -1265,6 +1265,82 @@ struct WINAPP
     BYTE playFmv;
     DWORD originalBPP;
     BOOL autoTarget;
+};
+
+struct PICKUP_STRUCT
+{
+    short object_number;
+    short timer;
+};
+
+struct D3DTLBUMPVERTEX
+{
+    D3DVALUE sx;
+    D3DVALUE sy;
+    D3DVALUE sz;
+    D3DVALUE rhw;
+    D3DCOLOR color;
+    D3DCOLOR specular;
+    D3DVALUE tu;
+    D3DVALUE tv;
+    D3DVALUE tu2;
+    D3DVALUE tv2;
+};
+
+struct DINFO_HEAD
+{
+    float z;
+    short texattr;
+    short tile_and_flag;
+    short num_verts;
+    short unknown;
+};
+
+struct DINFO_LINE
+{
+    DINFO_HEAD head;
+    D3DTLBUMPVERTEX v1;
+    D3DTLBUMPVERTEX v2;
+};
+
+struct DINFO_TRI
+{
+    DINFO_HEAD head;
+    D3DTLBUMPVERTEX v1;
+    D3DTLBUMPVERTEX v2;
+    D3DTLBUMPVERTEX v3;
+};
+
+struct DINFO_QUAD
+{
+    DINFO_HEAD head;
+    D3DTLBUMPVERTEX v1;
+    D3DTLBUMPVERTEX v2;
+    D3DTLBUMPVERTEX v3;
+    D3DTLBUMPVERTEX v1bis;
+    D3DTLBUMPVERTEX v3bis;
+    D3DTLBUMPVERTEX v4;
+};
+
+struct OBJECT_TEXTURE_VERT
+{
+    float x;
+    float y;
+};
+
+struct OBJECT_TEXTURE
+{
+    unsigned short attribute;
+    unsigned short tile_and_flag;
+    unsigned short new_flags;
+    OBJECT_TEXTURE_VERT vertices[4];
+};
+
+struct TEXTUREBUCKET
+{
+    int tpage;
+    int cnt;
+    D3DTLBUMPVERTEX Vertex[2080];
 };
 
 #pragma pack(pop)

@@ -7,7 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <iostream>
+#include <ostream>
 #include <sstream>
+#include <fstream>
 
 #ifdef _WIN32
 #include <direct.h>

@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "lara1gun.h"
+#include "lara2gun.h"
 #include "control.h"
 #include "effect2.h"
 #include "items.h"
@@ -11,18 +12,18 @@
 void draw_shotgun_meshes(int weapon_type)
 {
     lara.back_gun = LG_UNARMED;
-    lara.mesh.hand_r = GetMeshes(WeaponObjectMeshes(weapon_type), HAND_R);
+    lara.mesh.hand_r = assign_meshes(weapon_meshes(weapon_type), HAND_R);
 }
 
 void undraw_shotgun_meshes(int weapon_type)
 {
-    lara.back_gun = WeaponObject(weapon_type); // cause crash !!
-    lara.mesh.hand_r = GetMeshes(LARA, HAND_R);
+    lara.back_gun = weapon_object(weapon_type); // cause crash !!
+    lara.mesh.hand_r = assign_meshes(LARA, HAND_R);
 }
 
 void ready_shotgun(int weapon_type)
 {
-    short *frame = objects[WeaponObject(weapon_type)].frame_base;
+    short *frame = objects[weapon_object(weapon_type)].frame_base;
     lara.gun_status = LHS_READY;
     lara.target = NULL;
 
@@ -54,7 +55,7 @@ void draw_shotgun(int weapon_type)
             MessageBox(NULL, "Error when creating shotgun type weapon, the CreateItem() returned NO_ITEM !", NULL, MB_OK|MB_ICONWARNING);
         lara.weapon_item = itemNumber;
         item = &items[itemNumber];
-        item->object_number = WeaponObject(weapon_type);
+        item->object_number = weapon_object(weapon_type);
         item->current_anim = (weapon_type == LG_GRENADEGUN) ? (objects[item->object_number].anim_index) : (objects[item->object_number].anim_index + 1);
         item->current_frame = anims[item->current_anim].frame_base;
         /*if (lara.water_status == LWS_UNDERWATER) // TODO: for later (shotgun)
@@ -150,7 +151,7 @@ void shotgun_handler(int weapon_type)
     {
         lara.torso_x_rot = lara.l_arm.x_rot;
         lara.torso_y_rot = lara.l_arm.y_rot;
-        if (camera.old_type != 2 && !BinocularRange)
+        if (camera.old_type != LOOK_CAMERA && !BinocularRange)
         {
             lara.head_x_rot = 0;
             lara.head_y_rot = 0;
@@ -159,6 +160,8 @@ void shotgun_handler(int weapon_type)
 
     if (weapon_type != LG_REVOLVER)
         animate_shotgun(weapon_type);
+    else
+        animate_pistols(LG_REVOLVER);
 
     if (lara.r_arm.flash_gun)
     {

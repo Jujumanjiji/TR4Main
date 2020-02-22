@@ -2,6 +2,9 @@
 
 using namespace std;
 
+#define LOG_DEBUG
+#define LOG_FOLDER "log"
+#define LOG_PATH "log/debug.log"
 //#define DEBUG_MODE
 
 #define PISTOLS_GUNPOS_X 10

@@ -13,25 +13,73 @@
 #include "specific/json/reader.h"
 #include "specific/drawprimitive.h"
 
-bool isFolderExists(LPCSTR folder_name)
+ofstream flog;
+LPCSTR lpWeaponName[12] = {
+    "UNARMED",
+    "PISTOLS",
+    "REVOLVER",
+    "UZIS",
+    "SHOTGUN",
+    "GRENADEGUN",
+    "CROSSBOW",
+    "FLARE",
+    "TORCH",
+    "TORCH_FIRE",
+    "JEEP",
+    "SIDECAR",
+};
+
+bool isFolderExists(LPCSTR folderName)
 {
     struct stat st;
-    int ret = stat(folder_name, &st);
+    int ret = stat(folderName, &st);
     return (ret == 0) && (st.st_mode & S_IFDIR);
 }
 
-bool isFileExists(LPCSTR file_name)
+bool isFileExists(LPCSTR fileName)
 {
     struct stat st;
-    return (stat(file_name, &st) == FALSE);
+    return (stat(fileName, &st) == FALSE);
 }
 
-void createFolders(LPCSTR folder_name)
+void createFolders(LPCSTR folderName)
 {
-    _mkdir(folder_name);
+    _mkdir(folderName);
 }
 
-short GetCurrentFrame(ITEM_INFO * item)
+static void S_LogStart(LPCSTR fileName)
+{
+    flog.open(fileName, ofstream::out | ofstream::app);
+}
+
+static void S_LogEnd()
+{
+    flog.close();
+}
+
+void S_Log(LPCSTR fileName, LPCSTR content, ...)
+{
+#ifdef LOG_DEBUG
+    char buffer[256];
+    va_list args;
+
+    // if folder not exist !
+    if (!isFolderExists(fileName))
+        createFolders(LOG_FOLDER);
+
+    S_LogStart(fileName); // create the file if not exist and open it !
+    if (flog.is_open()) // the file is opened ?
+    { // then write the log
+        va_start(args, content);
+        _vsnprintf(buffer, sizeof(buffer), content, args);
+        flog << buffer << "\n";
+        va_end(args);
+    }
+    S_LogEnd(); // close the file to free the variable !
+#endif
+}
+
+short GetCurrentFrame(ITEM_INFO* item)
 {
     return (item->current_frame - anims[item->current_anim].frame_base);
 }
@@ -214,6 +262,110 @@ void SetGunFlash_Right(int weapon_type)
     SetupGunFlash(pos);
 }
 */
+
+PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
+{
+    PHD_VECTOR pos;
+    
+    if (!right)
+    {
+        switch (weapon_type)
+        {
+            case LG_PISTOLS:
+                pos.x = PISTOLS_GUNPOS_X;
+                pos.y = PISTOLS_GUNPOS_Y;
+                pos.z = PISTOLS_GUNPOS_Z;
+                GetLaraHandAbsPosition(&pos, HAND_R);
+                break;
+            case LG_UZIS:
+                pos.x = UZIS_GUNPOS_X;
+                pos.y = UZIS_GUNPOS_Y;
+                pos.z = UZIS_GUNPOS_Z;
+                GetLaraHandAbsPosition(&pos, HAND_R);
+                break;
+        }
+    }
+    else
+    {
+        switch (weapon_type)
+        {
+            case LG_PISTOLS:
+                pos.x = -PISTOLS_GUNPOS_X;
+                pos.y = PISTOLS_GUNPOS_Y;
+                pos.z = PISTOLS_GUNPOS_Z;
+                GetLaraHandAbsPosition(&pos, HAND_L);
+                break;
+            case LG_UZIS:
+                pos.x = UZIS_GUNPOS_X;
+                pos.y = UZIS_GUNPOS_Y;
+                pos.z = UZIS_GUNPOS_Z;
+                GetLaraHandAbsPosition(&pos, HAND_L);
+                break;
+        }
+    }
+
+    return pos;
+}
+
+void set_gun_smoke_left(int weapon_type)
+{
+    if (lara_item->mesh_bits && SmokeCountL)
+    {
+        PHD_VECTOR pos;
+
+        switch (SmokeWeapon)
+        {
+            case LG_PISTOLS:
+                pos.x = PISTOLS_GUNPOS_X;
+                pos.y = PISTOLS_GUNPOS_Y;
+                pos.z = PISTOLS_GUNPOS_Z;
+                break;
+            case LG_UZIS:
+                pos.x = UZIS_GUNPOS_X;
+                pos.y = UZIS_GUNPOS_Y;
+                pos.z = UZIS_GUNPOS_Z;
+                break;
+            case LG_REVOLVER:
+                pos.x = REVOLVER_GUNPOS_X;
+                pos.y = REVOLVER_GUNPOS_Y;
+                pos.z = REVOLVER_GUNPOS_Z;
+                break;
+        }
+
+        GetLaraHandAbsPosition(&pos, HAND_L);
+        TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
+    }
+}
+
+void set_gun_smoke_right(int weapon_type)
+{
+    if (lara_item->mesh_bits && SmokeCountR)
+    {
+        PHD_VECTOR pos;
+
+        switch (SmokeWeapon)
+        {
+            case LG_PISTOLS:
+                pos.x = -PISTOLS_GUNPOS_X;
+                pos.y = PISTOLS_GUNPOS_Y;
+                pos.z = PISTOLS_GUNPOS_Z;
+                break;
+            case LG_UZIS:
+                pos.x = -UZIS_GUNPOS_X;
+                pos.y = UZIS_GUNPOS_Y;
+                pos.z = UZIS_GUNPOS_Z;
+                break;
+            case LG_REVOLVER:
+                pos.x = -REVOLVER_GUNPOS_X;
+                pos.y = REVOLVER_GUNPOS_Y;
+                pos.z = REVOLVER_GUNPOS_Z;
+                break;
+        }
+
+        GetLaraHandAbsPosition(&pos, HAND_R);
+        TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountR);
+    }
+}
 
 ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget)
 {
@@ -609,7 +761,7 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
     return distance;
 }
 
-short* GetMeshes(short objNumber, short meshID)
+short* assign_meshes(short objNumber, short meshID)
 {
     return meshes[objects[objNumber].mesh_index + meshID * 2];
 }

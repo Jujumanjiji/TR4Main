@@ -194,6 +194,9 @@
     <ClCompile Include="src\game\larafire.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\lara2gun.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -362,6 +365,9 @@
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\larafire.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\lara2gun.h">
       <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>

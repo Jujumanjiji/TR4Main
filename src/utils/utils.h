@@ -1,8 +1,11 @@
 #pragma once
 
-extern bool isFolderExists(LPCSTR folder_name);
-extern bool isFileExists(LPCSTR file_name);
-extern void createFolders(LPCSTR folder_name);
+extern LPCSTR lpWeaponName[12];
+
+extern bool isFolderExists(LPCSTR folderName);
+extern bool isFileExists(LPCSTR fileName);
+extern void createFolders(LPCSTR folderName);
+extern void S_Log(LPCSTR fileName, LPCSTR content, ...);
 extern short GetCurrentFrame(ITEM_INFO* item);
 extern void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue);
 extern void phd_SwapMatrix(int* dest, int* src);
@@ -10,6 +13,9 @@ extern void phd_SwapGunMatrix(PHD_MATRIX& dest, int* src, bool swap);
 extern void SpawnPickup(ITEM_INFO* item);
 extern void SetGunFlash_Left(int weapon_type);
 extern void SetGunFlash_Right(int weapon_type);
+extern PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right);
+extern void set_gun_smoke_left(int weapon_type);
+extern void set_gun_smoke_right(int weapon_type);
 extern ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget);
 extern short initHealth(short objNumber);
 extern void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite);
@@ -24,7 +30,7 @@ extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
 extern void Spawner(ITEM_INFO* item);
 extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
-extern short* GetMeshes(short objNumber, short meshID);
+extern short* assign_meshes(short objNumber, short meshID);
 
 /// new:
 extern void phd_SwapPushMatrix(int frac);

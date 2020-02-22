@@ -30,6 +30,7 @@ private:
     void inject_health();
     void inject_items();
     void inject_lara1gun();
+    void inject_lara2gun();
     void inject_larafire();
     void inject_laraflare();
     void inject_laramisc();
