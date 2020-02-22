@@ -275,13 +275,13 @@ PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
                 pos.x = PISTOLS_GUNPOS_X;
                 pos.y = PISTOLS_GUNPOS_Y;
                 pos.z = PISTOLS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_R);
+                GetLaraHandAbsPosition(&pos, HAND_L);
                 break;
             case LG_UZIS:
                 pos.x = UZIS_GUNPOS_X;
                 pos.y = UZIS_GUNPOS_Y;
                 pos.z = UZIS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_R);
+                GetLaraHandAbsPosition(&pos, HAND_L);
                 break;
         }
     }
@@ -293,13 +293,13 @@ PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
                 pos.x = -PISTOLS_GUNPOS_X;
                 pos.y = PISTOLS_GUNPOS_Y;
                 pos.z = PISTOLS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_L);
+                GetLaraHandAbsPosition(&pos, HAND_R);
                 break;
             case LG_UZIS:
-                pos.x = UZIS_GUNPOS_X;
+                pos.x = -UZIS_GUNPOS_X;
                 pos.y = UZIS_GUNPOS_Y;
                 pos.z = UZIS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_L);
+                GetLaraHandAbsPosition(&pos, HAND_R);
                 break;
         }
     }
