@@ -98,6 +98,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\lara.cpp" />
     <ClCompile Include="src\extern\json\Jzon.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -157,6 +158,7 @@
     <ClCompile Include="src\utils\utils_render.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\lara.h" />
     <ClInclude Include="src\extern\bass\bass.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -174,6 +176,7 @@
     <ClInclude Include="src\game\lara1gun.h" />
     <ClInclude Include="src\game\lara2gun.h" />
     <ClInclude Include="src\game\larafire.h" />
+    <ClInclude Include="src\game\lara_constants.h" />
     <ClInclude Include="src\game\people.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="src\3dsystem\3d_gen.h" />

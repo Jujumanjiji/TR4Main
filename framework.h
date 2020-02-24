@@ -26,7 +26,6 @@
 #include <dinput.h>
 #include <mmreg.h>
 #include <dsound.h>
-
 #include <zlib.h>
 
 #include "global/injector.h"

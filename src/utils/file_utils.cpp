@@ -1,21 +1,42 @@
 #include "framework.h"
 #include "file_utils.h"
 
-uint8_t ReadByte()
+uint8_t ReadUByte()
 {
     const uint8_t ret = *(uint8_t*)level_data;
     level_data += 1;
     return ret;
 }
 
-uint16_t ReadWord()
+int8_t ReadSByte()
+{
+    const int8_t ret = *(int8_t*)level_data;
+    level_data += 1;
+    return ret;
+}
+
+int16_t ReadSWord()
+{
+    const int16_t ret = *(int16_t*)level_data;
+    level_data += 2;
+    return ret;
+}
+
+uint16_t ReadUWord()
 {
     const uint16_t ret = *(uint16_t*)level_data;
     level_data += 2;
     return ret;
 }
 
-uint32_t ReadDword()
+int32_t ReadSDword()
+{
+    const int32_t ret = *(int32_t*)level_data;
+    level_data += 4;
+    return ret;
+}
+
+uint32_t ReadUDword()
 {
     const uint32_t ret = *(uint32_t*)level_data;
     level_data += 4;

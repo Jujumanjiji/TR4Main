@@ -58,11 +58,6 @@ void draw_shotgun(int weapon_type)
         item->object_number = weapon_object(weapon_type);
         item->current_anim = (weapon_type == LG_GRENADEGUN) ? (objects[item->object_number].anim_index) : (objects[item->object_number].anim_index + 1);
         item->current_frame = anims[item->current_anim].frame_base;
-        /*if (lara.water_status == LWS_UNDERWATER) // TODO: for later (shotgun)
-        {
-            item->state_current = LSS_WATER_DRAW;
-            item->state_next = LSS_WATER_DRAW;
-        }*/
         item->state_current = LSS_LAND_DRAW;
         item->state_next = LSS_LAND_DRAW;
         item->status = FITEM_ACTIVE;
@@ -305,11 +300,11 @@ void animate_shotgun(int weapon_type)
 
 void injector::inject_lara1gun()
 {
-    this->inject(0x00428E40, draw_shotgun_meshes);
-    this->inject(0x00428E70, undraw_shotgun_meshes);
-    this->inject(0x00428EA0, ready_shotgun);
-    this->inject(0x0042AE50, draw_shotgun);
-    this->inject(0x0042AFE0, undraw_shotgun);
-    this->inject(0x00428F10, shotgun_handler);
-    this->inject(0x0042B100, animate_shotgun);
+    this->inject(legacy_draw_shotgun_meshes);
+    this->inject(legacy_undraw_shotgun_meshes);
+    this->inject(legacy_ready_shotgun);
+    this->inject(legacy_draw_shotgun);
+    this->inject(legacy_undraw_shotgun);
+    this->inject(legacy_shotgun_handler);
+    this->inject(legacy_animate_shotgun);
 }

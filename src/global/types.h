@@ -3,6 +3,12 @@
 
 typedef FILE* LPFILE;
 
+struct JMP
+{
+    BYTE opCode;     // must be 0xE9;
+    DWORD offset;    // jump offset
+};
+
 /* // for later !
 struct LEVEL_DATA
 {
@@ -187,15 +193,15 @@ struct FLOAT_VECTOR
 
 struct DOOR_INFO
 {
-    unsigned short room_number;
+    WORD room_number;
     short point[3];
     short corner[12];
 };
 
 struct DOORS
 {
-    unsigned short number_door;
-    DOOR_INFO doors[256];
+    WORD number_doors;
+    DOOR_INFO door_info;
 };
 
 struct ROOM_INFO
@@ -1269,8 +1275,8 @@ struct WINAPP
 
 struct PICKUP_STRUCT
 {
-    short object_number;
     short timer;
+    short object_number;
 };
 
 struct D3DTLBUMPVERTEX

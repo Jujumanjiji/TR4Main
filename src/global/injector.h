@@ -1,16 +1,78 @@
 #pragma once
 
-#pragma pack(push, 1)
-typedef struct {
-    BYTE opCode;    // must be 0xE9;
-    DWORD offset;    // jump offset
-} JMP;
-#pragma pack(pop)
+extern void void_func(void);
+
+struct ADDRESS_STRUCT
+{
+    LPVOID function_old;
+    LPVOID function_new;
+    DWORD address;
+    bool oldSelected;
+
+    ADDRESS_STRUCT()
+    {
+        this->address = NULL;
+        this->function_old = void_func;
+        this->function_new = void_func;
+        this->oldSelected = true;
+    }
+
+    // empty the function !
+    ADDRESS_STRUCT(DWORD address)
+    {
+        this->address = address;
+        this->function_old = void_func;
+        this->function_new = void_func;
+        this->oldSelected = true;
+    }
+
+    // replace the old function with the new one !
+    ADDRESS_STRUCT(DWORD address, LPVOID function_new)
+    {
+        this->address = address;
+        this->function_old = void_func;
+        this->function_new = function_new;
+        this->oldSelected = false;
+    }
+
+    // replace the old function and set the old for backup !
+    ADDRESS_STRUCT(DWORD address, LPVOID function_old, LPVOID function_new, bool oldSelected)
+    {
+        this->address = address;
+        this->function_old = function_old;
+        this->function_new = function_new;
+        this->oldSelected = oldSelected;
+    }
+
+    // replace the old with the new one !
+    ADDRESS_STRUCT(ADDRESS_STRUCT addr_old, ADDRESS_STRUCT addr_new)
+    {
+        this->address = addr_old.address;
+        this->function_old = addr_old.function_old;
+        this->function_new = addr_new.function_new;
+        this->oldSelected = false;
+    }
+
+    // replace the old with the new one !
+    ADDRESS_STRUCT(ADDRESS_STRUCT addr_old, ADDRESS_STRUCT addr_new, bool oldSelected)
+    {
+        this->address = addr_old.address;
+        this->function_old = addr_old.function_old;
+        this->function_new = addr_new.function_new;
+        this->oldSelected = false;
+    }
+};
+
+#define __DEFFUNC(address, rtrn, argument) ((rtrn(__cdecl*)argument) address)
+#define __FUNCV(address, argument) ADDRESS_STRUCT(address, __DEFFUNC(address, void, argument))
+#define __FUNCR(address, rtrn, argument) ADDRESS_STRUCT(address, __DEFFUNC(address, rtrn, argument))
+#define _FUNCV(address, old_args1, new1) ADDRESS_STRUCT(ADDRESS_STRUCT(address, __DEFFUNC(address, void, old_args1)), ADDRESS_STRUCT(NULL, new1))
+#define _FUNCR(address, old_rtrn1, old_args1, new1) ADDRESS_STRUCT(ADDRESS_STRUCT(address, __DEFFUNC(address, old_rtrn1, old_args1)), ADDRESS_STRUCT(NULL, new1))
 
 class injector
 {
 private:
-    void inject(DWORD from, LPVOID to);
+    void inject(ADDRESS_STRUCT addr);
 
     /// 3DSYSTEM
     void inject_3d_gen();
@@ -29,6 +91,7 @@ private:
     void inject_effects();
     void inject_health();
     void inject_items();
+    void inject_lara();
     void inject_lara1gun();
     void inject_lara2gun();
     void inject_larafire();

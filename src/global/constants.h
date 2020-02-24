@@ -23,18 +23,16 @@ using namespace std;
 #define GRENADEGUN_GUNPOS_Y 228
 #define GRENADEGUN_GUNPOS_Z 32
 
-#define LT_Default             (char*)0
-#define LT_Enter               (char*)1
-#define LT_Exit                (char*)2
-#define LT_Release             (char*)3
-#define LT_Info                (char*)4
-#define LT_WindowMessage       (char*)5
-#define LT_DXTry               (char*)6
-#define LT_Error               (char*)7
-#define LT_Warning             (char*)8
-#define LT_Version             (char*)9
-#define LT_Texture             (char*)10    // crappy temporary texture loading messages
-#define LT_Sound               (char*)11    // sample info
+#define LT_Function            __FUNCTION__
+#define LT_Default             "Default"
+#define LT_Enter               "Enter"
+#define LT_Exit                "Exit"
+#define LT_Release             "Release"
+#define LT_Info                "Info"
+#define LT_DXTry               "DirectX"
+#define LT_Error               "Error"
+#define LT_Warning             "Warning"
+#define LT_Version             "Version"
 
 #define NO_TRACK -1
 #define NO_FLY 0
@@ -59,6 +57,7 @@ using namespace std;
 #define TIMID FALSE
 #define VIOLENT TRUE
 
+#define MAX_PICKUPS 8
 #define MAX_SLOTS 32
 #define MAX_EXPANSION 5
 #define MAX_SHOCKWAVE 16

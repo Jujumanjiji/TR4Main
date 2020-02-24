@@ -15,14 +15,6 @@ enum LARA_SHOTGUN_STATE
     LSS_WATER_WADE_UNDRAW,
 };
 
-///#define draw_shotgun_meshes ((void(__cdecl*)(int weapon_type)) 0x00428E40)
-///#define undraw_shotgun_meshes ((void(__cdecl*)(int weapon_type)) 0x00428E70)
-///#define ready_shotgun ((void(__cdecl*)(int weapon_type)) 0x00428EA0)
-///#define draw_shotgun ((void(__cdecl*)(int weapon_type)) 0x0042AE50)
-///#define undraw_shotgun ((void(__cdecl*)(int weapon_type)) 0x0042AFE0)
-///#define shotgun_handler ((void(__cdecl*)(int weapon_type)) 0x00428F10)
-///#define animate_shotgun ((void(__cdecl*)(int weapon_type)) 0x0042B100)
-
 extern void draw_shotgun_meshes(int weapon_type);
 extern void undraw_shotgun_meshes(int weapon_type);
 extern void ready_shotgun(int weapon_type);
@@ -30,3 +22,11 @@ extern void draw_shotgun(int weapon_type);
 extern void undraw_shotgun(int weapon_type);
 extern void shotgun_handler(int weapon_type);
 extern void animate_shotgun(int weapon_type);
+
+#define legacy_draw_shotgun_meshes        _FUNCV(0x00428E40, (int weapon_type), draw_shotgun_meshes)
+#define legacy_undraw_shotgun_meshes      _FUNCV(0x00428E70, (int weapon_type), undraw_shotgun_meshes)
+#define legacy_ready_shotgun              _FUNCV(0x00428EA0, (int weapon_type), ready_shotgun)
+#define legacy_draw_shotgun               _FUNCV(0x0042AE50, (int weapon_type), draw_shotgun)
+#define legacy_undraw_shotgun             _FUNCV(0x0042AFE0, (int weapon_type), undraw_shotgun)
+#define legacy_shotgun_handler            _FUNCV(0x00428F10, (int weapon_type), shotgun_handler)
+#define legacy_animate_shotgun            _FUNCV(0x0042B100, (int weapon_type), animate_shotgun)

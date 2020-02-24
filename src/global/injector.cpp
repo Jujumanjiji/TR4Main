@@ -4,15 +4,27 @@
 injector* inject;
 
 ///====================================///
+///           EMPTY_FUNCTION           ///
+///====================================///
+
+void void_func(void)
+{
+
+}
+
+///====================================///
 ///           INJECT_COMMAND           ///
 ///====================================///
 
-void injector::inject(DWORD from, LPVOID to)
+void injector::inject(ADDRESS_STRUCT addr) // from: address, to: function
 {
-    if (from != NULL)
+    if (addr.address != NULL)
     {
-        ((JMP*)(from))->opCode = 0xE9;
-        ((JMP*)(from))->offset = (DWORD)(to)-((DWORD)(from)+sizeof(JMP));
+        ((JMP*)(addr.address))->opCode = 0xE9;
+        if (addr.oldSelected)
+            ((JMP*)(addr.address))->offset = (DWORD)(addr.function_old) - ((DWORD)(addr.address) + sizeof(JMP));
+        else
+            ((JMP*)(addr.address))->offset = (DWORD)(addr.function_new) - ((DWORD)(addr.address) + sizeof(JMP));
     }
 }
 
@@ -45,6 +57,7 @@ void injector::inject_game()
     inject_effects();
     inject_health();
     inject_items();
+    inject_lara();
     inject_lara1gun();
     inject_lara2gun();
     inject_larafire();

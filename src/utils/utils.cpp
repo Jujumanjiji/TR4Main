@@ -29,6 +29,10 @@ LPCSTR lpWeaponName[12] = {
     "SIDECAR",
 };
 
+void dummy_func(ITEM_INFO* item, COLL_INFO* coll)
+{
+}
+
 bool isFolderExists(LPCSTR folderName)
 {
     struct stat st;
@@ -57,26 +61,130 @@ static void S_LogEnd()
     flog.close();
 }
 
-void S_Log(LPCSTR fileName, LPCSTR content, ...)
+void S_Unimplemented(LPCSTR LT_Function_Flags)
+{
+    // if folder not exist !
+    if (!isFolderExists(LOG_FOLDER))
+        createFolders(LOG_FOLDER);
+
+    S_LogStart(LOG_PATH);
+    if (flog.is_open())
+    {
+        flog << "DLL[" << LT_Function_Flags << "] Unimplemented !" << "\n";
+    }
+    S_LogEnd();
+}
+
+void S_LogValue(LPCSTR content, ...)
 {
 #ifdef LOG_DEBUG
     char buffer[256];
     va_list args;
 
     // if folder not exist !
-    if (!isFolderExists(fileName))
+    if (!isFolderExists(LOG_FOLDER))
         createFolders(LOG_FOLDER);
 
-    S_LogStart(fileName); // create the file if not exist and open it !
-    if (flog.is_open()) // the file is opened ?
-    { // then write the log
+    S_LogStart(LOG_PATH);
+    if (flog.is_open())
+    {
         va_start(args, content);
         _vsnprintf(buffer, sizeof(buffer), content, args);
-        flog << buffer << "\n";
+        flog << "DLL[" << LT_Info << "] - " << buffer << "\n";
         va_end(args);
     }
-    S_LogEnd(); // close the file to free the variable !
+    S_LogEnd();
 #endif
+}
+
+void S_Log(LPCSTR content, ...)
+{
+#ifdef LOG_DEBUG
+    char buffer[256];
+    va_list args;
+
+    // if folder not exist !
+    if (!isFolderExists(LOG_FOLDER))
+        createFolders(LOG_FOLDER);
+
+    S_LogStart(LOG_PATH);
+    if (flog.is_open())
+    {
+        va_start(args, content);
+        _vsnprintf(buffer, sizeof(buffer), content, args);
+        flog << "DLL[" << LT_Info << "] - " << buffer << "\n";
+        va_end(args);
+    }
+    S_LogEnd();
+#endif
+}
+
+void S_Log(LPCSTR content, bool isEntered, ...)
+{
+#ifdef LOG_DEBUG
+    char buffer[256];
+    va_list args;
+
+    // if folder not exist !
+    if (!isFolderExists(LOG_FOLDER))
+        createFolders(LOG_FOLDER);
+
+    S_LogStart(LOG_PATH);
+    if (flog.is_open())
+    {
+        va_start(args, content);
+        _vsnprintf(buffer, sizeof(buffer), content, args);
+        if (isEntered)
+            flog << "DLL[" << LT_Info << "] |    " << buffer << "\n";
+        else
+            flog << "DLL[" << LT_Info << "] - " << buffer << "\n";
+        va_end(args);
+    }
+    S_LogEnd();
+#endif
+}
+
+void S_Log(LPCSTR LT_flags, LPCSTR content, bool isEntered, ...)
+{
+#ifdef LOG_DEBUG
+    char buffer[256];
+    va_list args;
+
+    // if folder not exist !
+    if (!isFolderExists(LOG_FOLDER))
+        createFolders(LOG_FOLDER);
+
+    S_LogStart(LOG_PATH);
+    if (flog.is_open())
+    {
+        va_start(args, content);
+        _vsnprintf(buffer, sizeof(buffer), content, args);
+        if (LT_flags != NULL)
+        {
+            if (isEntered)
+                flog << "DLL[" << LT_flags << "] |    " << buffer << "\n";
+            else
+                flog << "DLL[" << LT_flags << "] - " << buffer << "\n";
+        }
+        else
+        {
+            if (isEntered)
+                flog << "DLL[" << LT_Info << "] |   " << buffer << "\n";
+            else
+                flog << "DLL[" << LT_Info << "] - " << buffer << "\n";
+        }
+        va_end(args);
+    }
+    S_LogEnd();
+#endif
+}
+
+void SetAnimationForItem(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow)
+{
+    item->current_anim = animation;
+    item->current_frame = anims[item->current_anim].frame_base + frameNow;
+    item->state_current = state_current;
+    item->state_next = state_next;
 }
 
 short GetCurrentFrame(ITEM_INFO* item)
@@ -325,11 +433,6 @@ void set_gun_smoke_left(int weapon_type)
                 pos.y = UZIS_GUNPOS_Y;
                 pos.z = UZIS_GUNPOS_Z;
                 break;
-            case LG_REVOLVER:
-                pos.x = REVOLVER_GUNPOS_X;
-                pos.y = REVOLVER_GUNPOS_Y;
-                pos.z = REVOLVER_GUNPOS_Z;
-                break;
         }
 
         GetLaraHandAbsPosition(&pos, HAND_L);
@@ -356,7 +459,7 @@ void set_gun_smoke_right(int weapon_type)
                 pos.z = UZIS_GUNPOS_Z;
                 break;
             case LG_REVOLVER:
-                pos.x = -REVOLVER_GUNPOS_X;
+                pos.x = REVOLVER_GUNPOS_X;
                 pos.y = REVOLVER_GUNPOS_Y;
                 pos.z = REVOLVER_GUNPOS_Z;
                 break;
@@ -669,7 +772,6 @@ OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
         // check if the ocb is not the same as the current src to not get the wrong ocb.
         if (item->ocb_bits != target->ocb_bits && target->object_number == slotID && target->ocb_bits == ocb && target->room_number != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
         {
-            Log(LT_Info, "Found Entity with OCB: %d", target->ocb_bits);
             entity.item_number = i;
             entity.target = target;
             return entity;

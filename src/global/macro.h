@@ -1,9 +1,5 @@
 #pragma once
 
-#define S_MemSet(A,B,C)         memset(A,B,C)
-#define S_MemCpy(A,B,C)         memcpy(A,B,C)
-#define S_LongMemCpy(A,B,C)        memcpy(A,B,C*4)
-
 #define Log ((int(__cdecl*)(char* LT_flags, LPCSTR format, ...)) 0x0049C750)
 #define WinDisplayString ((void(__cdecl*)(int x, int y, LPCSTR message, ...)) 0x0048F8C0)
 

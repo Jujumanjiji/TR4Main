@@ -2,10 +2,16 @@
 
 extern LPCSTR lpWeaponName[12];
 
+extern void dummy_func(ITEM_INFO* item, COLL_INFO* coll); // for lara control & collision routines !
 extern bool isFolderExists(LPCSTR folderName);
 extern bool isFileExists(LPCSTR fileName);
 extern void createFolders(LPCSTR folderName);
-extern void S_Log(LPCSTR fileName, LPCSTR content, ...);
+extern void S_Unimplemented(LPCSTR LT_Function_Flags);
+extern void S_LogValue(LPCSTR content, ...);
+extern void S_Log(LPCSTR content, ...);
+extern void S_Log(LPCSTR content, bool isEntered, ...);
+extern void S_Log(LPCSTR funcName, LPCSTR content, bool isEntered, ...);
+extern void SetAnimationForItem(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow);
 extern short GetCurrentFrame(ITEM_INFO* item);
 extern void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue);
 extern void phd_SwapMatrix(int* dest, int* src);

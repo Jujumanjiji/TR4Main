@@ -849,5 +849,4 @@ void injector::inject_draw()
     //this->inject(0x00450DC0, GetFrames);
     //this->inject(0x00450E60, GetBoundsAccurate);
     //this->inject(0x00450EE0, GetBestFrame);
-    
 }

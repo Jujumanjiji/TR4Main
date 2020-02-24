@@ -1,12 +1,4 @@
 #pragma once
-
-///#define InitialiseLOT ((void(__cdecl*)(BOOL allocateBaddie)) 0x00455200)
-///#define DisableBaddieAI ((void(__cdecl*)(short itemNumber)) 0x00455270)
-///#define EnableBaddieAI ((BOOL(__cdecl*)(short itemNumber, BOOL always)) 0x004552B0)
-///#define InitialiseSlot ((void(__cdecl*)(short itemNumber, int slots)) 0x00455470)
-///#define CreateZone ((void(__cdecl*)(ITEM_INFO* item)) 0x004556A0)
-///#define ClearLOT ((void(__cdecl*)(LOT_INFO* LOT)) 0x004557B0)
-
 extern int baddie_count;
 
 extern void InitialiseLOT(BOOL allocateBaddie);
@@ -15,3 +7,10 @@ extern BOOL EnableBaddieAI(short itemNumber, BOOL always);
 extern void InitialiseSlot(short itemNumber, int slots);
 extern void CreateZone(ITEM_INFO* item);
 extern void ClearLOT(LOT_INFO* LOT);
+
+#define legacy_InitialiseLOT            _FUNCV(0x00455200, (BOOL allocateBaddie), InitialiseLOT)
+#define legacy_DisableBaddieAI          _FUNCV(0x00455270, (short itemNumber), DisableBaddieAI)
+#define legacy_EnableBaddieAI           _FUNCR(0x004552B0, BOOL, (short itemNumber, BOOL always), EnableBaddieAI)
+#define legacy_InitialiseSlot           _FUNCV(0x00455470, (short itemNumber, int slots), InitialiseSlot)
+#define legacy_CreateZone               _FUNCV(0x004556A0, (ITEM_INFO* item), CreateZone)
+#define legacy_ClearLOT                 _FUNCV(0x004557B0, (LOT_INFO* LOT), CreateZone)

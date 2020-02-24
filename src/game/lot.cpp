@@ -285,10 +285,10 @@ void ClearLOT(LOT_INFO* LOT)
 
 void injector::inject_lot()
 {
-    this->inject(0x00455200, InitialiseLOT);
-    this->inject(0x00455270, DisableBaddieAI);
-    this->inject(0x004552B0, EnableBaddieAI);
-    this->inject(0x00455470, InitialiseSlot);
-    this->inject(0x004556A0, CreateZone);
-    this->inject(0x004557B0, ClearLOT);
+    this->inject(legacy_InitialiseLOT);
+    this->inject(legacy_DisableBaddieAI);
+    this->inject(legacy_EnableBaddieAI);
+    this->inject(legacy_InitialiseSlot);
+    this->inject(legacy_CreateZone);
+    this->inject(legacy_ClearLOT);
 }
