@@ -47,8 +47,6 @@ void lara_as_walk(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
 {
-    static bool jump_ok = true;
-
     if (item->hit_points <= 0)
     {
         item->state_next = STATE_LARA_DEATH;
@@ -92,21 +90,22 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
         LARA_CLAMPP(item->pos.z_rot, LARA_LEAN_RATE, LARA_LEAN_MAX);
     }
 
+    static bool jump_ok = true;
+    short frame = GetCurrentFrame(item);
     switch (item->current_anim)
     {
+        case ANIMATION_LARA_RUN:
+            if (frame == 4)
+                jump_ok = true;
+            break;
+
+        case ANIMATION_LARA_WALK_FORWARD:
+            if (frame == 4)
+                jump_ok = true;
+            break;
+
         case ANIMATION_LARA_STAY_TO_RUN:
             jump_ok = false;
-            break;
-
-        case ANIMATION_LARA_RUN:
-            if (GetCurrentFrame(item) == 4)
-                jump_ok = true;
-            else
-                jump_ok = false;
-            break;
-
-        default:
-            jump_ok = true;
             break;
     }
 
