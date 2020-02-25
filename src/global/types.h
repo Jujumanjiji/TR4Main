@@ -458,7 +458,7 @@ struct CAMERA_INFO
     int number_frames;
     int bounce;
     int underwater;
-    int distance;
+    int target_distance;
     short target_angle;
     short target_elevation;
     short actual_angle;

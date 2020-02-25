@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\camera.cpp" />
+    <ClCompile Include="src\game\laraclimb.cpp" />
+    <ClCompile Include="src\game\larasurf.cpp" />
     <ClCompile Include="src\game\laraswim.cpp" />
     <ClCompile Include="src\game\lara_utils.cpp" />
     <ClCompile Include="src\game\lara.cpp" />
@@ -197,8 +199,6 @@
     <ClInclude Include="src\game\effects.h" />
     <ClInclude Include="src\game\health.h" />
     <ClInclude Include="src\game\items.h" />
-    <ClInclude Include="src\game\laraflare.h" />
-    <ClInclude Include="src\game\laramisc.h" />
     <ClInclude Include="src\game\lot.h" />
     <ClInclude Include="src\game\oldobjects.h" />
     <ClInclude Include="src\game\pickup.h" />

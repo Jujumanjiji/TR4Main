@@ -3,6 +3,10 @@
 
 ///#define NEW_ROUTINES
 
+#define InitialiseLaraLoad INITIALISE(0x00430EB0)
+#define FlareItemControl CONTROL(0x0042FF90)
+#define DrawFlareItem DRAW(0x0042F7B0)
+
 #define LARA_ROUTINES_ARGS ITEM_INFO* item, COLL_INFO* coll
 #define LARA_FUNC(name) extern void name(LARA_ROUTINES_ARGS)
 
@@ -29,6 +33,50 @@ LARA_FUNC(lara_as_splat);
 LARA_FUNC(lara_as_tread);
 LARA_FUNC(lara_as_compress);
 LARA_FUNC(lara_as_back);
+LARA_FUNC(lara_as_swim);
+LARA_FUNC(lara_as_glide);
+LARA_FUNC(lara_as_null);
+LARA_FUNC(lara_as_fastturn);
+LARA_FUNC(lara_as_stepright);
+LARA_FUNC(lara_as_stepleft);
+LARA_FUNC(lara_as_slide);
+LARA_FUNC(lara_as_backjump);
+LARA_FUNC(lara_as_rightjump);
+LARA_FUNC(lara_as_leftjump);
+LARA_FUNC(lara_as_upjump);
+LARA_FUNC(lara_as_fallback);
+LARA_FUNC(lara_as_hangleft);
+LARA_FUNC(lara_as_hangright);
+LARA_FUNC(lara_as_slideback);
+LARA_FUNC(lara_as_surftread);
+LARA_FUNC(lara_as_surfswim);
+LARA_FUNC(lara_as_dive);
+LARA_FUNC(lara_as_pushblock);
+LARA_FUNC(lara_as_pullblock);
+LARA_FUNC(lara_as_ppready);
+LARA_FUNC(lara_as_pickup);
+LARA_FUNC(lara_as_switchon);
+LARA_FUNC(lara_as_switchoff);
+LARA_FUNC(lara_as_usekey);
+LARA_FUNC(lara_as_usepuzzle);
+LARA_FUNC(lara_as_uwdeath);
+LARA_FUNC(lara_as_special);
+LARA_FUNC(lara_as_surfback);
+LARA_FUNC(lara_as_surfleft);
+LARA_FUNC(lara_as_surfright);
+LARA_FUNC(lara_as_swandive);
+LARA_FUNC(lara_as_fastdive);
+LARA_FUNC(lara_as_waterout);
+LARA_FUNC(lara_as_climbstnc);
+LARA_FUNC(lara_as_climbing);
+LARA_FUNC(lara_as_climbleft);
+LARA_FUNC(lara_as_climbend);
+LARA_FUNC(lara_as_climbright);
+LARA_FUNC(lara_as_climbdown);
+LARA_FUNC(lara_as_wade);
+LARA_FUNC(lara_as_waterroll);
+LARA_FUNC(lara_as_pickupflare);
+LARA_FUNC(lara_as_deathslide);
 
 #define legacy_lara_as_walk                    LARA_ROUTINESNEW(0x00425AC0, lara_as_walk)
 #define legacy_lara_as_run                     LARA_ROUTINESNEW(0x00425B60, lara_as_run)
@@ -45,49 +93,49 @@ LARA_FUNC(lara_as_back);
 #define legacy_lara_as_tread                   LARA_ROUTINESNEW(0x004327A0, lara_as_tread)
 #define legacy_lara_as_compress                LARA_ROUTINESNEW(0x00426EC0, lara_as_compress)
 #define legacy_lara_as_back                    LARA_ROUTINESNEW(0x00426FD0, lara_as_back)
-#define legacy_lara_as_swim                    LARA_ROUTINES(0x00432620)
-#define legacy_lara_as_glide                   LARA_ROUTINES(0x00432720)
-#define legacy_lara_as_null                    LARA_ROUTINES(0x00427060)
-#define legacy_lara_as_fastturn                LARA_ROUTINES(0x00427070)
-#define legacy_lara_as_stepright               LARA_ROUTINES(0x004270C0)
-#define legacy_lara_as_stepleft                LARA_ROUTINES(0x00427150)
-#define legacy_lara_as_slide                   LARA_ROUTINES(0x004271E0)
-#define legacy_lara_as_backjump                LARA_ROUTINES(0x00427210)
-#define legacy_lara_as_rightjump               LARA_ROUTINES(0x00427260)
-#define legacy_lara_as_leftjump                LARA_ROUTINES(0x004272A0)
-#define legacy_lara_as_upjump                  LARA_ROUTINES(0x00425110)
-#define legacy_lara_as_fallback                LARA_ROUTINES(0x004272E0)
-#define legacy_lara_as_hangleft                LARA_ROUTINES(0x00426B50)
-#define legacy_lara_as_hangright               LARA_ROUTINES(0x00426BD0)
-#define legacy_lara_as_slideback               LARA_ROUTINES(0x00427310)
-#define legacy_lara_as_surftread               LARA_ROUTINES(0x00431DA0)
-#define legacy_lara_as_surfswim                LARA_ROUTINES(0x00431C10)
-#define legacy_lara_as_dive                    LARA_ROUTINES(0x00432830)
-#define legacy_lara_as_pushblock               LARA_ROUTINES(0x00427330)
-#define legacy_lara_as_pullblock               LARA_ROUTINES(0x00427370)
-#define legacy_lara_as_ppready                 LARA_ROUTINES(0x004273B0)
-#define legacy_lara_as_pickup                  LARA_ROUTINES(0x004273E0)
-#define legacy_lara_as_switchon                LARA_ROUTINES(0x00427480)
-#define legacy_lara_as_usekey                  LARA_ROUTINES(0x004274C0)
-#define legacy_lara_as_usepuzzle               LARA_ROUTINES(0x00427500)
-#define legacy_lara_as_uwdeath                 LARA_ROUTINES(0x00432850)
-#define legacy_lara_as_special                 LARA_ROUTINES(0x00427580)
-#define legacy_lara_as_surfback                LARA_ROUTINES(0x00431C80)
-#define legacy_lara_as_surfleft                LARA_ROUTINES(0x00431CE0)
-#define legacy_lara_as_surfright               LARA_ROUTINES(0x00431D40)
-#define legacy_lara_as_swandive                LARA_ROUTINES(0x004275A0)
-#define legacy_lara_as_fastdive                LARA_ROUTINES(0x004275E0)
-#define legacy_lara_as_waterout                LARA_ROUTINES(0x00427640)
-#define legacy_lara_as_climbstnc               LARA_ROUTINES(0x0042C6C0)
-#define legacy_lara_as_climbing                LARA_ROUTINES(0x0042D470)
-#define legacy_lara_as_climbleft               LARA_ROUTINES(0x0042CC80)
-#define legacy_lara_as_climbend                LARA_ROUTINES(0x0042D7A0)
-#define legacy_lara_as_climbright              LARA_ROUTINES(0x0042D3D0)
-#define legacy_lara_as_climbdown               LARA_ROUTINES(0x0042D5E0)
-#define legacy_lara_as_wade                    LARA_ROUTINES(0x00427660)
-#define legacy_lara_as_waterroll               LARA_ROUTINES(0x004328B0)
-#define legacy_lara_as_pickupflare             LARA_ROUTINES(0x00427420)
-#define legacy_lara_as_deathslide              LARA_ROUTINES(0x00427730)
+#define legacy_lara_as_swim                    LARA_ROUTINESNEW(0x00432620, lara_as_swim)
+#define legacy_lara_as_glide                   LARA_ROUTINESNEW(0x00432720, lara_as_glide)
+#define legacy_lara_as_null                    LARA_ROUTINESNEW(0x00427060, lara_as_null)
+#define legacy_lara_as_fastturn                LARA_ROUTINESNEW(0x00427070, lara_as_fastturn)
+#define legacy_lara_as_stepright               LARA_ROUTINESNEW(0x004270C0, lara_as_stepright)
+#define legacy_lara_as_stepleft                LARA_ROUTINESNEW(0x00427150, lara_as_stepleft)
+#define legacy_lara_as_slide                   LARA_ROUTINESNEW(0x004271E0, lara_as_slide)
+#define legacy_lara_as_backjump                LARA_ROUTINESNEW(0x00427210, lara_as_backjump)
+#define legacy_lara_as_rightjump               LARA_ROUTINESNEW(0x00427260, lara_as_rightjump)
+#define legacy_lara_as_leftjump                LARA_ROUTINESNEW(0x004272A0, lara_as_leftjump)
+#define legacy_lara_as_upjump                  LARA_ROUTINESNEW(0x00425110, lara_as_upjump)
+#define legacy_lara_as_fallback                LARA_ROUTINESNEW(0x004272E0, lara_as_fallback)
+#define legacy_lara_as_hangleft                LARA_ROUTINESNEW(0x00426B50, lara_as_hangleft)
+#define legacy_lara_as_hangright               LARA_ROUTINESNEW(0x00426BD0, lara_as_hangright)
+#define legacy_lara_as_slideback               LARA_ROUTINESNEW(0x00427310, lara_as_slideback)
+#define legacy_lara_as_surftread               LARA_ROUTINESNEW(0x00431DA0, lara_as_surftread)
+#define legacy_lara_as_surfswim                LARA_ROUTINESNEW(0x00431C10, lara_as_surfswim)
+#define legacy_lara_as_dive                    LARA_ROUTINESNEW(0x00432830, lara_as_dive)
+#define legacy_lara_as_pushblock               LARA_ROUTINESNEW(0x00427330, lara_as_pushblock)
+#define legacy_lara_as_pullblock               LARA_ROUTINESNEW(0x00427370, lara_as_pullblock)
+#define legacy_lara_as_ppready                 LARA_ROUTINESNEW(0x004273B0, lara_as_ppready)
+#define legacy_lara_as_pickup                  LARA_ROUTINESNEW(0x004273E0, lara_as_pickup)
+#define legacy_lara_as_switchon                LARA_ROUTINESNEW(0x00427480, lara_as_switchon)
+#define legacy_lara_as_usekey                  LARA_ROUTINESNEW(0x004274C0, lara_as_usekey)
+#define legacy_lara_as_usepuzzle               LARA_ROUTINESNEW(0x00427500, lara_as_usepuzzle)
+#define legacy_lara_as_uwdeath                 LARA_ROUTINESNEW(0x00432850, lara_as_uwdeath)
+#define legacy_lara_as_special                 LARA_ROUTINESNEW(0x00427580, lara_as_special)
+#define legacy_lara_as_surfback                LARA_ROUTINESNEW(0x00431C80, lara_as_surfback)
+#define legacy_lara_as_surfleft                LARA_ROUTINESNEW(0x00431CE0, lara_as_surfleft)
+#define legacy_lara_as_surfright               LARA_ROUTINESNEW(0x00431D40, lara_as_surfright)
+#define legacy_lara_as_swandive                LARA_ROUTINESNEW(0x004275A0, lara_as_swandive)
+#define legacy_lara_as_fastdive                LARA_ROUTINESNEW(0x004275E0, lara_as_fastdive)
+#define legacy_lara_as_waterout                LARA_ROUTINESNEW(0x00427640, lara_as_waterout)
+#define legacy_lara_as_climbstnc               LARA_ROUTINESNEW(0x0042C6C0, lara_as_climbstnc)
+#define legacy_lara_as_climbing                LARA_ROUTINESNEW(0x0042D470, lara_as_climbing)
+#define legacy_lara_as_climbleft               LARA_ROUTINESNEW(0x0042CC80, lara_as_climbleft)
+#define legacy_lara_as_climbend                LARA_ROUTINESNEW(0x0042D7A0, lara_as_climbend)
+#define legacy_lara_as_climbright              LARA_ROUTINESNEW(0x0042D3D0, lara_as_climbright)
+#define legacy_lara_as_climbdown               LARA_ROUTINESNEW(0x0042D5E0, lara_as_climbdown)
+#define legacy_lara_as_wade                    LARA_ROUTINESNEW(0x00427660, lara_as_wade)
+#define legacy_lara_as_waterroll               LARA_ROUTINESNEW(0x004328B0, lara_as_waterroll)
+#define legacy_lara_as_pickupflare             LARA_ROUTINESNEW(0x00427420, lara_as_pickupflare)
+#define legacy_lara_as_deathslide              LARA_ROUTINESNEW(0x00427730, lara_as_deathslide)
 #define legacy_lara_as_duck                    LARA_ROUTINES(0x00421040)
 #define legacy_lara_as_dash                    LARA_ROUTINES(0x004220B0)
 #define legacy_lara_as_dashdive                LARA_ROUTINES(0x00422A90)

@@ -2,7 +2,7 @@
 #include "setup_entity.h"
 #include "game/collide.h"
 #include "game/box.h"
-#include "game/laramisc.h"
+#include "game/lara.h"
 #include "game/oldobjects.h"
 #include "specific/json/reader.h"
 #include "utils/utils.h"

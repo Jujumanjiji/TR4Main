@@ -868,6 +868,17 @@ short* assign_meshes(short objNumber, short meshID)
     return meshes[objects[objNumber].mesh_index + meshID * 2];
 }
 
+void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
+{
+    FLOOR_INFO* floor;
+    short roomNumber;
+
+    roomNumber = item->room_number;
+    floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+    GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
+    coll->trigger = trigger_index;
+}
+
 void phd_SwapPushMatrix(int frac)
 {
     if (frac) // interpolate

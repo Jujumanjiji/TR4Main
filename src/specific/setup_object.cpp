@@ -3,7 +3,7 @@
 #include "game/collide.h"
 #include "game/door.h"
 #include "game/items.h"
-#include "game/laraflare.h"
+#include "game/lara.h"
 #include "game/pickup.h"
 #include "game/puzzle.h"
 #include "game/oldobjects.h"

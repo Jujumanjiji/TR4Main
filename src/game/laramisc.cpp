@@ -1,5 +1,5 @@
 #include "framework.h"
-#include "laramisc.h"
+#include "lara.h"
 
 void injector::inject_laramisc()
 {

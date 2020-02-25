@@ -209,6 +209,12 @@
     <ClCompile Include="src\game\laraswim.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\larasurf.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\laraclimb.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -275,12 +281,6 @@
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\items.h">
-      <Filter>src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\laraflare.h">
-      <Filter>src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\laramisc.h">
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\pickup.h">

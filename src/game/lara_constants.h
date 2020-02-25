@@ -1,5 +1,13 @@
 #pragma once
 
+#define LaraClampP(var, incValue, maxValue)\
+    var += incValue;\
+    if (var > maxValue) var = maxValue
+
+#define LaraClampN(var, incValue, maxValue)\
+    var -= incValue;\
+    if (var < -maxValue) var = -maxValue
+
 #define LARA_AIR (2*30*30)
 #define LARA_HITPOINTS 1000
 #define LARA_DASH_TIME (30*4)
@@ -30,19 +38,37 @@
 #define LARA_DUCK_DEFLECT ANGLE(2)
 #define LARA_CRAWLB_RAD 250
 #define VAULT_ANGLE	ANGLE(30)
+#define FASTFALL_SPEED 128
+#define LARA_FASTFALL_SPEED	(FASTFALL_SPEED+3)
+#define FASTFALL_FRICTION(item) (item->speed * 95) / 100
+#define DAMAGE_START  140
+#define DAMAGE_LENGTH 14
 #define SLOPE_DIF 60
 #define BAD_JUMP_CEILING ((STEP_L*3)/4)
+#define UW_FRICTION 8
 #define UW_MAXSPEED (50*4)
 #define WATER_FRICTION 6
+#define SURF_FRICTION 4
+#define SURFMOVE_FRICTION (SURF_FRICTION * 2)
+#define SURF_MAXSPEED (15*4)
+#define SURF_RADIUS 100
+#define SURF_HITE 700
 #define UW_WALLDEFLECT ANGLE(2)
-
-#define LARA_CLAMPP(var, incValue, maxValue)\
-    var += incValue;\
-    if (var > maxValue) var = maxValue
-
-#define LARA_CLAMPN(var, incValue, maxValue)\
-    var -= incValue;\
-    if (var < -maxValue) var = -maxValue
+#define NO_BAD_POS NO_HEIGHT
+#define MAX_HEAD_ROTATION_SURF ANGLE(50)
+#define MAX_HEAD_TILT_SURF ANGLE(40)
+#define MIN_HEAD_TILT_SURF -ANGLE(40)
+#define HEAD_TURN_SURF ANGLE(3)
+#define CLIMB_SHIFT 70
+#define CAM_E_CLIMBS -ANGLE(20)
+#define CAM_A_CLIMBL -ANGLE(30)
+#define CAM_E_CLIMBL -ANGLE(15)
+#define CAM_A_CLIMBR ANGLE(30)
+#define CAM_E_CLIMBR -ANGLE(15)
+#define CAM_E_CLIMBU ANGLE(30)
+#define CAM_E_CLIMBD -ANGLE(45)
+#define CLIMB_HITE (STEP_L*2)
+#define CLIMB_HANG 900
 
 #define LARA_LEAN_UNDO (ONE_DEGREE)                                 // Leaning around Corners ..
 #define LARA_LEAN_RATE ((ONE_DEGREE/2) + LARA_LEAN_UNDO)
@@ -60,11 +86,6 @@
 #define LARA_MONKEY_TURN_RATE ((ONE_DEGREE/4) + LARA_TURN_UNDO)
 #define LARA_MONKEY_TURN_MAX ((ONE_DEGREE*2) + LARA_TURN_UNDO)
 #define LARA_LEAN_MAX_UW (LARA_LEAN_MAX*2)
-#define FASTFALL_SPEED 128
-#define LARA_FASTFALL_SPEED	(FASTFALL_SPEED+3)
-#define FASTFALL_FRICTION(item) (item->speed * 95) / 100
-#define DAMAGE_START  140
-#define DAMAGE_LENGTH 14
 
 #define LARA_SPRINT_TO_ROLL_FRAME 2
 #define LARA_STAND_TO_ROLL_FRAME 2

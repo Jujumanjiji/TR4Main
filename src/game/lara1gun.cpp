@@ -268,7 +268,7 @@ void animate_shotgun(int weapon_type)
 
                 if (item->state_next != LSS_LAND_RECOIL && fired)
                 {
-                    SoundEffect(SFX_EXPLOSION2, &lara_item->pos, PITCH_SHIFT | 0x5000000);
+                    SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x5000000);
                     fired = FALSE;
                 }
             }
