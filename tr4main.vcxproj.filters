@@ -200,6 +200,15 @@
     <ClCompile Include="src\game\lara.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\lara_utils.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\camera.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\laraswim.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -377,6 +386,12 @@
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\lara_constants.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\lara_utils.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\camera.h">
       <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>

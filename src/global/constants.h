@@ -34,6 +34,7 @@ using namespace std;
 #define LT_Warning             "Warning"
 #define LT_Version             "Version"
 
+#define NO_MESH -1
 #define NO_TRACK -1
 #define NO_FLY 0
 #define NO_HORIZON -1
@@ -80,6 +81,7 @@ using namespace std;
 #define SFX_ALWAYS 2
 #define DONT_TARGET (-16384)
 #define NO_ROOM 255
+#define NO_HEIGHT (32512)
 #define WALL_L 1024
 #define STEP_L 256
 #define FLY_ZONE 0x2000

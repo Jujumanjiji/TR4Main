@@ -70,6 +70,7 @@
 #define RenderTypeDebug                     VAR_U_(0x007E71E0, int)
 #define gf_lens_flare                       VAR_U_(0x007FD2A0, PHD_VECTOR)
 #define BinocularRange                      VAR_I_(0x004BF3E4, int, 0)
+#define LaserSight                          VAR_I_(0x004BF3F0, int, 0)
 #define LaserSightActive                    VAR_I_(0x004BF37E, int, 0)
 #define gf_mirror_room                      VAR_U_(0x007FD250, unsigned char)
 #define Lightning                           ARRAY_(0x007FE130, unsigned short, [])
@@ -112,6 +113,7 @@
 #define level_data                          VAR_U_(0x005333A4, char*)
 #define fp_level                            VAR_U_(0x00533A74, FILE*)
 #define savegame_ammoused                   VAR_U_(0x007F785A, int)
+#define height_type                         VAR_U_(0x007FE290, int) // height_types enum
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

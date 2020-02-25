@@ -268,14 +268,14 @@ void animate_shotgun(int weapon_type)
 
                 if (item->state_next != LSS_LAND_RECOIL && fired)
                 {
-                    SoundEffect(EXPLOSION2, &lara_item->pos, PITCH_SHIFT | 0x5000000);
+                    SoundEffect(SFX_EXPLOSION2, &lara_item->pos, PITCH_SHIFT | 0x5000000);
                     fired = FALSE;
                 }
             }
             else if (fired)
             {
-                SoundEffect(EXPLOSION2, &lara_item->pos, PITCH_SHIFT | 0x5000000);
-                SoundEffect(WATERFALL_LOOP, &lara_item->pos, 0);
+                SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x5000000);
+                SoundEffect(SFX_HECKLER_KOCH_FIRE, &lara_item->pos, 0);
             }
             else if (weapon_type == LG_SHOTGUN && CHK_NOP(TrInput, IN_ACTION) && !lara.l_arm.lock)
             {

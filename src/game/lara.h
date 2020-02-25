@@ -1,31 +1,50 @@
 #pragma once
+#include "lara_constants.h"
 
 ///#define NEW_ROUTINES
 
-#define LARA_ROUTINES_ARGS (ITEM_INFO* item, COLL_INFO* coll)
+#define LARA_ROUTINES_ARGS ITEM_INFO* item, COLL_INFO* coll
+#define LARA_FUNC(name) extern void name(LARA_ROUTINES_ARGS)
 
-#define LARA_ROUTINESNEW(address, newAddr) _FUNCV(address, LARA_ROUTINES_ARGS, newAddr)
+#define LARA_ROUTINESNEW(address, newAddr) _FUNCV(address, (LARA_ROUTINES_ARGS), newAddr)
+#ifdef NEW_ROUTINES
 #define LARA_ROUTINES(address) __FUNCV(address, LARA_ROUTINES_ARGS)
+#else
+#define LARA_ROUTINES(address) ((void(__cdecl*)(LARA_ROUTINES_ARGS)) address)
+#endif
 
 /// Lara Control Routines:
-extern void lara_as_walk(ITEM_INFO* item, COLL_INFO* coll);
-extern void lara_as_run(ITEM_INFO* item, COLL_INFO* coll);
+LARA_FUNC(lara_as_walk);
+LARA_FUNC(lara_as_run);
+LARA_FUNC(lara_as_stop);
+LARA_FUNC(lara_as_forwardjump);
+LARA_FUNC(lara_as_fastback);
+LARA_FUNC(lara_as_turnr);
+LARA_FUNC(lara_as_turnl);
+LARA_FUNC(lara_as_death);
+LARA_FUNC(lara_as_fastfall);
+LARA_FUNC(lara_as_hang);
+LARA_FUNC(lara_as_reach);
+LARA_FUNC(lara_as_splat);
+LARA_FUNC(lara_as_tread);
+LARA_FUNC(lara_as_compress);
+LARA_FUNC(lara_as_back);
 
 #define legacy_lara_as_walk                    LARA_ROUTINESNEW(0x00425AC0, lara_as_walk)
 #define legacy_lara_as_run                     LARA_ROUTINESNEW(0x00425B60, lara_as_run)
-#define legacy_lara_as_stop                    LARA_ROUTINES(0x00424A60)
-#define legacy_lara_as_forwardjump             LARA_ROUTINES(0x00425480)
-#define legacy_lara_as_fastback                LARA_ROUTINES(0x00425D10)
-#define legacy_lara_as_turn_r                  LARA_ROUTINES(0x00425D70)
-#define legacy_lara_as_turn_l                  LARA_ROUTINES(0x00425E20)
-#define legacy_lara_as_death                   LARA_ROUTINES(0x00425EC0)
-#define legacy_lara_as_fastfall                LARA_ROUTINES(0x00425F10)
-#define legacy_lara_as_hang                    LARA_ROUTINES(0x00425F50)
-#define legacy_lara_as_reach                   LARA_ROUTINES(0x00425630)
-#define legacy_lara_as_splat                   LARA_ROUTINES(0x00426EB0)
-#define legacy_lara_as_tread                   LARA_ROUTINES(0x004327A0)
-#define legacy_lara_as_compress                LARA_ROUTINES(0x00426EC0)
-#define legacy_lara_as_back                    LARA_ROUTINES(0x00426FD0)
+#define legacy_lara_as_stop                    LARA_ROUTINESNEW(0x00424A60, lara_as_stop)
+#define legacy_lara_as_forwardjump             LARA_ROUTINESNEW(0x00425480, lara_as_forwardjump)
+#define legacy_lara_as_fastback                LARA_ROUTINESNEW(0x00425D10, lara_as_fastback)
+#define legacy_lara_as_turnr                   LARA_ROUTINESNEW(0x00425D70, lara_as_turnr)
+#define legacy_lara_as_turnl                   LARA_ROUTINESNEW(0x00425E20, lara_as_turnl)
+#define legacy_lara_as_death                   LARA_ROUTINESNEW(0x00425EC0, lara_as_death)
+#define legacy_lara_as_fastfall                LARA_ROUTINESNEW(0x00425F10, lara_as_fastfall)
+#define legacy_lara_as_hang                    LARA_ROUTINESNEW(0x00425F50, lara_as_hang)
+#define legacy_lara_as_reach                   LARA_ROUTINESNEW(0x00425630, lara_as_reach)
+#define legacy_lara_as_splat                   LARA_ROUTINESNEW(0x00426EB0, lara_as_splat)
+#define legacy_lara_as_tread                   LARA_ROUTINESNEW(0x004327A0, lara_as_tread)
+#define legacy_lara_as_compress                LARA_ROUTINESNEW(0x00426EC0, lara_as_compress)
+#define legacy_lara_as_back                    LARA_ROUTINESNEW(0x00426FD0, lara_as_back)
 #define legacy_lara_as_swim                    LARA_ROUTINES(0x00432620)
 #define legacy_lara_as_glide                   LARA_ROUTINES(0x00432720)
 #define legacy_lara_as_null                    LARA_ROUTINES(0x00427060)

@@ -81,7 +81,7 @@ void draw_pistols(int weapon_type)
     else if (frame == table->draw2_anim)
     {
         draw_pistol_meshes(weapon_type);
-        SoundEffect(LARA_DRAW, &lara_item->pos, 0);
+        SoundEffect(SFX_LARA_DRAW, &lara_item->pos, 0);
     }
     else if (frame == (table->recoil_anim - 1))
     {
@@ -125,7 +125,7 @@ void undraw_pistols(int weapon_type)
         if ((frameL - 1) == (table->draw2_anim - 1))
         {
             undraw_pistols_left(weapon_type);
-            SoundEffect(LARA_UNDRAW, &lara_item->pos, 0);
+            SoundEffect(SFX_LARA_UNDRAW, &lara_item->pos, 0);
         }
     }
     set_arm_info(&lara.l_arm, frameL);
@@ -155,7 +155,7 @@ void undraw_pistols(int weapon_type)
         if ((frameR - 1) == (table->draw2_anim - 1))
         {
             undraw_pistols_right(weapon_type);
-            SoundEffect(LARA_UNDRAW, &lara_item->pos, 0);
+            SoundEffect(SFX_LARA_UNDRAW, &lara_item->pos, 0);
         }
     }
     set_arm_info(&lara.r_arm, frameR);
@@ -294,7 +294,7 @@ void animate_pistols(int weapon_type)
                         SmokeWeapon = weapon_type;
                         TriggerGunShell(TRUE, GUNSHELL, weapon_type);
                         lara.r_arm.flash_gun = winfo->flash_time;
-                        SoundEffect(EXPLOSION2, &lara_item->pos, PITCH_SHIFT | 0x2000000);
+                        SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x2000000);
                         SoundEffect(winfo->sample_id, &lara_item->pos, 0);
                         has_fired = true;
                         if (weapon_type == LG_UZIS)
@@ -363,7 +363,7 @@ void animate_pistols(int weapon_type)
                         
                         if (!has_fired)
                         {
-                            SoundEffect(EXPLOSION2, &lara_item->pos, PITCH_SHIFT | 0x2000000);
+                            SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x2000000);
                             SoundEffect(winfo->sample_id, &lara_item->pos, 0);
                         }
 
