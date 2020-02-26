@@ -154,3 +154,4 @@
 #define drips                               ARRAY_(0x00800DC0, DRIP_STRUCT, [MAX_DRIPS])
 #define shockwave                           ARRAY_(0x007FF960, SHOCKWAVE_STRUCT, [MAX_SHOCKWAVE])
 #define firelists                           ARRAY_(0x007FFF60, FIRE_LIST, [MAX_FIRE_LIST])
+#define ropes                               ARRAY_(0x007FB4C0, ROPE_STRUCT, [MAX_ROPES])

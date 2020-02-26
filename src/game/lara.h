@@ -77,6 +77,37 @@ LARA_FUNC(lara_as_wade);
 LARA_FUNC(lara_as_waterroll);
 LARA_FUNC(lara_as_pickupflare);
 LARA_FUNC(lara_as_deathslide);
+LARA_FUNC(lara_as_duck);
+LARA_FUNC(lara_as_dash);
+LARA_FUNC(lara_as_dashdive);
+LARA_FUNC(lara_as_hang2);
+LARA_FUNC(lara_as_monkeyswing);
+LARA_FUNC(lara_as_monkeyl);
+LARA_FUNC(lara_as_monkeyr);
+LARA_FUNC(lara_as_monkey180);
+LARA_FUNC(lara_as_all4s);
+LARA_FUNC(lara_as_crawl);
+LARA_FUNC(lara_as_hangturnl);
+LARA_FUNC(lara_as_hangturnr);
+LARA_FUNC(lara_as_all4turnl);
+LARA_FUNC(lara_as_all4turnr);
+LARA_FUNC(lara_as_crawlb);
+LARA_FUNC(lara_as_controlled);
+LARA_FUNC(lara_as_ropel);
+LARA_FUNC(lara_as_roper);
+LARA_FUNC(lara_as_controlledl);
+LARA_FUNC(lara_as_poleleft);
+LARA_FUNC(lara_as_poleright);
+LARA_FUNC(lara_as_pulley);
+LARA_FUNC(lara_as_duckl);
+LARA_FUNC(lara_as_duckr);
+LARA_FUNC(lara_as_extcornerl);
+LARA_FUNC(lara_as_extcornerr);
+LARA_FUNC(lara_as_intcornerl);
+LARA_FUNC(lara_as_intcornerr);
+LARA_FUNC(lara_as_rope);
+LARA_FUNC(lara_as_climbrope);
+LARA_FUNC(lara_as_climbroped);
 
 #define legacy_lara_as_walk                    LARA_ROUTINESNEW(0x00425AC0, lara_as_walk)
 #define legacy_lara_as_run                     LARA_ROUTINESNEW(0x00425B60, lara_as_run)
@@ -136,37 +167,37 @@ LARA_FUNC(lara_as_deathslide);
 #define legacy_lara_as_waterroll               LARA_ROUTINESNEW(0x004328B0, lara_as_waterroll)
 #define legacy_lara_as_pickupflare             LARA_ROUTINESNEW(0x00427420, lara_as_pickupflare)
 #define legacy_lara_as_deathslide              LARA_ROUTINESNEW(0x00427730, lara_as_deathslide)
-#define legacy_lara_as_duck                    LARA_ROUTINES(0x00421040)
-#define legacy_lara_as_dash                    LARA_ROUTINES(0x004220B0)
-#define legacy_lara_as_dashdive                LARA_ROUTINES(0x00422A90)
-#define legacy_lara_as_hang2                   LARA_ROUTINES(0x00422DE0)
-#define legacy_lara_as_monkeyswing             LARA_ROUTINES(0x00423880)
-#define legacy_lara_as_monkeyl                 LARA_ROUTINES(0x00423A60)
-#define legacy_lara_as_monkeyr                 LARA_ROUTINES(0x00423B30)
-#define legacy_lara_as_monkey180               LARA_ROUTINES(0x00423D20)
-#define legacy_lara_as_all4s                   LARA_ROUTINES(0x00421210)
-#define legacy_lara_as_crawl                   LARA_ROUTINES(0x004216A0)
-#define legacy_lara_as_hangturnl               LARA_ROUTINES(0x00423C00)
-#define legacy_lara_as_hangturnr               LARA_ROUTINES(0x00423CE0)
-#define legacy_lara_as_all4turnl               LARA_ROUTINES(0x00421900)
-#define legacy_lara_as_all4turnr               LARA_ROUTINES(0x004219B0)
-#define legacy_lara_as_crawlb                  LARA_ROUTINES(0x00421A10)
-#define legacy_lara_as_controlled              LARA_ROUTINES(0x004277D0)
-#define legacy_lara_as_ropel                   LARA_ROUTINES(0x00424620)
-#define legacy_lara_as_roper                   LARA_ROUTINES(0x00424650)
-#define legacy_lara_as_controlledl             LARA_ROUTINES(0x004278B0)
-#define legacy_lara_as_poleleft                LARA_ROUTINES(0x00423EE0)
-#define legacy_lara_as_poleright               LARA_ROUTINES(0x00423F20)
-#define legacy_lara_as_pulley                  LARA_ROUTINES(0x00427940)
-#define legacy_lara_as_duckl                   LARA_ROUTINES(0x00420D50)
-#define legacy_lara_as_duckr                   LARA_ROUTINES(0x00420D80)
-#define legacy_lara_as_extcornerl              LARA_ROUTINES(0x00426D70)
-#define legacy_lara_as_extcornerr              LARA_ROUTINES(0x00426DC0)
-#define legacy_lara_as_intcornerl              LARA_ROUTINES(0x00426E10)
-#define legacy_lara_as_intcornerr              LARA_ROUTINES(0x00426E60)
-#define legacy_lara_as_rope                    LARA_ROUTINES(0x004241A0)
-#define legacy_lara_as_climbrope               LARA_ROUTINES(0x004248E0)
-#define legacy_lara_as_climbroped              LARA_ROUTINES(0x00424950)
+#define legacy_lara_as_duck                    LARA_ROUTINESNEW(0x00421040, lara_as_duck)
+#define legacy_lara_as_dash                    LARA_ROUTINESNEW(0x004220B0, lara_as_dash)
+#define legacy_lara_as_dashdive                LARA_ROUTINESNEW(0x00422A90, lara_as_dashdive)
+#define legacy_lara_as_hang2                   LARA_ROUTINESNEW(0x00422DE0, lara_as_hang2)
+#define legacy_lara_as_monkeyswing             LARA_ROUTINESNEW(0x00423880, lara_as_monkeyswing)
+#define legacy_lara_as_monkeyl                 LARA_ROUTINESNEW(0x00423A60, lara_as_monkeyl)
+#define legacy_lara_as_monkeyr                 LARA_ROUTINESNEW(0x00423B30, lara_as_monkeyr)
+#define legacy_lara_as_monkey180               LARA_ROUTINESNEW(0x00423D20, lara_as_monkey180)
+#define legacy_lara_as_all4s                   LARA_ROUTINESNEW(0x00421210, lara_as_all4s)
+#define legacy_lara_as_crawl                   LARA_ROUTINESNEW(0x004216A0, lara_as_crawl)
+#define legacy_lara_as_hangturnl               LARA_ROUTINESNEW(0x00423C00, lara_as_hangturnl)
+#define legacy_lara_as_hangturnr               LARA_ROUTINESNEW(0x00423CE0, lara_as_hangturnr)
+#define legacy_lara_as_all4turnl               LARA_ROUTINESNEW(0x00421900, lara_as_all4turnl)
+#define legacy_lara_as_all4turnr               LARA_ROUTINESNEW(0x004219B0, lara_as_all4turnr)
+#define legacy_lara_as_crawlb                  LARA_ROUTINESNEW(0x00421A10, lara_as_crawlb)
+#define legacy_lara_as_controlled              LARA_ROUTINESNEW(0x004277D0, lara_as_controlled)
+#define legacy_lara_as_ropel                   LARA_ROUTINESNEW(0x00424620, lara_as_ropel)
+#define legacy_lara_as_roper                   LARA_ROUTINESNEW(0x00424650, lara_as_roper)
+#define legacy_lara_as_controlledl             LARA_ROUTINESNEW(0x004278B0, lara_as_controlledl)
+#define legacy_lara_as_poleleft                LARA_ROUTINESNEW(0x00423EE0, lara_as_poleleft)
+#define legacy_lara_as_poleright               LARA_ROUTINESNEW(0x00423F20, lara_as_poleright)
+#define legacy_lara_as_pulley                  LARA_ROUTINESNEW(0x00427940, lara_as_pulley)
+#define legacy_lara_as_duckl                   LARA_ROUTINESNEW(0x00420D50, lara_as_duckl)
+#define legacy_lara_as_duckr                   LARA_ROUTINESNEW(0x00420D80, lara_as_duckr)
+#define legacy_lara_as_extcornerl              LARA_ROUTINESNEW(0x00426D70, lara_as_extcornerl)
+#define legacy_lara_as_extcornerr              LARA_ROUTINESNEW(0x00426DC0, lara_as_extcornerr)
+#define legacy_lara_as_intcornerl              LARA_ROUTINESNEW(0x00426E10, lara_as_intcornerl)
+#define legacy_lara_as_intcornerr              LARA_ROUTINESNEW(0x00426E60, lara_as_intcornerr)
+#define legacy_lara_as_rope                    LARA_ROUTINESNEW(0x004241A0, lara_as_rope)
+#define legacy_lara_as_climbrope               LARA_ROUTINESNEW(0x004248E0, lara_as_climbrope)
+#define legacy_lara_as_climbroped              LARA_ROUTINESNEW(0x00424950, lara_as_climbroped)
 
 /// Lara Collision Routines:
 

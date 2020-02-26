@@ -876,6 +876,634 @@ void lara_as_deathslide(ITEM_INFO* item, COLL_INFO* coll)
     }
 }
 
+void lara_as_duck(ITEM_INFO* item, COLL_INFO* coll)
+{
+    coll->enable_spaz = TRUE;
+    coll->enable_baddie_push = TRUE;
+    lara.is_ducked = TRUE;
+
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        return;
+    }
+
+    if (TestLaraSlide(item, coll))
+    {
+        return;
+    }
+
+    if (CHK_ANY(TrInput, IN_LOOK))
+    {
+        LookUpDown();
+    }
+
+    if (CHK_ANY(TrInput, (IN_FORWARD | IN_BACK))
+    && (CHK_ANY(TrInput, IN_DUCK) || lara.keep_ducked) && lara.gun_status == LHS_ARMLESS && lara.water_status != LWS_WADE)
+    {
+        if ((item->current_anim == ANIMATION_LARA_CROUCH_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_PREPARE)
+        &&  CHK_NOP(TrInput, (IN_FLARE | IN_DRAW))
+        && (lara.gun_type != LG_FLARE || (lara.flare_age < 900 && lara.flare_age)))
+        {
+            lara.torso_y_rot = 0;
+            lara.torso_x_rot = 0;
+            item->state_next = STATE_LARA_CRAWL_IDLE;
+        }
+    }
+}
+
+void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_RUN_FORWARD;
+        return;
+    }
+
+    lara.dash_timer--;
+    if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
+    {
+        if (lara.gun_status == LHS_ARMLESS
+        ||  lara.gun_type == LG_UNARMED
+        ||  lara.gun_type == LG_PISTOLS
+        ||  lara.gun_type == LG_REVOLVER
+        ||  lara.gun_type == LG_UZIS
+        ||  lara.gun_type == LG_FLARE)
+        {
+            item->state_next = STATE_LARA_CROUCH_IDLE;
+            return;
+        }
+    }
+
+    if (CHK_ANY(TrInput, IN_LEFT))
+    {
+        LaraClampN(lara.turn_rate, LARA_DASH_TURN_RATE, LARA_DASH_TURN_MAX);
+        LaraClampN(item->pos.z_rot, LARA_DASH_LEAN_RATE, LARA_DASH_LEAN_MAX);
+    }
+    else if (CHK_ANY(TrInput, IN_RIGHT))
+    {
+        LaraClampP(lara.turn_rate, LARA_DASH_TURN_RATE, LARA_DASH_TURN_MAX);
+        LaraClampP(item->pos.z_rot, LARA_DASH_LEAN_RATE, LARA_DASH_LEAN_MAX);
+    }
+
+    if (CHK_ANY(TrInput, IN_JUMP) && !item->gravity_status)
+    {
+        item->state_next = STATE_LARA_SPRINT_ROLL;
+    }
+    else if (CHK_ANY(TrInput, IN_FORWARD))
+    {
+        if (CHK_ANY(TrInput, IN_WALK))
+            item->state_next = STATE_LARA_WALK_FORWARD;
+        else
+            item->state_next = STATE_LARA_SPRINT;
+    }
+    else if (CHK_NOP(TrInput, (IN_LEFT | IN_RIGHT)))
+    {
+        item->state_next = STATE_LARA_STOP;
+    }
+}
+
+void lara_as_dashdive(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->state_next != STATE_LARA_DEATH
+    &&  item->state_next != STATE_LARA_STOP
+    &&  item->state_next != STATE_LARA_RUN_FORWARD)
+    {
+        if (item->fallspeed > LARA_FASTFALL_SPEED)
+            item->state_next = STATE_LARA_FREEFALL;
+    }
+}
+
+void lara_as_hang2(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_STOP;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+
+    if (lara.can_monkey_swing)
+    {
+        if (CHK_NOP(TrInput, IN_ACTION) || item->hit_points <= 0)
+        {
+            MonkeySwingFall(item);
+            return;
+        }
+
+        camera.target_angle = CAM_A_HANG;
+        camera.target_elevation = CAM_E_HANG;
+    }
+    else
+    {
+        if (CHK_ANY(TrInput, IN_LOOK))
+            LookUpDown();
+    }
+}
+
+void lara_as_monkeyswing(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+
+    if (CHK_ANY(TrInput, IN_LOOK))
+        LookUpDown();
+
+    if (CHK_ANY(TrInput, IN_FORWARD))
+        item->state_next = STATE_LARA_MONKEYSWING_FORWARD;
+    else
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+
+    if (CHK_ANY(TrInput, IN_LEFT))
+    {
+        LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+    }
+    else if (CHK_ANY(TrInput, IN_RIGHT))
+    {
+        LaraClampP(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+    }
+}
+
+void lara_as_monkeyl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+
+    if (CHK_ANY(TrInput, IN_LSTEP))
+        item->state_next = STATE_LARA_MONKEYSWING_LEFT;
+    else
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+
+    camera.target_elevation = ANGLE(10);
+}
+
+void lara_as_monkeyr(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+
+    if (CHK_ANY(TrInput, IN_RSTEP))
+        item->state_next = STATE_LARA_MONKEYSWING_RIGHT;
+    else
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+
+    camera.target_elevation = ANGLE(10);
+}
+
+void lara_as_monkey180(ITEM_INFO* item, COLL_INFO* coll)
+{
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+}
+
+void lara_as_all4s(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_DEATH;
+        return;
+    }
+
+    if (TrInput & IN_LOOK)
+        LookUpDown();
+
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = TRUE;
+
+    if (item->current_anim == ANIMATION_LARA_CROUCH_TO_CRAWL_BEGIN)
+        lara.gun_status = LHS_HANDBUSY;
+
+    camera.target_elevation = -ANGLE(23);
+}
+
+void lara_as_crawl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        return;
+    }
+
+    if (TrInput & IN_LOOK)
+        LookUpDown();
+
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = TRUE;
+    camera.target_elevation = -ANGLE(23);
+
+    if (CHK_ANY(TrInput, IN_FORWARD) && (CHK_ANY(TrInput, IN_DUCK) || lara.keep_ducked) && lara.water_status != LWS_WADE)
+    {
+        if (CHK_ANY(TrInput, IN_LEFT))
+        {
+            LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+        }
+        else if (CHK_ANY(TrInput, IN_RIGHT))
+        {
+            LaraClampP(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+        }
+    }
+    else
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+    }
+}
+
+void lara_as_hangturnl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+        return;
+    }
+
+    camera.target_elevation = ANGLE(10);
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    item->pos.y_rot -= (ONE_DEGREE + (ONE_DEGREE / 2));
+
+    if (CHK_NOP(TrInput, IN_LEFT))
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+}
+
+void lara_as_hangturnr(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+        return;
+    }
+
+    camera.target_elevation = ANGLE(10);
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    item->pos.y_rot += (ONE_DEGREE + (ONE_DEGREE / 2));
+
+    if (CHK_NOP(TrInput, IN_RIGHT))
+        item->state_next = STATE_LARA_MONKEYSWING_IDLE;
+}
+
+void lara_as_all4turnl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        return;
+    }
+
+    camera.target_elevation = -ANGLE(23);
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = TRUE;
+    item->pos.y_rot -= (ONE_DEGREE + (ONE_DEGREE / 2));
+
+    if (CHK_NOP(TrInput, IN_LEFT))
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+}
+
+void lara_as_all4turnr(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        return;
+    }
+
+    camera.target_elevation = -ANGLE(23);
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = TRUE;
+    item->pos.y_rot += (ONE_DEGREE + (ONE_DEGREE / 2));
+
+    if (CHK_NOP(TrInput, IN_RIGHT))
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+}
+
+void lara_as_crawlb(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0 || lara.water_status == LWS_WADE)
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        return;
+    }
+
+    if (CHK_ANY(TrInput, IN_LOOK))
+        LookUpDown();
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = TRUE;
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
+    camera.target_elevation = -ANGLE(23);
+
+    if (CHK_NOP(TrInput, IN_BACK))
+    {
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+    }
+    else if (CHK_ANY(TrInput, IN_LEFT))
+    {
+        LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+    }
+    else if (CHK_ANY(TrInput, IN_RIGHT))
+    {
+        LaraClampP(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+    }
+}
+
+void lara_as_controlled(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.look = FALSE;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (item->current_anim == ANIMATION_LARA_HARP_PLAY && (item->current_frame == anims[ANIMATION_LARA_HARP_PLAY].frame_base + 130))
+    {
+        S_CDPlay(6, FALSE);
+    }
+
+    if (item->current_anim == ANIMATION_LARA_DETONATOR_USE)
+    {
+        short meshIndex;
+        if (item->current_frame == (anims[ANIMATION_LARA_DETONATOR_USE].frame_base + 16))
+            meshIndex = objects[MESHSWAP3].mesh_index;
+        else if (item->current_frame == (anims[ANIMATION_LARA_DETONATOR_USE].frame_base + 118))
+            meshIndex = objects[LARA_SKIN].mesh_index;
+        lara.mesh.hand_r = meshes[meshIndex + HAND_R * 2];
+    }
+
+    if (item->current_frame == (anims[item->current_anim].frame_end - 1))
+    {
+        if (item->current_anim == ANIMATION_LARA_HARP_PLAY)
+            S_CDPlay(19, FALSE);
+        lara.gun_status = LHS_ARMLESS;
+        if (UseForcedFixedCamera)
+            UseForcedFixedCamera = FALSE;
+    }
+}
+
+void lara_as_ropel(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_ANY(TrInput, IN_ACTION))
+    {
+        if (CHK_ANY(TrInput, IN_LEFT))
+            lara.rope_y += STEP_L;
+        else
+            item->state_next = STATE_LARA_ROPE_IDLE;
+    }
+    else
+    {
+        FallFromRope(item);
+    }
+}
+
+void lara_as_roper(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_ANY(TrInput, IN_ACTION))
+    {
+        if (CHK_ANY(TrInput, IN_RIGHT))
+            lara.rope_y -= STEP_L;
+        else
+            item->state_next = STATE_LARA_ROPE_IDLE;
+    }
+    else
+    {
+        FallFromRope(item);
+    }
+}
+
+void lara_as_controlledl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.look = FALSE;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+}
+
+void lara_as_poleleft(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_POLE_IDLE;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (CHK_NOP(TrInput, IN_LEFT) || CHK_NOP(TrInput, IN_ACTION) || CHK_ANY(TrInput, (IN_FORWARD | IN_BACK)))
+        item->state_next = STATE_LARA_POLE_IDLE;
+    else
+        item->pos.y_rot += STEP_L;
+}
+
+void lara_as_poleright(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_POLE_IDLE;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (CHK_NOP(TrInput, IN_RIGHT) || CHK_NOP(TrInput, IN_ACTION) || CHK_ANY(TrInput, (IN_FORWARD | IN_BACK)))
+        item->state_next = STATE_LARA_POLE_IDLE;
+    else
+        item->pos.y_rot -= STEP_L;
+}
+
+void lara_as_pulley(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (lara.general_ptr == nullptr) // Dont assign it to ITEM_INFO pointer if general_ptr is NULL !
+        return;
+    ITEM_INFO* gen = (ITEM_INFO*)lara.general_ptr;
+
+    lara.look = FALSE;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (CHK_ANY(TrInput, IN_ACTION) && gen->ocb_bits)
+        item->state_next = STATE_LARA_PULLEY;
+    else
+        item->state_next = STATE_LARA_STOP;
+
+    if (item->current_anim == ANIMATION_LARA_PULLEY_PULL && item->current_frame == (anims[ANIMATION_LARA_PULLEY_PULL].frame_base + 44))
+    {
+        if (gen->ocb_bits && !gen->reserved_2)
+        {
+            gen->ocb_bits--;
+
+            if (gen->ocb_bits && gen->reserved_3)
+            {
+                gen->reserved_3 = 0;
+                gen->status = FITEM_DEACTIVATED;
+            }
+            else
+            {
+                gen->status = FITEM_DEACTIVATED;
+                gen->reserved_3 = 1;
+                if (gen->reserved_4 >= 0)
+                    gen->ocb_bits = abs(gen->reserved_4);
+                else
+                    gen->reserved_1 = 1;
+            }
+        }
+    }
+
+    if (item->current_anim == ANIMATION_LARA_PULLEY_UNGRAB && item->current_frame == (anims[ANIMATION_LARA_PULLEY_UNGRAB].frame_end - 1))
+        lara.gun_status = LHS_ARMLESS;
+}
+
+void lara_as_duckl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_CROUCH_IDLE;
+        return;
+    }
+
+    if (CHK_NOP(TrInput, IN_LEFT) || CHK_NOP(TrInput, IN_DUCK))
+        item->state_next = STATE_LARA_CROUCH_IDLE;
+
+    item->pos.y_rot -= (ONE_DEGREE + (ONE_DEGREE / 2));
+}
+
+void lara_as_duckr(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_CROUCH_IDLE;
+        return;
+    }
+
+    if (CHK_NOP(TrInput, IN_RIGHT) || CHK_NOP(TrInput, IN_DUCK))
+        item->state_next = STATE_LARA_CROUCH_IDLE;
+
+    item->pos.y_rot += (ONE_DEGREE + (ONE_DEGREE / 2));
+}
+
+void lara_as_extcornerl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    camera.target_angle = 0x4000;
+    camera.target_elevation = -ANGLE(33);
+    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_LEFT_OUTER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_LEFT_OUTER_END);
+}
+
+void lara_as_extcornerr(ITEM_INFO* item, COLL_INFO* coll)
+{
+    camera.target_angle = -0x4000;
+    camera.target_elevation = -ANGLE(33);
+    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_RIGHT_OUTER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_RIGHT_OUTER_END);
+}
+
+void lara_as_intcornerl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    camera.target_angle = -0x4000;
+    camera.target_elevation = -ANGLE(33);
+    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_LEFT_INNER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_LEFT_INNER_END);
+}
+
+void lara_as_intcornerr(ITEM_INFO* item, COLL_INFO* coll)
+{
+    camera.target_angle = 0x4000;
+    camera.target_elevation = -ANGLE(33);
+    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_RIGHT_INNER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_RIGHT_INNER_END);
+}
+
+void lara_as_rope(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_NOP(TrInput, IN_ACTION))
+        FallFromRope(item);
+
+    if (CHK_ANY(TrInput, IN_LOOK))
+        LookUpDown();
+}
+
+void lara_as_climbrope(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_ANY(TrInput, IN_ROLL))
+    {
+        FallFromRope(item);
+        return;
+    }
+
+    camera.target_angle = ANGLE(30);
+
+    if (item->current_frame == anims[item->current_anim].frame_end)
+    {
+        item->current_frame = anims[item->current_anim].frame_base;
+        lara.rope_segment -= 2;
+    }
+
+    if (CHK_NOP(TrInput, IN_FORWARD) || lara.rope_segment <= 4)
+        item->state_next = STATE_LARA_ROPE_IDLE;
+}
+
+void lara_as_climbroped(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_NOP(TrInput, IN_ACTION))
+    {
+        FallFromRope(item);
+        return;
+    }
+
+    camera.target_angle = ANGLE(30);
+
+    if (lara.rope_count && !lara.rope_flag)
+    {
+        lara.rope_count -= 1;
+    }
+    else if (!lara.rope_flag)
+    {
+        
+    }
+
+    if (item->current_anim == ANIMATION_LARA_ROPE_DOWN && item->current_frame == anims[ANIMATION_LARA_ROPE_DOWN].frame_end)
+    {
+        item->current_frame = anims[ANIMATION_LARA_ROPE_DOWN].frame_base;
+        lara.rope_flag = 0;
+        lara.rope_segment++;
+        lara.rope_offset = 0;
+    }
+
+    if (CHK_NOP(TrInput, IN_BACK) || lara.rope_segment >= 21)
+        item->state_next = STATE_LARA_ROPE_IDLE;
+}
+
 void injector::inject_lara()
 {
     /// CONTROL ROUTINES:
@@ -935,6 +1563,37 @@ void injector::inject_lara()
     this->inject(legacy_lara_as_waterroll);
     this->inject(legacy_lara_as_pickupflare);
     this->inject(legacy_lara_as_deathslide);
+    this->inject(legacy_lara_as_duck);
+    this->inject(legacy_lara_as_dash);
+    this->inject(legacy_lara_as_dashdive);
+    this->inject(legacy_lara_as_hang2);
+    this->inject(legacy_lara_as_monkeyswing);
+    this->inject(legacy_lara_as_monkeyl);
+    this->inject(legacy_lara_as_monkeyr);
+    this->inject(legacy_lara_as_monkey180);
+    this->inject(legacy_lara_as_all4s);
+    this->inject(legacy_lara_as_crawl);
+    this->inject(legacy_lara_as_hangturnl);
+    this->inject(legacy_lara_as_hangturnr);
+    this->inject(legacy_lara_as_all4turnl);
+    this->inject(legacy_lara_as_all4turnr);
+    this->inject(legacy_lara_as_crawlb);
+    this->inject(legacy_lara_as_controlled);
+    this->inject(legacy_lara_as_ropel);
+    this->inject(legacy_lara_as_roper);
+    this->inject(legacy_lara_as_controlledl);
+    this->inject(legacy_lara_as_poleleft);
+    this->inject(legacy_lara_as_poleright);
+    this->inject(legacy_lara_as_pulley);
+    this->inject(legacy_lara_as_duckl);
+    this->inject(legacy_lara_as_duckr);
+    this->inject(legacy_lara_as_extcornerl);
+    this->inject(legacy_lara_as_extcornerr);
+    this->inject(legacy_lara_as_intcornerl);
+    this->inject(legacy_lara_as_intcornerr);
+    this->inject(legacy_lara_as_rope);
+    this->inject(legacy_lara_as_climbrope);
+    this->inject(legacy_lara_as_climbroped);
 
     /// COLLISION ROUTINES:
 

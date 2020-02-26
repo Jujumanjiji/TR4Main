@@ -277,7 +277,7 @@ struct ITEM_INFO
     short timer;
     short flags;                       // For oneshot and code switches (i.e. NOT flags)
     short shade;
-    short ocb_bits;
+    short ocb_bits;                      // trigger_bits
     short carried_item;
     short after_death;
     unsigned short fired_weapon;
@@ -546,6 +546,7 @@ struct ROPE_STRUCT
     PHD_VECTOR normal[24];
     PHD_VECTOR mesh[24];
     PHD_VECTOR pos;
+    PHD_VECTOR unknown[24];
     int segLength;
     short active;
     short coiled;
