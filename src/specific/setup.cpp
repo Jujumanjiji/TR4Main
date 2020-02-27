@@ -3,11 +3,11 @@
 #include "setup_entity.h"
 #include "setup_object.h"
 #include "setup_trap.h"
-#include "game/draw.h"
-#include "game/items.h"
-#include "game/pickup.h"
-#include "game/rope.h"
-#include "utils/utils.h"
+#include "draw.h"
+#include "items.h"
+#include "pickup.h"
+#include "rope.h"
+#include "utils.h"
 
 void InitialiseObjects(void)
 {

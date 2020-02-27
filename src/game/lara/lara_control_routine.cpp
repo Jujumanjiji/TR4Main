@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "lara.h"
+#include "lara_control_routine.h"
 #include "3d_gen.h"
 #include "lara_utils.h"
 #include "camera.h"
@@ -71,11 +72,11 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
     {
         if (lara.gun_status == LHS_ARMLESS
-        ||  lara.gun_type == LG_UNARMED
-        ||  lara.gun_type == LG_PISTOLS
-        ||  lara.gun_type == LG_REVOLVER
-        ||  lara.gun_type == LG_UZIS
-        ||  lara.gun_type == LG_FLARE)
+            || lara.gun_type == LG_UNARMED
+            || lara.gun_type == LG_PISTOLS
+            || lara.gun_type == LG_REVOLVER
+            || lara.gun_type == LG_UZIS
+            || lara.gun_type == LG_FLARE)
         {
             item->state_next = STATE_LARA_CROUCH_IDLE;
             return;
@@ -97,19 +98,19 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
     short frame = GetCurrentFrame(item);
     switch (item->current_anim)
     {
-        case ANIMATION_LARA_RUN:
-            if (frame == 4)
-                jump_ok = true;
-            break;
+    case ANIMATION_LARA_RUN:
+        if (frame == 4)
+            jump_ok = true;
+        break;
 
-        case ANIMATION_LARA_WALK_FORWARD:
-            if (frame == 4)
-                jump_ok = true;
-            break;
+    case ANIMATION_LARA_WALK_FORWARD:
+        if (frame == 4)
+            jump_ok = true;
+        break;
 
-        case ANIMATION_LARA_STAY_TO_RUN:
-            jump_ok = false;
-            break;
+    case ANIMATION_LARA_STAY_TO_RUN:
+        jump_ok = false;
+        break;
     }
 
     if (CHK_ANY(TrInput, IN_JUMP) && jump_ok && !item->gravity_status)
@@ -146,7 +147,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
 
     /// normal
     if (item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_RIGHT
-    &&  item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_LEFT)
+        && item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_LEFT)
     {
         StopSoundEffect(SFX_LARA_SLIPPING);
     }
@@ -165,11 +166,11 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
     {
         if (lara.gun_status == LHS_ARMLESS
-        ||  lara.gun_type == LG_UNARMED
-        ||  lara.gun_type == LG_PISTOLS
-        ||  lara.gun_type == LG_REVOLVER
-        ||  lara.gun_type == LG_UZIS
-        ||  lara.gun_type == LG_FLARE)
+            || lara.gun_type == LG_UNARMED
+            || lara.gun_type == LG_PISTOLS
+            || lara.gun_type == LG_REVOLVER
+            || lara.gun_type == LG_UZIS
+            || lara.gun_type == LG_FLARE)
         {
             item->state_next = STATE_LARA_CROUCH_IDLE;
             return;
@@ -261,7 +262,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
                 item->state_next = STATE_LARA_STOP;
                 return;
             }
-            
+
             if (height >= -STEP_L || fheight >= -STEP_L)
             {
                 if (CHK_NOP(TrInput, IN_WALK))
@@ -305,14 +306,14 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
 void lara_as_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->state_next == STATE_LARA_SWANDIVE_BEGIN
-    ||  item->state_next == STATE_LARA_REACH)
+        || item->state_next == STATE_LARA_REACH)
     {
         item->state_next = STATE_LARA_JUMP_FORWARD;
     }
 
     if (item->state_next != STATE_LARA_DEATH
-    &&  item->state_next != STATE_LARA_STOP
-    &&  item->state_next != STATE_LARA_RUN_FORWARD)
+        && item->state_next != STATE_LARA_STOP
+        && item->state_next != STATE_LARA_RUN_FORWARD)
     {
         if (CHK_ANY(TrInput, IN_ACTION) && lara.gun_status == LHS_ARMLESS)
             item->state_next = STATE_LARA_REACH;
@@ -465,7 +466,7 @@ void lara_as_hang(ITEM_INFO* item, COLL_INFO* coll)
         item->state_next = STATE_LARA_STOP;
         return;
     }
-    
+
     if (CHK_ANY(TrInput, IN_LOOK))
         LookUpDown();
 
@@ -585,7 +586,7 @@ void lara_as_stepright(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->state_next = STATE_LARA_STOP;
     }
-    
+
     if (CHK_ANY(TrInput, IN_LEFT))
     {
         LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_SLOW_TURN);
@@ -610,7 +611,7 @@ void lara_as_stepleft(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->state_next = STATE_LARA_STOP;
     }
-    
+
     if (CHK_ANY(TrInput, IN_LEFT))
     {
         LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_SLOW_TURN);
@@ -899,11 +900,11 @@ void lara_as_duck(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     if (CHK_ANY(TrInput, (IN_FORWARD | IN_BACK))
-    && (CHK_ANY(TrInput, IN_DUCK) || lara.keep_ducked) && lara.gun_status == LHS_ARMLESS && lara.water_status != LWS_WADE)
+        && (CHK_ANY(TrInput, IN_DUCK) || lara.keep_ducked) && lara.gun_status == LHS_ARMLESS && lara.water_status != LWS_WADE)
     {
         if ((item->current_anim == ANIMATION_LARA_CROUCH_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_PREPARE)
-        &&  CHK_NOP(TrInput, (IN_FLARE | IN_DRAW))
-        && (lara.gun_type != LG_FLARE || (lara.flare_age < 900 && lara.flare_age)))
+            && CHK_NOP(TrInput, (IN_FLARE | IN_DRAW))
+            && (lara.gun_type != LG_FLARE || (lara.flare_age < 900 && lara.flare_age)))
         {
             lara.torso_y_rot = 0;
             lara.torso_x_rot = 0;
@@ -924,11 +925,11 @@ void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
     {
         if (lara.gun_status == LHS_ARMLESS
-        ||  lara.gun_type == LG_UNARMED
-        ||  lara.gun_type == LG_PISTOLS
-        ||  lara.gun_type == LG_REVOLVER
-        ||  lara.gun_type == LG_UZIS
-        ||  lara.gun_type == LG_FLARE)
+            || lara.gun_type == LG_UNARMED
+            || lara.gun_type == LG_PISTOLS
+            || lara.gun_type == LG_REVOLVER
+            || lara.gun_type == LG_UZIS
+            || lara.gun_type == LG_FLARE)
         {
             item->state_next = STATE_LARA_CROUCH_IDLE;
             return;
@@ -966,8 +967,8 @@ void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
 void lara_as_dashdive(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->state_next != STATE_LARA_DEATH
-    &&  item->state_next != STATE_LARA_STOP
-    &&  item->state_next != STATE_LARA_RUN_FORWARD)
+        && item->state_next != STATE_LARA_STOP
+        && item->state_next != STATE_LARA_RUN_FORWARD)
     {
         if (item->fallspeed > LARA_FASTFALL_SPEED)
             item->state_next = STATE_LARA_FREEFALL;
@@ -1511,104 +1512,4 @@ void lara_as_climbroped(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_NOP(TrInput, IN_BACK) || lara.rope_segment >= 21)
         item->state_next = STATE_LARA_ROPE_IDLE;
-}
-
-void lara_default_col(ITEM_INFO* item, COLL_INFO* coll)
-{
-
-}
-
-void injector::inject_lara()
-{
-    /// CONTROL ROUTINES:
-    this->inject(legacy_lara_as_walk);
-    this->inject(legacy_lara_as_run);
-    this->inject(legacy_lara_as_stop);
-    this->inject(legacy_lara_as_forwardjump);
-    this->inject(legacy_lara_as_fastback);
-    this->inject(legacy_lara_as_turnr);
-    this->inject(legacy_lara_as_turnl);
-    this->inject(legacy_lara_as_death);
-    this->inject(legacy_lara_as_fastfall);
-    this->inject(legacy_lara_as_hang);
-    this->inject(legacy_lara_as_reach);
-    this->inject(legacy_lara_as_splat);
-    this->inject(legacy_lara_as_tread);
-    this->inject(legacy_lara_as_compress);
-    this->inject(legacy_lara_as_back);
-    this->inject(legacy_lara_as_swim);
-    this->inject(legacy_lara_as_glide);
-    this->inject(legacy_lara_as_null);
-    this->inject(legacy_lara_as_fastturn);
-    this->inject(legacy_lara_as_stepright);
-    this->inject(legacy_lara_as_stepleft);
-    this->inject(legacy_lara_as_slide);
-    this->inject(legacy_lara_as_backjump);
-    this->inject(legacy_lara_as_rightjump);
-    this->inject(legacy_lara_as_leftjump);
-    this->inject(legacy_lara_as_upjump);
-    this->inject(legacy_lara_as_fallback);
-    this->inject(legacy_lara_as_hangleft);
-    this->inject(legacy_lara_as_hangright);
-    this->inject(legacy_lara_as_slideback);
-    this->inject(legacy_lara_as_surftread);
-    this->inject(legacy_lara_as_surfswim);
-    this->inject(legacy_lara_as_dive);
-    this->inject(legacy_lara_as_pushblock);
-    this->inject(legacy_lara_as_pullblock);
-    this->inject(legacy_lara_as_ppready);
-    this->inject(legacy_lara_as_pickup);
-    this->inject(legacy_lara_as_switchon);
-    this->inject(legacy_lara_as_usekey);
-    this->inject(legacy_lara_as_usepuzzle);
-    this->inject(legacy_lara_as_surfback);
-    this->inject(legacy_lara_as_surfleft);
-    this->inject(legacy_lara_as_surfright);
-    this->inject(legacy_lara_as_swandive);
-    this->inject(legacy_lara_as_fastdive);
-    this->inject(legacy_lara_as_waterout);
-    this->inject(legacy_lara_as_climbstnc);
-    this->inject(legacy_lara_as_climbing);
-    this->inject(legacy_lara_as_climbleft);
-    this->inject(legacy_lara_as_climbend);
-    this->inject(legacy_lara_as_climbright);
-    this->inject(legacy_lara_as_climbdown);
-    this->inject(legacy_lara_as_wade);
-    this->inject(legacy_lara_as_waterroll);
-    this->inject(legacy_lara_as_pickupflare);
-    this->inject(legacy_lara_as_deathslide);
-    this->inject(legacy_lara_as_duck);
-    this->inject(legacy_lara_as_dash);
-    this->inject(legacy_lara_as_dashdive);
-    this->inject(legacy_lara_as_hang2);
-    this->inject(legacy_lara_as_monkeyswing);
-    this->inject(legacy_lara_as_monkeyl);
-    this->inject(legacy_lara_as_monkeyr);
-    this->inject(legacy_lara_as_monkey180);
-    this->inject(legacy_lara_as_all4s);
-    this->inject(legacy_lara_as_crawl);
-    this->inject(legacy_lara_as_hangturnl);
-    this->inject(legacy_lara_as_hangturnr);
-    this->inject(legacy_lara_as_all4turnl);
-    this->inject(legacy_lara_as_all4turnr);
-    this->inject(legacy_lara_as_crawlb);
-    this->inject(legacy_lara_as_controlled);
-    this->inject(legacy_lara_as_ropel);
-    this->inject(legacy_lara_as_roper);
-    this->inject(legacy_lara_as_controlledl);
-    this->inject(legacy_lara_as_poleleft);
-    this->inject(legacy_lara_as_poleright);
-    this->inject(legacy_lara_as_pulley);
-    this->inject(legacy_lara_as_duckl);
-    this->inject(legacy_lara_as_duckr);
-    this->inject(legacy_lara_as_extcornerl);
-    this->inject(legacy_lara_as_extcornerr);
-    this->inject(legacy_lara_as_intcornerl);
-    this->inject(legacy_lara_as_intcornerr);
-    this->inject(legacy_lara_as_rope);
-    this->inject(legacy_lara_as_climbrope);
-    this->inject(legacy_lara_as_climbroped);
-
-    /// COLLISION ROUTINES:
-    this->inject(legacy_lara_default_col);
 }

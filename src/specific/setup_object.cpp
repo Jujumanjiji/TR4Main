@@ -1,13 +1,13 @@
 #include "framework.h"
 #include "setup_object.h"
-#include "game/collide.h"
-#include "game/door.h"
-#include "game/items.h"
-#include "game/lara.h"
-#include "game/pickup.h"
-#include "game/puzzle.h"
-#include "game/oldobjects.h"
-#include "game/switchs.h"
+#include "collide.h"
+#include "door.h"
+#include "items.h"
+#include "lara.h"
+#include "pickup.h"
+#include "puzzle.h"
+#include "oldobjects.h"
+#include "switchs.h"
 
 SetupObject setup_object;
 

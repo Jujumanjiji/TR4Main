@@ -1,10 +1,10 @@
 #include "framework.h"
 #include "lara.h"
-#include "3dsystem/3d_gen.h"
+#include "3d_gen.h"
 #include "lara_utils.h"
 #include "camera.h"
 #include "sound.h"
-#include "utils/utils.h"
+#include "utils.h"
 
 void lara_as_surftread(ITEM_INFO* item, COLL_INFO* coll)
 {

@@ -1,10 +1,10 @@
 #include "framework.h"
 #include "drawprimitive.h"
-#include "3dsystem/3d_gen.h"
-#include "3dsystem/3d_gen_a.h"
-#include "game/control.h"
-#include "specific/specific.h"
-#include "utils/utils.h"
+#include "3d_gen.h"
+#include "3d_gen_a.h"
+#include "control.h"
+#include "specific.h"
+#include "utils.h"
 
 /*
 // original function (now using SetGunFlash_Left/Right() in utils !)

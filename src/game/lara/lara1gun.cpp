@@ -7,7 +7,7 @@
 #include "larafire.h"
 #include "sphere.h"
 #include "sound.h"
-#include "utils/utils.h"
+#include "utils.h"
 
 void draw_shotgun_meshes(int weapon_type)
 {

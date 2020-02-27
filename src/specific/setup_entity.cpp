@@ -1,11 +1,11 @@
 #include "framework.h"
 #include "setup_entity.h"
-#include "game/collide.h"
-#include "game/box.h"
-#include "game/lara.h"
-#include "game/oldobjects.h"
-#include "specific/json/reader.h"
-#include "utils/utils.h"
+#include "collide.h"
+#include "box.h"
+#include "lara.h"
+#include "oldobjects.h"
+#include "json/reader.h"
+#include "utils.h"
 
 SetupEntity setup_entity;
 void SetupEntity::lara_obj()

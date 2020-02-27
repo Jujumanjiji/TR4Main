@@ -1,10 +1,10 @@
 #include "framework.h"
 #include "setup_trap.h"
-#include "game/collide.h"
-#include "game/traps.h"
-#include "game/puzzle.h"
-#include "game/rope.h"
-#include "game/oldobjects.h"
+#include "collide.h"
+#include "traps.h"
+#include "puzzle.h"
+#include "rope.h"
+#include "oldobjects.h"
 
 SetupTrap setup_trap;
 

@@ -1,12 +1,12 @@
 #include "framework.h"
 #include "box.h"
-#include "3dsystem/3d_gen.h"
+#include "3d_gen.h"
 #include "control.h"
 #include "draw.h"
 #include "items.h"
 #include "lot.h"
 #include "sphere.h"
-#include "utils/utils.h"
+#include "utils.h"
 
 #define ATTACK_RANGE SQUARE(WALL_L * 3)
 #define BORED_DIST (WALL_L * 6)

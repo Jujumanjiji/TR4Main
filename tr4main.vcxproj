@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,7 +82,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,11 +99,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\camera.cpp" />
-    <ClCompile Include="src\game\laraclimb.cpp" />
-    <ClCompile Include="src\game\larasurf.cpp" />
-    <ClCompile Include="src\game\laraswim.cpp" />
-    <ClCompile Include="src\game\lara_utils.cpp" />
-    <ClCompile Include="src\game\lara.cpp" />
+    <ClCompile Include="src\game\lara\lara.cpp" />
+    <ClCompile Include="src\game\lara\lara1gun.cpp" />
+    <ClCompile Include="src\game\lara\lara2gun.cpp" />
+    <ClCompile Include="src\game\lara\laraclimb.cpp" />
+    <ClCompile Include="src\game\lara\larafire.cpp" />
+    <ClCompile Include="src\game\lara\laraflare.cpp" />
+    <ClCompile Include="src\game\lara\laramisc.cpp" />
+    <ClCompile Include="src\game\lara\larasurf.cpp" />
+    <ClCompile Include="src\game\lara\laraswim.cpp" />
+    <ClCompile Include="src\game\lara\lara_col_routine.cpp" />
     <ClCompile Include="src\extern\json\Jzon.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -111,9 +116,8 @@
     <ClCompile Include="src\game\effect2.cpp" />
     <ClCompile Include="src\game\entity\baddy.cpp" />
     <ClCompile Include="src\game\entity\bat.cpp" />
-    <ClCompile Include="src\game\lara1gun.cpp" />
-    <ClCompile Include="src\game\lara2gun.cpp" />
-    <ClCompile Include="src\game\larafire.cpp" />
+    <ClCompile Include="src\game\lara\lara_control_routine.cpp" />
+    <ClCompile Include="src\game\lara\lara_utils.cpp" />
     <ClCompile Include="src\game\people.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="framework.cpp">
@@ -134,8 +138,6 @@
     <ClCompile Include="src\game\entity\crocodile.cpp" />
     <ClCompile Include="src\game\health.cpp" />
     <ClCompile Include="src\game\items.cpp" />
-    <ClCompile Include="src\game\laraflare.cpp" />
-    <ClCompile Include="src\game\laramisc.cpp" />
     <ClCompile Include="src\game\lot.cpp" />
     <ClCompile Include="src\game\pickup.cpp" />
     <ClCompile Include="src\game\puzzle.cpp" />
@@ -164,8 +166,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\camera.h" />
-    <ClInclude Include="src\game\lara_utils.h" />
-    <ClInclude Include="src\game\lara.h" />
+    <ClInclude Include="src\game\lara\lara.h" />
+    <ClInclude Include="src\game\lara\lara1gun.h" />
+    <ClInclude Include="src\game\lara\lara2gun.h" />
+    <ClInclude Include="src\game\lara\larafire.h" />
+    <ClInclude Include="src\game\lara\lara_col_routine.h" />
     <ClInclude Include="src\extern\bass\bass.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -180,10 +185,9 @@
     </ClInclude>
     <ClInclude Include="src\extern\json\Jzon.h" />
     <ClInclude Include="src\game\effect2.h" />
-    <ClInclude Include="src\game\lara1gun.h" />
-    <ClInclude Include="src\game\lara2gun.h" />
-    <ClInclude Include="src\game\larafire.h" />
-    <ClInclude Include="src\game\lara_constants.h" />
+    <ClInclude Include="src\game\lara\lara_constants.h" />
+    <ClInclude Include="src\game\lara\lara_control_routine.h" />
+    <ClInclude Include="src\game\lara\lara_utils.h" />
     <ClInclude Include="src\game\people.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="src\3dsystem\3d_gen.h" />

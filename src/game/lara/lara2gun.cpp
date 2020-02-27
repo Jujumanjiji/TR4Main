@@ -5,7 +5,7 @@
 #include "larafire.h"
 #include "sphere.h"
 #include "sound.h"
-#include "utils/utils.h"
+#include "utils.h"
 
 int weapon_holsters(int weapon_type)
 {
