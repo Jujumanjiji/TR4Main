@@ -1,7 +1,6 @@
 #include "framework.h"
 #include "lara.h"
 #include "3d_gen.h"
-#include "lara_utils.h"
 #include "camera.h"
 #include "sound.h"
 #include "utils.h"

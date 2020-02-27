@@ -388,27 +388,6 @@
     <ClInclude Include="src\game\lara\lara.h">
       <Filter>src\game\lara</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\lara\lara_constants.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\lara\lara_utils.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\lara\lara1gun.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\lara\lara2gun.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\lara\larafire.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\lara\lara_col_routine.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\lara\lara_control_routine.h">
-      <Filter>src\game\lara</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

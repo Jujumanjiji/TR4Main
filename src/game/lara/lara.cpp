@@ -1,9 +1,6 @@
 #include "framework.h"
 #include "lara.h"
-#include "lara_control_routine.h"
-#include "lara_col_routine.h"
 #include "3d_gen.h"
-#include "lara_utils.h"
 #include "camera.h"
 #include "sound.h"
 #include "utils.h"
@@ -100,5 +97,6 @@ void injector::inject_lara()
     this->inject(legacy_lara_as_climbroped);
 
     /// COLLISION ROUTINES:
-
+    this->inject(legacy_lara_default_col);
+    this->inject(legacy_lara_col_walk);
 }

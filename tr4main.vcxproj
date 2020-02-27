@@ -167,10 +167,6 @@
   <ItemGroup>
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\lara\lara.h" />
-    <ClInclude Include="src\game\lara\lara1gun.h" />
-    <ClInclude Include="src\game\lara\lara2gun.h" />
-    <ClInclude Include="src\game\lara\larafire.h" />
-    <ClInclude Include="src\game\lara\lara_col_routine.h" />
     <ClInclude Include="src\extern\bass\bass.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -185,9 +181,6 @@
     </ClInclude>
     <ClInclude Include="src\extern\json\Jzon.h" />
     <ClInclude Include="src\game\effect2.h" />
-    <ClInclude Include="src\game\lara\lara_constants.h" />
-    <ClInclude Include="src\game\lara\lara_control_routine.h" />
-    <ClInclude Include="src\game\lara\lara_utils.h" />
     <ClInclude Include="src\game\people.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="src\3dsystem\3d_gen.h" />

@@ -86,7 +86,7 @@ using namespace std;
 #define WALL_L 1024
 #define STEP_L 256
 #define FLY_ZONE 0x2000
-#define STEPUP_HEIGHT ((STEP_L*3)/2)
+#define STEPUP_HEIGHT ((STEP_L*3)/2) // (STEPUP_HEIGHT = 384)
 
 #define NUM_SLOTS 5
 #define NO_BOX 0x7FF

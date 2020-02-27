@@ -1,5 +1,5 @@
 #include "framework.h"
-#include "larafire.h"
+#include "lara.h"
 
 void injector::inject_larafire()
 {
