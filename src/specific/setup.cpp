@@ -54,7 +54,6 @@ void InitialiseObjects(void)
     SequenceResult[2][0][1] = 4;
     SequenceResult[2][1][0] = 5;
     SequenceUsed = 0;
-    dword_4BF300 = 0; // not used !
     byte_7FD1DC = 0;
     byte_7F5700 = 0;
 }

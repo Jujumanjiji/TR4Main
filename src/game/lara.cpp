@@ -1485,11 +1485,20 @@ void lara_as_climbroped(ITEM_INFO* item, COLL_INFO* coll)
 
     if (lara.rope_count && !lara.rope_flag)
     {
-        lara.rope_count -= 1;
+        lara.rope_count--;
+        lara.rope_offset += lara.rope_downvel;
+        lara.rope_flag = 1;
+        return;
     }
     else if (!lara.rope_flag)
     {
-        
+        ROPE_STRUCT* rope = &ropes[lara.rope_ptr];
+        lara.rope_offset = 0;
+        lara.rope_downvel = (DWORD)(rope->mesh[lara.rope_segment + 1].y - rope->mesh[lara.rope_segment].y) >> 17;
+        lara.rope_count = 0;
+        lara.rope_offset += lara.rope_downvel;
+        lara.rope_flag = 1;
+        return;
     }
 
     if (item->current_anim == ANIMATION_LARA_ROPE_DOWN && item->current_frame == anims[ANIMATION_LARA_ROPE_DOWN].frame_end)

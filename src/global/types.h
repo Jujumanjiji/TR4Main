@@ -126,6 +126,14 @@ struct PHD_3DPOS
     short z_rot;
 };
 
+struct PHD_WORLD
+{
+    int x;
+    int y;
+    int z;
+    short room_number;
+};
+
 struct PHD_VECTOR
 {
     int x;
@@ -470,12 +478,8 @@ struct CAMERA_INFO
     ITEM_INFO* item;
     ITEM_INFO* last_item;
     OBJECT_VECTOR* fixed;
-    int dword_7FE880;
-    int dword_7FE884;
-    int dword_7FE888;
     int mike_at_lara;
-    PHD_VECTOR mike_pos;
-    short mike_pos_room;
+    PHD_WORLD mike_pos;
 };
 
 struct LARA_ARM

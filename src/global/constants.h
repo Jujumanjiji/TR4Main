@@ -76,7 +76,7 @@ using namespace std;
 #define MAX_FIRE_LIST 32
 #define MAX_LIGHTNING 3
 #define MAX_DYNAMICS 32
-#define MAX_ROPES 12
+#define MAX_ROPES 8
 #define MAX_SPAWNER_ENTITY 50000 // ~50
 
 #define SFX_ALWAYS 2

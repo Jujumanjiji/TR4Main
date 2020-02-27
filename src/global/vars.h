@@ -19,7 +19,6 @@
 ///             OTHER             ///
 ///===============================///
 
-#define dword_4BF300                        VAR_I_(0x004BF300, int, 0)
 #define phd_laralefthand                    ARRAY_(0x0080E9C0, int, [12])
 #define phd_lararighthand                   ARRAY_(0x0080E930, int, [12])
 #define phd_left                            VAR_U_(0x00753C78, int)
@@ -111,7 +110,7 @@
 ///#define EntityBlindTimer                    VAR_U_(0x0080E136, char)
 #define EnemyOffset                         ARRAY_(0x004AED00, BITE_INFO, [11])
 #define level_data                          VAR_U_(0x005333A4, char*)
-#define fp_level                            VAR_U_(0x00533A74, FILE*)
+#define fp_level                            VAR_U_(0x00533A74, LPFILE)
 #define savegame_ammoused                   VAR_U_(0x007F785A, int)
 #define height_type                         VAR_U_(0x007FE290, int) // height_types enum
 
@@ -135,7 +134,7 @@
 #define overlaps                            VAR_U_(0x007FE9A8, short*)
 #define boxes                               VAR_U_(0x007FE9B0, BOX_INFO*)
 #define floor_data                          VAR_U_(0x00533A78, short*)
-#define camera                              VAR_U_(0x007FE820, CAMERA_INFO) // not finished !!!
+#define camera                              VAR_U_(0x007FE820, CAMERA_INFO)
 #define effects                             VAR_U_(0x008012E0, FX_INFO*)
 #define flip_status                         VAR_U_(0x007FE218, int)
 #define weapons                             ARRAY_(0x004AD848, WEAPON_INFO, [8])
