@@ -975,7 +975,8 @@ struct LARA_INFO
     WORD is_moving : 1;
     WORD can_monkey_swing : 1;
     WORD burn_blue : 1;
-    WORD burn_smoke : 1;         // HIBYTE
+    WORD gassed : 1;             // HIBYTE
+    WORD burn_smoke : 1;
     WORD is_ducked : 1;
     WORD has_fired : 1;
     WORD busy : 1;

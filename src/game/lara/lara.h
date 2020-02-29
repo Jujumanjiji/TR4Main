@@ -92,6 +92,8 @@
 #define CAM_E_CLIMBD -ANGLE(45)
 #define CLIMB_HITE (STEP_L*2)
 #define CLIMB_HANG 900
+#define LARA_IS_CLIMBING TRUE
+#define LARA_IS_NOT_CLIMBING FALSE
 
 #define LARA_LEAN_UNDO (ONE_DEGREE)                                 // Leaning around Corners ..
 #define LARA_LEAN_RATE ((ONE_DEGREE/2) + LARA_LEAN_UNDO)
@@ -303,17 +305,25 @@ LARA_FUNC(lara_as_climbroped);
 /// Lara Collision Routines:
 LARA_FUNC(lara_default_col);
 LARA_FUNC(lara_col_walk);
+LARA_FUNC(lara_col_run);
+LARA_FUNC(lara_col_stop);
+LARA_FUNC(lara_col_forwardjump);
+LARA_FUNC(lara_col_fastback);
+LARA_FUNC(lara_col_turn);
+LARA_FUNC(lara_col_death);
+LARA_FUNC(lara_col_fastfall);
+LARA_FUNC(lara_col_hang);
 
 #define legacy_lara_default_col                LARA_ROUTINESNEW(0x00428AD0, lara_default_col)
 #define legacy_lara_col_walk                   LARA_ROUTINESNEW(0x00427A40, lara_col_walk)
-#define legacy_lara_col_run                    LARA_ROUTINES(0x00427C30)
-#define legacy_lara_col_stop                   LARA_ROUTINES(0x00425070)
-#define legacy_lara_col_forwardjump            LARA_ROUTINES(0x00425550)
-#define legacy_lara_col_fastback               LARA_ROUTINES(0x00427E00)
-#define legacy_lara_col_turn                   LARA_ROUTINES(0x00427EF0)
-#define legacy_lara_col_death                  LARA_ROUTINES(0x00427FD0)
-#define legacy_lara_col_fastfall               LARA_ROUTINES(0x00428040)
-#define legacy_lara_col_hang                   LARA_ROUTINES(0x00425FA0)
+#define legacy_lara_col_run                    LARA_ROUTINESNEW(0x00427C30, lara_col_run)
+#define legacy_lara_col_stop                   LARA_ROUTINESNEW(0x00425070, lara_col_stop)
+#define legacy_lara_col_forwardjump            LARA_ROUTINESNEW(0x00425550, lara_col_forwardjump)
+#define legacy_lara_col_fastback               LARA_ROUTINESNEW(0x00427E00, lara_col_fastback)
+#define legacy_lara_col_turn                   LARA_ROUTINESNEW(0x00427EF0, lara_col_turn)
+#define legacy_lara_col_death                  LARA_ROUTINESNEW(0x00427FD0, lara_col_death)
+#define legacy_lara_col_fastfall               LARA_ROUTINESNEW(0x00428040, lara_col_fastfall)
+#define legacy_lara_col_hang                   LARA_ROUTINESNEW(0x00425FA0, lara_col_hang)
 #define legacy_lara_col_reach                  LARA_ROUTINES(0x00425650)
 #define legacy_lara_col_splat                  LARA_ROUTINES(0x004280F0)
 #define legacy_lara_col_tread                  LARA_ROUTINES(0x00432B30)
@@ -475,6 +485,7 @@ extern void animate_pistols(int weapon_type);
 #define TestLaraSlide ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420EA0)
 #define TestLaraVault ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422480)
 #define TestHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
+#define TestWall ((BOOL(__cdecl*)(ITEM_INFO* item, int front, int right, int height)) 0x004228D0)
 #define SwimTurn ((void(__cdecl*)(ITEM_INFO* item)) 0x00432690)
 #define MonkeySwingFall ((void(__cdecl*)(ITEM_INFO* item)) 0x00422E50)
 #define FallFromRope ((void(__cdecl*)(ITEM_INFO* item)) 0x004241D0)

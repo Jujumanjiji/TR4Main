@@ -338,6 +338,17 @@ enum LARA_WATER_STATUS
     LWS_WADE
 };
 
+enum COLL_TYPE
+{
+    COLL_NONE = 0x0,
+    COLL_FRONT = 0x1,
+    COLL_LEFT = 0x2,
+    COLL_RIGHT = 0x4,
+    COLL_TOP = 0x8,
+    COLL_TOPFRONT = 0x10,
+    COLL_CLAMP = 0x20
+};
+
 enum LARA_STATE
 {
     STATE_LARA_WALK_FORWARD = 0,

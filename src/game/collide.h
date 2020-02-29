@@ -1,5 +1,7 @@
 #pragma once
 
+extern void ShiftItem(ITEM_INFO* item, COLL_INFO* coll);
+
 #define CreatureCollision COLLISION(0x00447470)
 #define ObjectCollision COLLISION(0x004475F0)
 #define MovBlockCollision COLLISION(0x00448840)

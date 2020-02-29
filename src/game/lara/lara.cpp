@@ -99,4 +99,12 @@ void injector::inject_lara()
     /// COLLISION ROUTINES:
     this->inject(legacy_lara_default_col);
     this->inject(legacy_lara_col_walk);
+    this->inject(legacy_lara_col_run);
+    this->inject(legacy_lara_col_stop);
+    this->inject(legacy_lara_col_forwardjump);
+    this->inject(legacy_lara_col_fastback);
+    this->inject(legacy_lara_col_turn);
+    this->inject(legacy_lara_col_death);
+    this->inject(legacy_lara_col_fastfall);
+    this->inject(legacy_lara_col_hang);
 }
