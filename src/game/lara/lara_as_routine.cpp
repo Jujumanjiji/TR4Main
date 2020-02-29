@@ -316,7 +316,7 @@ void lara_as_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
         if (CHK_ANY(TrInput, IN_ACTION) && lara.gun_status == LHS_ARMLESS)
             item->state_next = STATE_LARA_REACH;
 
-        if (CHK_ANY(TrInput, IN_BACK) && CHK_ANY(TrInput, IN_ROLL))
+        if (CHK_ANY(TrInput, IN_BACK) || CHK_ANY(TrInput, IN_ROLL))
             item->state_next = STATE_LARA_JUMP_ROLL;
 
         if (CHK_ANY(TrInput, IN_WALK) && lara.gun_status == LHS_ARMLESS)

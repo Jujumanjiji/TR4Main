@@ -323,6 +323,18 @@ LARA_FUNC(lara_col_splat);
 LARA_FUNC(lara_col_tread);
 LARA_FUNC(lara_col_compress);
 LARA_FUNC(lara_col_back);
+LARA_FUNC(lara_col_swim);
+LARA_FUNC(lara_col_glide);
+LARA_FUNC(lara_col_step);
+LARA_FUNC(lara_col_roll);
+LARA_FUNC(lara_col_slide);
+LARA_FUNC(lara_col_backjump);
+LARA_FUNC(lara_col_rightjump);
+LARA_FUNC(lara_col_leftjump);
+LARA_FUNC(lara_col_upjump);
+
+
+LARA_FUNC(lara_col_roll2);
 
 #ifdef DLL_INJECT
 #define legacy_lara_default_col                LARA_ROUTINESNEW(0x00428AD0, lara_default_col)
@@ -340,15 +352,15 @@ LARA_FUNC(lara_col_back);
 #define legacy_lara_col_tread                  LARA_ROUTINESNEW(0x00432B30, lara_col_tread)
 #define legacy_lara_col_compress               LARA_ROUTINESNEW(0x00428160, lara_col_compress)
 #define legacy_lara_col_back                   LARA_ROUTINESNEW(0x00428210, lara_col_back)
-#define legacy_lara_col_swim                   LARA_ROUTINES(0x004328C0)
-#define legacy_lara_col_glide                  LARA_ROUTINES(0x00432B10)
-#define legacy_lara_col_stepright              LARA_ROUTINES(0x00428350)
-#define legacy_lara_col_roll2                  LARA_ROUTINES(0x00428770)
-#define legacy_lara_col_slide                  LARA_ROUTINES(0x00428450)
-#define legacy_lara_col_backjump               LARA_ROUTINES(0x00428580)
-#define legacy_lara_col_rightjump              LARA_ROUTINES(0x004285B0)
-#define legacy_lara_col_leftjump               LARA_ROUTINES(0x004285E0)
-#define legacy_lara_col_upjump                 LARA_ROUTINES(0x00425130)
+#define legacy_lara_col_swim                   LARA_ROUTINESNEW(0x004328C0, lara_col_swim)
+#define legacy_lara_col_glide                  LARA_ROUTINESNEW(0x00432B10, lara_col_glide)
+#define legacy_lara_col_step                   LARA_ROUTINESNEW(0x00428350, lara_col_step)
+#define legacy_lara_col_roll                   LARA_ROUTINESNEW(0x004286D0, lara_col_roll)
+#define legacy_lara_col_slide                  LARA_ROUTINESNEW(0x00428450, lara_col_slide)
+#define legacy_lara_col_backjump               LARA_ROUTINESNEW(0x00428580, lara_col_backjump)
+#define legacy_lara_col_rightjump              LARA_ROUTINESNEW(0x004285B0, lara_col_rightjump)
+#define legacy_lara_col_leftjump               LARA_ROUTINESNEW(0x004285E0, lara_col_leftjump)
+#define legacy_lara_col_upjump                 LARA_ROUTINESNEW(0x00425130, lara_col_upjump)
 #define legacy_lara_col_fallback               LARA_ROUTINES(0x00428610)
 #define legacy_lara_col_hangleft               LARA_ROUTINES(0x00426B90)
 #define legacy_lara_col_hangright              LARA_ROUTINES(0x00426C10)
@@ -357,7 +369,7 @@ LARA_FUNC(lara_col_back);
 #define legacy_lara_col_surfswim               LARA_ROUTINES(0x00431E60)
 #define legacy_lara_col_dive                   LARA_ROUTINES(0x00432B50)
 #define legacy_lara_col_uwdeath                LARA_ROUTINES(0x00432B70)
-#define legacy_lara_col_roll                   LARA_ROUTINES(0x004286D0)
+#define legacy_lara_col_roll2                  LARA_ROUTINESNEW(0x00428770, lara_col_roll2)
 #define legacy_lara_col_surfback               LARA_ROUTINES(0x004322B0)
 #define legacy_lara_col_surfleft               LARA_ROUTINES(0x004322E0)
 #define legacy_lara_col_surfright              LARA_ROUTINES(0x00432310)
@@ -503,6 +515,7 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define LaraLandedBad ((bool(__cdecl*)(ITEM_INFO *item)) 0x00422BE0)
 #define LaraCollideStop ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004229D0)
 #define LaraSwimCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004328E0)
+#define LaraColJumper ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
 #define UseSpecialItem ((BOOL(__cdecl*)(ITEM_INFO* item)) 0x00424E90)
 #define TestLaraSlide ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420EA0)
 #define TestLaraVault ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422480)

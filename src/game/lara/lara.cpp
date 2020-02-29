@@ -114,5 +114,17 @@ void injector::inject_lara()
     this->inject(legacy_lara_col_tread);
     this->inject(legacy_lara_col_compress);
     this->inject(legacy_lara_col_back);
+    this->inject(legacy_lara_col_swim);
+    this->inject(legacy_lara_col_glide);
+    this->inject(legacy_lara_col_step);
+    this->inject(legacy_lara_col_roll); 
+    this->inject(legacy_lara_col_slide);
+    this->inject(legacy_lara_col_backjump);
+    this->inject(legacy_lara_col_rightjump);
+    this->inject(legacy_lara_col_leftjump);
+    this->inject(legacy_lara_col_upjump);
+
+
+    this->inject(legacy_lara_col_roll2);
 }
 #endif

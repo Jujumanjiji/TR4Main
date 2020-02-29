@@ -21,19 +21,18 @@ void lara_default_col(ITEM_INFO* item, COLL_INFO* coll)
 void lara_col_walk(ITEM_INFO* item, COLL_INFO* coll)
 {
     lara.move_angle = item->pos.y_rot;
-    item->fallspeed = 0;
-    item->gravity_status = FALSE;
     coll->bad_pos = STEPUP_HEIGHT;
     coll->bad_neg = -STEPUP_HEIGHT;
     coll->bad_ceiling = 0;
     coll->lava_is_pit = TRUE;
     coll->slopes_are_pits = TRUE;
     coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
     GetLaraCollisionInfo(item, coll);
 
     if (LaraHitCeiling(item, coll))
         return;
-
     if (TestLaraVault(item, coll))
         return;
     
@@ -41,12 +40,12 @@ void lara_col_walk(ITEM_INFO* item, COLL_INFO* coll)
     {
         if (item->current_frame >= 29 && item->current_frame <= 47)
         {
-            item->current_anim = ANIMATION_LARA_END_WALK_RIGHT;
+            item->current_anim = ANIMATION_LARA_END_WALK_LEFT;
             item->current_frame = anims[item->current_anim].frame_base;
         }
         else if ((item->current_frame >= 22 && item->current_frame <= 28) || (item->current_frame >= 48 && item->current_frame <= 57))
         {
-            item->current_anim = ANIMATION_LARA_END_WALK_LEFT;
+            item->current_anim = ANIMATION_LARA_END_WALK_RIGHT;
             item->current_frame = anims[item->current_anim].frame_base;
         }
         else
@@ -584,6 +583,163 @@ void lara_col_back(ITEM_INFO* item, COLL_INFO* coll)
 
     if (TestLaraSlide(item, coll))
         return;
+
+    if (coll->mid_floor != -NO_HEIGHT)
+        item->pos.y += coll->mid_floor;
+}
+
+void lara_col_swim(ITEM_INFO* item, COLL_INFO* coll)
+{
+    LaraSwimCollision(item, coll);
+}
+
+void lara_col_glide(ITEM_INFO* item, COLL_INFO* coll)
+{
+    LaraSwimCollision(item, coll);
+}
+
+void lara_col_step(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->state_current == STATE_LARA_WALK_RIGHT)
+        lara.move_angle = item->pos.y_rot + 0x4000;
+    else
+        lara.move_angle = item->pos.y_rot - 0x4000;
+    
+    if (lara.water_status == LWS_WADE)
+        coll->bad_pos = NO_HEIGHT;
+    else
+        coll->bad_pos = (STEP_L / 2);
+    coll->bad_neg = -(STEP_L / 2);
+    coll->bad_ceiling = 0;
+    coll->slopes_are_pits = TRUE;
+    coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    GetLaraCollisionInfo(item, coll);
+
+    if (LaraHitCeiling(item, coll))
+        return;
+
+    if (LaraDeflectEdge(item, coll))
+        LaraCollideStop(item, coll);
+
+    if (LaraFallen(item, coll))
+        return;
+    if (TestLaraSlide(item, coll))
+        return;
+
+    if (coll->mid_floor != -NO_HEIGHT)
+        item->pos.y += coll->mid_floor;
+}
+
+void lara_col_roll(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 0;
+    coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    GetLaraCollisionInfo(item, coll);
+
+    if (LaraHitCeiling(item, coll))
+        return;
+    if (TestLaraSlide(item, coll))
+        return;
+    if (LaraFallen(item, coll))
+        return;
+
+    ShiftItem(item, coll);
+
+    if (coll->mid_floor != -NO_HEIGHT)
+        item->pos.y += coll->mid_floor;
+}
+
+void lara_col_slide(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot;
+    LaraSlideSlope(item, coll);
+}
+
+void lara_col_backjump(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x8000;
+    LaraColJumper(item, coll);
+}
+
+void lara_col_rightjump(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot + 0x4000;
+    LaraColJumper(item, coll);
+}
+
+void lara_col_leftjump(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x4000;
+    LaraColJumper(item, coll);
+}
+
+void lara_col_upjump(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_STOP;
+        return;
+    }
+
+    if (item->speed < 0)
+        lara.move_angle = item->pos.y_rot - 0x8000;
+    else
+        lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 192;
+    coll->facing = lara.move_angle;
+    coll->hit_ceiling = FALSE;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void lara_col_roll2(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x8000;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 0;
+    coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    GetLaraCollisionInfo(item, coll);
+
+    if (LaraHitCeiling(item, coll))
+        return;
+    if (TestLaraSlide(item, coll))
+        return;
+
+    if (coll->mid_floor > 200)
+    {
+        item->fallspeed = 0;
+        item->gravity_status = TRUE;
+        SetAnimationForItem(item, ANIMATION_LARA_FREE_FALL_BACK, STATE_LARA_FALL_BACKWARD, STATE_LARA_FALL_BACKWARD);
+        return;
+    }
+
+    ShiftItem(item, coll);
 
     if (coll->mid_floor != -NO_HEIGHT)
         item->pos.y += coll->mid_floor;
