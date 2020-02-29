@@ -283,6 +283,7 @@ void ClearLOT(LOT_INFO* LOT)
     }
 }
 
+#ifdef DLL_INJECT
 void injector::inject_lot()
 {
     this->inject(legacy_InitialiseLOT);
@@ -292,3 +293,4 @@ void injector::inject_lot()
     this->inject(legacy_CreateZone);
     this->inject(legacy_ClearLOT);
 }
+#endif

@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "3d_gen.h"
 
+#ifdef DLL_INJECT
 void injector::inject_3d_gen()
 {
     //this->inject(0x0048F9D0, AlterFOV);
@@ -22,3 +23,4 @@ void injector::inject_3d_gen()
     //this->inject(0x0048FB60, ShiftMatrixBasedPos);
     //this->inject(0x0048FC10, phd_InitWindow);
 }
+#endif

@@ -70,11 +70,11 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
     {
         if (lara.gun_status == LHS_ARMLESS
-            || lara.gun_type == LG_UNARMED
-            || lara.gun_type == LG_PISTOLS
-            || lara.gun_type == LG_REVOLVER
-            || lara.gun_type == LG_UZIS
-            || lara.gun_type == LG_FLARE)
+        ||  lara.gun_type == LG_UNARMED
+        ||  lara.gun_type == LG_PISTOLS
+        ||  lara.gun_type == LG_REVOLVER
+        ||  lara.gun_type == LG_UZIS
+        ||  lara.gun_type == LG_FLARE)
         {
             item->state_next = STATE_LARA_CROUCH_IDLE;
             return;
@@ -96,19 +96,19 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
     short frame = GetCurrentFrame(item);
     switch (item->current_anim)
     {
-    case ANIMATION_LARA_RUN:
-        if (frame == 4)
-            jump_ok = true;
-        break;
+        case ANIMATION_LARA_RUN:
+            if (frame == 4)
+                jump_ok = true;
+            break;
 
-    case ANIMATION_LARA_WALK_FORWARD:
-        if (frame == 4)
-            jump_ok = true;
-        break;
+        case ANIMATION_LARA_WALK_FORWARD:
+            if (frame == 4)
+                jump_ok = true;
+            break;
 
-    case ANIMATION_LARA_STAY_TO_RUN:
-        jump_ok = false;
-        break;
+        case ANIMATION_LARA_STAY_TO_RUN:
+            jump_ok = false;
+            break;
     }
 
     if (CHK_ANY(TrInput, IN_JUMP) && jump_ok && !item->gravity_status)
@@ -145,7 +145,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
 
     /// normal
     if (item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_RIGHT
-        && item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_LEFT)
+    &&  item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_LEFT)
     {
         StopSoundEffect(SFX_LARA_SLIPPING);
     }
@@ -164,11 +164,11 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
     {
         if (lara.gun_status == LHS_ARMLESS
-            || lara.gun_type == LG_UNARMED
-            || lara.gun_type == LG_PISTOLS
-            || lara.gun_type == LG_REVOLVER
-            || lara.gun_type == LG_UZIS
-            || lara.gun_type == LG_FLARE)
+        ||  lara.gun_type == LG_UNARMED
+        ||  lara.gun_type == LG_PISTOLS
+        ||  lara.gun_type == LG_REVOLVER
+        ||  lara.gun_type == LG_UZIS
+        ||  lara.gun_type == LG_FLARE)
         {
             item->state_next = STATE_LARA_CROUCH_IDLE;
             return;
@@ -304,19 +304,19 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
 void lara_as_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->state_next == STATE_LARA_SWANDIVE_BEGIN
-        || item->state_next == STATE_LARA_REACH)
+    ||  item->state_next == STATE_LARA_REACH)
     {
         item->state_next = STATE_LARA_JUMP_FORWARD;
     }
 
     if (item->state_next != STATE_LARA_DEATH
-        && item->state_next != STATE_LARA_STOP
-        && item->state_next != STATE_LARA_RUN_FORWARD)
+    &&  item->state_next != STATE_LARA_STOP
+    &&  item->state_next != STATE_LARA_RUN_FORWARD)
     {
         if (CHK_ANY(TrInput, IN_ACTION) && lara.gun_status == LHS_ARMLESS)
             item->state_next = STATE_LARA_REACH;
 
-        if (CHK_ANY(TrInput, (IN_ROLL | IN_BACK)))
+        if (CHK_ANY(TrInput, IN_BACK) && CHK_ANY(TrInput, IN_ROLL))
             item->state_next = STATE_LARA_JUMP_ROLL;
 
         if (CHK_ANY(TrInput, IN_WALK) && lara.gun_status == LHS_ARMLESS)
@@ -526,10 +526,10 @@ void lara_as_back(ITEM_INFO* item, COLL_INFO* coll)
 
     if (!lara.is_moving)
     {
-        if (CHK_NOP(TrInput, IN_BACK) || (CHK_NOP(TrInput, IN_WALK) && lara.water_status == LWS_WADE))
-            item->state_next = STATE_LARA_STOP;
-        else
+        if (CHK_ANY(TrInput, IN_BACK) && (CHK_ANY(TrInput, IN_WALK) || lara.water_status == LWS_WADE))
             item->state_next = STATE_LARA_WALK_BACK;
+        else
+            item->state_next = STATE_LARA_STOP;
 
         if (CHK_ANY(TrInput, IN_LEFT))
         {
@@ -677,7 +677,7 @@ void lara_as_hangleft(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_baddie_push = FALSE;
     camera.target_angle = CAM_A_HANG;
     camera.target_elevation = CAM_E_HANG;
-    if (CHK_NOP(TrInput, (IN_LEFT | IN_LSTEP)))
+    if (CHK_NOP(TrInput, IN_LEFT) || CHK_NOP(TrInput, IN_LSTEP))
         item->state_next = STATE_LARA_HANG;
 }
 
@@ -687,7 +687,7 @@ void lara_as_hangright(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_baddie_push = FALSE;
     camera.target_angle = CAM_A_HANG;
     camera.target_elevation = CAM_E_HANG;
-    if (CHK_NOP(TrInput, (IN_RIGHT | IN_RSTEP)))
+    if (CHK_NOP(TrInput, IN_RIGHT) || CHK_NOP(TrInput, IN_RSTEP))
         item->state_next = STATE_LARA_HANG;
 }
 
@@ -897,12 +897,11 @@ void lara_as_duck(ITEM_INFO* item, COLL_INFO* coll)
         LookUpDown();
     }
 
-    if (CHK_ANY(TrInput, (IN_FORWARD | IN_BACK))
-        && (CHK_ANY(TrInput, IN_DUCK) || lara.keep_ducked) && lara.gun_status == LHS_ARMLESS && lara.water_status != LWS_WADE)
+    if (CHK_ANY(TrInput, IN_FORWARD) || CHK_ANY(TrInput, IN_BACK) && (CHK_ANY(TrInput, IN_DUCK) || lara.keep_ducked) && lara.gun_status == LHS_ARMLESS && lara.water_status != LWS_WADE)
     {
         if ((item->current_anim == ANIMATION_LARA_CROUCH_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_PREPARE)
-            && CHK_NOP(TrInput, (IN_FLARE | IN_DRAW))
-            && (lara.gun_type != LG_FLARE || (lara.flare_age < 900 && lara.flare_age)))
+        &&   CHK_NOP(TrInput, (IN_FLARE | IN_DRAW))
+        &&  (lara.gun_type != LG_FLARE || (lara.flare_age < 900 && lara.flare_age)))
         {
             lara.torso_y_rot = 0;
             lara.torso_x_rot = 0;
@@ -923,11 +922,11 @@ void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_DUCK) && lara.water_status != LWS_WADE)
     {
         if (lara.gun_status == LHS_ARMLESS
-            || lara.gun_type == LG_UNARMED
-            || lara.gun_type == LG_PISTOLS
-            || lara.gun_type == LG_REVOLVER
-            || lara.gun_type == LG_UZIS
-            || lara.gun_type == LG_FLARE)
+        ||  lara.gun_type == LG_UNARMED
+        ||  lara.gun_type == LG_PISTOLS
+        ||  lara.gun_type == LG_REVOLVER
+        ||  lara.gun_type == LG_UZIS
+        ||  lara.gun_type == LG_FLARE)
         {
             item->state_next = STATE_LARA_CROUCH_IDLE;
             return;
@@ -965,8 +964,8 @@ void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
 void lara_as_dashdive(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->state_next != STATE_LARA_DEATH
-        && item->state_next != STATE_LARA_STOP
-        && item->state_next != STATE_LARA_RUN_FORWARD)
+    &&  item->state_next != STATE_LARA_STOP
+    &&  item->state_next != STATE_LARA_RUN_FORWARD)
     {
         if (item->fallspeed > LARA_FASTFALL_SPEED)
             item->state_next = STATE_LARA_FREEFALL;

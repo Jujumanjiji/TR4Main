@@ -1,5 +1,12 @@
 #pragma once
 
+extern void InitialiseBaddy(short itemNumber);
+extern void Baddy1Control(short itemNumber);
+extern void DrawBaddy1(ITEM_INFO* item);
+extern void InitialiseCrocodile(short itemNumber); // 0x00402D90
+extern void CrocodileControl(short itemNumber); // 0x00402E30
+
+#ifdef DLL_INJECT
 /// vehicles
 #define InitialiseMotorBike INITIALISE(0x00464610)
 #define MotorBikeControl CONTROL(0x00464C70)
@@ -21,9 +28,6 @@
 #define VonCroyControlNormal CONTROL(0x0041AF00)
 ///#define InitialiseBaddy INITIALISE(0x0040B3C0)
 #define BaddyControl CONTROL(0x0040B600)
-extern void InitialiseBaddy(short itemNumber);
-extern void Baddy1Control(short itemNumber);
-extern void DrawBaddy1(ITEM_INFO* item);
 #define InitialiseScorpion INITIALISE(0x0040E780)
 #define ScorpionControl CONTROL(0x0040E800)
 #define InitialiseSmallScorpion INITIALISE(0x0040EFD0)
@@ -44,8 +48,6 @@ extern void DrawBaddy1(ITEM_INFO* item);
 #define HammerheadControl CONTROL(0x00407060)
 ///#define InitialiseCrocodile INITIALISE(0x00402D90)
 ///#define CrocodileControl CONTROL(0x00402E30)
-extern void InitialiseCrocodile(short itemNumber); // 0x00402D90
-extern void CrocodileControl(short itemNumber); // 0x00402E30
 #define InitialiseDemigod INITIALISE(0x00404E00)
 #define DemigodControl CONTROL(0x00404EA0)
 #define InitialiseMutant INITIALISE(0x00403ED0)
@@ -211,3 +213,4 @@ extern void BatControl(short itemNumber);
 #define ClockworkBeetleControl CONTROL(0x00445AD0)
 #define GodHeadControl CONTROL(0x0040FCF0)
 #define DrawGodHead DRAW(0x0040FDD0)
+#endif

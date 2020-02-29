@@ -4,6 +4,7 @@
 /// ===========================================================///
 
 ///#define NEW_ROUTINES
+#ifdef DLL_INJECT
 #define InitialiseLaraLoad INITIALISE(0x00430EB0)
 #define FlareItemControl CONTROL(0x0042FF90)
 #define DrawFlareItem DRAW(0x0042F7B0)
@@ -16,6 +17,7 @@
 #define LARA_ROUTINES(address) __FUNCV(address, LARA_ROUTINES_ARGS)
 #else
 #define LARA_ROUTINES(address) ((void(__cdecl*)(LARA_ROUTINES_ARGS)) address)
+#endif
 #endif
 
 /// ===========================================================///
@@ -94,6 +96,7 @@
 #define CLIMB_HANG 900
 #define LARA_IS_CLIMBING TRUE
 #define LARA_IS_NOT_CLIMBING FALSE
+#define HANG_ANGLE ANGLE(35)
 
 #define LARA_LEAN_UNDO (ONE_DEGREE)                                 // Leaning around Corners ..
 #define LARA_LEAN_RATE ((ONE_DEGREE/2) + LARA_LEAN_UNDO)
@@ -210,6 +213,7 @@ LARA_FUNC(lara_as_rope);
 LARA_FUNC(lara_as_climbrope);
 LARA_FUNC(lara_as_climbroped);
 
+#ifdef DLL_INJECT
 #define legacy_lara_as_walk                    LARA_ROUTINESNEW(0x00425AC0, lara_as_walk)
 #define legacy_lara_as_run                     LARA_ROUTINESNEW(0x00425B60, lara_as_run)
 #define legacy_lara_as_stop                    LARA_ROUTINESNEW(0x00424A60, lara_as_stop)
@@ -299,6 +303,7 @@ LARA_FUNC(lara_as_climbroped);
 #define legacy_lara_as_rope                    LARA_ROUTINESNEW(0x004241A0, lara_as_rope)
 #define legacy_lara_as_climbrope               LARA_ROUTINESNEW(0x004248E0, lara_as_climbrope)
 #define legacy_lara_as_climbroped              LARA_ROUTINESNEW(0x00424950, lara_as_climbroped)
+#endif
 #pragma endregion
 
 #pragma region collision
@@ -313,7 +318,13 @@ LARA_FUNC(lara_col_turn);
 LARA_FUNC(lara_col_death);
 LARA_FUNC(lara_col_fastfall);
 LARA_FUNC(lara_col_hang);
+LARA_FUNC(lara_col_reach);
+LARA_FUNC(lara_col_splat);
+LARA_FUNC(lara_col_tread);
+LARA_FUNC(lara_col_compress);
+LARA_FUNC(lara_col_back);
 
+#ifdef DLL_INJECT
 #define legacy_lara_default_col                LARA_ROUTINESNEW(0x00428AD0, lara_default_col)
 #define legacy_lara_col_walk                   LARA_ROUTINESNEW(0x00427A40, lara_col_walk)
 #define legacy_lara_col_run                    LARA_ROUTINESNEW(0x00427C30, lara_col_run)
@@ -324,11 +335,11 @@ LARA_FUNC(lara_col_hang);
 #define legacy_lara_col_death                  LARA_ROUTINESNEW(0x00427FD0, lara_col_death)
 #define legacy_lara_col_fastfall               LARA_ROUTINESNEW(0x00428040, lara_col_fastfall)
 #define legacy_lara_col_hang                   LARA_ROUTINESNEW(0x00425FA0, lara_col_hang)
-#define legacy_lara_col_reach                  LARA_ROUTINES(0x00425650)
-#define legacy_lara_col_splat                  LARA_ROUTINES(0x004280F0)
-#define legacy_lara_col_tread                  LARA_ROUTINES(0x00432B30)
-#define legacy_lara_col_compress               LARA_ROUTINES(0x00428160)
-#define legacy_lara_col_back                   LARA_ROUTINES(0x00428210)
+#define legacy_lara_col_reach                  LARA_ROUTINESNEW(0x00425650, lara_col_reach)
+#define legacy_lara_col_splat                  LARA_ROUTINESNEW(0x004280F0, lara_col_splat)
+#define legacy_lara_col_tread                  LARA_ROUTINESNEW(0x00432B30, lara_col_tread)
+#define legacy_lara_col_compress               LARA_ROUTINESNEW(0x00428160, lara_col_compress)
+#define legacy_lara_col_back                   LARA_ROUTINESNEW(0x00428210, lara_col_back)
 #define legacy_lara_col_swim                   LARA_ROUTINES(0x004328C0)
 #define legacy_lara_col_glide                  LARA_ROUTINES(0x00432B10)
 #define legacy_lara_col_stepright              LARA_ROUTINES(0x00428350)
@@ -380,6 +391,7 @@ LARA_FUNC(lara_col_hang);
 #define legacy_lara_col_ropefwd                LARA_ROUTINES(0x00420DB0)
 #define legacy_lara_col_rope1                  LARA_ROUTINES(0x00424270)
 #define legacy_lara_col_rope2                  LARA_ROUTINES(0x00424680)
+#endif
 #pragma endregion
 
 #pragma region lara1gun
@@ -406,6 +418,7 @@ extern void undraw_shotgun(int weapon_type);
 extern void shotgun_handler(int weapon_type);
 extern void animate_shotgun(int weapon_type);
 
+#ifdef DLL_INJECT
 #define legacy_draw_shotgun_meshes        _FUNCV(0x00428E40, (int weapon_type), draw_shotgun_meshes)
 #define legacy_undraw_shotgun_meshes      _FUNCV(0x00428E70, (int weapon_type), undraw_shotgun_meshes)
 #define legacy_ready_shotgun              _FUNCV(0x00428EA0, (int weapon_type), ready_shotgun)
@@ -413,6 +426,7 @@ extern void animate_shotgun(int weapon_type);
 #define legacy_undraw_shotgun             _FUNCV(0x0042AFE0, (int weapon_type), undraw_shotgun)
 #define legacy_shotgun_handler            _FUNCV(0x00428F10, (int weapon_type), shotgun_handler)
 #define legacy_animate_shotgun            _FUNCV(0x0042B100, (int weapon_type), animate_shotgun)
+#endif
 
 #pragma endregion
 
@@ -428,6 +442,7 @@ extern void ready_pistols(int weapon_type);
 extern void pistol_handler(int weapon_type);
 extern void animate_pistols(int weapon_type);
 
+#ifdef DLL_INJECT
 #define legacy_set_arm_info             _FUNCV(0x0042B7C0, (LARA_ARM* arm, short frame), set_arm_info)
 #define legacy_draw_pistol_meshes       _FUNCV(0x0042BB20, (int weapon_type), draw_pistol_meshes)
 #define legacy_undraw_pistols_left      _FUNCV(0x0042BB70, (int weapon_type), undraw_pistols_left)
@@ -437,24 +452,30 @@ extern void animate_pistols(int weapon_type);
 #define legacy_ready_pistols            _FUNCV(0x0042BAB0, (int weapon_type), ready_pistols)
 #define legacy_pistol_handler           _FUNCV(0x0042BBF0, (int weapon_type), pistol_handler)
 #define legacy_animate_pistols          _FUNCV(0x0042BE40, (int weapon_type), animate_pistols)
+#endif
 #pragma endregion
 
 #pragma region larafire
+
+#ifdef DLL_INJECT
 #define weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
 #define weapon_meshes ((int(__cdecl*)(int weapon_type)) 0x0042EAC0)
-
 #define fire_shotgun ((void(__cdecl*)(void)) 0x00429260)
 #define fire_grenade ((void(__cdecl*)(void)) 0x00429480)
 #define fire_crossbow ((void(__cdecl*)(PHD_3DPOS* haveDefinedPos)) 0x0042A270)
-
 #define InitialiseNewWeapons ((void(__cdecl*)(void)) 0x0042DDF0)
 #define LaraTargetInfo ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042DF30)
 #define LaraGetNewTarget ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042E0D0)
 #define AimWeapon ((void(__cdecl*)(WEAPON_INFO* winfo, LARA_ARM* arm)) 0x0042E560)
 #define FireWeapon ((BOOL(__cdecl*)(int weapon_type, ITEM_INFO* target, ITEM_INFO* laraitem, short angles[2])) 0x0042E630)
+#endif
 #pragma endregion
 
 #pragma region lara_utils
+extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
+extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
+
+#ifdef DLL_INJECT
 #define LaraFloorFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist)) 0x00421620)
 #define LaraCeilingFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist, int h)) 0x00421620)
 #define LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
@@ -463,13 +484,13 @@ extern void animate_pistols(int weapon_type);
 #define LaraDeflectEdgeDuck ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421880)
 #define LaraDeflectEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422C50)
 #define LaraFallen ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420FE0)
-#define LaraHangRightCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00426230)
-#define LaraHangLeftCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004266E0)
+#define LaraHangRightCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00426230)
+#define LaraHangLeftCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004266E0)
 #define LaraClimbLeftCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x0042CEE0)
 #define LaraClimbRightCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x0042D160)
 #define LaraSlideEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004259C0)
 #define LaraTestClimbStance ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422810)
-#define LaraTestEdgeCatch ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, int *edge)) 0x00421DE0)
+#define LaraTestEdgeCatch ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, int *edge)) 0x00421DE0)
 #define LaraTestHangOnClimbWall ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421E90)
 #define LaraSlideSlope ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428470)
 #define LaraColllideJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
@@ -481,6 +502,7 @@ extern void animate_pistols(int weapon_type);
 #define LaraTestWaterDepth ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00432A30)
 #define LaraLandedBad ((bool(__cdecl*)(ITEM_INFO *item)) 0x00422BE0)
 #define LaraCollideStop ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004229D0)
+#define LaraSwimCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004328E0)
 #define UseSpecialItem ((BOOL(__cdecl*)(ITEM_INFO* item)) 0x00424E90)
 #define TestLaraSlide ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420EA0)
 #define TestLaraVault ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422480)
@@ -494,4 +516,5 @@ extern void animate_pistols(int weapon_type);
 #define SnapLaraToEdgeOfBlock ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x004235B0)
 #define GetLaraCollisionInfo ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00422350)
 #define AnimateLara ((void(__cdecl*)(ITEM_INFO* item)) 0x00430B60)
+#endif
 #pragma endregion

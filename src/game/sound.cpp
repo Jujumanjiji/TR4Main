@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "sound.h"
 
+#ifdef DLL_INJECT
 void injector::inject_sound()
 {
     //this->inject(0x00473710, Sound_LoadSample);
@@ -14,3 +15,4 @@ void injector::inject_sound()
     //this->inject(0x0046D6B0, S_CDStop);
     //this->inject(0x0046D790, S_CDPlayEx);
 }
+#endif

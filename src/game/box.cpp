@@ -1611,6 +1611,7 @@ BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item)
 }
 */
 
+#ifdef DLL_INJECT
 void injector::inject_box()
 {
     /*
@@ -1646,3 +1647,4 @@ void injector::inject_box()
     this->inject(0x00442A60, FindAITargetObject);
     this->inject(0x00442C40, SameZone);*/
 }
+#endif

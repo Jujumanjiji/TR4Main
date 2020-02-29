@@ -1,17 +1,15 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define DrawFire ((void(__cdecl*)(BYTE size, short roomNumber)) 0x00486DD0)
-
 #define DrawHorizon ((void(__cdecl*)(short *ptr)) 0x0047F620)
 #define DrawHorizonLayer ((void(__cdecl*)(unsigned short color1, unsigned short color2, int horizon_height, int flags)) 0x00488950)
 #define CalcHorizonAndLayer ((void(__cdecl*)(void)) 0x00489480)
-
 #define DrawLara ((void(__cdecl*)(ITEM_INFO* item, int flags)) 0x0041D140)
 #define DrawLara_Mirror ((void(__cdecl*)(void)) 0x00455800)
 #define SetGunFlash ((void(__cdecl*)(int weapon_type)) 0x00439B80)
 #define SetupGunFlash ((void(__cdecl*)(short *pos)) 0x00439AE0)
 #define DrawGunFlashes ((void(__cdecl*)(void)) 0x00439C00)
-
 #define InitialiseFogBulbs ((void(__cdecl*)(void)) 0x00481DF0)
 #define CreateFXBulbs ((void(__cdecl*)(void)) 0x004819B0)
 #define InitDynamicLighting ((void(__cdecl*)(void)) 0x004790F0)
@@ -30,11 +28,4 @@
 #define DrawShockwaves ((void(__cdecl*)(void)) 0x0048CAA0)
 #define DrawLightning ((void(__cdecl*)(void)) 0x0040E630)
 #define DrawLaserSightSprite ((void(__cdecl*)(void)) 0x00489950)
-
-/*
-extern void SetGunFlash(int weapon_type);
-extern void SetupGunFlash(int* pos);
-extern void DrawGunFlashes(void);
-extern void DrawGunShells(void);
-extern void DrawFires(void);
-*/
+#endif

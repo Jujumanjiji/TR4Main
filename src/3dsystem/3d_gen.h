@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define AlterFOV ((void(__cdecl*)(short fov)) 0x0048F9D0)
 #define phd_GenerateW2V ((void(__cdecl*)(PHD_3DPOS* viewpos)) 0x0048FDC0)
 #define phd_LookAt ((void(__cdecl*)(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, int roll)) 0x00490110)
@@ -16,3 +17,4 @@
 #define phd_atan ((int(__cdecl*)(int x, int y)) 0x00490210)
 #define phd_sqrt ((int(__cdecl*)(int x)) 0x00490280)
 #define phd_InitWindow ((void(__cdecl*)(int x, int y, int width, int height, int nearz, int farz, int view_angle)) 0x0048FC10)
+#endif

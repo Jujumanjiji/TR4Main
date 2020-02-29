@@ -1,7 +1,9 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define Log ((int(__cdecl*)(char* LT_flags, LPCSTR format, ...)) 0x0049C750)
 #define WinDisplayString ((void(__cdecl*)(int x, int y, LPCSTR message, ...)) 0x0048F8C0)
+#endif
 
 #define BOX_DEFFLAG(icon) (MB_OK | icon | MB_SETFOREGROUND | MB_SYSTEMMODAL) // set foreground, only ok button and with a icon.
 

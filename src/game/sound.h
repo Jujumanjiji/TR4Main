@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define CDPlay ((void(__cdecl*)(int index, int mode)) 0x0046E180)
 #define S_CDPlay ((void(__cdecl*)(int index, int mode)) 0x0046D610)
 #define S_CDStop ((void(__cdecl*)(void)) 0x0046D6B0)
@@ -10,3 +11,4 @@
 #define Sound_FreeSamples ((void(__cdecl*)(void)) 0x00473B40)
 #define SOUND_Init ((void(__cdecl*)(void)) 0x0045FAA0)
 #define SOUND_Stop ((void(__cdecl*)(void)) 0x0045FA70)
+#endif

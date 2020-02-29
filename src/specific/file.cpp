@@ -230,6 +230,7 @@ void LoadObjects(void)
     ProcessMeshData(2 * saved_mesh_number);
 }
 
+#ifdef DLL_INJECT
 void injector::inject_file()
 {
     //this->inject(0x00473F20, LoadTextures); // (int roomtex, int objtex, int dumptex)
@@ -251,3 +252,4 @@ void injector::inject_file()
     //this->inject(0x00476790, FreeLevel);
     //this->inject(0x004768C0, S_LoadLevelFile); // corrupted !!!
 }
+#endif

@@ -408,6 +408,7 @@ void animate_pistols(int weapon_type)
     set_arm_info(&lara.l_arm, frameL);
 }
 
+#ifdef DLL_INJECT
 void injector::inject_lara2gun()
 {
     this->inject(legacy_set_arm_info);
@@ -420,3 +421,4 @@ void injector::inject_lara2gun()
     this->inject(legacy_pistol_handler);
     this->inject(legacy_animate_pistols);
 }
+#endif

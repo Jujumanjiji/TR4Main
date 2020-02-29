@@ -1,4 +1,5 @@
 #pragma once
+#ifdef DLL_INJECT
 
 #define VAR_U_(address, type)            (*(type*)(address))                // uninitialized variable
 #define VAR_I_(address, type, value)    (*(type*)(address))                // initialized variable (value is just for info)
@@ -154,3 +155,8 @@
 #define shockwave                           ARRAY_(0x007FF960, SHOCKWAVE_STRUCT, [MAX_SHOCKWAVE])
 #define firelists                           ARRAY_(0x007FFF60, FIRE_LIST, [MAX_FIRE_LIST])
 #define ropes                               ARRAY_(0x007FB4C0, ROPE_STRUCT, [MAX_ROPES])
+
+
+
+
+#endif

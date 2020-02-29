@@ -819,6 +819,7 @@ void gar_RotYXZsuperpack(short** pprot, int skip)
     (*pprot) += 1;
 }*/
 
+#ifdef DLL_INJECT
 void injector::inject_draw()
 {
     //this->inject(0x0044EBA0, DrawPhaseGame);
@@ -850,3 +851,4 @@ void injector::inject_draw()
     //this->inject(0x00450E60, GetBoundsAccurate);
     //this->inject(0x00450EE0, GetBestFrame);
 }
+#endif

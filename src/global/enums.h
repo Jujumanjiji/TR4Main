@@ -1,6 +1,14 @@
 ﻿#pragma once
 
-enum input_buttons
+enum HEADINGS
+{
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+};
+
+enum INPUT_BUTTONS
 {
     IN_NONE = 0,                                // 0x00000000
     IN_FORWARD = (1 << 0),                      // 0x00000001

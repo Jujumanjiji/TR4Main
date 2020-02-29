@@ -58,6 +58,7 @@ void injector::inject_game()
     inject_health();
     inject_items();
     inject_lara();
+    inject_lara_utils();
     inject_lara1gun();
     inject_lara2gun();
     inject_larafire();

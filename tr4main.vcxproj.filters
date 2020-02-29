@@ -221,7 +221,7 @@
     <ClCompile Include="src\game\lara\lara_col_routine.cpp">
       <Filter>src\game\lara</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\lara\lara_control_routine.cpp">
+    <ClCompile Include="src\game\lara\lara_as_routine.cpp">
       <Filter>src\game\lara</Filter>
     </ClCompile>
   </ItemGroup>

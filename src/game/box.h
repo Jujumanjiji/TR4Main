@@ -34,6 +34,7 @@ extern void FindAITargetObject(CREATURE_INFO* creature, short objectNumber);
 extern BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item);
 */
 
+#ifdef DLL_INJECT
 #define InitialiseCreature ((void(__cdecl*)(short itemNumber)) 0x0043FB30)
 #define CreatureActive ((BOOL(__cdecl*)(short itemNumber)) 0x0043FB70)
 #define CreatureAIInfo ((void(__cdecl*)(ITEM_INFO* item, AI_INFO* info)) 0x0043FBE0)
@@ -66,3 +67,4 @@ extern BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item);
 #define FindAITargetObject ((void(__cdecl*)(CREATURE_INFO* creature, short objectNumber)) 0x00442A60)
 #define SameZone ((BOOL(__cdecl*)(CREATURE_INFO* creature, ITEM_INFO* target_item)) 0x00442C40)
 #define ExplodingDeath ((void(__cdecl*)(short itemNumber, int mesh_bits, short flags)) 0x0043A690) // in missile.cpp
+#endif

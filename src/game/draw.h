@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define SetLaraUnderwaterNodes ((void(__cdecl*)(void)) 0x0041F260)
 #define DrawPhaseGame ((int(__cdecl*)(void)) 0x0044EBA0)
 #define DrawRooms ((void(__cdecl*)(short currentRoom)) 0x0044EC10)
@@ -29,11 +30,4 @@
 #define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[2], int *rate)) 0x00450DC0)
 #define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
 #define GetBestFrame ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450EE0)
-
-///extern void DrawRooms(short current_room);
-///extern void PrintRooms(short roomNumber);
-///extern void PrintObjects(short roomNumber);
-///extern void GetRoomBounds(void);
-///extern void SetRoomBounds(short* door, int roomNumber, ROOM_INFO* parent);
-///extern void DrawEffect(short fxNumber);
-///extern void DrawAnimatingItem(ITEM_INFO* item);
+#endif

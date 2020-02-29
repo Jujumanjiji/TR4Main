@@ -296,6 +296,7 @@ void animate_shotgun(int weapon_type)
     lara.l_arm.anim_curr = lara.r_arm.anim_curr;
 }
 
+#ifdef DLL_INJECT
 void injector::inject_lara1gun()
 {
     this->inject(legacy_draw_shotgun_meshes);
@@ -306,3 +307,4 @@ void injector::inject_lara1gun()
     this->inject(legacy_shotgun_handler);
     this->inject(legacy_animate_shotgun);
 }
+#endif

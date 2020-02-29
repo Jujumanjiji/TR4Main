@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define SwitchCollision COLLISION(0x00461D60)
 #define SwitchControl CONTROL(0x00461CF0)
 #define SequenceSwitchControl CONTROL(0x00463080)
@@ -15,3 +16,4 @@
 #define CogSwitchCollision COLLISION(0x00463400)
 #define InitialisePulleySwitch INITIALISE(0x00453E40)
 #define PulleySwitchCollision COLLISION(0x004622C0)
+#endif

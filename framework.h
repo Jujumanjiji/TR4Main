@@ -1,5 +1,7 @@
 #pragma once
+#pragma warning(disable: 4554)
 
+#define DLL_INJECT
 #define DLL_NAME "Tomb Raider IV - DLL"
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

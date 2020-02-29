@@ -40,6 +40,7 @@ using namespace std;
 #define NO_HORIZON -1
 #define NO_CLIP -1
 #define NOT_EXIST -1
+#define NO_ROPE -1
 #define NO_TILT 0
 
 #define ONE_DEGREE 182
@@ -76,7 +77,7 @@ using namespace std;
 #define MAX_FIRE_LIST 32
 #define MAX_LIGHTNING 3
 #define MAX_DYNAMICS 32
-#define MAX_ROPES 8
+#define MAX_ROPES 4
 #define MAX_SPAWNER_ENTITY 50000 // ~50
 
 #define SFX_ALWAYS 2

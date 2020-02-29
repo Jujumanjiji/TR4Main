@@ -340,19 +340,19 @@ struct COLL_INFO
     short old_anim_state;       // INPUT old animation
     short old_anim_number;
     short old_frame_number;
-    short facing;               // INPUT Angle we are Moving...
-    short quadrant;             // Quadrant we are moving ( Not necessarily facing! )
-    short coll_type;            // Type of Collision
-    short* trigger;             // Trigger info index
-    char tilt_x, tilt_z;        // Type of Tilt of Floor
-    char hit_by_baddie;         // Flag to indicate Lara has been hit by a Baddie
-    char hit_static;            // Flag to indicate Lara has collided with a Static object
-    unsigned short slopes_are_walls : 2;   // Treat big slopesUp as walls
-    unsigned short slopes_are_pits : 1;    // Treat big slopesDown as pits
-    unsigned short lava_is_pit : 1;        // Treat Lava as Bad place to go onto
-    unsigned short enable_baddie_push : 1; // Baddies can push Lara
-    unsigned short enable_spaz : 1;        // Spaz animations are enabled
-    unsigned short hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
+    short facing;                // INPUT Angle we are Moving...
+    short quadrant;              // Quadrant we are moving ( Not necessarily facing! )
+    short coll_type;             // Type of Collision (COLL_TYPE enum)
+    short* trigger;              // Trigger info index
+    char tilt_x, tilt_z;         // Type of Tilt of Floor
+    char hit_by_baddie;          // Flag to indicate Lara has been hit by a Baddie
+    char hit_static;             // Flag to indicate Lara has collided with a Static object
+    WORD slopes_are_walls : 2;   // Treat big slopesUp as walls
+    WORD slopes_are_pits : 1;    // Treat big slopesDown as pits
+    WORD lava_is_pit : 1;        // Treat Lava as Bad place to go onto
+    WORD enable_baddie_push : 1; // Baddies can push Lara
+    WORD enable_spaz : 1;        // Spaz animations are enabled
+    WORD hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
 };
 
 typedef void(*LPINITIALISE)(short item_number);
@@ -967,22 +967,22 @@ struct LARA_INFO
     short electric;
     unsigned char anxiety;
     unsigned char wet[15];
-    WORD flare_control_left : 1; // LOBYTE
-    WORD flare_control_right : 1;
-    WORD look : 1;
-    WORD burn : 1;
-    WORD keep_ducked : 1;
-    WORD is_moving : 1;
-    WORD can_monkey_swing : 1;
-    WORD burn_blue : 1;
-    WORD gassed : 1;             // HIBYTE
-    WORD burn_smoke : 1;
-    WORD is_ducked : 1;
-    WORD has_fired : 1;
-    WORD busy : 1;
-    WORD lit_torch : 1;
-    WORD is_climbing : 1;
-    WORD fired : 1;
+    WORD flare_control_left : 1; // LOBYTE: 0x1
+    WORD flare_control_right : 1;// LOBYTE: 0x2
+    WORD look : 1;               // LOBYTE: 0x4
+    WORD burn : 1;               // LOBYTE: 0x8
+    WORD keep_ducked : 1;        // LOBYTE: 0x10
+    WORD is_moving : 1;          // LOBYTE: 0x20
+    WORD can_monkey_swing : 1;   // LOBYTE: 0x40
+    WORD burn_blue : 1;          // LOBYTE: 0x80
+    WORD not_used : 1;           // LOBYTE: 0x100,  HIBYTE: 0x1
+    WORD burn_smoke : 1;         // LOBYTE: 0x200,  HIBYTE: 0x2
+    WORD is_ducked : 1;          // LOBYTE: 0x400,  HIBYTE: 0x4
+    WORD has_fired : 1;          // LOBYTE: 0x800,  HIBYTE: 0x8
+    WORD busy : 1;               // LOBYTE: 0x1000, HIBYTE: 0x10
+    WORD lit_torch : 1;          // LOBYTE: 0x2000, HIBYTE: 0x20
+    WORD is_climbing : 1;        // LOBYTE: 0x4000, HIBYTE: 0x40
+    WORD fired : 1;              // LOBYTE: 0x8000, HIBYTE: 0x80
     long water_surface_dist;
     PHD_VECTOR last_pos;
     FX_INFO *spaz_effect;

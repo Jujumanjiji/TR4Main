@@ -1,3 +1,4 @@
+// TODO: THIS FILE ONLY EXIST FOR INJECT, DELETE IT WHEN TURNING TO EXE !
 #include "framework.h"
 #include "lara.h"
 #include "3d_gen.h"
@@ -5,6 +6,7 @@
 #include "sound.h"
 #include "utils.h"
 
+#ifdef DLL_INJECT
 void injector::inject_lara()
 {
     /// CONTROL ROUTINES:
@@ -107,4 +109,10 @@ void injector::inject_lara()
     this->inject(legacy_lara_col_death);
     this->inject(legacy_lara_col_fastfall);
     this->inject(legacy_lara_col_hang);
+    this->inject(legacy_lara_col_reach);
+    this->inject(legacy_lara_col_splat);
+    this->inject(legacy_lara_col_tread);
+    this->inject(legacy_lara_col_compress);
+    this->inject(legacy_lara_col_back);
 }
+#endif

@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef DLL_INJECT
 #define InitialiseItemArray ((void(__cdecl*)(short itemNumber)) 0x00454140)
 #define KillItem ((void(__cdecl*)(short itemNumber)) 0x004541B0)
 #define CreateItem ((short(__cdecl*)(void)) 0x00454360)
@@ -12,3 +13,4 @@
 #define CreateEffect ((short(__cdecl*)(short roomNumber)) 0x00454900)
 #define KillEffect ((void(__cdecl*)(short fxNumber)) 0x00454970)
 #define EffectNewRoom ((void(__cdecl*)(short fxNumber, short roomNumber)) 0x00454A90)
+#endif

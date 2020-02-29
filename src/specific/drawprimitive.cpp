@@ -159,6 +159,7 @@ void DrawFires(void)
 }
 */
 
+#ifdef DLL_INJECT
 void injector::inject_drawprimitive()
 {
     //this->inject(0x0047F620, DrawHorizon);
@@ -188,3 +189,4 @@ void injector::inject_drawprimitive()
     //this->inject(0x040E6300, DrawLightning);
     //this->inject(0x00489950, DrawLaserSightSprite);
 }
+#endif

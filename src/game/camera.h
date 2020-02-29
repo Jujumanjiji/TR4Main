@@ -5,10 +5,9 @@
 #define NO_CHUNKY 2
 #define CHASE_OBJECT 3
 
+#ifdef DLL_INJECT
 #define LookCamera ((void(__cdecl*)(void)) 0x00443ED0)
-
-
-
 #define LookUpDown ((void(__cdecl*)(void)) 0x00428C40)
 #define LookLeftRight ((void(__cdecl*)(void)) 0x00428D40)
 #define ResetLook ((void(__cdecl*)(void)) 0x00428BA0)
+#endif

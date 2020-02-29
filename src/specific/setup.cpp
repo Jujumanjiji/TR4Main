@@ -286,6 +286,7 @@ void GetAIPickups(void)
     }
 }
 
+#ifdef DLL_INJECT
 void injector::inject_setup()
 {
     this->inject(legacy_InitialiseObjects);
@@ -295,3 +296,4 @@ void injector::inject_setup()
     this->inject(legacy_GetCarriedItems);
     this->inject(legacy_GetAIPickups);
 }
+#endif
