@@ -11,7 +11,10 @@ extern void S_LogValue(LPCSTR content, ...);
 extern void S_Log(LPCSTR content, ...);
 extern void S_Log(LPCSTR content, bool isEntered, ...);
 extern void S_Log(LPCSTR funcName, LPCSTR content, bool isEntered, ...);
-extern void SetAnimationForItem(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow = 0);
+extern void SetAnimationForItem(ITEM_INFO* item, int animation, int state);
+extern void SetAnimationForItem(ITEM_INFO* item, int animation, int state, bool needStateNext);
+extern void SetAnimationForItem(ITEM_INFO* item, int animation, int state, int frameNow);
+extern void SetAnimationForItem(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow);
 extern short GetCurrentFrame(ITEM_INFO* item);
 extern void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue);
 extern void phd_SwapMatrix(int* dest, int* src);
@@ -36,8 +39,9 @@ extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
 extern void Spawner(ITEM_INFO* item);
 extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
-extern short* assign_meshes(short objNumber, short meshID);
+extern short* AssignMeshes(short objNumber, short meshID);
 extern void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll);
+extern short GetCatchAngle(ITEM_INFO* item); // for lara grapping angle.
 
 /// new:
 extern void phd_SwapPushMatrix(int frac);

@@ -68,8 +68,8 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
         item->speed = 0;
         item->gravity_status = FALSE;
         lara.gun_status = LHS_HANDBUSY;
-        SetAnimationForItem(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE, STATE_LARA_MONKEYSWING_IDLE);
-        return FALSE;
+        SetAnimationForItem(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
+        return TRUE;
     }
 
     if (coll->mid_ceiling > -STEPUP_HEIGHT || coll->mid_floor < 200 || coll->coll_type != COLL_FRONT)
@@ -81,16 +81,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     if (edge_catch < 0 && !LaraTestHangOnClimbWall(item, coll))
         return FALSE;
 
-    angle = item->pos.y_rot;
-    if (angle       >=  0      - HANG_ANGLE && angle <=  0      + HANG_ANGLE)
-        angle = 0;
-    else if (angle  >=  0x4000 - HANG_ANGLE && angle <=  0x4000 + HANG_ANGLE)
-        angle = 0x4000;
-    else if (angle  >=  0x8000 - HANG_ANGLE || angle <= -0x8000 + HANG_ANGLE)
-        angle = -0x8000;
-    else if (angle  >= -0x4000 - HANG_ANGLE && angle <= -0x4000 + HANG_ANGLE)
-        angle = -0x4000;
-
+    angle = GetCatchAngle(item);
     if (angle & 0x3FFF)
         return FALSE;
 
@@ -100,11 +91,11 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
         lara.head_x_rot = 0;
         lara.torso_y_rot = 0;
         lara.torso_x_rot = 0;
-        SetAnimationForItem(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE, STATE_LARA_MONKEYSWING_IDLE);
+        SetAnimationForItem(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
     }
     else
     {
-        SetAnimationForItem(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, STATE_LARA_HANG);
+        SetAnimationForItem(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG);
     }
 
     bounds = GetBoundsAccurate(item);
@@ -142,6 +133,61 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     item->gravity_status = TRUE;
     item->speed = 2;
     item->fallspeed = 1;
+    lara.gun_status = LHS_HANDBUSY;
+    return TRUE;
+}
+
+BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
+{
+    int edge, edge_catch;
+    short angle, *bounds;
+
+    if (CHK_NOP(TrInput, IN_ACTION) || lara.gun_status != LHS_ARMLESS || coll->hit_static)
+        return FALSE;
+
+    if (lara.can_monkey_swing && coll->coll_type == COLL_TOP)
+    {
+        SetAnimationForItem(item, ANIMATION_LARA_MONKEY_GRAB, STATE_LARA_MONKEYSWING_IDLE, STATE_LARA_MONKEYSWING_IDLE);
+        item->speed = 0;
+        item->fallspeed = 0;
+        lara.gun_status = LHS_HANDBUSY;
+        MonkeySwingSnap(item, coll);
+        return TRUE;
+    }
+
+    if (coll->coll_type != COLL_FRONT || coll->mid_ceiling > -STEPUP_HEIGHT)
+        return FALSE;
+
+    edge_catch = LaraTestEdgeCatch(item, coll, &edge);
+    if (!edge_catch)
+        return FALSE;
+
+    if (edge_catch < 0 && !LaraTestHangOnClimbWall(item, coll))
+        return FALSE;
+
+    angle = GetCatchAngle(item);
+    if (angle & 0x3FFF)
+        return FALSE;
+
+    if (TestHangSwingIn(item, angle))
+        SetAnimationForItem(item, ANIMATION_LARA_MONKEY_GRAB, STATE_LARA_MONKEYSWING_IDLE);
+    else
+        SetAnimationForItem(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, LARA_HANG_IDLE_FRAME);
+
+    bounds = GetBoundsAccurate(item);
+    if (edge_catch > 0)
+        item->pos.y += coll->front_floor - bounds[2];
+    else
+        item->pos.y += edge - bounds[2];
+
+    item->pos.x += coll->shift.x;
+    item->pos.z += coll->shift.z;
+    item->pos.y_rot = angle;
+    item->speed = 0;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    lara.torso_y_rot = 0;
+    lara.torso_x_rot = 0;
     lara.gun_status = LHS_HANDBUSY;
     return TRUE;
 }

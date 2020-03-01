@@ -1,17 +1,18 @@
 #include "framework.h"
 #include "utils.h"
-#include "3dsystem/3d_gen.h"
-#include "3dsystem/3d_gen_a.h"
-#include "game/box.h"
-#include "game/control.h"
-#include "game/draw.h"
-#include "game/effect2.h"
-#include "game/items.h"
-#include "game/lot.h"
-#include "game/oldobjects.h"
-#include "game/sphere.h"
-#include "specific/json/reader.h"
-#include "specific/drawprimitive.h"
+#include "3d_gen.h"
+#include "3d_gen_a.h"
+#include "box.h"
+#include "control.h"
+#include "draw.h"
+#include "effect2.h"
+#include "items.h"
+#include "lara.h"
+#include "lot.h"
+#include "oldobjects.h"
+#include "sphere.h"
+#include "json/reader.h"
+#include "drawprimitive.h"
 
 ofstream flog;
 LPCSTR lpWeaponName[12] = {
@@ -177,6 +178,31 @@ void S_Log(LPCSTR LT_flags, LPCSTR content, bool isEntered, ...)
     }
     S_LogEnd();
 #endif
+}
+
+void SetAnimationForItem(ITEM_INFO* item, int animation, int state)
+{
+    item->current_anim = animation;
+    item->current_frame = anims[item->current_anim].frame_base;
+    item->state_current = state;
+    item->state_next = state;
+}
+
+void SetAnimationForItem(ITEM_INFO* item, int animation, int state, bool needStateNext)
+{
+    item->current_anim = animation;
+    item->current_frame = anims[item->current_anim].frame_base;
+    item->state_current = state;
+    if (needStateNext)
+        item->state_next = state;
+}
+
+void SetAnimationForItem(ITEM_INFO* item, int animation, int state, int frameNow)
+{
+    item->current_anim = animation;
+    item->current_frame = anims[item->current_anim].frame_base + frameNow;
+    item->state_current = state;
+    item->state_next = state;
 }
 
 void SetAnimationForItem(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow)
@@ -863,7 +889,7 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
     return distance;
 }
 
-short* assign_meshes(short objNumber, short meshID)
+short* AssignMeshes(short objNumber, short meshID)
 {
     return meshes[objects[objNumber].mesh_index + meshID * 2];
 }
@@ -877,6 +903,19 @@ void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
     floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
     GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
     coll->trigger = trigger_index;
+}
+
+short GetCatchAngle(ITEM_INFO * item)
+{
+    short angle = item->pos.y_rot;
+    if (angle >= 0 - HANG_ANGLE && angle <= 0 + HANG_ANGLE)
+        return 0;
+    else if (angle >= 0x4000 - HANG_ANGLE && angle <= 0x4000 + HANG_ANGLE)
+        return 0x4000;
+    else if (angle >= 0x8000 - HANG_ANGLE || angle <= -0x8000 + HANG_ANGLE)
+        return -0x8000;
+    else if (angle >= -0x4000 - HANG_ANGLE && angle <= -0x4000 + HANG_ANGLE)
+        return -0x4000;
 }
 
 void phd_SwapPushMatrix(int frac)

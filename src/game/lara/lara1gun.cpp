@@ -10,13 +10,13 @@
 void draw_shotgun_meshes(int weapon_type)
 {
     lara.back_gun = LG_UNARMED;
-    lara.mesh.hand_r = assign_meshes(weapon_meshes(weapon_type), HAND_R);
+    lara.mesh.hand_r = AssignMeshes(weapon_meshes(weapon_type), HAND_R);
 }
 
 void undraw_shotgun_meshes(int weapon_type)
 {
     lara.back_gun = weapon_object(weapon_type); // cause crash !!
-    lara.mesh.hand_r = assign_meshes(LARA, HAND_R);
+    lara.mesh.hand_r = AssignMeshes(LARA, HAND_R);
 }
 
 void ready_shotgun(int weapon_type)

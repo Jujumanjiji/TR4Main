@@ -3,6 +3,7 @@
 #include "3d_gen.h"
 #include "camera.h"
 #include "collide.h"
+#include "control.h"
 #include "items.h"
 #include "sound.h"
 #include "utils.h"
@@ -447,7 +448,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
                     if (LaraTestClimbStance(item, coll))
                         item->state_next = STATE_LARA_LADDER_IDLE;
                     else
-                        SetAnimationForItem(item, ANIMATION_LARA_LADDER_UP_HANDS, STATE_LARA_HANG, STATE_LARA_HANG);
+                        SetAnimationForItem(item, ANIMATION_LARA_LADDER_UP_HANDS, STATE_LARA_HANG);
                 }
             }
         }
@@ -456,7 +457,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
             if (LaraTestClimbStance(item, coll))
                 item->state_next = STATE_LARA_LADDER_IDLE;
             else
-                SetAnimationForItem(item, ANIMATION_LARA_LADDER_DOWN_HANDS, STATE_LARA_HANG, STATE_LARA_HANG);
+                SetAnimationForItem(item, ANIMATION_LARA_LADDER_DOWN_HANDS, STATE_LARA_HANG);
         }
     }
 }
@@ -482,17 +483,13 @@ void lara_col_reach(ITEM_INFO* item, COLL_INFO* coll)
     if (item->fallspeed > 0 && coll->mid_floor <= 0)
     {
         if (LaraLandedBad(item))
-        {
             item->state_next = STATE_LARA_DEATH;
-        }
         else
-        {
             item->state_next = STATE_LARA_STOP;
-            item->fallspeed = 0;
-            item->gravity_status = FALSE;
-            if (coll->mid_floor != -NO_HEIGHT)
-                item->pos.y += coll->mid_floor;
-        }
+        item->fallspeed = 0;
+        item->gravity_status = FALSE;
+        if (coll->mid_floor != -NO_HEIGHT)
+            item->pos.y += coll->mid_floor;
     }
 }
 
@@ -536,7 +533,7 @@ void lara_col_compress(ITEM_INFO* item, COLL_INFO* coll)
         item->speed = 0;
         item->fallspeed = 0;
         item->gravity_status = FALSE;
-        SetAnimationForItem(item, ANIMATION_LARA_STAY_SOLID, STATE_LARA_STOP, STATE_LARA_STOP);
+        SetAnimationForItem(item, ANIMATION_LARA_STAY_SOLID, STATE_LARA_STOP);
     }
 
     if (coll->mid_floor > -STEP_L && coll->mid_floor < STEP_L)
@@ -688,32 +685,134 @@ void lara_col_upjump(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (item->speed < 0)
-        lara.move_angle = item->pos.y_rot - 0x8000;
-    else
-        lara.move_angle = item->pos.y_rot;
+    lara.move_angle = item->pos.y_rot;
     coll->bad_pos = NO_HEIGHT;
     coll->bad_neg = -STEPUP_HEIGHT;
-    coll->bad_ceiling = 192;
-    coll->facing = lara.move_angle;
+    coll->bad_ceiling = BAD_JUMP_CEILING;
+    coll->facing = (item->speed < 0) ? lara.move_angle - 0x8000 : lara.move_angle;
     coll->hit_ceiling = FALSE;
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_JUMPUP_HITE);
+
+    if (LaraTestHangJumpUp(item, coll))
+        return;
+
+    ShiftItem(item, coll);
+
+    if (coll->coll_type == COLL_CLAMP || coll->coll_type == COLL_TOP || coll->coll_type == COLL_TOPFRONT || coll->hit_ceiling)
+        item->fallspeed = 1;
+
+    if (coll->coll_type)
+    {
+        item->speed = (item->speed > 0) ? (2) : (-2);
+    }
+    else if (item->fallspeed < -70)
+    {
+        if (CHK_ANY(TrInput, IN_FORWARD) && item->speed < 5)
+            item->speed++;
+        else if (CHK_ANY(TrInput, IN_BACK) && item->speed > -5)
+            item->speed -= 2;
+    }
+
+    if (item->fallspeed > 0 && coll->mid_floor <= 0)
+    {
+        if (LaraLandedBad(item))
+            item->state_next = STATE_LARA_DEATH;
+        else
+            item->state_next = STATE_LARA_STOP;
+
+        item->fallspeed = 0;
+        item->gravity_status = FALSE;
+        
+        if (coll->mid_floor != -NO_HEIGHT)
+            item->pos.y += coll->mid_floor;
+    }
 }
 
+void lara_col_fallback(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x8000;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = BAD_JUMP_CEILING;
+    GetLaraCollisionInfo(item, coll);
+    LaraDeflectEdgeJump(item, coll);
 
+    if (item->fallspeed > 0 && coll->mid_floor <= 0)
+    {
+        if (LaraLandedBad(item))
+            item->state_next = STATE_LARA_DEATH;
+        else
+            item->state_next = STATE_LARA_STOP;
 
+        item->fallspeed = 0;
+        item->gravity_status = FALSE;
 
+        if (coll->mid_floor != -NO_HEIGHT)
+            item->pos.y += coll->mid_floor;
+    }
+}
 
+void lara_col_hangleft(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x4000;
+    coll->radius = LARA_RAD + 2;
+    LaraHangTest(item, coll);
+    lara.move_angle = item->pos.y_rot - 0x4000;
+}
 
+void lara_col_hangright(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot + 0x4000;
+    coll->radius = LARA_RAD + 2;
+    LaraHangTest(item, coll);
+    lara.move_angle = item->pos.y_rot + 0x4000;
+}
 
+void lara_col_slideback(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x8000;
+    LaraSlideSlope(item, coll);
+}
 
+void lara_col_surftread(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->state_next == STATE_LARA_UNDERWATER_FORWARD)
+    {
+        SetAnimationForItem(item, ANIMATION_LARA_FREE_FALL_TO_UNDERWATER_ALTERNATE, STATE_LARA_UNDERWATER_DIVING, false);
+        item->pos.x_rot = -ANGLE(45);
+        item->fallspeed = 80;
+        lara.water_status = LWS_UNDERWATER;
+    }
 
+    lara.move_angle = item->pos.y_rot;
+    LaraSurfaceCollision(item, coll);
+}
 
+void lara_col_surfswim(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    LaraSurfaceCollision(item, coll);
+    LaraTestWaterClimbOut(item, coll);
+}
 
+void lara_col_dive(ITEM_INFO* item, COLL_INFO* coll)
+{
+    LaraSwimCollision(item, coll);
+}
 
+void lara_col_uwdeath(ITEM_INFO* item, COLL_INFO* coll)
+{
+    item->hit_points = -1;
+    lara.air = -1;
+    lara.gun_status = LHS_HANDBUSY;
 
+    int water_level = GetWaterHeight(item->pos.x, item->pos.y, item->pos.z, item->room_number);
+    if (water_level != -NO_HEIGHT && water_level < (item->pos.y - SURF_RADIUS))
+        item->pos.y -= 5;
 
-
-
+    LaraSwimCollision(item, coll);
+}
 
 void lara_col_roll2(ITEM_INFO* item, COLL_INFO* coll)
 {
@@ -733,9 +832,9 @@ void lara_col_roll2(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor > 200)
     {
+        SetAnimationForItem(item, ANIMATION_LARA_FREE_FALL_BACK, STATE_LARA_FALL_BACKWARD);
         item->fallspeed = 0;
         item->gravity_status = TRUE;
-        SetAnimationForItem(item, ANIMATION_LARA_FREE_FALL_BACK, STATE_LARA_FALL_BACKWARD, STATE_LARA_FALL_BACKWARD);
         return;
     }
 
@@ -743,4 +842,153 @@ void lara_col_roll2(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor != -NO_HEIGHT)
         item->pos.y += coll->mid_floor;
+}
+
+void lara_col_surfback(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x8000;
+    LaraSurfaceCollision(item, coll);
+}
+
+void lara_col_surfleft(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x4000;
+    LaraSurfaceCollision(item, coll);
+}
+
+void lara_col_surfright(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot + 0x4000;
+    LaraSurfaceCollision(item, coll);
+}
+
+void lara_col_swandive(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = BAD_JUMP_CEILING;
+    GetLaraCollisionInfo(item, coll);
+    LaraDeflectEdgeJump(item, coll);
+
+    if (coll->mid_floor <= 0 && item->fallspeed > 0)
+    {
+        item->state_next = STATE_LARA_STOP;
+        item->fallspeed = 0;
+        item->gravity_status = FALSE;
+
+        if (coll->mid_floor != -NO_HEIGHT)
+            item->pos.y += coll->mid_floor;
+    }
+}
+
+void lara_col_fastdive(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = BAD_JUMP_CEILING;
+    GetLaraCollisionInfo(item, coll);
+    LaraDeflectEdgeJump(item, coll);
+
+    if (coll->mid_floor <= 0 && item->fallspeed > 0)
+    {
+        if (item->fallspeed > 133)
+            item->state_next = STATE_LARA_DEATH;
+        else
+            item->state_next = STATE_LARA_STOP;
+
+        item->fallspeed = 0;
+        item->gravity_status = FALSE;
+
+        if (coll->mid_floor != -NO_HEIGHT)
+            item->pos.y += coll->mid_floor;
+    }
+}
+
+void lara_col_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (LaraCheckForLetGo(item, coll))
+        return;
+
+    if (item->current_anim != ANIMATION_LARA_LADDER_IDLE)
+        return;
+
+    int result_r, result_l;
+    int shift_r, shift_l;
+    int ledge_r, ledge_l;
+
+    if (CHK_ANY(TrInput, IN_FORWARD))
+    {
+        if (item->state_next == STATE_LARA_GRABBING)
+            return;
+
+        item->state_next = STATE_LARA_LADDER_IDLE;
+
+        result_r = LaraTestClimbUpPos(item, coll->radius, coll->radius + CLIMB_WIDTHR, &shift_r, &ledge_r);
+        result_l = LaraTestClimbUpPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), &shift_l, &ledge_l);
+        if (!result_r || !result_l)
+            return;
+
+        if (result_r < 0 || result_l < 0)
+        {
+            if (abs(ledge_l - ledge_r) > CLIMB_WIDTH)
+                return;
+
+            item->pos.y += (ledge_l + ledge_r) / 2 - STEP_L;
+            item->state_next = STATE_LARA_GRABBING;
+            return;
+        }
+
+        if (shift_r)
+        {
+            if (shift_l)
+            {
+                if ((shift_r < 0) ^ (shift_l < 0))
+                    return;
+
+                if ((shift_r < 0) && (shift_r < shift_l))
+                    shift_l = shift_r;
+                else if ((shift_r > 0) && (shift_r > shift_l))
+                    shift_l = shift_r;
+            }
+            else
+            {
+                shift_l = shift_r;
+            }
+        }
+
+        item->state_next = STATE_LARA_LADDER_UP;
+        item->pos.y += shift_l;
+    }
+    else if (CHK_ANY(TrInput, IN_BACK))
+    {
+        if (item->state_next == STATE_LARA_HANG)
+            return;
+
+        item->state_next = STATE_LARA_LADDER_IDLE;
+
+        result_r = LaraTestClimbUpPos(item, coll->radius, coll->radius + 120, &shift_r, &ledge_r);
+        result_l = LaraTestClimbUpPos(item, coll->radius, -120 - coll->radius, &shift_l, &ledge_l);
+    }
+}
+
+void lara_col_climbing(ITEM_INFO* item, COLL_INFO* coll)
+{
+
+}
+
+void lara_col_climbleft(ITEM_INFO* item, COLL_INFO* coll)
+{
+
+}
+
+void lara_col_climbright(ITEM_INFO* item, COLL_INFO* coll)
+{
+
+}
+
+void lara_col_climbdown(ITEM_INFO* item, COLL_INFO* coll)
+{
+
 }

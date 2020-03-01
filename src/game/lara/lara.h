@@ -39,10 +39,12 @@
 #define SWAMP_GRAVITY 2
 #define LARA_RAD 100
 #define LARA_HITE 762
+#define LARA_JUMPUP_HITE 870
 #define LARA_SHOULDER_HITE 640
 #define LARA_DUCK_HEIGHT 400
 #define UW_RADIUS 300
 #define UW_HITE 400
+#define CLIMB_WIDTH 120
 #define CLIMB_WIDTHR 120
 #define CLIMB_WIDTHL 120
 #define DEATH_SPEED 100
@@ -117,6 +119,7 @@
 
 #define LARA_SPRINT_TO_ROLL_FRAME 2
 #define LARA_STAND_TO_ROLL_FRAME 2
+#define LARA_HANG_IDLE_FRAME 12
 
 /// ==============================================================
 
@@ -332,9 +335,25 @@ LARA_FUNC(lara_col_backjump);
 LARA_FUNC(lara_col_rightjump);
 LARA_FUNC(lara_col_leftjump);
 LARA_FUNC(lara_col_upjump);
-
-
+LARA_FUNC(lara_col_fallback);
+LARA_FUNC(lara_col_hangleft);
+LARA_FUNC(lara_col_hangright);
+LARA_FUNC(lara_col_slideback);
+LARA_FUNC(lara_col_surftread);
+LARA_FUNC(lara_col_surfswim);
+LARA_FUNC(lara_col_dive);
+LARA_FUNC(lara_col_uwdeath);
 LARA_FUNC(lara_col_roll2);
+LARA_FUNC(lara_col_surfback);
+LARA_FUNC(lara_col_surfleft);
+LARA_FUNC(lara_col_surfright);
+LARA_FUNC(lara_col_swandive);
+LARA_FUNC(lara_col_fastdive);
+LARA_FUNC(lara_col_climbstnc);
+LARA_FUNC(lara_col_climbing);
+LARA_FUNC(lara_col_climbleft);
+LARA_FUNC(lara_col_climbright);
+LARA_FUNC(lara_col_climbdown);
 
 #ifdef DLL_INJECT
 #define legacy_lara_default_col                LARA_ROUTINESNEW(0x00428AD0, lara_default_col)
@@ -361,25 +380,25 @@ LARA_FUNC(lara_col_roll2);
 #define legacy_lara_col_rightjump              LARA_ROUTINESNEW(0x004285B0, lara_col_rightjump)
 #define legacy_lara_col_leftjump               LARA_ROUTINESNEW(0x004285E0, lara_col_leftjump)
 #define legacy_lara_col_upjump                 LARA_ROUTINESNEW(0x00425130, lara_col_upjump)
-#define legacy_lara_col_fallback               LARA_ROUTINES(0x00428610)
-#define legacy_lara_col_hangleft               LARA_ROUTINES(0x00426B90)
-#define legacy_lara_col_hangright              LARA_ROUTINES(0x00426C10)
-#define legacy_lara_col_slideback              LARA_ROUTINES(0x004286A0)
-#define legacy_lara_col_surftread              LARA_ROUTINES(0x00432340)
-#define legacy_lara_col_surfswim               LARA_ROUTINES(0x00431E60)
-#define legacy_lara_col_dive                   LARA_ROUTINES(0x00432B50)
-#define legacy_lara_col_uwdeath                LARA_ROUTINES(0x00432B70)
+#define legacy_lara_col_fallback               LARA_ROUTINESNEW(0x00428610, lara_col_fallback)
+#define legacy_lara_col_hangleft               LARA_ROUTINESNEW(0x00426B90, lara_col_hangleft)
+#define legacy_lara_col_hangright              LARA_ROUTINESNEW(0x00426C10, lara_col_hangright)
+#define legacy_lara_col_slideback              LARA_ROUTINESNEW(0x004286A0, lara_col_slideback)
+#define legacy_lara_col_surftread              LARA_ROUTINESNEW(0x00432340, lara_col_surftread)
+#define legacy_lara_col_surfswim               LARA_ROUTINESNEW(0x00431E60, lara_col_surfswim)
+#define legacy_lara_col_dive                   LARA_ROUTINESNEW(0x00432B50, lara_col_dive)
+#define legacy_lara_col_uwdeath                LARA_ROUTINESNEW(0x00432B70, lara_col_uwdeath)
 #define legacy_lara_col_roll2                  LARA_ROUTINESNEW(0x00428770, lara_col_roll2)
-#define legacy_lara_col_surfback               LARA_ROUTINES(0x004322B0)
-#define legacy_lara_col_surfleft               LARA_ROUTINES(0x004322E0)
-#define legacy_lara_col_surfright              LARA_ROUTINES(0x00432310)
-#define legacy_lara_col_swandive               LARA_ROUTINES(0x00428850)
-#define legacy_lara_col_fastdive               LARA_ROUTINES(0x004288D0)
-#define legacy_lara_col_climbstnc              LARA_ROUTINES(0x0042C770)
-#define legacy_lara_col_climbing               LARA_ROUTINES(0x0042D490)
-#define legacy_lara_col_climbleft              LARA_ROUTINES(0x0042CCC0)
-#define legacy_lara_col_climbright             LARA_ROUTINES(0x0042D410)
-#define legacy_lara_col_climbdown              LARA_ROUTINES(0x0042D600)
+#define legacy_lara_col_surfback               LARA_ROUTINESNEW(0x004322B0, lara_col_surfback)
+#define legacy_lara_col_surfleft               LARA_ROUTINESNEW(0x004322E0, lara_col_surfleft)
+#define legacy_lara_col_surfright              LARA_ROUTINESNEW(0x00432310, lara_col_surfright)
+#define legacy_lara_col_swandive               LARA_ROUTINESNEW(0x00428850, lara_col_swandive)
+#define legacy_lara_col_fastdive               LARA_ROUTINESNEW(0x004288D0, lara_col_fastdive)
+#define legacy_lara_col_climbstnc              LARA_ROUTINESNEW(0x0042C770, lara_col_climbstnc)
+#define legacy_lara_col_climbing               LARA_ROUTINESNEW(0x0042D490, lara_col_climbing)
+#define legacy_lara_col_climbleft              LARA_ROUTINESNEW(0x0042CCC0, lara_col_climbleft)
+#define legacy_lara_col_climbright             LARA_ROUTINESNEW(0x0042D410, lara_col_climbright)
+#define legacy_lara_col_climbdown              LARA_ROUTINESNEW(0x0042D600, lara_col_climbdown)
 #define legacy_lara_col_wade                   LARA_ROUTINES(0x00428960)
 #define legacy_lara_col_waterroll              LARA_ROUTINES(0x00432BD0)
 #define legacy_lara_col_duck                   LARA_ROUTINES(0x004210F0)
@@ -486,6 +505,7 @@ extern void animate_pistols(int weapon_type);
 #pragma region lara_utils
 extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
+extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 
 #ifdef DLL_INJECT
 #define LaraFloorFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist)) 0x00421620)
@@ -507,7 +527,7 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define LaraSlideSlope ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428470)
 #define LaraColllideJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
 #define LaraCheckForLetGo ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042C980)
-#define LaraTestClimbUpPos ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042C3C0)
+#define LaraTestClimbUpPos ((BOOL(__cdecl*)(ITEM_INFO *item, int front, int right, int *shift, int *ledge)) 0x0042C3C0)
 #define LaraDoClimbLeftRight ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042CD20)
 #define LaraTestWaterClimbOut ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00431E90)
 #define LaraTestWaterStepOut ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004321B0)
@@ -515,6 +535,7 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define LaraLandedBad ((bool(__cdecl*)(ITEM_INFO *item)) 0x00422BE0)
 #define LaraCollideStop ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004229D0)
 #define LaraSwimCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004328E0)
+#define LaraSurfaceCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004320B0)
 #define LaraColJumper ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
 #define UseSpecialItem ((BOOL(__cdecl*)(ITEM_INFO* item)) 0x00424E90)
 #define TestLaraSlide ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420EA0)
@@ -523,6 +544,7 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define TestWall ((BOOL(__cdecl*)(ITEM_INFO* item, int front, int right, int height)) 0x004228D0)
 #define SwimTurn ((void(__cdecl*)(ITEM_INFO* item)) 0x00432690)
 #define MonkeySwingFall ((void(__cdecl*)(ITEM_INFO* item)) 0x00422E50)
+#define MonkeySwingSnap ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00423660)
 #define FallFromRope ((void(__cdecl*)(ITEM_INFO* item)) 0x004241D0)
 #define SetCornerAnim ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle, short flip)) 0x00426C50)
 #define CanLaraHangSideways ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll, short angle)) 0x00426AB0)

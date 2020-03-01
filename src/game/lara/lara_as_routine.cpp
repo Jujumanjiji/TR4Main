@@ -779,7 +779,7 @@ void lara_as_usepuzzle(ITEM_INFO* item, COLL_INFO* coll)
     if (item->current_frame == anims[item->current_anim].frame_end)
     {
         if (item->reserved_1)
-            SetAnimationForItem(item, item->reserved_1, STATE_LARA_MISC_CONTROL, STATE_LARA_MISC_CONTROL);
+            SetAnimationForItem(item, item->reserved_1, STATE_LARA_MISC_CONTROL);
     }
 }
 
@@ -913,6 +913,12 @@ void lara_as_duck(ITEM_INFO* item, COLL_INFO* coll)
 void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_RUN_FORWARD;
+        return;
+    }
+
+    if (!lara.dash_timer || CHK_NOP(TrInput, IN_SPRINT) || lara.water_status == LWS_WADE)
     {
         item->state_next = STATE_LARA_RUN_FORWARD;
         return;

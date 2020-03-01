@@ -15,7 +15,7 @@ void lara_as_tread(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_ANY(TrInput, IN_ROLL))
     {
-        SetAnimationForItem(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND, STATE_LARA_UNDERWATER_TURNAROUND);
+        SetAnimationForItem(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND);
         return;
     }
 
@@ -43,7 +43,7 @@ void lara_as_swim(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_ANY(TrInput, IN_ROLL))
     {
-        SetAnimationForItem(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND, STATE_LARA_UNDERWATER_TURNAROUND);
+        SetAnimationForItem(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND);
         return;
     }
 
@@ -64,7 +64,7 @@ void lara_as_glide(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_ANY(TrInput, IN_ROLL))
     {
-        SetAnimationForItem(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND, STATE_LARA_UNDERWATER_TURNAROUND);
+        SetAnimationForItem(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND);
         return;
     }
 
