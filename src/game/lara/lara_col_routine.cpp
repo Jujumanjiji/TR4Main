@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "lara.h"
 #include "3d_gen.h"
+#include "draw.h"
 #include "camera.h"
 #include "collide.h"
 #include "control.h"
@@ -1483,17 +1484,340 @@ void lara_col_monkeyswing(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_col_monkeyl(ITEM_INFO* item, COLL_INFO* coll)
 {
+    if (CHK_NOP(TrInput, IN_ACTION) || !lara.can_monkey_swing)
+    {
+        MonkeySwingFall(item);
+        return;
+    }
 
+    if (!TestMonkeyLeft(item, coll))
+    {
+        SetAnimationForItemAS(item, ANIMATION_LARA_MONKEY_IDLE, STATE_LARA_MONKEYSWING_IDLE);
+        return;
+    }
+
+    MonkeySwingSnap(item, coll);
 }
 
 void lara_col_monkeyr(ITEM_INFO* item, COLL_INFO* coll)
 {
+    if (CHK_NOP(TrInput, IN_ACTION) || !lara.can_monkey_swing)
+    {
+        MonkeySwingFall(item);
+        return;
+    }
 
+    if (!TestMonkeyRight(item, coll))
+    {
+        SetAnimationForItemAS(item, ANIMATION_LARA_MONKEY_IDLE, STATE_LARA_MONKEYSWING_IDLE);
+        return;
+    }
+
+    MonkeySwingSnap(item, coll);
 }
 
 void lara_col_monkey180(ITEM_INFO* item, COLL_INFO* coll)
 {
-    
+    lara_col_monkeyswing(item, coll);
+}
 
+void lara_col_all4s(ITEM_INFO* item, COLL_INFO* coll)
+{
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
 
+    if (item->state_next == STATE_LARA_CRAWL_TO_CLIMB)
+        return;
+
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = (STEP_L - 1);
+    coll->bad_neg = -(STEP_L - 1);
+    coll->bad_ceiling = LARA_DUCK_HEIGHT;
+    coll->facing = item->pos.y_rot;
+    coll->radius = LARA_RAD * 2;
+    coll->slopes_are_pits = TRUE;
+    coll->slopes_are_walls = TRUE;
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_DUCK_HEIGHT);
+
+    if (LaraFallen(item, coll))
+    {
+        lara.gun_status = LHS_ARMLESS;
+        return;
+    }
+
+    if (TestLaraSlide(item, coll))
+        return;
+
+    short front, back;
+    short ceiling;
+    int slope = abs(coll->left_floor2 - coll->right_floor2);
+
+    if (coll->mid_ceiling < -(LARA_HITE - LARA_DUCK_HEIGHT))
+        lara.keep_ducked = FALSE;
+    else
+        lara.keep_ducked = TRUE;
+
+    ShiftItem(item, coll);
+    if (coll->mid_floor != -NO_HEIGHT && coll->mid_floor > -STEP_L)
+        item->pos.y += coll->mid_floor;
+
+    if ((CHK_NOP(TrInput, IN_DUCK) && !lara.keep_ducked) || (CHK_ANY(TrInput, (IN_FLARE | IN_DRAW))) || lara.water_status == LWS_WADE)
+    {
+        item->state_next = STATE_LARA_CROUCH_IDLE;
+    }
+    else if (item->current_anim == ANIMATION_LARA_CRAWL_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_TO_CRAWL_END)
+    {
+        if (CHK_ANY(TrInput, IN_FORWARD))
+        {
+            front = LaraFloorFront(item, item->pos.y_rot, LARA_DUCK_FRONT);
+            if (front < (STEP_L - 1) && front > -(STEP_L - 1) && height_type != BIG_SLOPE)
+                item->state_next = STATE_LARA_CRAWL_FORWARD;
+        }
+        else if (CHK_ANY(TrInput, IN_BACK))
+        {
+            ceiling = LaraCeilingFront(item, item->pos.y_rot, -LARA_CRAWL_FRONT, (STEP_L / 2));
+            if (ceiling == -NO_HEIGHT || ceiling > STEP_L)
+                return;
+
+            back = LaraFloorFront(item, item->pos.y_rot, -LARA_CRAWL_FRONT);
+            if (back < (STEP_L - 1) && back > -(STEP_L - 1) && height_type != BIG_SLOPE)
+            {
+                item->state_next = STATE_LARA_CRAWL_BACK;
+            }
+            else if (CHK_ANY(TrInput, IN_ACTION))
+            {
+                if (back > (STEP_L * 3) && slope < 120)
+                {
+                    item->pos.x -= LARA_RAD * SIN(coll->facing) >> W2V_SHIFT;
+                    item->pos.z -= LARA_RAD * COS(coll->facing) >> W2V_SHIFT;
+
+                    if (!GetCollidedObjects(item, LARA_RAD, NULL, collide_item, collide_meshes, NULL))
+                    {
+                        SHORT angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+
+                        switch (angle)
+                        {
+                            case NORTH:
+                                item->pos.y_rot = 0;
+                                item->pos.z = (item->pos.z & ~(WALL_L - 1)) + 225;
+                                break;
+                            case EAST:
+                                item->pos.y_rot = 0x4000;
+                                item->pos.x = (item->pos.x & ~(WALL_L - 1)) + 225;
+                                break;
+                            case SOUTH:
+                                item->pos.y_rot = -0x8000;
+                                item->pos.z = (item->pos.z | (WALL_L - 1)) - 225;
+                                break;
+                            case WEST:
+                                item->pos.y_rot = -0x4000;
+                                item->pos.x = (item->pos.x | (WALL_L - 1)) - 225;
+                                break;
+                        }
+
+                        item->state_next = STATE_LARA_CRAWL_TO_CLIMB;
+                    }
+                }
+            }
+        }
+        else if (CHK_ANY(TrInput, IN_LEFT))
+        {
+            SetAnimationForItemAS(item, ANIMATION_LARA_CRAWL_TURN_LEFT, STATE_LARA_CRAWL_TURN_LEFT);
+        }
+        else if (CHK_ANY(TrInput, IN_RIGHT))
+        {
+            SetAnimationForItemAS(item, ANIMATION_LARA_CRAWL_TURN_RIGHT, STATE_LARA_CRAWL_TURN_RIGHT);
+        }
+    }
+}
+
+void lara_col_crawl(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = (STEP_L - 1);
+    coll->bad_neg = -(STEP_L - 1);
+    coll->bad_ceiling = LARA_DUCK_HEIGHT;
+    coll->facing = item->pos.y_rot;
+    coll->radius = LARA_RAD * 2;
+    coll->slopes_are_pits = TRUE;
+    coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_DUCK_HEIGHT);
+
+    if (LaraDeflectEdgeDuck(item, coll))
+    {
+        item->state_current = STATE_LARA_CRAWL_IDLE;
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        if (item->current_anim != ANIMATION_LARA_CRAWL_IDLE)
+        {
+            item->current_anim = ANIMATION_LARA_CRAWL_IDLE;
+            item->current_frame = anims[item->current_anim].frame_base;
+        }
+        return;
+    }
+
+    if (LaraFallen(item, coll))
+    {
+        lara.gun_status = LHS_ARMLESS;
+        return;
+    }
+
+    if (TestLaraSlide(item, coll))
+        return;
+
+    ShiftItem(item, coll);
+    if (coll->mid_floor != -NO_HEIGHT && coll->mid_floor > -STEP_L)
+        item->pos.y += coll->mid_floor;
+}
+
+void lara_col_hangturn(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_NOP(TrInput, IN_ACTION) || lara.can_monkey_swing)
+    {
+        MonkeySwingFall(item);
+        return;
+    }
+
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 0;
+    coll->facing = item->pos.y_rot;
+    coll->radius = LARA_RAD;
+    coll->slopes_are_walls = TRUE;
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_HANG_HEIGHT);
+
+    MonkeySwingSnap(item, coll);
+}
+
+void lara_col_all4turn(ITEM_INFO* item, COLL_INFO* coll)
+{
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_DUCK_HEIGHT);
+    if (TestLaraSlide(item, coll))
+        return;
+    if (coll->mid_floor != -NO_HEIGHT && coll->mid_floor > -STEP_L)
+        item->pos.y += coll->mid_floor;
+}
+
+void lara_col_crawlb(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.move_angle = item->pos.y_rot - 0x8000;
+    coll->bad_pos = (STEP_L - 1);
+    coll->bad_neg = -(STEP_L - 1);
+    coll->bad_ceiling = LARA_DUCK_HEIGHT;
+    coll->facing = item->pos.y_rot - 0x8000;
+    coll->radius = LARA_CRAWLB_RAD;
+    coll->slopes_are_pits = TRUE;
+    coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_DUCK_HEIGHT);
+
+    if (LaraDeflectEdgeDuck(item, coll))
+    {
+        item->state_current = STATE_LARA_CRAWL_IDLE;
+        item->state_next = STATE_LARA_CRAWL_IDLE;
+        if (item->current_anim != ANIMATION_LARA_CRAWL_IDLE)
+        {
+            item->current_anim = ANIMATION_LARA_CRAWL_IDLE;
+            item->current_frame = anims[item->current_anim].frame_base;
+        }
+        return;
+    }
+
+    if (LaraFallen(item, coll))
+    {
+        lara.gun_status = LHS_ARMLESS;
+        return;
+    }
+
+    if (TestLaraSlide(item, coll))
+        return;
+
+    ShiftItem(item, coll);
+    if (coll->mid_floor != -NO_HEIGHT && coll->mid_floor > -STEP_L)
+        item->pos.y += coll->mid_floor;
+    lara.move_angle = item->pos.y_rot;
+}
+
+void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
+{
+    int edge, edge_catch;
+    short angle, *bounds;
+
+    camera.target_angle = 0;
+    camera.target_elevation = -10920;
+
+    if (item->current_anim == ANIMATION_LARA_CRAWL_TO_HANG_END)
+    {
+        lara.move_angle = item->pos.y_rot;
+        coll->bad_pos = NO_HEIGHT;
+        coll->bad_neg = -STEPUP_HEIGHT;
+        coll->bad_ceiling = BAD_JUMP_CEILING;
+        coll->facing = item->pos.y_rot;
+        item->fallspeed = 512;
+        item->pos.y += (STEP_L - 1);
+        GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_JUMPUP_HITE);
+
+        edge_catch = LaraTestEdgeCatch(item, coll, &edge);
+        if (!edge_catch)
+            return;
+        if (edge_catch < 0 && !LaraTestHangOnClimbWall(item, coll))
+            return;
+
+        angle = GetCatchAngle(item);
+        if (angle & 0x3FFF)
+            return;
+
+        if (TestHangSwingIn(item, angle))
+        {
+            lara.head_y_rot = 0;
+            lara.head_x_rot = 0;
+            lara.torso_y_rot = 0;
+            lara.torso_x_rot = 0;
+            SetAnimationForItemAS(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
+        }
+        else
+        {
+            SetAnimationForItemAS(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG);
+        }
+
+        bounds = GetBoundsAccurate(item);
+        if (edge_catch > 0)
+        {
+            item->pos.y += coll->front_floor - bounds[2];
+            item->pos.x += coll->shift.x;
+            item->pos.z += coll->shift.z;
+        }
+        else
+        {
+            item->pos.y = edge - bounds[2];
+        }
+
+        item->pos.y_rot = angle;
+        item->gravity_status = TRUE;
+        item->speed = 2;
+        item->fallspeed = 1;
+        lara.gun_status = LHS_HANDBUSY;
+    }
+}
+
+void lara_col_turnswitch(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (coll->old.x != item->pos.x || coll->old.z != item->pos.z)
+    {
+        if (item->current_anim == ANIMATION_LARA_ROUND_HANDLE_PUSH_LEFT_CONTINUE)
+        {
+            item->pos.y_rot -= 0x4000;
+            item->current_anim = ANIMATION_LARA_ROUND_HANDLE_PUSH_LEFT_END;
+            item->current_frame = anims[item->current_anim].frame_base;
+        }
+        else if (item->current_anim == ANIMATION_LARA_ROUND_HANDLE_PUSH_RIGHT_CONTINUE)
+        {
+            item->pos.y_rot += 0x4000;
+            item->current_anim = ANIMATION_LARA_ROUND_HANDLE_PUSH_RIGHT_END;
+            item->current_frame = anims[item->current_anim].frame_base;
+        }
+    }
 }

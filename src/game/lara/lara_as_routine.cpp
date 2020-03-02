@@ -1,7 +1,11 @@
 #include "framework.h"
 #include "lara.h"
 #include "3d_gen.h"
+#include "draw.h"
 #include "camera.h"
+#include "collide.h"
+#include "control.h"
+#include "items.h"
 #include "sound.h"
 #include "utils.h"
 
@@ -1021,8 +1025,6 @@ void lara_as_monkeyswing(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_baddie_push = FALSE;
     lara.torso_y_rot = 0;
     lara.torso_x_rot = 0;
-    camera.target_angle = CAM_A_HANG;
-    camera.target_elevation = CAM_E_HANG;
 
     if (CHK_ANY(TrInput, IN_LOOK))
         LookUpDown();
@@ -1242,11 +1244,11 @@ void lara_as_crawlb(ITEM_INFO* item, COLL_INFO* coll)
     }
     else if (CHK_ANY(TrInput, IN_LEFT))
     {
-        LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+        LaraClampP(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
     }
     else if (CHK_ANY(TrInput, IN_RIGHT))
     {
-        LaraClampP(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
+        LaraClampN(lara.turn_rate, LARA_TURN_RATE, LARA_JUMP_TURN);
     }
 }
 

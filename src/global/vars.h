@@ -155,7 +155,8 @@
 #define shockwave                           ARRAY_(0x007FF960, SHOCKWAVE_STRUCT, [MAX_SHOCKWAVE])
 #define firelists                           ARRAY_(0x007FFF60, FIRE_LIST, [MAX_FIRE_LIST])
 #define ropes                               ARRAY_(0x007FB4C0, ROPE_STRUCT, [MAX_ROPES])
-
+#define collide_item                        ARRAY_(0x00804F80, ITEM_INFO*, [256]) // not sure for the size !
+#define collide_meshes                      ARRAY_(0x00805380, MESH_INFO*, [256]) // not sure for the size !
 
 
 

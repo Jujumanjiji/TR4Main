@@ -103,7 +103,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->pos.y += (coll->front_floor - bounds[2]); // catch edge
 
-        SHORT rotationAngle = (USHORT)(item->pos.y_rot + 0x2000) >> W2V_SHIFT;
+        SHORT rotationAngle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
         switch (rotationAngle)
         {
             case NORTH:
@@ -126,7 +126,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     }
     else
     {
-        item->pos.y = (edge - bounds[2]) - 22;
+        item->pos.y = edge - bounds[2];
     }
 
     item->pos.y_rot = angle;

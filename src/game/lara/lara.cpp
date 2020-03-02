@@ -1,10 +1,6 @@
 // TODO: THIS FILE ONLY EXIST FOR INJECT, DELETE IT WHEN TURNING TO EXE !
 #include "framework.h"
 #include "lara.h"
-#include "3d_gen.h"
-#include "camera.h"
-#include "sound.h"
-#include "utils.h"
 
 #ifdef DLL_INJECT
 void injector::inject_lara()
@@ -151,6 +147,13 @@ void injector::inject_lara()
     this->inject(legacy_lara_col_monkeyswing);
     this->inject(legacy_lara_col_monkeyl);
     this->inject(legacy_lara_col_monkeyr);
-    this->inject(legacy_lara_col_monkey180);
+    this->inject(legacy_lara_col_monkey180); // TODO: recreate it, it's not used because it's use lara_col_monkeyswing but no IN_ROLL is set !
+    this->inject(legacy_lara_col_all4s);
+    this->inject(legacy_lara_col_crawl);
+    this->inject(legacy_lara_col_hangturn);
+    this->inject(legacy_lara_col_all4turn);
+    this->inject(legacy_lara_col_crawlb);
+    this->inject(legacy_lara_col_crawl2hang);
+    this->inject(legacy_lara_col_turnswitch);
 }
 #endif

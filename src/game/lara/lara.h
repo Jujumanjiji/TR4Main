@@ -41,8 +41,11 @@
 #define LARA_HITE 762
 #define LARA_JUMPUP_HITE 870
 #define LARA_SHOULDER_HITE 640
+#define LARA_DUCK_FRONT STEP_L
 #define LARA_DUCK_HEIGHT 400
 #define LARA_HANG_HEIGHT 600
+#define LARA_CRAWL_FRONT 300
+#define LARA_CRAWL_BACK -300
 #define UW_RADIUS 300
 #define UW_HITE 400
 #define CLIMB_WIDTH 120
@@ -367,6 +370,13 @@ LARA_FUNC(lara_col_monkeyswing);
 LARA_FUNC(lara_col_monkeyl);
 LARA_FUNC(lara_col_monkeyr);
 LARA_FUNC(lara_col_monkey180);
+LARA_FUNC(lara_col_all4s);
+LARA_FUNC(lara_col_crawl);
+LARA_FUNC(lara_col_hangturn);
+LARA_FUNC(lara_col_all4turn);
+LARA_FUNC(lara_col_crawlb);
+LARA_FUNC(lara_col_crawl2hang);
+LARA_FUNC(lara_col_turnswitch);
 
 #ifdef DLL_INJECT
 #define legacy_lara_default_col                LARA_ROUTINESNEW(0x00428AD0, lara_default_col)
@@ -422,13 +432,13 @@ LARA_FUNC(lara_col_monkey180);
 #define legacy_lara_col_monkeyl                LARA_ROUTINESNEW(0x00423AC0, lara_col_monkeyl)
 #define legacy_lara_col_monkeyr                LARA_ROUTINESNEW(0x00423B90, lara_col_monkeyr)
 #define legacy_lara_col_monkey180              LARA_ROUTINESNEW(0x00423D40, lara_col_monkey180)
-#define legacy_lara_col_all4s                  LARA_ROUTINES(0x00421280)
-#define legacy_lara_col_crawl                  LARA_ROUTINES(0x00421770)
-#define legacy_lara_col_hangturn               LARA_ROUTINES(0x00423C40)
-#define legacy_lara_col_all4turn               LARA_ROUTINES(0x00421960)
-#define legacy_lara_col_crawlb                 LARA_ROUTINES(0x00421AD0)
-#define legacy_lara_col_crawl2hang             LARA_ROUTINES(0x00421BF0)
-#define legacy_lara_col_turnswitch             LARA_ROUTINES(0x004278D0)
+#define legacy_lara_col_all4s                  LARA_ROUTINESNEW(0x00421280, lara_col_all4s)
+#define legacy_lara_col_crawl                  LARA_ROUTINESNEW(0x00421770, lara_col_crawl)
+#define legacy_lara_col_hangturn               LARA_ROUTINESNEW(0x00423C40, lara_col_hangturn)
+#define legacy_lara_col_all4turn               LARA_ROUTINESNEW(0x00421960, lara_col_all4turn)
+#define legacy_lara_col_crawlb                 LARA_ROUTINESNEW(0x00421AD0, lara_col_crawlb)
+#define legacy_lara_col_crawl2hang             LARA_ROUTINESNEW(0x00421BF0, lara_col_crawl2hang)
+#define legacy_lara_col_turnswitch             LARA_ROUTINESNEW(0x004278D0, lara_col_turnswitch)
 #define legacy_lara_col_polestat               LARA_ROUTINES(0x00423D60)
 #define legacy_lara_col_poleup                 LARA_ROUTINES(0x00423F60)
 #define legacy_lara_col_poledown               LARA_ROUTINES(0x00423FF0)
@@ -522,7 +532,7 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 
 #ifdef DLL_INJECT
 #define LaraFloorFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist)) 0x00421620)
-#define LaraCeilingFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist, int h)) 0x00421620)
+#define LaraCeilingFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist, int h)) 0x00420A80)
 #define LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
 #define LaraHangTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004230E0)
 #define LaraDeflectEdge ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422400)
