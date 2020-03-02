@@ -80,14 +80,6 @@ enum MOOD_TYPE
     STALK_MOOD
 };
 
-enum BONE_TYPE
-{
-    BT_FLAG,
-    BT_X,
-    BT_Y,
-    BT_Z,
-};
-
 enum RENDER_TYPE
 {
     RENDER_DYNAMICS = 0,
@@ -237,6 +229,14 @@ enum LIGHT_FLAGS
     D3D_FOG_BULB
 };
 
+enum BONES_Types
+{
+    BT_FLAG,
+    BT_X,
+    BT_Y,
+    BT_Z,
+};
+
 enum BONES_Flags
 {
     ROT_X = 0x4,
@@ -361,7 +361,7 @@ enum LARA_STATE
 {
     STATE_LARA_WALK_FORWARD = 0,
     STATE_LARA_RUN_FORWARD = 1,
-    STATE_LARA_STOP = 2,
+    STATE_LARA_IDLE = 2,
     STATE_LARA_JUMP_FORWARD = 3,
     STATE_LARA_POSE = 4,
     STATE_LARA_RUN_BACK = 5,

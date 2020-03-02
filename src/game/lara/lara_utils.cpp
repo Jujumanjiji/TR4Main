@@ -68,7 +68,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
         item->speed = 0;
         item->gravity_status = FALSE;
         lara.gun_status = LHS_HANDBUSY;
-        SetAnimationForItem(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
+        SetAnimationForItemAS(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
         return TRUE;
     }
 
@@ -91,11 +91,11 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
         lara.head_x_rot = 0;
         lara.torso_y_rot = 0;
         lara.torso_x_rot = 0;
-        SetAnimationForItem(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
+        SetAnimationForItemAS(item, ANIMATION_LARA_OSCILLATE_HANG_ON, STATE_LARA_MONKEYSWING_IDLE);
     }
     else
     {
-        SetAnimationForItem(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG);
+        SetAnimationForItemAS(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG);
     }
 
     bounds = GetBoundsAccurate(item);
@@ -147,9 +147,10 @@ BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
 
     if (lara.can_monkey_swing && coll->coll_type == COLL_TOP)
     {
-        SetAnimationForItem(item, ANIMATION_LARA_MONKEY_GRAB, STATE_LARA_MONKEYSWING_IDLE, STATE_LARA_MONKEYSWING_IDLE);
+        SetAnimationForItemAS(item, ANIMATION_LARA_MONKEY_GRAB, STATE_LARA_MONKEYSWING_IDLE);
         item->speed = 0;
         item->fallspeed = 0;
+        item->gravity_status = FALSE;
         lara.gun_status = LHS_HANDBUSY;
         MonkeySwingSnap(item, coll);
         return TRUE;
@@ -170,15 +171,15 @@ BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
         return FALSE;
 
     if (TestHangSwingIn(item, angle))
-        SetAnimationForItem(item, ANIMATION_LARA_MONKEY_GRAB, STATE_LARA_MONKEYSWING_IDLE);
+        SetAnimationForItemAS(item, ANIMATION_LARA_MONKEY_GRAB, STATE_LARA_MONKEYSWING_IDLE);
     else
-        SetAnimationForItem(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, LARA_HANG_IDLE_FRAME);
+        SetAnimationForItemASF(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, LARA_HANG_IDLE_FRAME);
 
     bounds = GetBoundsAccurate(item);
     if (edge_catch > 0)
         item->pos.y += coll->front_floor - bounds[2];
     else
-        item->pos.y += edge - bounds[2];
+        item->pos.y = edge - bounds[2];
 
     item->pos.x += coll->shift.x;
     item->pos.z += coll->shift.z;

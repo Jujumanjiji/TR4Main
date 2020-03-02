@@ -9,7 +9,7 @@ void lara_as_walk(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -43,7 +43,7 @@ void lara_as_walk(ITEM_INFO* item, COLL_INFO* coll)
     }
     else
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 }
 
@@ -57,7 +57,7 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_ANY(TrInput, IN_ROLL))
     {
-        SetAnimationForItem(item, ANIMATION_LARA_ROLL_BEGIN, STATE_LARA_ROLL_FORWARD, STATE_LARA_STOP, LARA_SPRINT_TO_ROLL_FRAME);
+        SetAnimationForItemASSF(item, ANIMATION_LARA_ROLL_BEGIN, STATE_LARA_ROLL_FORWARD, STATE_LARA_IDLE, LARA_SPRINT_TO_ROLL_FRAME);
         return;
     }
 
@@ -131,7 +131,7 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
     }
     else
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 }
 
@@ -157,7 +157,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_ANY(TrInput, IN_ROLL) && lara.water_status != LWS_WADE)
     {
-        SetAnimationForItem(item, ANIMATION_LARA_ROLL_BEGIN, STATE_LARA_ROLL_FORWARD, STATE_LARA_STOP, LARA_STAND_TO_ROLL_FRAME);
+        SetAnimationForItemASSF(item, ANIMATION_LARA_ROLL_BEGIN, STATE_LARA_ROLL_FORWARD, STATE_LARA_IDLE, LARA_STAND_TO_ROLL_FRAME);
         return;
     }
 
@@ -175,7 +175,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
         }
     }
 
-    item->state_next = STATE_LARA_STOP;
+    item->state_next = STATE_LARA_IDLE;
 
     if (CHK_ANY(TrInput, IN_LOOK))
         LookUpDown();
@@ -257,7 +257,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
 
             if ((height < 0 || ceiling > 0) && (height_type == BIG_SLOPE || height_type == DIAGONAL))
             {
-                item->state_next = STATE_LARA_STOP;
+                item->state_next = STATE_LARA_IDLE;
                 return;
             }
 
@@ -281,7 +281,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
                 if (!TestLaraVault(item, coll))
                 {
                     coll->radius = LARA_RAD;
-                    item->state_next = STATE_LARA_STOP;
+                    item->state_next = STATE_LARA_IDLE;
                 }
             }
         }
@@ -310,7 +310,7 @@ void lara_as_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     if (item->state_next != STATE_LARA_DEATH
-    &&  item->state_next != STATE_LARA_STOP
+    &&  item->state_next != STATE_LARA_IDLE
     &&  item->state_next != STATE_LARA_RUN_FORWARD)
     {
         if (CHK_ANY(TrInput, IN_ACTION) && lara.gun_status == LHS_ARMLESS)
@@ -338,7 +338,7 @@ void lara_as_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_as_fastback(ITEM_INFO* item, COLL_INFO* coll)
 {
-    item->state_next = STATE_LARA_STOP;
+    item->state_next = STATE_LARA_IDLE;
 
     if (CHK_ANY(TrInput, IN_LEFT))
     {
@@ -354,7 +354,7 @@ void lara_as_turnr(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -387,7 +387,7 @@ void lara_as_turnr(ITEM_INFO* item, COLL_INFO* coll)
     }
     else if (CHK_NOP(TrInput, IN_RIGHT))
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 }
 
@@ -395,7 +395,7 @@ void lara_as_turnl(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -428,7 +428,7 @@ void lara_as_turnl(ITEM_INFO* item, COLL_INFO* coll)
     }
     else if (CHK_NOP(TrInput, IN_LEFT))
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 }
 
@@ -461,7 +461,7 @@ void lara_as_hang(ITEM_INFO* item, COLL_INFO* coll)
 
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -520,7 +520,7 @@ void lara_as_back(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -529,7 +529,7 @@ void lara_as_back(ITEM_INFO* item, COLL_INFO* coll)
         if (CHK_ANY(TrInput, IN_BACK) && (CHK_ANY(TrInput, IN_WALK) || lara.water_status == LWS_WADE))
             item->state_next = STATE_LARA_WALK_BACK;
         else
-            item->state_next = STATE_LARA_STOP;
+            item->state_next = STATE_LARA_IDLE;
 
         if (CHK_ANY(TrInput, IN_LEFT))
         {
@@ -552,7 +552,7 @@ void lara_as_fastturn(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -560,13 +560,13 @@ void lara_as_fastturn(ITEM_INFO* item, COLL_INFO* coll)
     {
         lara.turn_rate = -LARA_FAST_TURN;
         if (CHK_NOP(TrInput, IN_LEFT))
-            item->state_next = STATE_LARA_STOP;
+            item->state_next = STATE_LARA_IDLE;
     }
     else
     {
         lara.turn_rate = LARA_FAST_TURN;
         if (CHK_NOP(TrInput, IN_RIGHT))
-            item->state_next = STATE_LARA_STOP;
+            item->state_next = STATE_LARA_IDLE;
     }
 }
 
@@ -576,13 +576,13 @@ void lara_as_stepright(ITEM_INFO* item, COLL_INFO* coll)
 
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
     if (CHK_NOP(TrInput, IN_RSTEP))
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 
     if (CHK_ANY(TrInput, IN_LEFT))
@@ -601,13 +601,13 @@ void lara_as_stepleft(ITEM_INFO* item, COLL_INFO* coll)
 
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
     if (CHK_NOP(TrInput, IN_LSTEP))
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 
     if (CHK_ANY(TrInput, IN_LEFT))
@@ -633,8 +633,8 @@ void lara_as_backjump(ITEM_INFO* item, COLL_INFO* coll)
     if (item->fallspeed > LARA_FASTFALL_SPEED)
         item->state_next = STATE_LARA_FREEFALL;
     else if (item->state_next == STATE_LARA_RUN_FORWARD)
-        item->state_next = STATE_LARA_STOP;
-    else if ((CHK_ANY(TrInput, IN_FORWARD) || CHK_ANY(TrInput, IN_ROLL)) && item->state_next != STATE_LARA_STOP)
+        item->state_next = STATE_LARA_IDLE;
+    else if ((CHK_ANY(TrInput, IN_FORWARD) || CHK_ANY(TrInput, IN_ROLL)) && item->state_next != STATE_LARA_IDLE)
         item->state_next = STATE_LARA_JUMP_ROLL;
 }
 
@@ -643,7 +643,7 @@ void lara_as_rightjump(ITEM_INFO* item, COLL_INFO* coll)
     lara.look = FALSE;
     if (item->fallspeed > LARA_FASTFALL_SPEED)
         item->state_next = STATE_LARA_FREEFALL;
-    else if (CHK_ANY(TrInput, IN_LEFT) && item->state_next != STATE_LARA_STOP)
+    else if (CHK_ANY(TrInput, IN_LEFT) && item->state_next != STATE_LARA_IDLE)
         item->state_next = STATE_LARA_JUMP_ROLL;
 }
 
@@ -652,7 +652,7 @@ void lara_as_leftjump(ITEM_INFO* item, COLL_INFO* coll)
     lara.look = FALSE;
     if (item->fallspeed > LARA_FASTFALL_SPEED)
         item->state_next = STATE_LARA_FREEFALL;
-    else if (CHK_ANY(TrInput, IN_RIGHT) && item->state_next != STATE_LARA_STOP)
+    else if (CHK_ANY(TrInput, IN_RIGHT) && item->state_next != STATE_LARA_IDLE)
         item->state_next = STATE_LARA_JUMP_ROLL;
 }
 
@@ -722,7 +722,7 @@ void lara_as_ppready(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = FALSE;
     if (CHK_NOP(TrInput, IN_ACTION))
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
 }
 
 void lara_as_pickup(ITEM_INFO* item, COLL_INFO* coll)
@@ -779,7 +779,7 @@ void lara_as_usepuzzle(ITEM_INFO* item, COLL_INFO* coll)
     if (item->current_frame == anims[item->current_anim].frame_end)
     {
         if (item->reserved_1)
-            SetAnimationForItem(item, item->reserved_1, STATE_LARA_MISC_CONTROL);
+            SetAnimationForItemAS(item, item->reserved_1, STATE_LARA_MISC_CONTROL);
     }
 }
 
@@ -818,7 +818,7 @@ void lara_as_wade(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -843,7 +843,7 @@ void lara_as_wade(ITEM_INFO* item, COLL_INFO* coll)
     }
     else
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 }
 
@@ -963,14 +963,14 @@ void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
     }
     else if (CHK_NOP(TrInput, (IN_LEFT | IN_RIGHT)))
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
     }
 }
 
 void lara_as_dashdive(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->state_next != STATE_LARA_DEATH
-    &&  item->state_next != STATE_LARA_STOP
+    &&  item->state_next != STATE_LARA_IDLE
     &&  item->state_next != STATE_LARA_RUN_FORWARD)
     {
         if (item->fallspeed > LARA_FASTFALL_SPEED)
@@ -982,7 +982,7 @@ void lara_as_hang2(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->hit_points <= 0)
     {
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
         return;
     }
 
@@ -1021,6 +1021,8 @@ void lara_as_monkeyswing(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_baddie_push = FALSE;
     lara.torso_y_rot = 0;
     lara.torso_x_rot = 0;
+    camera.target_angle = CAM_A_HANG;
+    camera.target_elevation = CAM_E_HANG;
 
     if (CHK_ANY(TrInput, IN_LOOK))
         LookUpDown();
@@ -1363,7 +1365,7 @@ void lara_as_pulley(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_ACTION) && gen->ocb_bits)
         item->state_next = STATE_LARA_PULLEY;
     else
-        item->state_next = STATE_LARA_STOP;
+        item->state_next = STATE_LARA_IDLE;
 
     if (item->current_anim == ANIMATION_LARA_PULLEY_PULL && item->current_frame == (anims[ANIMATION_LARA_PULLEY_PULL].frame_base + 44))
     {

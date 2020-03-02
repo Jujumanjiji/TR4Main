@@ -35,7 +35,7 @@ void lara_as_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
     }
 }
 
-void lara_as_climbing(ITEM_INFO* item, COLL_INFO* coll)
+void lara_as_climbup(ITEM_INFO* item, COLL_INFO* coll)
 {
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = FALSE;

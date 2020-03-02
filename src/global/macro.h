@@ -10,7 +10,6 @@
 #define OCB_MODE(x) ((x) % 1000)
 #define SQUARE(x) ((x)*(x))
 #define CLAMP(x, a, b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
-#define ABS2(a, b) (a - b) >= 0 ? (a - b) : (b - a)
 #define SIGN(x) ((0 < (x)) - ((x) < 0))
 #define CLAMPADD(x, a, b) ((x)<(a)?((x)+(a)):((x)>(b)?((x)-(b)):0))
 #define ENLARGEDOWN(a, b) if (a < b) b = a

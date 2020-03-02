@@ -180,7 +180,7 @@ void S_Log(LPCSTR LT_flags, LPCSTR content, bool isEntered, ...)
 #endif
 }
 
-void SetAnimationForItem(ITEM_INFO* item, int animation, int state)
+void SetAnimationForItemAS(ITEM_INFO* item, int animation, int state)
 {
     item->current_anim = animation;
     item->current_frame = anims[item->current_anim].frame_base;
@@ -188,7 +188,7 @@ void SetAnimationForItem(ITEM_INFO* item, int animation, int state)
     item->state_next = state;
 }
 
-void SetAnimationForItem(ITEM_INFO* item, int animation, int state, bool needStateNext)
+void SetAnimationForItemASN(ITEM_INFO* item, int animation, int state, bool needStateNext)
 {
     item->current_anim = animation;
     item->current_frame = anims[item->current_anim].frame_base;
@@ -197,7 +197,7 @@ void SetAnimationForItem(ITEM_INFO* item, int animation, int state, bool needSta
         item->state_next = state;
 }
 
-void SetAnimationForItem(ITEM_INFO* item, int animation, int state, int frameNow)
+void SetAnimationForItemASF(ITEM_INFO* item, int animation, int state, int frameNow)
 {
     item->current_anim = animation;
     item->current_frame = anims[item->current_anim].frame_base + frameNow;
@@ -205,7 +205,15 @@ void SetAnimationForItem(ITEM_INFO* item, int animation, int state, int frameNow
     item->state_next = state;
 }
 
-void SetAnimationForItem(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow)
+void SetAnimationForItemASS(ITEM_INFO* item, int animation, int state_current, int state_next)
+{
+    item->current_anim = animation;
+    item->current_frame = anims[item->current_anim].frame_base;
+    item->state_current = state_current;
+    item->state_next = state_next;
+}
+
+void SetAnimationForItemASSF(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow)
 {
     item->current_anim = animation;
     item->current_frame = anims[item->current_anim].frame_base + frameNow;

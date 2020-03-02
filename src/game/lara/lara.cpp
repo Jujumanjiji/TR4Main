@@ -57,7 +57,7 @@ void injector::inject_lara()
     this->inject(legacy_lara_as_fastdive);
     this->inject(legacy_lara_as_waterout);
     this->inject(legacy_lara_as_climbstnc);
-    this->inject(legacy_lara_as_climbing);
+    this->inject(legacy_lara_as_climbup);
     this->inject(legacy_lara_as_climbleft);
     this->inject(legacy_lara_as_climbend);
     this->inject(legacy_lara_as_climbright);
@@ -138,9 +138,19 @@ void injector::inject_lara()
     this->inject(legacy_lara_col_swandive);
     this->inject(legacy_lara_col_fastdive);
     this->inject(legacy_lara_col_climbstnc);
-    this->inject(legacy_lara_col_climbing);
+    this->inject(legacy_lara_col_climbup);
     this->inject(legacy_lara_col_climbleft);
     this->inject(legacy_lara_col_climbright);
     this->inject(legacy_lara_col_climbdown);
+    this->inject(legacy_lara_col_wade);
+    this->inject(legacy_lara_col_waterroll);
+    this->inject(legacy_lara_col_duck);
+    this->inject(legacy_lara_col_dash);
+    this->inject(legacy_lara_col_dashdive);
+    this->inject(legacy_lara_col_hang2);
+    this->inject(legacy_lara_col_monkeyswing);
+    this->inject(legacy_lara_col_monkeyl);
+    this->inject(legacy_lara_col_monkeyr);
+    this->inject(legacy_lara_col_monkey180);
 }
 #endif
