@@ -189,20 +189,20 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_ANY(TrInput, IN_FORWARD))
         fheight = LaraFloorFront(item, item->pos.y_rot, LARA_RAD + 4);
     else if (CHK_ANY(TrInput, IN_BACK))
-        rheight = LaraFloorFront(item, item->pos.y_rot + 32768, LARA_RAD + 4);
+        rheight = LaraFloorFront(item, item->pos.y_rot + 0x8000, LARA_RAD + 4);
 
     if (CHK_ANY(TrInput, IN_LSTEP))
     {
-        short height = LaraFloorFront(item, item->pos.y_rot - 16384, LARA_RAD + 16);
-        short ceiling = LaraCeilingFront(item, item->pos.y_rot - 16384, LARA_RAD + 16, LARA_HITE);
+        short height = LaraFloorFront(item, item->pos.y_rot - 0x4000, LARA_RAD + 16);
+        short ceiling = LaraCeilingFront(item, item->pos.y_rot - 0x4000, LARA_RAD + 16, LARA_HITE);
 
         if (height < 128 && height > -128 && height_type != BIG_SLOPE && ceiling <= 0)
             item->state_next = STATE_LARA_WALK_LEFT;
     }
     else if (CHK_ANY(TrInput, IN_RSTEP))
     {
-        short height = LaraFloorFront(item, item->pos.y_rot + 16384, LARA_RAD + 16);
-        short ceiling = LaraCeilingFront(item, item->pos.y_rot + 16384, LARA_RAD + 16, LARA_HITE);
+        short height = LaraFloorFront(item, item->pos.y_rot + 0x4000, LARA_RAD + 16);
+        short ceiling = LaraCeilingFront(item, item->pos.y_rot + 0x4000, LARA_RAD + 16, LARA_HITE);
 
         if (height < 128 && height > -128 && height_type != BIG_SLOPE && ceiling <= 0)
             item->state_next = STATE_LARA_WALK_RIGHT;

@@ -8,10 +8,12 @@
 #define InitialiseLaraLoad INITIALISE(0x00430EB0)
 #define FlareItemControl CONTROL(0x0042FF90)
 #define DrawFlareItem DRAW(0x0042F7B0)
+#endif
 
 #define LARA_ROUTINES_ARGS ITEM_INFO* item, COLL_INFO* coll
 #define LARA_FUNC(name) extern void name(LARA_ROUTINES_ARGS)
 
+#ifdef DLL_INJECT
 #define LARA_ROUTINESNEW(address, newAddr) _FUNCV(address, (LARA_ROUTINES_ARGS), newAddr)
 #ifdef NEW_ROUTINES
 #define LARA_ROUTINES(address) __FUNCV(address, LARA_ROUTINES_ARGS)
@@ -124,6 +126,8 @@
 #define LARA_SPRINT_TO_ROLL_FRAME 2
 #define LARA_STAND_TO_ROLL_FRAME 2
 #define LARA_HANG_IDLE_FRAME 12
+#define LARA_HANG_IDLE_FRAME_AFTERLEFTRIGHT 21
+
 #define LARA_CLIMB_LNK1 29
 #define LARA_CLIMB_LNK2 58
 
@@ -532,15 +536,19 @@ extern void animate_pistols(int weapon_type);
 #pragma endregion
 
 #pragma region lara_utils
+extern short LaraFloorFront(ITEM_INFO *item, short angle, int distance);
+extern short LaraCeilingFront(ITEM_INFO *item, short angle, int distance, int height);
+extern BOOL LaraHitCeiling(ITEM_INFO* item, COLL_INFO* coll);
+extern BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
-extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
+extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 
 #ifdef DLL_INJECT
-#define LaraFloorFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist)) 0x00421620)
-#define LaraCeilingFront ((short(__cdecl*)(ITEM_INFO *item, short ang, int dist, int h)) 0x00420A80)
-#define LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
-#define LaraHangTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004230E0)
+#define legacy_LaraFloorFront ADDRESS_STRUCT(0x00421620, LaraFloorFront)
+#define legacy_LaraCeilingFront ADDRESS_STRUCT(0x00420A80, LaraCeilingFront)
+#define legacy_LaraHitCeiling ADDRESS_STRUCT(0x00422390, LaraHitCeiling)
+#define legacy_LaraHangTest ADDRESS_STRUCT(0x004230E0, LaraHangTest)
 #define LaraDeflectEdge ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422400)
 #define LaraDeflectEdgeDuck ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421880)
 #define LaraDeflectEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422C50)
@@ -573,6 +581,7 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 #define TestHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
 #define TestMonkeyLeft ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004236B0)
 #define TestMonkeyRight ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004237B0)
+#define legacy_TestHangSwingIn ADDRESS_STRUCT(0x00421FF0, TestHangSwingIn)
 #define TestWall ((BOOL(__cdecl*)(ITEM_INFO* item, int front, int right, int height)) 0x004228D0)
 #define SwimTurn ((void(__cdecl*)(ITEM_INFO* item)) 0x00432690)
 #define MonkeySwingFall ((void(__cdecl*)(ITEM_INFO* item)) 0x00422E50)
@@ -583,6 +592,7 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 #define JumpOffRope ((void(__cdecl*)(ITEM_INFO* item)) 0x00424820)
 #define SetCornerAnim ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle, short flip)) 0x00426C50)
 #define CanLaraHangSideways ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll, short angle)) 0x00426AB0)
+#define GetClimableWalls ((short(__cdecl*)(int x, int y, int z, short roomNumber)) 0x0042D7D0)
 #define SnapLaraToEdgeOfBlock ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x004235B0)
 #define GetLaraCollisionInfo ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00422350)
 #define AnimateLara ((void(__cdecl*)(ITEM_INFO* item)) 0x00430B60)

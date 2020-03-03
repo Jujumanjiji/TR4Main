@@ -1032,7 +1032,7 @@ void lara_col_climbup(ITEM_INFO* item, COLL_INFO* coll)
     if (!result_r || !result_l || CHK_NOP(TrInput, IN_FORWARD))
     {
         item->state_next = STATE_LARA_LADDER_IDLE;
-        if (yshift)
+        if (yshift != 0)
             AnimateLara(item);
         return;
     }
@@ -1041,11 +1041,13 @@ void lara_col_climbup(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->state_next = STATE_LARA_LADDER_IDLE;
         AnimateLara(item);
-        if (abs(ledge_l - ledge_r) <= CLIMB_WIDTH) // shifts must be pretty similar, else to steep a slope to hold
+
+        if (abs(ledge_l - ledge_r) <= CLIMB_WIDTH)
         {
             item->state_next = STATE_LARA_GRABBING;
             item->pos.y += (ledge_r + ledge_l) / 2 - STEP_L;
         }
+        return;
     }
 
     // continue climbing OK
