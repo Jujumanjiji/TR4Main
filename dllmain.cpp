@@ -2,6 +2,7 @@
 #include "utils/utils.h"
 #include "specific/json/scripts.h"
 
+
 #define DLL_EXPORT __declspec(dllexport)
 BOOL DLL_EXPORT CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
@@ -12,13 +13,14 @@ BOOL DLL_EXPORT CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVO
             S_Log("Started New Logger !");
 			create_scripts();
 			load_scripts();
+#ifdef DLL_INJECT
             inject->inject_3dsystem();
             inject->inject_game();
             inject->inject_specific();
+#endif
             break;
         case DLL_PROCESS_DETACH:
             break;
     }
     return TRUE;
 }
-

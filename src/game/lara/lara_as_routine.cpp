@@ -1004,7 +1004,7 @@ void lara_as_hang2(ITEM_INFO* item, COLL_INFO* coll)
         }
 
         camera.target_angle = CAM_A_HANG;
-        camera.target_elevation = CAM_E_HANG;
+        camera.target_elevation = CAM_E_HANG; // TODO: fix it ! (-ANGLE(60))
     }
     else
     {
@@ -1025,6 +1025,7 @@ void lara_as_monkeyswing(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_baddie_push = FALSE;
     lara.torso_y_rot = 0;
     lara.torso_x_rot = 0;
+    // TODO: there is camera.target_angle = 0, camera.target_elevation = ANGLE(10);
 
     if (CHK_ANY(TrInput, IN_LOOK))
         LookUpDown();

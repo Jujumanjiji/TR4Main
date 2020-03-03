@@ -377,6 +377,12 @@ LARA_FUNC(lara_col_all4turn);
 LARA_FUNC(lara_col_crawlb);
 LARA_FUNC(lara_col_crawl2hang);
 LARA_FUNC(lara_col_turnswitch);
+LARA_FUNC(lara_col_polestat);
+LARA_FUNC(lara_col_poleup);
+LARA_FUNC(lara_col_poledown);
+LARA_FUNC(lara_col_duck2);
+LARA_FUNC(lara_col_rope);
+LARA_FUNC(lara_col_ropefwd);
 
 #ifdef DLL_INJECT
 #define legacy_lara_default_col                LARA_ROUTINESNEW(0x00428AD0, lara_default_col)
@@ -439,12 +445,12 @@ LARA_FUNC(lara_col_turnswitch);
 #define legacy_lara_col_crawlb                 LARA_ROUTINESNEW(0x00421AD0, lara_col_crawlb)
 #define legacy_lara_col_crawl2hang             LARA_ROUTINESNEW(0x00421BF0, lara_col_crawl2hang)
 #define legacy_lara_col_turnswitch             LARA_ROUTINESNEW(0x004278D0, lara_col_turnswitch)
-#define legacy_lara_col_polestat               LARA_ROUTINES(0x00423D60)
-#define legacy_lara_col_poleup                 LARA_ROUTINES(0x00423F60)
-#define legacy_lara_col_poledown               LARA_ROUTINES(0x00423FF0)
-#define legacy_lara_col_ropefwd                LARA_ROUTINES(0x00420DB0)
-#define legacy_lara_col_rope1                  LARA_ROUTINES(0x00424270)
-#define legacy_lara_col_rope2                  LARA_ROUTINES(0x00424680)
+#define legacy_lara_col_polestat               LARA_ROUTINESNEW(0x00423D60, lara_col_polestat)
+#define legacy_lara_col_poleup                 LARA_ROUTINESNEW(0x00423F60, lara_col_poleup)
+#define legacy_lara_col_poledown               LARA_ROUTINESNEW(0x00423FF0, lara_col_poledown)
+#define legacy_lara_col_duck2                  LARA_ROUTINESNEW(0x00420DB0, lara_col_duck2)
+#define legacy_lara_col_rope                   LARA_ROUTINESNEW(0x00424270, lara_col_rope)
+#define legacy_lara_col_ropefwd                LARA_ROUTINESNEW(0x00424680, lara_col_ropefwd)
 #endif
 #pragma endregion
 
@@ -572,6 +578,9 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 #define MonkeySwingFall ((void(__cdecl*)(ITEM_INFO* item)) 0x00422E50)
 #define MonkeySwingSnap ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00423660)
 #define FallFromRope ((void(__cdecl*)(ITEM_INFO* item)) 0x004241D0)
+#define UpdateRopeSwing ((void(__cdecl*)(ITEM_INFO* item)) 0x00424320)
+#define ApplyVelocityToRope ((void(__cdecl*)(int node, short angle, short n)) 0x00424150)
+#define JumpOffRope ((void(__cdecl*)(ITEM_INFO* item)) 0x00424820)
 #define SetCornerAnim ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle, short flip)) 0x00426C50)
 #define CanLaraHangSideways ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll, short angle)) 0x00426AB0)
 #define SnapLaraToEdgeOfBlock ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x004235B0)

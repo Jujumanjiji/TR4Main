@@ -155,5 +155,11 @@ void injector::inject_lara()
     this->inject(legacy_lara_col_crawlb);
     this->inject(legacy_lara_col_crawl2hang);
     this->inject(legacy_lara_col_turnswitch);
+    this->inject(legacy_lara_col_polestat);
+    this->inject(legacy_lara_col_poleup);
+    this->inject(legacy_lara_col_poledown);
+    this->inject(legacy_lara_col_duck2);
+    this->inject(legacy_lara_col_rope);
+    this->inject(legacy_lara_col_ropefwd);
 }
 #endif

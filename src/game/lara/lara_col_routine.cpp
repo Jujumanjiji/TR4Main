@@ -1821,3 +1821,284 @@ void lara_col_turnswitch(ITEM_INFO* item, COLL_INFO* coll)
         }
     }
 }
+
+void lara_col_polestat(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_FREEFALL;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (item->current_anim == ANIMATION_LARA_POLE_IDLE)
+    {
+        lara.move_angle = item->pos.y_rot;
+        coll->bad_pos = NO_HEIGHT;
+        coll->bad_neg = -STEPUP_HEIGHT;
+        coll->bad_ceiling = BAD_JUMP_CEILING;
+        coll->facing = item->pos.y_rot;
+        coll->radius = LARA_RAD;
+        coll->slopes_are_walls = TRUE;
+        GetLaraCollisionInfo(item, coll);
+
+        if (CHK_ANY(TrInput, IN_ACTION))
+        {
+            item->state_next = STATE_LARA_POLE_IDLE;
+
+            if (CHK_ANY(TrInput, IN_LEFT))
+                item->state_next = STATE_LARA_POLE_TURN_LEFT;
+            else if (CHK_ANY(TrInput, IN_RIGHT))
+                item->state_next = STATE_LARA_POLE_TURN_RIGHT;
+
+            if (CHK_ANY(TrInput, IN_LOOK))
+                LookUpDown();
+
+            if (CHK_ANY(TrInput, IN_FORWARD))
+            {
+                FLOOR_INFO* floor;
+                int ceiling;
+                short roomNumber;
+
+                roomNumber = item->room_number;
+                floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+                ceiling = GetCeiling(floor, item->pos.x, item->pos.y, item->pos.z);
+                if ((item->pos.y - ceiling) > WALL_L)
+                    item->state_next = STATE_LARA_POLE_UP;
+            }
+            else if (CHK_ANY(TrInput, IN_BACK) && coll->mid_floor > 0)
+            {
+                item->state_next = STATE_LARA_POLE_DOWN;
+                item->reserved_3 = 0;
+            }
+
+            if (CHK_ANY(TrInput, IN_JUMP))
+                item->state_next = STATE_LARA_JUMP_BACK;
+        }
+        else if (coll->mid_floor <= 0)
+        {
+            item->state_next = STATE_LARA_IDLE;
+        }
+        else
+        {
+            item->pos.x -= SINN(item->pos.y_rot) << 8 >> W2V_SHIFT;
+            item->pos.z -= COSN(item->pos.y_rot) << 8 >> W2V_SHIFT;
+            item->state_next = STATE_LARA_FREEFALL;
+        }
+    }
+}
+
+void lara_col_poleup(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_POLE_IDLE;
+        return;
+    }
+
+    FLOOR_INFO* floor;
+    int ceiling;
+    short roomNumber;
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (CHK_ANY(TrInput, IN_LOOK))
+        LookUpDown();
+
+    if (CHK_NOP(TrInput, IN_FORWARD) || CHK_NOP(TrInput, IN_ACTION))
+        item->state_next = STATE_LARA_POLE_IDLE;
+
+    roomNumber = item->room_number;
+    floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+    ceiling = GetCeiling(floor, item->pos.x, item->pos.y, item->pos.z);
+    if ((item->pos.y - ceiling) < WALL_L)
+        item->state_next = STATE_LARA_POLE_IDLE;
+}
+
+void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->hit_points <= 0)
+    {
+        item->state_next = STATE_LARA_POLE_IDLE;
+        return;
+    }
+
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+
+    if (CHK_NOP(TrInput, IN_BACK) || CHK_NOP(TrInput, IN_ACTION))
+        item->state_next = STATE_LARA_POLE_IDLE;
+
+    FLOOR_INFO* floor;
+    int height;
+    short roomNumber;
+
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 0;
+    coll->facing = item->pos.y_rot;
+    coll->radius = LARA_RAD;
+    coll->slopes_are_walls = TRUE;
+    GetLaraCollisionInfo(item, coll);
+
+    if (coll->mid_floor < 0)
+    {
+        roomNumber = item->room_number;
+        floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
+        height = GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
+        item->pos.y = height;
+        item->floor = height;
+        item->reserved_3 = 0;
+        item->state_next = STATE_LARA_POLE_IDLE;
+    }
+
+    if (CHK_ANY(TrInput, IN_LEFT))
+        item->pos.y_rot += STEP_L;
+    else if (CHK_ANY(TrInput, IN_RIGHT))
+        item->pos.y_rot -= STEP_L;
+
+    if (item->current_anim == ANIMATION_LARA_POLE_CLIMB_DOWN_TO_IDLE)
+        item->reserved_3 -= WALL_L;
+    else
+        item->reserved_3 += STEP_L;
+
+    SoundEffect(SFX_LARA_POLE_LOOP, &item->pos, NULL);
+
+    if (item->reserved_3 <= 0x4000)
+    {
+        if (item->reserved_3 < 0)
+            item->reserved_3 = 0;
+        item->pos.y += (item->reserved_3 >> 8);
+    }
+    else
+    {
+        item->reserved_3 = 0x4000;
+        item->pos.y += (item->reserved_3 >> 8);
+    }
+}
+
+void lara_col_duck2(ITEM_INFO* item, COLL_INFO* coll)
+{
+    lara.is_ducked = TRUE;
+    if (CHK_ANY(TrInput, IN_LOOK))
+        LookUpDown();
+
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = STEPUP_HEIGHT;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 0;
+    coll->facing = item->pos.y_rot;
+    coll->slopes_are_walls = TRUE;
+    item->fallspeed = 0;
+    item->gravity_status = FALSE;
+    GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_DUCK_HEIGHT);
+
+    if (LaraFallen(item, coll))
+    {
+        lara.gun_status = LHS_ARMLESS;
+        return;
+    }
+
+    if (TestLaraSlide(item, coll))
+        return;
+
+    if (coll->mid_ceiling < -(LARA_HITE - LARA_DUCK_HEIGHT))
+        lara.keep_ducked = FALSE;
+    else
+        lara.keep_ducked = TRUE;
+
+    ShiftItem(item, coll);
+    if (coll->mid_floor != -NO_HEIGHT)
+        item->pos.y += coll->mid_floor;
+}
+
+void lara_col_rope(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (CHK_NOP(TrInput, IN_ACTION))
+    {
+        FallFromRope(item);
+        return;
+    }
+
+    UpdateRopeSwing(item);
+
+    if (CHK_ANY(TrInput, IN_SPRINT))
+    {
+        lara.rope_dframe = (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 32) << 8;
+        lara.rope_frame = lara.rope_dframe;
+        item->state_next = STATE_LARA_ROPE_SWING;
+    }
+    else if (CHK_ANY(TrInput, IN_FORWARD) && lara.rope_segment > 4)
+    {
+        item->state_next = STATE_LARA_ROPE_CLIMB_UP;
+    }
+    else if (CHK_ANY(TrInput, IN_BACK) && lara.rope_segment < 21)
+    {
+        item->state_next = STATE_LARA_ROPE_CLIMB_DOWN;
+        lara.rope_flag = 0;
+        lara.rope_count = 0;
+    }
+    else if (CHK_ANY(TrInput, IN_LEFT))
+    {
+        item->state_next = STATE_LARA_ROPE_TURN_LEFT;
+    }
+    else if (CHK_ANY(TrInput, IN_RIGHT))
+    {
+        item->state_next = STATE_LARA_ROPE_TURN_RIGHT;
+    }
+}
+
+void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
+{
+    int absX, n;
+
+    camera.target_distance = (WALL_L * 2);
+    UpdateRopeSwing(item);
+
+    if (item->current_anim == ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD)
+    {
+        if (CHK_ANY(TrInput, IN_SPRINT))
+        {
+            int absX = abs(lara.rope_last_x);
+            if (absX < 9000)
+                n = 192 * (9000 - absX) / 9000;
+            else
+                n = 0;
+            ApplyVelocityToRope(lara.rope_segment - 2, item->pos.y_rot + (lara.rope_direction != 0 ? ANGLE(0) : ANGLE(180)), n >> 5);
+        }
+
+        if (lara.rope_frame > lara.rope_dframe)
+        {
+            lara.rope_frame -= (WORD)lara.rope_framerate;
+            if (lara.rope_frame < lara.rope_dframe)
+                lara.rope_frame = lara.rope_dframe;
+        }
+        else
+        {
+            lara.rope_frame += (WORD)lara.rope_framerate;
+            if (lara.rope_frame > lara.rope_dframe)
+                lara.rope_frame = lara.rope_dframe;
+        }
+
+        item->current_frame = lara.rope_frame >> 8;
+
+        if (CHK_NOP(TrInput, IN_SPRINT)
+        && (lara.rope_frame >> 8) == (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 32)
+        &&  lara.rope_maxX_backward < 6750
+        &&  lara.rope_maxX_forward < 6750)
+        {
+            SetAnimationForItemAS(item, ANIMATION_LARA_MONKEY_TO_ROPE_END, STATE_LARA_ROPE_IDLE);
+        }
+
+        if (CHK_ANY(TrInput, IN_JUMP))
+            JumpOffRope(item);
+    }
+    else if (item->current_frame == (anims[ANIMATION_LARA_ROPE_IDLE_TO_SWING].frame_base + 15))
+    {
+        ApplyVelocityToRope(lara.rope_segment, item->pos.y_rot, STEP_L);
+    }
+}
