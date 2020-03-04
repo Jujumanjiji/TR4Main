@@ -1,5 +1,7 @@
 #pragma once
 
+BOUNDS* GetBoundsAccurate(ITEM_INFO* item);
+
 #ifdef DLL_INJECT
 #define SetLaraUnderwaterNodes ((void(__cdecl*)(void)) 0x0041F260)
 #define DrawPhaseGame ((int(__cdecl*)(void)) 0x0044EBA0)
@@ -28,6 +30,6 @@
 #define CalculateObjectLighting ((void(__cdecl*)(ITEM_INFO* item, short* frame)) 0x00450BB0)
 #define CalculateObjectLightingLara ((void(__cdecl*)(void)) 0x00450CB0)
 #define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[2], int *rate)) 0x00450DC0)
-#define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
+///#define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
 #define GetBestFrame ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450EE0)
 #endif

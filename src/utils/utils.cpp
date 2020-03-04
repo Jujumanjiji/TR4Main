@@ -180,6 +180,29 @@ void S_Log(LPCSTR LT_flags, LPCSTR content, bool isEntered, ...)
 #endif
 }
 
+void WriteWorldItemAngle(ITEM_INFO* item)
+{
+    SHORT angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+    switch (angle)
+    {
+        case NORTH:
+            S_LogValue("this objNumber: %d, are oriented in NORTH", item->object_number);
+            break;
+        case EAST:
+            S_LogValue("this objNumber: %d, are oriented in EAST", item->object_number);
+            break;
+        case SOUTH:
+            S_LogValue("this objNumber: %d, are oriented in SOUTH", item->object_number);
+            break;
+        case WEST:
+            S_LogValue("this objNumber: %d, are oriented in WEST", item->object_number);
+            break;
+        default:
+            S_LogValue("this objNumber: %d, are oriented in UNKNOWN value", item->object_number);
+            break;
+    }
+}
+
 void SetAnimationForItemAS(ITEM_INFO* item, int animation, int state)
 {
     item->current_anim = animation;
@@ -322,9 +345,9 @@ void SpawnPickup(ITEM_INFO *item)
         pickup->pos.x = pos.x;
         pickup->pos.z = pos.z;
         pickup->pos.y = GetHeight(floor, pickup->pos.x, item->pos.y, pickup->pos.z);
-        pickup->pos.y -= GetBoundsAccurate(pickup)[3];
+        pickup->pos.y -= GetBoundsAccurate(pickup)->maxY;
         
-        if (pickup->object_number == BIGMEDI_ITEM)
+        if (pickup->object_number == BIGMEDI_ITEM) // bigmedi item is not oriented correctly.
             pickup->pos.y_rot = item->pos.y_rot + 0x8000;
         else
             pickup->pos.y_rot = item->pos.y_rot;

@@ -382,12 +382,14 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
             }
             
             int leftTest = LaraHangLeftCornerTest(item, coll);
-            if (leftTest != 0)
+            switch (leftTest)
             {
-                if (leftTest <= 0)
+                case INNER:
                     item->state_next = STATE_LARA_CLIMB_CORNER_LEFT_INNER;
-                else
+                    break;
+                case OUTER:
                     item->state_next = STATE_LARA_CLIMB_CORNER_LEFT_OUTER;
+                    break;
             }
         }
         else if (CHK_ANY(TrInput, (IN_RIGHT | IN_RSTEP)))
@@ -398,13 +400,18 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
                 return;
             }
 
-            int rightTest = LaraHangRightCornerTest(item, coll);
-            if (rightTest != 0)
+            HANG_STRUCT right_test = LaraHangRightCornerTest(item, coll);
+            if (right_test.type != NULL)
             {
-                if (rightTest <= 0)
-                    item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_INNER;
-                else
-                    item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_OUTER;
+                switch (right_test.type)
+                {
+                    case INNER:
+                        item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_INNER;
+                        break;
+                    case OUTER:
+                        item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_OUTER;
+                        break;
+                }
             }
         }
     }
@@ -1675,7 +1682,7 @@ void lara_col_crawl(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_col_hangturn(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (CHK_NOP(TrInput, IN_ACTION) || lara.can_monkey_swing)
+    if (CHK_NOP(TrInput, IN_ACTION) || !lara.can_monkey_swing)
     {
         MonkeySwingFall(item);
         return;
@@ -1745,8 +1752,9 @@ void lara_col_crawlb(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
 {
+    BOUNDS* bounds;
     int edge, edge_catch;
-    short angle, *bounds;
+    short angle;
 
     camera.target_angle = 0;
     camera.target_elevation = -10920;
@@ -1788,13 +1796,13 @@ void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
         bounds = GetBoundsAccurate(item);
         if (edge_catch > 0)
         {
-            item->pos.y += coll->front_floor - bounds[2];
+            item->pos.y += coll->front_floor - bounds->minY;
             item->pos.x += coll->shift.x;
             item->pos.z += coll->shift.z;
         }
         else
         {
-            item->pos.y = edge - bounds[2];
+            item->pos.y = edge - bounds->minY;
         }
 
         item->pos.y_rot = angle;

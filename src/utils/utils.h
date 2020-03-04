@@ -11,6 +11,7 @@ extern void S_LogValue(LPCSTR content, ...);
 extern void S_Log(LPCSTR content, ...);
 extern void S_Log(LPCSTR content, bool isEntered, ...);
 extern void S_Log(LPCSTR funcName, LPCSTR content, bool isEntered, ...);
+extern void WriteWorldItemAngle(ITEM_INFO* item);
 extern void SetAnimationForItemAS(ITEM_INFO* item, int animation, int state);
 extern void SetAnimationForItemASN(ITEM_INFO* item, int animation, int state, bool needStateNext);
 extern void SetAnimationForItemASF(ITEM_INFO* item, int animation, int state, int frameNow);

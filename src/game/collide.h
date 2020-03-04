@@ -9,4 +9,7 @@ extern void ShiftItem(ITEM_INFO* item, COLL_INFO* coll);
 #define ObjectCollision COLLISION(0x004475F0)
 #define MovBlockCollision COLLISION(0x00448840)
 #define CogCollision COLLISION(0x00448CC0)
+#define LaraBaddieCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004471B0)
+
+#define UpdateLaraRoom ((void(__cdecl*)(ITEM_INFO* item, int height)) 0x00446FB0)
 #endif

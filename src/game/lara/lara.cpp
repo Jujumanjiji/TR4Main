@@ -5,6 +5,10 @@
 #ifdef DLL_INJECT
 void injector::inject_lara()
 {
+    /// LARA ROUTINES:
+    this->inject(ADDRESS_STRUCT(0x00420B10, LaraAboveWater));
+
+
     /// CONTROL ROUTINES:
     this->inject(legacy_lara_as_walk);
     this->inject(legacy_lara_as_run);

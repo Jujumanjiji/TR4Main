@@ -68,30 +68,33 @@ BOOL LaraHitCeiling(ITEM_INFO* item, COLL_INFO* coll)
 
 BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
 {
-    SHORT angle;
-    BOOL hit;
-    int xColl, zColl;
-    short* bounds;
+    bool hit;
+    bool isLeftRightBlocked;
+    int xColl = 0, zColl = 0;
+    BOUNDS* bounds;
     short coll_dist;
-    short front, back, ceiling;
+    short front, ceiling;
     short old_coll_front, coll_front;
     short old_move_angle;
 
-    hit = FALSE;
-    coll_dist = 0;
+    hit = false;
     old_move_angle = lara.move_angle;
+
+    // always 0 for coll_dist ?
     if (lara.move_angle == (item->pos.y_rot - 0x4000))
         coll_dist = -LARA_RAD;
     else if (lara.move_angle == (item->pos.y_rot + 0x4000))
         coll_dist = LARA_RAD;
+    else
+        coll_dist = 0;
 
     front = LaraFloorFront(item, lara.move_angle, LARA_RAD);
-    if (front < (LARA_RAD * 2))
-        hit = TRUE;
+    if (front < 200)
+        hit = true;
 
     ceiling = LaraCeilingFront(item, lara.move_angle, LARA_RAD, 0);
-    angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
-
+    SHORT angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+    // allow lara to grab (else it's a loop grab/ungrab)
     switch (angle)
     {
         case NORTH:
@@ -131,21 +134,16 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
         
         if (!LaraTestHangOnClimbWall(item, coll))
         {
-            if (item->current_anim != ANIMATION_LARA_LADDER_TO_HANDS_LEFT
-            &&  item->current_anim != ANIMATION_LARA_LADDER_TO_HANDS_RIGHT)
-            {
-                SnapLaraToEdgeOfBlock(item, coll, angle);
-                SetAnimationForItemASF(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, LARA_HANG_IDLE_FRAME_AFTERLEFTRIGHT);
-            }
+            if (item->current_anim == ANIMATION_LARA_LADDER_TO_HANDS_LEFT || item->current_anim == ANIMATION_LARA_LADDER_TO_HANDS_RIGHT)
+                return TRUE;
+            SnapLaraToEdgeOfBlock(item, coll, angle);
+            item->pos.y = coll->old.y;
+            SetAnimationForItemASF(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, LARA_HANG_IDLE_FRAME_AFTERLEFTRIGHT);
             return TRUE;
         }
-
-        if (item->current_anim == ANIMATION_LARA_HANG_IDLE
-        &&  item->current_frame == (anims[ANIMATION_LARA_HANG_IDLE].frame_base + LARA_HANG_IDLE_FRAME_AFTERLEFTRIGHT)
-        &&  LaraTestClimbStance(item, coll))
-        {
+        
+        if (item->current_anim == ANIMATION_LARA_HANG_IDLE && item->current_frame == (anims[ANIMATION_LARA_HANG_IDLE].frame_base + LARA_HANG_IDLE_FRAME_AFTERLEFTRIGHT) && LaraTestClimbStance(item, coll))
             item->state_next = STATE_LARA_LADDER_IDLE;
-        }
 
         return FALSE;
     }
@@ -153,9 +151,8 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
     if (CHK_NOP(TrInput, IN_ACTION) || item->hit_points <= 0 || coll->front_floor > 0)
     {
         SetAnimationForItemASF(item, ANIMATION_LARA_TRY_HANG_VERTICAL, STATE_LARA_JUMP_UP, 9);
-        bounds = GetBoundsAccurate(item);
         item->pos.x += coll->shift.x;
-        item->pos.y += bounds[3];
+        item->pos.y = coll->old.y + (STEP_L / 2); // more accurate than bounds collision (STEP_L/2 fix the height when action released!)
         item->pos.z += coll->shift.z;
         item->speed = 2;
         item->fallspeed = 1;
@@ -167,14 +164,15 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
     if (hit && front > 0)
     {
         if (coll_dist > 0 && coll->left_floor > coll->right_floor)
-            hit = FALSE;
+            hit = false;
         else if (coll_dist < 0 && coll->left_floor < coll->right_floor)
-            hit = FALSE;
+            hit = false;
     }
 
     bounds = GetBoundsAccurate(item);
     old_coll_front = coll->front_floor;
-    coll_front = coll->front_floor - bounds[2];
+    coll_front = coll->front_floor - bounds->minY;
+    isLeftRightBlocked = false;
     switch (angle)
     {
         case NORTH:
@@ -196,18 +194,39 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     lara.move_angle = old_move_angle;
-    if (GetClimableWalls(xColl, item->pos.y, zColl, item->room_number) & (STEP_L << angle))
+    if (GetClimbableWalls(xColl, item->pos.y, zColl, item->room_number) & (STEP_L << angle))
     {
         if (!LaraTestHangOnClimbWall(item, coll))
             coll_front = 0;
     }
     else
     {
-
+        if (abs(coll->left_floor2 - coll->right_floor2) >= SLOPE_DIF)
+        {
+            if ((coll_dist < 0 || coll_dist > 0)
+            && ((coll->left_floor2  != coll->front_floor)
+            ||  (coll->right_floor2 != coll->front_floor)))
+            {
+                isLeftRightBlocked = true;
+            }
+            else if (coll_dist == 0 // this "else if" not exist ! so i added it.
+            &&     ((coll->left_floor2 != coll->front_floor)
+            ||     (coll->right_floor2 != coll->front_floor)))
+            {
+                isLeftRightBlocked = true;
+            }
+        }
     }
 
     coll->front_floor = old_coll_front;
-    if (coll->mid_ceiling >= 0 || coll->coll_type != COLL_FRONT || hit || coll->hit_static || ceiling > -950 || coll_front < -60 || coll_front > 60)
+    if (isLeftRightBlocked
+    ||  coll->mid_ceiling >= 0
+    ||  coll->coll_type != COLL_FRONT
+    ||  hit
+    ||  coll->hit_static
+    ||  ceiling > -950
+    ||  coll_front < -SLOPE_DIF
+    ||  coll_front > SLOPE_DIF)
     {
         item->pos.x = coll->old.x;
         item->pos.y = coll->old.y;
@@ -216,30 +235,417 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
             SetAnimationForItemASF(item, ANIMATION_LARA_HANG_IDLE, STATE_LARA_HANG, LARA_HANG_IDLE_FRAME_AFTERLEFTRIGHT);
         return TRUE;
     }
-    else
+
+    switch (angle)
     {
-        switch (angle)
-        {
-            case NORTH:
-            case SOUTH:
-                item->pos.z += coll->shift.z;
-                item->pos.y += coll_front;
-                break;
-            case EAST:
-            case WEST:
-                item->pos.x += coll->shift.x;
-                item->pos.y += coll_front;
-                break;
-        }
+        case NORTH:
+        case SOUTH:
+            item->pos.z += coll->shift.z;
+            item->pos.y += coll_front;
+            break;
+        case EAST:
+        case WEST:
+            item->pos.x += coll->shift.x;
+            item->pos.y += coll_front;
+            break;
+        default:// just in case since it's on default in idapro...
+            item->pos.y += coll_front;
+            break;
+    }
+
+    // return false by default there and not in switch !
+    return FALSE;
+}
+
+BOOL LaraDeflectEdge(ITEM_INFO* item, COLL_INFO* coll)
+{
+    switch (coll->coll_type)
+    {
+    case COLL_FRONT:
+    case COLL_TOPFRONT:
+        ShiftItem(item, coll);
+        item->state_next = STATE_LARA_IDLE;
+        item->speed = 0;
+        item->gravity_status = FALSE;
+        return TRUE;
+
+    case COLL_LEFT:
+        ShiftItem(item, coll);
+        item->pos.y_rot += ANGLE(5);
+        break;
+    case COLL_RIGHT:
+        ShiftItem(item, coll);
+        item->pos.y_rot -= ANGLE(5);
+        break;
     }
 
     return FALSE;
 }
 
+BOOL LaraDeflectEdgeDuck(ITEM_INFO* item, COLL_INFO* coll)
+{
+    switch (coll->coll_type)
+    {
+    case COLL_FRONT:
+    case COLL_TOPFRONT:
+        ShiftItem(item, coll);
+        item->speed = 0;
+        item->gravity_status = FALSE;
+        return TRUE;
+
+    case COLL_LEFT:
+        ShiftItem(item, coll);
+        item->pos.y_rot += ANGLE(2);
+        break;
+    case COLL_RIGHT:
+        ShiftItem(item, coll);
+        item->pos.y_rot -= ANGLE(2);
+        break;
+    }
+
+    return FALSE;
+}
+
+void LaraDeflectEdgeJump(ITEM_INFO* item, COLL_INFO* coll)
+{
+    ShiftItem(item, coll);
+    switch (coll->coll_type)
+    {
+    case COLL_FRONT:
+    case COLL_TOPFRONT:
+        if (!lara.climb_status || item->speed != 2)
+        {
+            if (coll->mid_floor <= (STEP_L / 2))
+                SetAnimationForItemAS(item, ANIMATION_LARA_LANDING_LIGHT, STATE_LARA_GRAB_TO_FALL);
+            else
+                SetAnimationForItemASF(item, ANIMATION_LARA_SMASH_JUMP, STATE_LARA_FREEFALL, 1);
+            item->speed /= 4;
+            lara.move_angle = item->pos.y_rot - 0x8000;
+            if (item->fallspeed <= 0)
+                item->fallspeed = 1;
+        }
+        break;
+
+    case COLL_LEFT:
+        item->pos.y_rot += ANGLE(5);
+        break;
+    case COLL_RIGHT:
+        item->pos.y_rot -= ANGLE(5);
+        break;
+
+    case COLL_TOP:
+        if (item->fallspeed <= 0)
+            item->fallspeed = 1;
+        break;
+
+    case COLL_CLAMP:
+        item->pos.x -= LARA_RAD * SIN(coll->facing) >> W2V_SHIFT;
+        item->pos.z -= LARA_RAD * COS(coll->facing) >> W2V_SHIFT;
+        item->speed = 0;
+        coll->mid_floor = 0;
+        if (item->fallspeed <= 0)
+            item->fallspeed = 16;
+        break;
+    }
+}
+
+BOOL LaraFallen(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (lara.water_status != LWS_WADE && coll->mid_floor > STEPUP_HEIGHT)
+    {
+        SetAnimationForItemAS(item, ANIMATION_LARA_FREE_FALL_FORWARD, STATE_LARA_JUMP_FORWARD);
+        item->fallspeed = 0;
+        item->gravity_status = TRUE;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+int IsValidHangPos(ITEM_INFO* item, COLL_INFO* coll)
+{
+    SHORT angle;
+    short front;
+
+    front = LaraFloorFront(item, lara.move_angle, LARA_RAD);
+    if (front < 200)
+        return FALSE;
+
+    angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+    // allow lara to grab (else it's a loop grab/ungrab)
+    switch (angle)
+    {
+        case NORTH:
+            item->pos.z += 4;
+            break;
+        case EAST:
+            item->pos.x += 4;
+            break;
+        case SOUTH:
+            item->pos.z -= 4;
+            break;
+        case WEST:
+            item->pos.x -= 4;
+            break;
+    }
+
+    lara.move_angle = item->pos.y_rot;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -(STEP_L * 2);
+    coll->bad_ceiling = 0;
+    GetLaraCollisionInfo(item, coll);
+
+    if (coll->mid_ceiling >= 0 || coll->coll_type != COLL_FRONT || coll->hit_static)
+        return FALSE;
+
+    if (abs(coll->front_floor - coll->right_floor2) >= SLOPE_DIF)
+        return FALSE;
+    else
+        return TRUE;
+}
+
+/*
+
+LaraHangRightCornerTest sample:
+    BOOL isValid;
+    SHORT angle;
+    int old_x, old_z;
+    int corner_x, corner_z;
+    int old_front_floor;
+    short front;
+    short old_angle;
+
+    WriteWorldItemAngle(item);
+
+    old_front_floor = coll->front_floor;
+    old_x = item->pos.x;
+    old_z = item->pos.z;
+    old_angle = item->pos.y_rot;
+    angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+    if (angle && angle != 2)
+    {
+        corner_x = ((item->pos.x & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1))) + WALL_L;
+        corner_z = ((item->pos.z & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1))) + WALL_L;
+    }
+    else
+    {
+        corner_x = (item->pos.x ^ (item->pos.x ^ item->pos.z)) & (WALL_L - 1);
+        corner_z = (item->pos.z ^ (item->pos.x ^ item->pos.z)) & (WALL_L - 1);
+    }
+
+    item->pos.x = corner_x;
+    item->pos.z = corner_z;
+    lara.corner_x = corner_x;
+    lara.corner_z = corner_z;
+    item->pos.y_rot += 0x4000;
+
+    isValid = -IsValidHangPos(item, coll);
+    if (isValid)
+    {
+        if (lara.climb_status)
+        {
+            if (GetClimbableWalls(corner_x, item->pos.y, corner_z, item->room_number) & LeftClimbTab[angle])
+            {
+                lara.move_angle = old_angle;
+                item->pos.x = old_x;
+                item->pos.z = old_z;
+                item->pos.y_rot = old_angle;
+                return isValid;
+            }
+        }
+        else
+        {
+            if (abs(old_front_floor - coll->front_floor) <= SLOPE_DIF)
+            {
+                lara.move_angle = old_angle;
+                item->pos.x = old_x;
+                item->pos.z = old_z;
+                item->pos.y_rot = old_angle;
+                return isValid;
+            }
+        }
+    }
+    else
+    {
+        lara.move_angle = old_angle;
+        item->pos.x = old_x;
+        item->pos.z = old_z;
+        item->pos.y_rot = old_angle;
+    }
+
+    if (LaraFloorFront(item, old_angle + 0x4000, LARA_RAD + 16) < 0)
+        return FALSE;
+
+    switch (angle)
+    {
+        case NORTH:
+            corner_x = (((item->pos.x + WALL_L) & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1))) + WALL_L;
+            corner_z = (((item->pos.z + WALL_L) & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1))) + WALL_L;
+            break;
+        case SOUTH:
+            corner_x = (((item->pos.x - WALL_L) & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1))) + WALL_L;
+            corner_z = (((item->pos.z - WALL_L) & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1))) + WALL_L;
+            break;
+        case EAST:
+            corner_x = ((item->pos.x ^ item->pos.z) & (WALL_L - 1)) ^ (item->pos.z + WALL_L);
+            corner_z = ((item->pos.z ^ (item->pos.x ^ item->pos.z)) & (WALL_L - 1)) - WALL_L;
+            break;
+        case WEST:
+            corner_x = ((item->pos.x ^ (item->pos.x ^ item->pos.z)) & (WALL_L - 1)) - WALL_L;
+            corner_z = ((item->pos.x ^ item->pos.z) & (WALL_L - 1)) ^ (item->pos.z + WALL_L);
+            break;
+    }
+
+    item->pos.x = corner_x;
+    item->pos.z = corner_z;
+    lara.corner_x = corner_x;
+    lara.corner_z = corner_z;
+    item->pos.y_rot -= 0x4000;
+    isValid = IsValidHangPos(item, coll);
+    if (!isValid)
+    {
+        lara.move_angle = old_angle;
+        item->pos.x = old_x;
+        item->pos.z = old_z;
+        item->pos.y_rot = old_angle;
+        return FALSE;
+    }
+    else
+    {
+        lara.move_angle = old_angle;
+        item->pos.x = old_x;
+        item->pos.z = old_z;
+        item->pos.y_rot = old_angle;
+    }
+
+    if (lara.climb_status)
+    {
+        if (GetClimbableWalls(corner_x, item->pos.y, corner_z, item->room_number) & RightClimbTab[angle])
+            return isValid;
+
+        front = LaraFloorFront(item, item->pos.y_rot, LARA_RAD + 16);
+        if (abs(coll->front_floor - front) > SLOPE_DIF)
+            return FALSE;
+
+        if (front < -(STEP_L * 3))
+            return FALSE;
+    }
+    else
+    {
+        if (abs(old_front_floor - coll->front_floor) > SLOPE_DIF)
+            return FALSE;
+
+        switch (angle)
+        {
+            case NORTH:
+                if ((old_x & (WALL_L - 1)) < (STEP_L * 2))
+                    isValid = FALSE;
+                break;
+            case EAST:
+                if ((old_z & (WALL_L - 1)) > (STEP_L * 2))
+                    isValid = FALSE;
+                break;
+            case SOUTH:
+                if ((old_x & (WALL_L - 1)) > (STEP_L * 2))
+                    isValid = FALSE;
+                break;
+            case WEST:
+                if ((old_z & (WALL_L - 1)) < (STEP_L * 2))
+                    isValid = FALSE;
+                break;
+        }
+    }
+
+    return isValid;
+    */
+
+HANG_STRUCT LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll)
+{
+    HANG_STRUCT hang_right;
+    hang_right.type = NULL;
+    hang_right.dest_x = 0;
+    hang_right.dest_z = 0;
+    hang_right.dest_angle = 0;
+
+    if (item->current_anim != ANIMATION_LARA_HANG_IDLE)
+        return hang_right;
+    if (coll->hit_static)
+        return hang_right;
+
+    SHORT angle;
+    int corner_x, corner_z;
+    int old_x, old_z;
+    int old_angle;
+    int is_valid;
+    short front;
+    WriteWorldItemAngle(item);
+
+    old_x = item->pos.x;
+    old_z = item->pos.z;
+    old_angle = item->pos.y_rot;
+    angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+
+    switch (angle)
+    {
+        case NORTH:
+            // interior
+            corner_x = coll->old.x + STEP_L;
+            corner_z = coll->old.z + STEP_L;
+            break;
+        case SOUTH:
+            // interior
+            corner_x = (coll->old.x - STEP_L) + (STEP_L / 3);
+            corner_z = coll->old.z - STEP_L;
+            break;
+        case EAST:
+            // interior
+            corner_x = coll->old.x + STEP_L;
+            corner_z = coll->old.z - STEP_L;
+            break;
+        case WEST:
+            // interior
+            corner_x = coll->old.x - STEP_L;
+            corner_z = (coll->old.z + STEP_L) - (STEP_L / 3);
+            break;
+    }
+
+    is_valid = IsValidHangPos(item, coll);
+    S_LogValue("IsValidHangPosRight: %d, IsValidHangPosRightNeg: %d", is_valid, -is_valid);
+    S_LogValue("coll->front_floor: %d, coll->right_floor: %d,  coll->right_floor2: %d, coll->right_ceiling: %d, coll->right_ceiling2: %d, coll->right_type: %d, coll->right_type2: %d", coll->front_floor, coll->right_floor, coll->right_floor2, coll->right_ceiling, coll->right_ceiling2, coll->right_type, coll->right_type2);
+
+    if (is_valid)
+    {
+        hang_right.type = OUTER;
+        hang_right.dest_x = corner_x;
+        hang_right.dest_z = corner_z;
+        hang_right.dest_angle = 0x4000;
+        return hang_right;
+    }
+    else
+    {
+        hang_right.type = NULL; // no type of hanging found !
+        return hang_right;
+    }
+}
+
+int LaraHangLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->current_anim != ANIMATION_LARA_HANG_IDLE)
+        return FALSE;
+    if (coll->hit_static)
+        return FALSE;
+
+    int result = IsValidHangPos(item, coll);
+
+    S_LogValue("IsValidHangPosLeft: %d; IsValidHangPosLeft(negative ?): %d", result, -result);
+    return FALSE;
+}
+
 BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
 {
+    BOUNDS* bounds;
     int edge_catch, edge;
-    short *bounds, angle;
+    short angle;
 
     if (CHK_NOP(TrInput, IN_ACTION) || lara.gun_status == LHS_HANDBUSY || coll->hit_static)
         return FALSE;
@@ -287,7 +693,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     bounds = GetBoundsAccurate(item);
     if (edge_catch > 0)
     {
-        item->pos.y += (coll->front_floor - bounds[2]); // catch edge
+        item->pos.y += coll->front_floor - bounds->minY; // catch edge
 
         SHORT rotationAngle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
         switch (rotationAngle)
@@ -312,7 +718,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     }
     else
     {
-        item->pos.y = edge - bounds[2];
+        item->pos.y = edge - bounds->minY;
     }
 
     item->pos.y_rot = angle;
@@ -325,8 +731,9 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
 
 BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
 {
+    BOUNDS* bounds;
     int edge, edge_catch;
-    short angle, *bounds;
+    short angle;
 
     if (CHK_NOP(TrInput, IN_ACTION) || lara.gun_status != LHS_ARMLESS || coll->hit_static)
         return FALSE;
@@ -363,9 +770,9 @@ BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
 
     bounds = GetBoundsAccurate(item);
     if (edge_catch > 0)
-        item->pos.y += coll->front_floor - bounds[2];
+        item->pos.y += coll->front_floor - bounds->minY;
     else
-        item->pos.y = edge - bounds[2];
+        item->pos.y = edge - bounds->minY;
 
     item->pos.x += coll->shift.x;
     item->pos.z += coll->shift.z;
@@ -423,13 +830,18 @@ BOOL TestHangSwingIn(ITEM_INFO* item, short angle)
 #ifdef DLL_INJECT
 void injector::inject_lara_utils()
 {
-    this->inject(legacy_LaraFloorFront);
-    this->inject(legacy_LaraCeilingFront);
-    this->inject(legacy_LaraHitCeiling);
-    this->inject(legacy_LaraHangTest);
+    this->inject(ADDRESS_STRUCT(0x00421620, LaraFloorFront));
+    this->inject(ADDRESS_STRUCT(0x00420A80, LaraCeilingFront));
+    this->inject(ADDRESS_STRUCT(0x00422390, LaraHitCeiling));
+    this->inject(ADDRESS_STRUCT(0x004230E0, LaraHangTest));
+    this->inject(ADDRESS_STRUCT(0x00422400, LaraDeflectEdge));
+    this->inject(ADDRESS_STRUCT(0x00421880, LaraDeflectEdgeDuck));
+    this->inject(ADDRESS_STRUCT(0x00422C50, LaraDeflectEdgeJump));
+    this->inject(ADDRESS_STRUCT(0x00420FE0, LaraFallen));
+    this->inject(ADDRESS_STRUCT(0x00426600, IsValidHangPos));
+    this->inject(ADDRESS_STRUCT(0x00426230, LaraHangRightCornerTest));
+    this->inject(ADDRESS_STRUCT(0x004266E0, LaraHangLeftCornerTest));
 
-
-
-    this->inject(legacy_TestHangSwingIn);
+    this->inject(ADDRESS_STRUCT(0x00421FF0, TestHangSwingIn));
 }
 #endif

@@ -27,6 +27,50 @@ struct LEVEL_DATA
 };
 */
 
+struct HANG_STRUCT
+{
+    int type;
+    int dest_x;
+    int dest_z;
+    short dest_angle;
+};
+
+struct BOUNDS
+{
+    short minX; /// 0
+    short maxX; /// 2
+    short minY; /// 4
+    short maxY; /// 6
+    short minZ; /// 8
+    short maxZ; /// 10
+};
+
+struct BOUNDS_ABS
+{
+    int minX;
+    int maxX;
+    int minY;
+    int maxY;
+    int minZ;
+    int maxZ;
+};
+
+struct BOUNDS_ORIENT
+{
+    short minOV; // orientation vertical
+    short maxOV; // orientation vertical
+    short minOH; // orientation horizontal
+    short maxOH; // orientation horizontal
+    short minOR; // orientation rotation
+    short maxOR; // orientation rotation
+};
+
+struct BOUNDARY
+{
+    BOUNDS boundXYZ;
+    BOUNDS_ORIENT boundOrient;
+};
+
 struct WEAPON_INFO
 {
     short lock_angle[4];

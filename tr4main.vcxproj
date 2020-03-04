@@ -103,6 +103,7 @@
     <ClCompile Include="src\game\lara\lara1gun.cpp" />
     <ClCompile Include="src\game\lara\lara2gun.cpp" />
     <ClCompile Include="src\game\lara\laraclimb.cpp" />
+    <ClCompile Include="src\game\lara\laracontrol.cpp" />
     <ClCompile Include="src\game\lara\larafire.cpp" />
     <ClCompile Include="src\game\lara\laraflare.cpp" />
     <ClCompile Include="src\game\lara\laramisc.cpp" />

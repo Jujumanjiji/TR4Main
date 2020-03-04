@@ -65,9 +65,6 @@
     <ClCompile Include="src\specific\setup_entity.cpp">
       <Filter>src\specific</Filter>
     </ClCompile>
-    <ClCompile Include="src\global\injector.cpp">
-      <Filter>src\global</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\utils.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
@@ -224,6 +221,12 @@
     <ClCompile Include="src\game\lara\lara_as_routine.cpp">
       <Filter>src\game\lara</Filter>
     </ClCompile>
+    <ClCompile Include="src\global\injector.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\lara\laracontrol.cpp">
+      <Filter>src\game\lara</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -245,9 +248,6 @@
       <Filter>src\global</Filter>
     </ClInclude>
     <ClInclude Include="src\global\enums.h">
-      <Filter>src\global</Filter>
-    </ClInclude>
-    <ClInclude Include="src\global\injector.h">
       <Filter>src\global</Filter>
     </ClInclude>
     <ClInclude Include="src\global\macro.h">
@@ -387,6 +387,9 @@
     </ClInclude>
     <ClInclude Include="src\game\lara\lara.h">
       <Filter>src\game\lara</Filter>
+    </ClInclude>
+    <ClInclude Include="src\global\injector.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

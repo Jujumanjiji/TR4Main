@@ -819,6 +819,47 @@ void gar_RotYXZsuperpack(short** pprot, int skip)
     (*pprot) += 1;
 }*/
 
+
+/*
+        S_LogValue("frame[0]: %d", boundXYZ[0]);
+        S_LogValue("frame[1]: %d", boundXYZ[1]);
+        S_LogValue("frame[2]: %d", boundXYZ[2]);
+        S_LogValue("frame[3]: %d", boundXYZ[3]);
+        S_LogValue("frame[4]: %d", boundXYZ[4]);
+        S_LogValue("frame[5]: %d", boundXYZ[5]);
+        // TODO: normally it's a for() statement (i = 6; i > 0; i--)
+        result = *frame1 - *frame0;
+        ++frame0;
+        ++frame1;
+        frame[0] = frame0;
+        frame[1] = frame1;
+        bounds = *frame0 + (UINT)((frac * result) / rate); // working 1/2 time !
+    */
+///BOUNDS accurate_bounds;
+BOUNDS* GetBoundsAccurate(ITEM_INFO* item)
+{
+    BOUNDS* bounds;
+    int frac, rate;
+    ///short result;
+    BOUNDS* boundXYZ;
+    ///BOUNDS_ORIENT* boundOrient;
+    short* frame[2];
+    ///int i;
+
+    frac = GetFrames(item, frame, &rate);
+    if (!frac)
+        return (BOUNDS*)frame[0]; // frame[0]->boundXYZ (return BOUNDS)
+    boundXYZ = (BOUNDS*)frame[0]; // bound (min/max xyz)
+    bounds = &accurate_bounds; // maybe more accurate like this ?
+    bounds->minX = boundXYZ->minX;
+    bounds->maxX = boundXYZ->maxX;
+    bounds->minY = boundXYZ->minY;
+    bounds->maxY = boundXYZ->maxY;
+    bounds->minZ = boundXYZ->minZ;
+    bounds->maxZ = boundXYZ->maxZ;
+    return &accurate_bounds;
+}
+
 #ifdef DLL_INJECT
 void injector::inject_draw()
 {
@@ -848,7 +889,7 @@ void injector::inject_draw()
     //this->inject(0x00450BB0, CalculateObjectLighting);
     //this->inject(0x00450CB0, CalculateObjectLightingLara);
     //this->inject(0x00450DC0, GetFrames);
-    //this->inject(0x00450E60, GetBoundsAccurate);
+    this->inject(ADDRESS_STRUCT(0x00450E60, GetBoundsAccurate));
     //this->inject(0x00450EE0, GetBestFrame);
 }
 #endif
