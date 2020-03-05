@@ -36,7 +36,7 @@ void SetupEntity::motor_bike()
     if (obj->loaded)
     {
         obj->initialise = InitialiseMotorBike;
-        obj->control = MotorBikeControl;
+        obj->control = NULL;
         obj->collision = MotorBikeCollision;
         obj->draw_routine_extra = MotorBikeEffect;
         obj->save_anim = true;
@@ -55,7 +55,7 @@ void SetupEntity::jeep()
     if (obj->loaded)
     {
         obj->initialise = InitialiseJeep;
-        obj->control = JeepControl;
+        obj->control = NULL;
         obj->collision = JeepCollision;
         obj->draw_routine_extra = DrawJeepEffect;
         obj->save_anim = true;

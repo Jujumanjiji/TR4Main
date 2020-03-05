@@ -68,9 +68,9 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     if (!always)
     {
         item = &items[itemNumber];
-        x = (item->pos.x - camera.src.x) >> 8;
-        y = (item->pos.y - camera.src.y) >> 8;
-        z = (item->pos.z - camera.src.z) >> 8;
+        x = (item->pos.x - camera.pos.x) >> 8;
+        y = (item->pos.y - camera.pos.y) >> 8;
+        z = (item->pos.z - camera.pos.z) >> 8;
         worstdist = SQUARE(x) + SQUARE(y) + SQUARE(z);
     }
     else
@@ -83,9 +83,9 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     for (int slot = 0; slot < NUM_SLOTS; slot++, creature++)
     {
         item = &items[creature->item_number];
-        x = (item->pos.x - camera.src.x) >> 8;
-        y = (item->pos.y - camera.src.y) >> 8;
-        z = (item->pos.z - camera.src.z) >> 8;
+        x = (item->pos.x - camera.pos.x) >> 8;
+        y = (item->pos.y - camera.pos.y) >> 8;
+        z = (item->pos.z - camera.pos.z) >> 8;
         int dist = SQUARE(x) + SQUARE(y) + SQUARE(z);
         if (dist > worstdist)
         {

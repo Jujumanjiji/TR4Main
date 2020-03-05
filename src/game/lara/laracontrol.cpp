@@ -8,6 +8,7 @@
 #include "items.h"
 #include "sound.h"
 #include "utils.h"
+#include "oldobjects.h"
 
 void(*lara_control_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
     lara_as_walk,
@@ -276,24 +277,46 @@ void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll)
         LookLeftRight();
     else
         ResetLook();
-
     lara.look = TRUE;
 
-    // TODO: vehicle control !!!!!
     if (lara.skidoo != NO_ITEM)
     {
-        /*
-        if ( dword_7FE28C[lara.skidoo].object_number == MOTORBIKE )
-            MotorBikeControl(lara.skidoo);
-        else
-            JeepControl(lara.skidoo);
-        */
+        ITEM_INFO* item = &items[lara.skidoo];
+        switch (item->object_number)
+        {
+            case MOTORBIKE:
+                if (MotorBikeControl(lara.skidoo))
+                    return;
+                break;
+            case JEEP:
+                if (JeepControl(lara.skidoo))
+                    return;
+                break;
+        }
         return;
     }
 
     if (item->state_current != STATE_LARA_DEATH && CHK_ANY(gf_level_flags, SLEV_TRAIN) && item->pos.y >= 0)
     {
+        if (item->pos.z <= 51900 || item->pos.z >= 53554)
+        {
+            camera.mike_pos.y = -WALL_L;
+            camera.mike_pos.z = item->pos.z > 51900 ? 55296 : 50176;
+        }
+        else
+        {
+            camera.mike_pos.y = -STEPUP_HEIGHT;
+            camera.mike_pos.z = 52736;
+        }
 
+        camera.mike_pos.x = item->pos.x;
+        camera.mike_pos_room = item->room_number;
+        force_fixed_camera = true;
+        SetAnimationForItemAS(item, ANIMATION_LARA_TRAIN_DEATH, STATE_LARA_DEATH);
+        item->pos.y_rot = -0x4000;
+        item->speed = 0;
+        item->fallspeed = 0;
+        item->gravity_status = FALSE;
     }
 
     lara_control_routines[item->state_current](item, coll);
@@ -321,4 +344,125 @@ void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll)
     UpdateLaraRoom(item, -(LARA_HITE / 2));
     LaraGun();
     TestTriggers(coll->trigger, FALSE, NULL);
+}
+
+void LaraSurface(ITEM_INFO* item, COLL_INFO* coll)
+{
+    camera.target_elevation = -ANGLE(22);
+    coll->old.x = item->pos.x;
+    coll->old.y = item->pos.y;
+    coll->old.z = item->pos.z;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -(STEP_L / 2);
+    coll->bad_ceiling = LARA_RAD;
+    coll->radius = SURF_RADIUS;
+    coll->trigger = NULL;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    coll->lava_is_pit = FALSE;
+    coll->slopes_are_pits = FALSE;
+    coll->slopes_are_walls = FALSE;
+
+    if (CHK_ANY(TrInput, IN_LOOK) && lara.look)
+        LookLeftRight();
+    else
+        ResetLook();
+    lara.look = TRUE;
+
+    lara_control_routines[item->state_current](item, coll);
+    //lara_camera_routines[item->state_current](item, coll); // not implemented yet
+
+    if (item->pos.z_rot >= -(2 * LARA_LEAN_UNDO) && item->pos.z_rot <= (2 * LARA_LEAN_UNDO))
+        item->pos.z_rot = 0;
+    else if (item->pos.z_rot < 0)
+        item->pos.z_rot += (2 * LARA_LEAN_UNDO);
+    else
+        item->pos.z_rot -= (2 * LARA_LEAN_UNDO);
+
+    if (lara.current_active && lara.water_status != LWS_CHEAT)
+        LaraWaterCurrent(coll);
+
+    AnimateLara(item);
+
+    item->pos.x += (item->fallspeed * SIN(lara.move_angle)) >> (W2V_SHIFT + 2);
+    item->pos.z += (item->fallspeed * COS(lara.move_angle)) >> (W2V_SHIFT + 2);
+
+    LaraBaddieCollision(item, coll);
+    if (lara.skidoo == NO_ITEM)
+        lara_collision_routines[item->state_current](item, coll);
+    UpdateLaraRoom(item, LARA_RAD);
+    LaraGun();
+    TestTriggers(coll->trigger, FALSE, NULL);
+}
+
+void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll)
+{
+    coll->old.x = item->pos.x;
+    coll->old.y = item->pos.y;
+    coll->old.z = item->pos.z;
+    coll->bad_pos = NO_HEIGHT;
+    coll->bad_neg = -UW_HITE;
+    coll->bad_ceiling = UW_HITE;
+    coll->radius = UW_RADIUS;
+    coll->trigger = NULL;
+    coll->enable_spaz = FALSE;
+    coll->enable_baddie_push = FALSE;
+    coll->lava_is_pit = FALSE;
+    coll->slopes_are_pits = FALSE;
+    coll->slopes_are_walls = FALSE;
+
+    if (CHK_ANY(TrInput, IN_LOOK) && lara.look)
+        LookLeftRight();
+    else
+        ResetLook();
+    lara.look = TRUE;
+
+    lara_control_routines[item->state_current](item, coll);
+    //lara_camera_routines[item->state_current](item, coll); // not implemented yet
+
+    if (item->pos.z_rot >= -(2 * LARA_LEAN_UNDO) && item->pos.z_rot <= (2 * LARA_LEAN_UNDO))
+        item->pos.z_rot = 0;
+    else if (item->pos.z_rot < 0)
+        item->pos.z_rot += (2 * LARA_LEAN_UNDO);
+    else
+        item->pos.z_rot -= (2 * LARA_LEAN_UNDO);
+
+    if (item->pos.x_rot < -ANGLE(85))
+        item->pos.x_rot = -ANGLE(85);
+    else if (item->pos.x_rot > ANGLE(85))
+        item->pos.x_rot = ANGLE(85);
+
+    if (item->pos.z_rot < -LARA_LEAN_MAX_UW)
+        item->pos.z_rot = -LARA_LEAN_MAX_UW;
+    else if (item->pos.z_rot > LARA_LEAN_MAX_UW)
+        item->pos.z_rot = LARA_LEAN_MAX_UW;
+
+    if (lara.turn_rate >= -LARA_TURN_UNDO && lara.turn_rate <= LARA_TURN_UNDO)
+        lara.turn_rate = 0;
+    else if (lara.turn_rate < -LARA_TURN_UNDO)
+        lara.turn_rate += LARA_TURN_UNDO;
+    else
+        lara.turn_rate -= LARA_TURN_UNDO;
+    item->pos.y_rot += lara.turn_rate;
+
+    if (lara.current_active && lara.water_status != LWS_CHEAT)
+        LaraWaterCurrent(coll);
+
+    AnimateLara(item);
+    item->pos.y -= (  SIN(item->pos.x_rot) * item->fallspeed  >> (W2V_SHIFT + 2));
+    item->pos.x += (((SIN(item->pos.y_rot) * item->fallspeed) >> (W2V_SHIFT + 2)) * COS(item->pos.x_rot)) >> W2V_SHIFT;
+    item->pos.z += (((COS(item->pos.y_rot) * item->fallspeed) >> (W2V_SHIFT + 2)) * COS(item->pos.x_rot)) >> W2V_SHIFT;
+
+    LaraBaddieCollision(item, coll);
+    if (lara.skidoo == NO_ITEM)
+        lara_collision_routines[item->state_current](item, coll);
+    UpdateLaraRoom(item, 0);
+    LaraGun();
+    TestTriggers(coll->trigger, FALSE, NULL);
+
+    if (lara.water_status == LWS_CHEAT)
+    {
+        item->current_anim = ANIMATION_LARA_FREE_FALL_LONG;
+        item->current_frame = anims[item->current_anim].frame_base + 5;
+    }
 }

@@ -606,6 +606,7 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define CanLaraHangSideways ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll, short angle)) 0x00426AB0)
 #define GetClimbableWalls ((short(__cdecl*)(int x, int y, int z, short roomNumber)) 0x0042D7D0)
 #define SnapLaraToEdgeOfBlock ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x004235B0)
+#define LaraWaterCurrent ((void(__cdecl*)(COLL_INFO* coll)) 0x00432DA0)
 #define GetLaraCollisionInfo ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00422350)
 #define AnimateLara ((void(__cdecl*)(ITEM_INFO* item)) 0x00430B60)
 #endif
@@ -613,10 +614,12 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 
 #pragma region lara_control
 extern void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraSurface(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll);
 
 #ifdef DLL_INJECT
 #define legacy_LaraAboveWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420B10)
-#define LaraSurface ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00431AA0)
-#define LaraUnderWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004323A0)
+#define legacy_LaraSurface ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00431AA0)
+#define legacy_LaraUnderWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004323A0)
 #endif
 #pragma endregion

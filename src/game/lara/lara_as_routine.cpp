@@ -1279,8 +1279,8 @@ void lara_as_controlled(ITEM_INFO* item, COLL_INFO* coll)
         if (item->current_anim == ANIMATION_LARA_HARP_PLAY)
             S_CDPlay(19, FALSE);
         lara.gun_status = LHS_ARMLESS;
-        if (UseForcedFixedCamera)
-            UseForcedFixedCamera = FALSE;
+        if (force_fixed_camera)
+            force_fixed_camera = FALSE;
     }
 }
 

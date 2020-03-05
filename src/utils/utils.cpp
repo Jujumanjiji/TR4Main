@@ -345,7 +345,7 @@ void SpawnPickup(ITEM_INFO *item)
         pickup->pos.x = pos.x;
         pickup->pos.z = pos.z;
         pickup->pos.y = GetHeight(floor, pickup->pos.x, item->pos.y, pickup->pos.z);
-        pickup->pos.y -= GetBoundsAccurate(pickup)->maxY;
+        pickup->pos.y -= GetBoundsAccurate(pickup)[3]; // maxY
         
         if (pickup->object_number == BIGMEDI_ITEM) // bigmedi item is not oriented correctly.
             pickup->pos.y_rot = item->pos.y_rot + 0x8000;
@@ -947,6 +947,8 @@ short GetCatchAngle(ITEM_INFO * item)
         return -0x8000;
     else if (angle >= -0x4000 - HANG_ANGLE && angle <= -0x4000 + HANG_ANGLE)
         return -0x4000;
+    else
+        return 0;
 }
 
 void phd_SwapPushMatrix(int frac)

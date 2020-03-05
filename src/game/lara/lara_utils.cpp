@@ -71,7 +71,7 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
     bool hit;
     bool isLeftRightBlocked;
     int xColl = 0, zColl = 0;
-    BOUNDS* bounds;
+    short* bounds;
     short coll_dist;
     short front, ceiling;
     short old_coll_front, coll_front;
@@ -171,7 +171,7 @@ BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll)
 
     bounds = GetBoundsAccurate(item);
     old_coll_front = coll->front_floor;
-    coll_front = coll->front_floor - bounds->minY;
+    coll_front = coll->front_floor - bounds[2];
     isLeftRightBlocked = false;
     switch (angle)
     {
@@ -577,7 +577,6 @@ HANG_STRUCT LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll)
     int old_x, old_z;
     int old_angle;
     int is_valid;
-    short front;
     WriteWorldItemAngle(item);
 
     old_x = item->pos.x;
@@ -643,7 +642,7 @@ int LaraHangLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll)
 
 BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
 {
-    BOUNDS* bounds;
+    short* bounds;
     int edge_catch, edge;
     short angle;
 
@@ -693,7 +692,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     bounds = GetBoundsAccurate(item);
     if (edge_catch > 0)
     {
-        item->pos.y += coll->front_floor - bounds->minY; // catch edge
+        item->pos.y += coll->front_floor - bounds[2]; // catch edge
 
         SHORT rotationAngle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
         switch (rotationAngle)
@@ -718,7 +717,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
     }
     else
     {
-        item->pos.y = edge - bounds->minY;
+        item->pos.y = edge - bounds[2];
     }
 
     item->pos.y_rot = angle;
@@ -731,7 +730,7 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
 
 BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
 {
-    BOUNDS* bounds;
+    short* bounds;
     int edge, edge_catch;
     short angle;
 
@@ -770,9 +769,9 @@ BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll)
 
     bounds = GetBoundsAccurate(item);
     if (edge_catch > 0)
-        item->pos.y += coll->front_floor - bounds->minY;
+        item->pos.y += coll->front_floor - bounds[2];
     else
-        item->pos.y = edge - bounds->minY;
+        item->pos.y = edge - bounds[2];
 
     item->pos.x += coll->shift.x;
     item->pos.z += coll->shift.z;

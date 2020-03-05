@@ -170,14 +170,6 @@ struct PHD_3DPOS
     short z_rot;
 };
 
-struct PHD_WORLD
-{
-    int x;
-    int y;
-    int z;
-    short room_number;
-};
-
 struct PHD_VECTOR
 {
     int x;
@@ -463,8 +455,7 @@ struct CHANGE_STRUCT
 struct ANIM_STRUCT
 {
     short* frame_ptr;
-    unsigned char interpolation;
-    unsigned char frame_size;
+    short interpolation;
     short current_anim_state;
     int yspeed;
     int yfallspeed;
@@ -500,7 +491,7 @@ struct STATIC_INFO
 
 struct CAMERA_INFO
 {
-    GAME_VECTOR src;
+    GAME_VECTOR pos;
     GAME_VECTOR target;
     int type;
     int old_type;
@@ -513,17 +504,19 @@ struct CAMERA_INFO
     int target_distance;
     short target_angle;
     short target_elevation;
-    short actual_angle;
     short actual_elevation;
+    short actual_angle;
     short number;
+    short last;
     short timer;
-    short lara_node;
     short speed;
-    ITEM_INFO* item;
-    ITEM_INFO* last_item;
-    OBJECT_VECTOR* fixed;
+    ITEM_INFO *item;
+    ITEM_INFO *last_item;
+    OBJECT_VECTOR *fixed;
     int mike_at_lara;
-    PHD_WORLD mike_pos;
+    PHD_VECTOR unknown; // last_target/last_pos ?
+    PHD_VECTOR mike_pos;
+    short mike_pos_room;
 };
 
 struct LARA_ARM

@@ -100,7 +100,7 @@
 #define dummy_rotation                      ARRAY_(0x004BF630, short, [12])
 #define Setting_MusicVolume                 VAR_U_(0x004B38AC, int)
 #define Setting_SFXVolume                   VAR_U_(0x004B38B0, int)
-#define UseForcedFixedCamera                VAR_U_(0x007FE8C0, BOOL)
+#define force_fixed_camera                VAR_U_(0x007FE8C0, bool)
 #define baddie_slots                        VAR_U_(0x007FD1FC, CREATURE_INFO*)
 #define trigger_index                       VAR_U_(0x007FE248, short*)
 #define number_boxes                        VAR_U_(0x007FE9B4, int)
@@ -114,9 +114,9 @@
 #define fp_level                            VAR_U_(0x00533A74, LPFILE)
 #define savegame_ammoused                   VAR_U_(0x007F785A, int)
 #define height_type                         VAR_U_(0x007FE290, int) // height_types enum
-#define accurate_bounds                     VAR_U_(0x007FE140, BOUNDS)
-#define LeftClimbTab                        ARRAY_(0x004AD800, short, [4])
-#define RightClimbTab                       ARRAY_(0x004AD808, short, [4])
+#define interpolated_bounds                 ARRAY_(0x007FE140, short, [6])
+#define LeftClimbTab                        ARRAY_(0x004AD800, UINT16, [4])
+#define RightClimbTab                       ARRAY_(0x004AD808, UINT16, [4])
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

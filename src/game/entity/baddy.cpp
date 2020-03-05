@@ -389,7 +389,7 @@ void Baddy1Control(short itemNumber)
     PHD_VECTOR pos;
     OBJ_ROTATION rot;
     ENTITY_JUMP* pjump;
-    BOUNDS* bounds;
+    short* bounds;
     AI_INFO info, lara_info;
     int height, ceiling;
     short roomNumber;

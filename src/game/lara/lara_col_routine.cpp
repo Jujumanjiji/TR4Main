@@ -1752,7 +1752,7 @@ void lara_col_crawlb(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
 {
-    BOUNDS* bounds;
+    short* bounds;
     int edge, edge_catch;
     short angle;
 
@@ -1796,13 +1796,13 @@ void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
         bounds = GetBoundsAccurate(item);
         if (edge_catch > 0)
         {
-            item->pos.y += coll->front_floor - bounds->minY;
+            item->pos.y += coll->front_floor - bounds[2];
             item->pos.x += coll->shift.x;
             item->pos.z += coll->shift.z;
         }
         else
         {
-            item->pos.y = edge - bounds->minY;
+            item->pos.y = edge - bounds[2];
         }
 
         item->pos.y_rot = angle;
@@ -2064,8 +2064,7 @@ void lara_col_rope(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
 {
-    int absX, n;
-
+    int n;
     camera.target_distance = (WALL_L * 2);
     UpdateRopeSwing(item);
 
@@ -2094,7 +2093,7 @@ void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
                 lara.rope_frame = lara.rope_dframe;
         }
 
-        item->current_frame = lara.rope_frame >> 8;
+        item->current_frame = (short)(lara.rope_frame >> 8);
 
         if (CHK_NOP(TrInput, IN_SPRINT)
         && (lara.rope_frame >> 8) == (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 32)

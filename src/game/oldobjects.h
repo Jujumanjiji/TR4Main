@@ -9,14 +9,14 @@ extern void CrocodileControl(short itemNumber); // 0x00402E30
 #ifdef DLL_INJECT
 /// vehicles
 #define InitialiseMotorBike INITIALISE(0x00464610)
-#define MotorBikeControl CONTROL(0x00464C70)
+#define MotorBikeControl ((int(__cdecl*)(short itemNumber)) 0x00464C70)
 #define MotorBikeCollision COLLISION(0x00464680)
 #define MotorBikeEffect DRAW(0x00464C20)
 #define DrawMotorBikeSmoke DRAW(0x00464A30)
 #define InitialiseJeep INITIALISE(0x00466F40)
 #define JeepCollision COLLISION(0x00466FA0)
 #define DrawJeepEffect DRAW(0x00467330)
-#define JeepControl CONTROL(0x00467380)
+#define JeepControl ((int(__cdecl*)(short itemNumber)) 0x00467380)
 
 /// entity
 #define InitialiseGuide INITIALISE(0x00405F20)
