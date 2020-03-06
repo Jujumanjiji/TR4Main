@@ -115,8 +115,8 @@
 #define savegame_ammoused                   VAR_U_(0x007F785A, int)
 #define height_type                         VAR_U_(0x007FE290, int) // height_types enum
 #define interpolated_bounds                 ARRAY_(0x007FE140, short, [6])
-#define LeftClimbTab                        ARRAY_(0x004AD800, UINT16, [4])
-#define RightClimbTab                       ARRAY_(0x004AD808, UINT16, [4])
+#define LeftClimbTab                        ARRAY_(0x004AD800, short, [4])
+#define RightClimbTab                       ARRAY_(0x004AD808, short, [4])
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

@@ -548,8 +548,8 @@ extern BOOL LaraDeflectEdgeDuck(ITEM_INFO* item, COLL_INFO* coll);
 extern void LaraDeflectEdgeJump(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraFallen(ITEM_INFO* item, COLL_INFO* coll);
 extern int IsValidHangPos(ITEM_INFO* item, COLL_INFO* coll);
-extern HANG_STRUCT LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll);
-extern int LaraHangLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll);
+extern int LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll);
+//extern int LaraHangLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll);
 
 extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
@@ -566,7 +566,7 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define legacy_LaraFallen ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420FE0)
 #define legacy_IsValidHangPos ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00426600)
 #define legacy_LaraHangRightCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00426230)
-#define legacy_LaraHangLeftCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004266E0)
+#define LaraHangLeftCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004266E0)
 #define LaraClimbLeftCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x0042CEE0)
 #define LaraClimbRightCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x0042D160)
 #define LaraSlideEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004259C0)

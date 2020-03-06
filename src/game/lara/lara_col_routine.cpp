@@ -368,8 +368,8 @@ void lara_col_fastfall(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
 {
-    item->gravity_status = FALSE;
     item->fallspeed = 0;
+    item->gravity_status = FALSE;
 
     if (item->current_anim == ANIMATION_LARA_HANG_IDLE && item->current_frame == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
     {
@@ -381,15 +381,14 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
                 return;
             }
             
-            int leftTest = LaraHangLeftCornerTest(item, coll);
-            switch (leftTest)
+            int left_test = LaraHangLeftCornerTest(item, coll);
+            if (left_test != 0)
             {
-                case INNER:
+                if (left_test <= 0)
                     item->state_next = STATE_LARA_CLIMB_CORNER_LEFT_INNER;
-                    break;
-                case OUTER:
+                else
                     item->state_next = STATE_LARA_CLIMB_CORNER_LEFT_OUTER;
-                    break;
+                return;
             }
         }
         else if (CHK_ANY(TrInput, (IN_RIGHT | IN_RSTEP)))
@@ -400,18 +399,14 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
                 return;
             }
 
-            HANG_STRUCT right_test = LaraHangRightCornerTest(item, coll);
-            if (right_test.type != NULL)
+            int right_test = LaraHangRightCornerTest(item, coll);
+            if (right_test != 0)
             {
-                switch (right_test.type)
-                {
-                    case INNER:
-                        item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_INNER;
-                        break;
-                    case OUTER:
-                        item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_OUTER;
-                        break;
-                }
+                if (right_test <= 0)
+                    item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_INNER;
+                else
+                    item->state_next = STATE_LARA_CLIMB_CORNER_RIGHT_OUTER;
+                return;
             }
         }
     }
