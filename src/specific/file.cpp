@@ -11,6 +11,8 @@
 #define number_anims            VAR_U_(0x00533A60, int)
 #define number_roomlight        VAR_U_(0x00536F04, int)
 
+/*
+// TODO: need fix ! problem of render/camera, surely a x/y/z problem or bound.
 void LoadRooms(void)
 {
     ROOM_INFO* r;
@@ -109,7 +111,7 @@ void LoadRooms(void)
     size = ReadSDword();
     AllocReadT(floor_data, short, size);
 }
-
+*/
 void LoadObjects(void)
 {
     int i;
@@ -234,8 +236,8 @@ void LoadObjects(void)
 void injector::inject_file()
 {
     //this->inject(0x00473F20, LoadTextures); // (int roomtex, int objtex, int dumptex)
-    this->inject(ADDRESS_STRUCT(0x004749C0, LoadRooms));
-    this->inject(ADDRESS_STRUCT(0x00474E10, LoadObjects));    // OK
+    //this->inject(ADDRESS_STRUCT(0x004749C0, LoadRooms));
+    this->inject(ADDRESS_STRUCT(0x00474E10, LoadObjects));
     //this->inject(0x004752A0, AdjustUV);
     //this->inject(0x00475730, LoadSprites);
     //this->inject(0x00475970, LoadCameras);

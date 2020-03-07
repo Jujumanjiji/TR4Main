@@ -117,6 +117,8 @@
 #define interpolated_bounds                 ARRAY_(0x007FE140, short, [6])
 #define LeftClimbTab                        ARRAY_(0x004AD800, short, [4])
 #define RightClimbTab                       ARRAY_(0x004AD808, short, [4])
+#define LeftIntRightExtTab                  ARRAY_(0x004AD838, short, [4])
+#define LeftExtRightIntTab                  ARRAY_(0x004AD840, short, [4])
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

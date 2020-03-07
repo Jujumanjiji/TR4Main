@@ -11,10 +11,10 @@ extern void GetAIPickups(void);
 #define InitialiseHair ((void(__cdecl*)(void)) 0x0041FDD0)
 #define InitialiseEffects ((void(__cdecl*)(void)) 0x004538A0)
 
-#define legacy_InitialiseObjects    _FUNCV(0x0045C0D0, (void), InitialiseObjects)
-#define legacy_BaddyObjects         _FUNCV(0x0045C1E0, (void), BaddyObjects)
-#define legacy_ObjectObjects        _FUNCV(0x0045E1F0, (void), ObjectObjects)
-#define legacy_TrapObjects          _FUNCV(0x0045DC10, (void), TrapObjects)
-#define legacy_GetCarriedItems      _FUNCV(0x0045EB40, (void), GetCarriedItems)
-#define legacy_GetAIPickups         _FUNCV(0x0045EC50, (void), GetAIPickups)
+#define legacy_InitialiseObjects    ADDRESS_STRUCT(0x0045C0D0, InitialiseObjects)
+#define legacy_BaddyObjects         ADDRESS_STRUCT(0x0045C1E0, BaddyObjects)
+#define legacy_ObjectObjects        ADDRESS_STRUCT(0x0045E1F0, ObjectObjects)
+#define legacy_TrapObjects          ADDRESS_STRUCT(0x0045DC10, TrapObjects)
+#define legacy_GetCarriedItems      ADDRESS_STRUCT(0x0045EB40, GetCarriedItems)
+#define legacy_GetAIPickups         ADDRESS_STRUCT(0x0045EC50, GetAIPickups)
 #endif

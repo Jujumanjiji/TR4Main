@@ -21,10 +21,7 @@ void injector::inject(ADDRESS_STRUCT addr) // from: address, to: function
     if (addr.address != NULL)
     {
         ((JMP*)(addr.address))->opCode = 0xE9;
-        if (addr.oldSelected)
-            ((JMP*)(addr.address))->offset = (DWORD)(addr.function_old) - ((DWORD)(addr.address) + sizeof(JMP));
-        else
-            ((JMP*)(addr.address))->offset = (DWORD)(addr.function_new) - ((DWORD)(addr.address) + sizeof(JMP));
+        ((JMP*)(addr.address))->offset = (DWORD)(addr.function) - ((DWORD)(addr.address) + sizeof(JMP));
     }
 }
 

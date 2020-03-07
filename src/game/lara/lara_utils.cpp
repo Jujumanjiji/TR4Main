@@ -420,13 +420,13 @@ int LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll)
 
     if (angle && angle != 2)
     {
-        x = (item->pos.x & ~1023) - (item->pos.z & 1023) + SECTOR(1);
-        z = (item->pos.z & ~1023) - (item->pos.x & 1023) + SECTOR(1);
+        x = (item->pos.x & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+        z = (item->pos.z & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
     }
     else
     {
-        x = item->pos.x ^ (item->pos.x ^ item->pos.z) & 1023;
-        z = item->pos.z ^ (item->pos.x ^ item->pos.z) & 1023;
+        x = item->pos.x ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1);
+        z = item->pos.z ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1);
     }
 
     item->pos.x = x;
@@ -471,20 +471,21 @@ int LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll)
     switch (angle)
     {
         case NORTH:
-            x = ((item->pos.x + SECTOR(1)) & ~1023) - (item->pos.z & 1023) + SECTOR(1);
-            z = ((item->pos.z + SECTOR(1)) & ~1023) - (item->pos.x & 1023) + SECTOR(1);
+            x = ((item->pos.x + SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+            z = ((item->pos.z + SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
             break;
         case SOUTH:
-            x = ((item->pos.x - SECTOR(1)) & ~1023) - (item->pos.z & 1023) + SECTOR(1);
-            z = ((item->pos.z - SECTOR(1)) & ~1023) - (item->pos.x & 1023) + SECTOR(1);
+            x = ((item->pos.x - SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+            z = ((item->pos.z - SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
             break;
         case WEST:
-            x = (item->pos.x ^ (item->pos.x ^ item->pos.z) & 1023) - SECTOR(1);
-            z = (item->pos.x ^ item->pos.z) & 1023 ^ (item->pos.z + SECTOR(1));
+            x = (item->pos.x ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1)) - SECTOR(1);
+            z = (item->pos.x ^ item->pos.z) & (WALL_L - 1) ^ (item->pos.z + SECTOR(1));
             break;
         default:
-            x = ((item->pos.x ^ item->pos.z) & 1023) ^ (item->pos.x + SECTOR(1));
-            z = (item->pos.z ^ ((item->pos.x ^ item->pos.z) & 1023)) - SECTOR(1);
+        case EAST:
+            x = ((item->pos.x ^ item->pos.z) & (WALL_L - 1)) ^ (item->pos.x + SECTOR(1));
+            z = (item->pos.z ^ ((item->pos.x ^ item->pos.z) & (WALL_L - 1))) - SECTOR(1);
             break;
     }
 
@@ -516,19 +517,19 @@ int LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll)
             switch (angle)
             {
                 case NORTH:
-                    if ((old_x & 1023) < 512)
+                    if ((old_x & (WALL_L - 1)) < 512)
                         return 0;
                     break;
                 case EAST:
-                    if ((old_z & 1023) > 512)
+                    if ((old_z & (WALL_L - 1)) > 512)
                         return 0;
                     break;
                 case SOUTH:
-                    if ((old_x & 1023) > 512)
+                    if ((old_x & (WALL_L - 1)) > 512)
                         return 0;
                     break;
                 case WEST:
-                    if ((old_z & 1023) < 512)
+                    if ((old_z & (WALL_L - 1)) < 512)
                         return 0;
                     break;
                 default:
@@ -553,19 +554,249 @@ int LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll)
 
     return result;
 }
-/*
+
 int LaraHangLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (item->current_anim != ANIMATION_LARA_HANG_IDLE)
-        return FALSE;
+        return 0;
     if (coll->hit_static)
-        return FALSE;
+        return 0;
 
-    int result = IsValidHangPos(item, coll);
+    int x, z;
+    int old_x = item->pos.x;
+    int old_z = item->pos.z;
+    int old_front_floor = coll->front_floor;
+    SHORT old_angle = item->pos.y_rot;
+    SHORT angle = (USHORT)(item->pos.y_rot + ANGLE(45)) / ANGLE(90);
 
-    S_LogValue("IsValidHangPosLeft: %d; IsValidHangPosLeft(negative ?): %d", result, -result);
-    return FALSE;
-}*/
+    if (angle && angle != 2)
+    {
+        x = item->pos.x ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1);
+        z = item->pos.z ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1);
+    }
+    else
+    {
+        x = (item->pos.x & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+        z = (item->pos.z & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
+    }
+
+    item->pos.x = x;
+    lara.corner_x = x;
+    item->pos.z = z;
+    lara.corner_z = z;
+    item->pos.y_rot -= ANGLE(90);
+
+    int result = -IsValidHangPos(item, coll);
+    if (result)
+    {
+        if (lara.climb_status)
+        {
+            if (GetClimbableWalls(x, item->pos.y, z, item->room_number) & RightClimbTab[angle])
+            {
+                item->pos.x = old_x;
+                item->pos.z = old_z;
+                item->pos.y_rot = old_angle;
+                lara.move_angle = old_angle;
+                return result;
+            }
+        }
+        else
+        {
+            if (abs(old_front_floor - coll->front_floor) <= SLOPE_DIF)
+            {
+                item->pos.x = old_x;
+                item->pos.z = old_z;
+                item->pos.y_rot = old_angle;
+                lara.move_angle = old_angle;
+                return result;
+            }
+        }
+    }
+
+    item->pos.x = old_x;
+    item->pos.z = old_z;
+    item->pos.y_rot = old_angle;
+    lara.move_angle = old_angle;
+    if (LaraFloorFront(item, old_angle - 0x4000, LARA_RAD + 16) < 0)
+        return 0;
+
+    switch (angle)
+    {
+        case NORTH:
+            x = (item->pos.x ^ ((item->pos.x ^ item->pos.z) & (WALL_L - 1))) - SECTOR(1);
+            z = ((item->pos.x ^ item->pos.z) & (WALL_L - 1)) ^ (item->pos.z + SECTOR(1));
+            break;
+        case SOUTH:
+            x = ((item->pos.x ^ item->pos.z) & (WALL_L - 1)) ^ (item->pos.x + SECTOR(1));
+            z = ((item->pos.x ^ item->pos.z) & (WALL_L - 1)) ^ (item->pos.z - SECTOR(1));
+            break;
+        case WEST:
+            x = (item->pos.x & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1));
+            z = (item->pos.z & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1));
+            break;
+        default:
+        case EAST:
+            x = ((item->pos.x + SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+            z = ((item->pos.z + SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
+            break;
+    }
+
+    item->pos.x = x;
+    lara.corner_x = x;
+    item->pos.z = z;
+    lara.corner_z = z;
+    item->pos.y_rot += ANGLE(90);
+    result = IsValidHangPos(item, coll);
+    if (!result)
+    {
+        item->pos.x = old_x;
+        item->pos.z = old_z;
+        item->pos.y_rot = old_angle;
+        lara.move_angle = old_angle;
+        return 0;
+    }
+
+    item->pos.x = old_x;
+    item->pos.z = old_z;
+    item->pos.y_rot = old_angle;
+    lara.move_angle = old_angle;
+    if (!lara.climb_status)
+    {
+        if (abs(old_front_floor - coll->front_floor) <= SLOPE_DIF)
+        {
+            switch (angle)
+            {
+                case NORTH:
+                    if ((old_x & (WALL_L - 1)) > 512)
+                        return 0;
+                    break;
+                case EAST:
+                    if ((old_z & (WALL_L - 1)) < 512)
+                        return 0;
+                    break;
+                case SOUTH:
+                    if ((old_x & (WALL_L - 1)) < 512)
+                        return 0;
+                    break;
+                case WEST:
+                    if ((old_z & (WALL_L - 1)) > 512)
+                        return 0;
+                    break;
+            }
+
+            return result;
+        }
+
+        return 0;
+    }
+
+    if (GetClimbableWalls(x, item->pos.y, z, item->room_number) & LeftClimbTab[angle])
+        return result;
+
+    short front = LaraFloorFront(item, item->pos.y_rot, LARA_RAD + 16);
+    if (abs(coll->front_floor - front) > 0)
+        return 0;
+
+    if (front < -768)
+        return 0;
+
+    return result;
+}
+
+int LaraClimbLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll)
+{
+    if (item->current_anim != ANIMATION_LARA_LADDER_LEFT)
+        return 0;
+
+    int x, z;
+    int old_x, old_z;
+    int result = 0;
+    int shift;
+    SHORT old_angle;
+    SHORT angle;
+
+    old_x = item->pos.x;
+    old_z = item->pos.z;
+    old_angle = item->pos.y_rot;
+    angle = (USHORT)(old_angle + ANGLE(45)) / ANGLE(90);
+    
+    if (angle && angle != 2)
+    {
+        x = item->pos.x ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1);
+        z = item->pos.z ^ (item->pos.x ^ item->pos.z) & (WALL_L - 1);
+    }
+    else
+    {
+        x = (item->pos.x & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+        z = (item->pos.z & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
+    }
+
+    if (GetClimbableWalls(x, item->pos.y, z, item->room_number) & LeftIntRightExtTab[angle])
+    {
+        item->pos.x = x;
+        lara.corner_x = x;
+        item->pos.z = z;
+        lara.corner_z = z;
+        item->pos.y_rot -= 0x4000;
+        lara.move_angle = item->pos.y_rot;
+        result = LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift);
+        item->reserved_4 = result;
+    }
+    
+    if (!result)
+    {
+        item->pos.x = old_x;
+        item->pos.z = old_z;
+        item->pos.y_rot = old_angle;
+        lara.move_angle = old_angle;
+
+        switch (angle)
+        {
+            case NORTH:
+                x = (item->pos.x ^ ((item->pos.z ^ item->pos.x) & (WALL_L - 1))) - SECTOR(1);
+                z = ((item->pos.z ^ item->pos.x) & (WALL_L - 1)) ^ (item->pos.z + SECTOR(1));
+                break;
+
+            case SOUTH:
+                x = ((item->pos.z ^ item->pos.x) & (WALL_L - 1)) ^ (item->pos.x + SECTOR(1));
+                z = ((item->pos.z ^ item->pos.x) & (WALL_L - 1)) ^ (item->pos.z - SECTOR(1));
+                break;
+
+            case EAST:
+                x = ((item->pos.x + SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1)) + SECTOR(1);
+                z = ((item->pos.z + SECTOR(1)) & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1)) + SECTOR(1);
+                break;
+
+            case WEST:
+            default:
+                x = (item->pos.x & ~(WALL_L - 1)) - (item->pos.z & (WALL_L - 1));
+                z = (item->pos.z & ~(WALL_L - 1)) - (item->pos.x & (WALL_L - 1));
+                break;
+        }
+
+        if (GetClimbableWalls(x, item->pos.y, z, item->room_number) & LeftExtRightIntTab[angle])
+        {
+            item->pos.x = x;
+            lara.corner_x = x;
+            item->pos.z = z;
+            lara.corner_z = z;
+            item->pos.y_rot += 0x4000;
+            lara.move_angle = item->pos.y_rot;
+            item->reserved_4 = LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift);
+            result = item->reserved_4 != 0;
+        }
+    }
+    else
+    {
+        result = -1;
+    }
+
+    item->pos.x = old_x;
+    item->pos.z = old_z;
+    item->pos.y_rot = old_angle;
+    lara.move_angle = old_angle;
+    return result;
+}
 
 BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
 {
@@ -766,7 +997,8 @@ void injector::inject_lara_utils()
     this->inject(ADDRESS_STRUCT(0x00420FE0, LaraFallen));
     this->inject(ADDRESS_STRUCT(0x00426600, IsValidHangPos));
     this->inject(ADDRESS_STRUCT(0x00426230, LaraHangRightCornerTest));
-    ///this->inject(ADDRESS_STRUCT(0x004266E0, LaraHangLeftCornerTest));
+    this->inject(ADDRESS_STRUCT(0x004266E0, LaraHangLeftCornerTest));
+    this->inject(ADDRESS_STRUCT(0x0042CEE0, LaraClimbLeftCornerTest));
 
     this->inject(ADDRESS_STRUCT(0x00421FF0, TestHangSwingIn));
 }
