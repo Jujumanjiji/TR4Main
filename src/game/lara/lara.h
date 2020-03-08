@@ -90,6 +90,7 @@
 #define CAM_E_CLIMBU ANGLE(30)
 #define CAM_E_CLIMBD -ANGLE(45)
 #define CLIMB_HITE (STEP_L*2)
+#define CLIMB_STANCE 700
 #define CLIMB_HANG 900
 #define LARA_IS_CLIMBING TRUE
 #define LARA_IS_NOT_CLIMBING FALSE
@@ -528,8 +529,8 @@ extern void animate_pistols(int weapon_type);
 #pragma endregion
 
 #pragma region lara_utils
-extern short LaraFloorFront(ITEM_INFO *item, short angle, int distance);
-extern short LaraCeilingFront(ITEM_INFO *item, short angle, int distance, int height);
+extern short LaraFloorFront(ITEM_INFO* item, short angle, int distance);
+extern short LaraCeilingFront(ITEM_INFO* item, short angle, int distance, int height);
 extern BOOL LaraHitCeiling(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraHangTest(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraDeflectEdge(ITEM_INFO* item, COLL_INFO* coll);
@@ -540,50 +541,65 @@ extern int IsValidHangPos(ITEM_INFO* item, COLL_INFO* coll);
 extern int LaraHangRightCornerTest(ITEM_INFO* item, COLL_INFO* coll);
 extern int LaraHangLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll);
 extern int LaraClimbLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll);
+extern int LaraClimbRightCornerTest(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraSlideEdgeJump(ITEM_INFO* item, COLL_INFO* coll);
+extern BOOL LaraTestClimbStance(ITEM_INFO* item, COLL_INFO* coll);
+extern int LaraTestEdgeCatch(ITEM_INFO* item, COLL_INFO* coll, int* edge);
+extern BOOL LaraTestHangOnClimbWall(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraSlideSlope(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraCollideJump(ITEM_INFO* item, COLL_INFO* coll);
+extern BOOL LaraCheckForLetGo(ITEM_INFO* item, COLL_INFO* coll);
+extern int LaraTestClimbUpPos(ITEM_INFO* item, int front, int right, int* shift, int* ledge);
+extern int LaraTestClimbPos(ITEM_INFO* item, int front, int right, int origin, int height, int* shift);
+extern int LaraTestClimb(int x, int y, int z, int xfront, int zfront, int item_height, short item_room, int* shift);
+extern void LaraDoClimbLeftRight(ITEM_INFO* item, COLL_INFO* coll, int result, int shift);
+extern BOOL LaraTestWaterClimbOut(ITEM_INFO* item, COLL_INFO* coll);
+
+
 
 extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
-extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
+extern BOOL TestHangSwingIn(ITEM_INFO* item, short angle);
 
 #ifdef DLL_INJECT
-#define legacy_LaraFloorFront ((short(__cdecl*)(ITEM_INFO *item, short angle, int distance)) 0x00421620)
-#define legacy_LaraCeilingFront ((short(__cdecl*)(ITEM_INFO *item, short angle, int distance, int height)) 0x00420A80)
-#define legacy_LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
-#define legacy_LaraHangTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004230E0)
-#define legacy_LaraDeflectEdge ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422400)
-#define legacy_LaraDeflectEdgeDuck ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421880)
-#define legacy_LaraDeflectEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422C50)
-#define legacy_LaraFallen ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420FE0)
-#define legacy_IsValidHangPos ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00426600)
-#define legacy_LaraHangRightCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00426230)
-#define legacy_LaraHangLeftCornerTest ((int(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004266E0)
-#define legacy_LaraClimbLeftCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x0042CEE0)
-#define LaraClimbRightCornerTest ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x0042D160)
-#define LaraSlideEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004259C0)
-#define LaraTestClimbStance ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422810)
-#define LaraTestEdgeCatch ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, int *edge)) 0x00421DE0)
-#define LaraTestHangOnClimbWall ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421E90)
-#define LaraSlideSlope ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428470)
-#define LaraColllideJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
-#define LaraCheckForLetGo ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042C980)
-#define LaraTestClimbUpPos ((int(__cdecl*)(ITEM_INFO *item, int front, int right, int *shift, int *ledge)) 0x0042CA60)
-#define LaraTestClimbPos ((int(__cdecl*)(ITEM_INFO *item, int front, int right, int origin, int height, int *shift)) 0x0042C3C0)
-#define LaraDoClimbLeftRight ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll, int result, int shift)) 0x0042CD20)
-#define LaraTestWaterClimbOut ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00431E90)
-#define LaraTestWaterStepOut ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x004321B0)
-#define LaraTestWaterDepth ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00432A30)
-#define LaraLandedBad ((bool(__cdecl*)(ITEM_INFO *item)) 0x00422BE0)
+///#define legacy_LaraFloorFront ((short(__cdecl*)(ITEM_INFO* item, short angle, int distance)) 0x00421620)
+///#define legacy_LaraCeilingFront ((short(__cdecl*)(ITEM_INFO* item, short angle, int distance, int height)) 0x00420A80)
+///#define legacy_LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
+///#define legacy_LaraHangTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004230E0)
+///#define legacy_LaraDeflectEdge ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422400)
+///#define legacy_LaraDeflectEdgeDuck ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421880)
+///#define legacy_LaraDeflectEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422C50)
+///#define legacy_LaraFallen ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420FE0)
+///#define legacy_IsValidHangPos ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00426600)
+///#define legacy_LaraHangRightCornerTest ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00426230)
+///#define legacy_LaraHangLeftCornerTest ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004266E0)
+///#define legacy_LaraClimbLeftCornerTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042CEE0)
+///#define legacy_LaraClimbRightCornerTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042D160)
+///#define legacy_LaraSlideEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004259C0)
+///#define legacy_LaraTestClimbStance ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422810)
+///#define legacy_LaraTestEdgeCatch ((int(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, int* edge)) 0x00421DE0)
+///#define legacy_LaraTestHangOnClimbWall ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421E90)
+///#define legacy_LaraSlideSlope ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428470)
+///#define legacy_LaraCollideJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
+///#define legacy_LaraCheckForLetGo ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x0042C980)
+///#define legacy_LaraTestClimbUpPos ((int(__cdecl*)(ITEM_INFO* item, int front, int right, int* shift, int* ledge)) 0x0042CA60)
+///#define legacy_LaraTestClimbPos ((int(__cdecl*)(ITEM_INFO* item, int front, int right, int origin, int height, int* shift)) 0x0042C3C0)
+///#define legacy_LaraTestClimb ((int(__cdecl*)(int x, int y, int z, int xfront, int zfront, int item_height, short item_room, int* shift)) 0x0042C470)
+///#define legacy_LaraDoClimbLeftRight ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, int result, int shift)) 0x0042CD20)
+///#define legacy_LaraTestWaterClimbOut ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00431E90)
+#define LaraTestWaterStepOut ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004321B0)
+#define LaraTestWaterDepth ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00432A30)
+#define LaraLandedBad ((bool(__cdecl*)(ITEM_INFO* item)) 0x00422BE0)
 #define LaraCollideStop ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004229D0)
 #define LaraSwimCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004328E0)
 #define LaraSurfaceCollision ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004320B0)
-#define LaraColJumper ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00428B20)
 #define UseSpecialItem ((BOOL(__cdecl*)(ITEM_INFO* item)) 0x00424E90)
 #define TestLaraSlide ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420EA0)
 #define TestLaraVault ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422480)
 #define TestHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
 #define TestMonkeyLeft ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004236B0)
 #define TestMonkeyRight ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004237B0)
-#define legacy_TestHangSwingIn ((BOOL(__cdecl*)(ITEM_INFO *item, short angle)) 0x00421FF0)
+#define legacy_TestHangSwingIn ((BOOL(__cdecl*)(ITEM_INFO* item, short angle)) 0x00421FF0)
 #define TestWall ((BOOL(__cdecl*)(ITEM_INFO* item, int front, int right, int height)) 0x004228D0)
 #define SwimTurn ((void(__cdecl*)(ITEM_INFO* item)) 0x00432690)
 #define MonkeySwingFall ((void(__cdecl*)(ITEM_INFO* item)) 0x00422E50)
@@ -593,11 +609,11 @@ extern BOOL TestHangSwingIn(ITEM_INFO *item, short angle);
 #define ApplyVelocityToRope ((void(__cdecl*)(int node, short angle, short n)) 0x00424150)
 #define JumpOffRope ((void(__cdecl*)(ITEM_INFO* item)) 0x00424820)
 #define SetCornerAnim ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle, short flip)) 0x00426C50)
-#define CanLaraHangSideways ((BOOL(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll, short angle)) 0x00426AB0)
-#define GetClimbableWalls ((short(__cdecl*)(int x, int y, int z, short roomNumber)) 0x0042D7D0)
+#define CanLaraHangSideways ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x00426AB0)
+#define GetClimbTrigger ((short(__cdecl*)(int x, int y, int z, short roomNumber)) 0x0042D7D0)
 #define SnapLaraToEdgeOfBlock ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x004235B0)
 #define LaraWaterCurrent ((void(__cdecl*)(COLL_INFO* coll)) 0x00432DA0)
-#define GetLaraCollisionInfo ((void(__cdecl*)(ITEM_INFO *item, COLL_INFO *coll)) 0x00422350)
+#define GetLaraCollisionInfo ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422350)
 #define AnimateLara ((void(__cdecl*)(ITEM_INFO* item)) 0x00430B60)
 #endif
 #pragma endregion

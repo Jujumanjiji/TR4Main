@@ -663,19 +663,19 @@ void lara_col_slide(ITEM_INFO* item, COLL_INFO* coll)
 void lara_col_backjump(ITEM_INFO* item, COLL_INFO* coll)
 {
     lara.move_angle = item->pos.y_rot - 0x8000;
-    LaraColJumper(item, coll);
+    LaraCollideJump(item, coll);
 }
 
 void lara_col_rightjump(ITEM_INFO* item, COLL_INFO* coll)
 {
     lara.move_angle = item->pos.y_rot + 0x4000;
-    LaraColJumper(item, coll);
+    LaraCollideJump(item, coll);
 }
 
 void lara_col_leftjump(ITEM_INFO* item, COLL_INFO* coll)
 {
     lara.move_angle = item->pos.y_rot - 0x4000;
-    LaraColJumper(item, coll);
+    LaraCollideJump(item, coll);
 }
 
 void lara_col_upjump(ITEM_INFO* item, COLL_INFO* coll)
@@ -1061,22 +1061,18 @@ void lara_col_climbleft(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (LaraCheckForLetGo(item, coll))
         return;
-    int shift, result;
-    result = LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift);
-
-    lara.move_angle = item->pos.y_rot - 0x4000;
-    LaraDoClimbLeftRight(item, coll, result, shift);
+    int shift = 0;
+    lara.move_angle = item->pos.y_rot - ANGLE(90);
+    LaraDoClimbLeftRight(item, coll, LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift), shift);
 }
 
 void lara_col_climbright(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (LaraCheckForLetGo(item, coll))
         return;
-    int shift, result;
-    result = LaraTestClimbPos(item, coll->radius, coll->radius + CLIMB_WIDTHR, -CLIMB_HITE, CLIMB_HITE, &shift);
-
-    lara.move_angle = item->pos.y_rot + 0x4000;
-    LaraDoClimbLeftRight(item, coll, result, shift);
+    int shift = 0;
+    lara.move_angle = item->pos.y_rot + ANGLE(90);
+    LaraDoClimbLeftRight(item, coll, LaraTestClimbPos(item, coll->radius, coll->radius + CLIMB_WIDTHR, -CLIMB_HITE, CLIMB_HITE, &shift), shift);
 }
 
 void lara_col_climbdown(ITEM_INFO* item, COLL_INFO* coll)
