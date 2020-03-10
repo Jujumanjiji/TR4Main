@@ -180,26 +180,21 @@ void S_Log(LPCSTR LT_flags, LPCSTR content, bool isEntered, ...)
 #endif
 }
 
-void WriteWorldItemAngle(ITEM_INFO* item)
+LPCSTR WriteWorldItemAngle(ITEM_INFO* item)
 {
     SHORT angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
     switch (angle)
     {
         case NORTH:
-            S_LogValue("this objNumber: %d, are oriented in NORTH", item->object_number);
-            break;
+            return "NORTH";
         case EAST:
-            S_LogValue("this objNumber: %d, are oriented in EAST", item->object_number);
-            break;
+            return "EAST";
         case SOUTH:
-            S_LogValue("this objNumber: %d, are oriented in SOUTH", item->object_number);
-            break;
+            return "SOUTH";
         case WEST:
-            S_LogValue("this objNumber: %d, are oriented in WEST", item->object_number);
-            break;
+            return "WEST";
         default:
-            S_LogValue("this objNumber: %d, are oriented in UNKNOWN value", item->object_number);
-            break;
+            return "NOT_FOUND";
     }
 }
 
@@ -936,19 +931,57 @@ void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
     coll->trigger = trigger_index;
 }
 
-short GetCatchAngle(ITEM_INFO * item)
+short GetCatchAngle(ITEM_INFO * item, short angleToCheck)
 {
     short angle = item->pos.y_rot;
-    if (angle >= 0 - HANG_ANGLE && angle <= 0 + HANG_ANGLE)
+    if (angle >= 0 - angleToCheck && angle <= 0 + angleToCheck)
         return 0;
-    else if (angle >= 0x4000 - HANG_ANGLE && angle <= 0x4000 + HANG_ANGLE)
+    else if (angle >= 0x4000 - angleToCheck && angle <= 0x4000 + angleToCheck)
         return 0x4000;
-    else if (angle >= 0x8000 - HANG_ANGLE || angle <= -0x8000 + HANG_ANGLE)
+    else if (angle >= 0x8000 - angleToCheck || angle <= -0x8000 + angleToCheck)
         return -0x8000;
-    else if (angle >= -0x4000 - HANG_ANGLE && angle <= -0x4000 + HANG_ANGLE)
+    else if (angle >= -0x4000 - angleToCheck && angle <= -0x4000 + angleToCheck)
         return -0x4000;
     else
         return 0;
+}
+
+void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
+{
+    // orient lara when slidding !
+    // more realistic because the foot will touch the floor like this !
+    // - maybe using animation instead of that would be great for customization ?
+    S_LogValue("adif: %d, coll->tilt_x: %d, coll->tilt_z: %d, angle: %d, world_angle: %s, item->pos.x_rot: %d, lara.move_angle: %d, item->pos.y_rot: %d", adif, coll->tilt_x, coll->tilt_z, angle, WriteWorldItemAngle(item), item->pos.x_rot, lara.move_angle, item->pos.y_rot);
+
+    switch (lara.move_angle)
+    {
+        case 0:       // NORTH
+
+            break;
+        case 0x4000:  // EAST
+            switch (item->pos.y_rot)
+            {
+            case 0x4000:
+                if (coll->tilt_x == -3)
+                    item->pos.x_rot = -SLIDE_SLOPE3;
+                else if (coll->tilt_x == -4)
+                    item->pos.x_rot = -SLIDE_SLOPE4;
+                break;
+            case -0x4000:
+                if (coll->tilt_x == -3)
+                    item->pos.x_rot = SLIDE_SLOPE3_INV;
+                else if (coll->tilt_x == -4)
+                    item->pos.x_rot = SLIDE_SLOPE4_INV;
+                break;
+            }
+            break;
+        case -0x4000: // WEST
+
+            break;
+        case -0x8000: // SOUTH
+
+            break;
+    }
 }
 
 void phd_SwapPushMatrix(int frac)

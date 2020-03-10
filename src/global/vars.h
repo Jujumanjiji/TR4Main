@@ -119,6 +119,9 @@
 #define RightClimbTab                       ARRAY_(0x004AD808, short, [4])
 #define LeftIntRightExtTab                  ARRAY_(0x004AD838, short, [4])
 #define LeftExtRightIntTab                  ARRAY_(0x004AD840, short, [4])
+#define SelectedObject                      VAR_I_(0x004AE06C, int, NO_ITEM)
+#define current_pendulum                    VAR_U_(0x007FD1A0, PENDULUM)
+#define FXType                              VAR_U_(0x007FE7E0, short)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
@@ -162,6 +165,7 @@
 #define ropes                               ARRAY_(0x007FB4C0, ROPE_STRUCT, [MAX_ROPES])
 #define collide_item                        ARRAY_(0x00804F80, ITEM_INFO*, [256]) // not sure for the size !
 #define collide_meshes                      ARRAY_(0x00805380, MESH_INFO*, [256]) // not sure for the size !
+#define effect_routines                     ARRAY_(0x004ADE8C, EFFECT_ROUTINES_STRUCT, [50])
 
 
 

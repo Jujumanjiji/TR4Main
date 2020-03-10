@@ -456,9 +456,9 @@ struct ANIM_STRUCT
 {
     short* frame_ptr;
     short interpolation;
-    short current_anim_state;
-    int yspeed;
-    int yfallspeed;
+    short state_current;
+    int yspeed;     // velocity
+    int yfallspeed; // acceleration
     int xspeed;
     int xfallspeed;
     short frame_base;
@@ -1391,5 +1391,7 @@ struct TEXTUREBUCKET
     int cnt;
     D3DTLBUMPVERTEX Vertex[2080];
 };
+
+typedef void(*EFFECT_ROUTINES_STRUCT)(ITEM_INFO* item);
 
 #pragma pack(pop)

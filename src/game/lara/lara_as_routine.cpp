@@ -628,7 +628,10 @@ void lara_as_slide(ITEM_INFO* item, COLL_INFO* coll)
 {
     camera.target_elevation = -ANGLE(45);
     if (CHK_ANY(TrInput, IN_JUMP) && CHK_NOP(TrInput, IN_BACK))
+    {
         item->state_next = STATE_LARA_JUMP_FORWARD;
+        item->pos.x_rot = 0; // just in case.
+    }
 }
 
 void lara_as_backjump(ITEM_INFO* item, COLL_INFO* coll)

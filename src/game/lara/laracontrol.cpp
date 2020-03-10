@@ -466,3 +466,94 @@ void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll)
         item->current_frame = anims[item->current_anim].frame_base + 5;
     }
 }
+
+// sink mode
+void LaraWaterCurrent(COLL_INFO* coll)
+{
+    ITEM_INFO *item;
+    PHD_VECTOR target;
+    long angle, dx, dz, speed, sinkval;
+    long shifter, absvel;
+
+    item = lara_item;
+    if (!lara.current_active)
+    {
+        absvel = abs(lara.current_xvel);
+        if (absvel > 16)
+            shifter = 4;
+        else if (absvel > 8)
+            shifter = 3;
+        else
+            shifter = 2;
+        lara.current_xvel -= lara.current_xvel >> shifter;
+        if (absvel < 4)
+            lara.current_xvel = 0;
+
+        absvel = abs(lara.current_zvel);
+        if (absvel > 16)
+            shifter = 4;
+        else if (absvel > 8)
+            shifter = 3;
+        else
+            shifter = 2;
+        lara.current_zvel -= lara.current_zvel >> shifter;
+        if (absvel < 4)
+            lara.current_zvel = 0;
+
+        if (lara.current_xvel == 0 && lara.current_zvel == 0)
+            return;
+    }
+    else
+    {
+        sinkval = lara.current_active - 1;
+        target.x = camera.fixed[sinkval].x;
+        target.y = camera.fixed[sinkval].y;
+        target.z = camera.fixed[sinkval].z;
+        speed    = camera.fixed[sinkval].data;
+        angle = ((mGetAngle(target.x, target.z, item->pos.x, item->pos.z) - 0x4000) >> 4) & 0xFFF;
+        dx = speed * rcossin_tbl[2 * angle] >> 2;
+        dz = speed * rcossin_tbl[2 * angle + 1] >> 2;
+        lara.current_xvel += (dx - lara.current_xvel) >> 4;
+        lara.current_zvel += (dz - lara.current_zvel) >> 4;
+        item->pos.y += (target.y - item->pos.y) >> 4;
+    }
+
+    item->pos.x += (lara.current_xvel >> 8);
+    item->pos.z += (lara.current_zvel >> 8);
+    lara.current_active = 0;
+
+    coll->facing = phd_atan(item->pos.z - coll->old.z, item->pos.x - coll->old.x);
+    GetCollisionInfo(coll, item->pos.x, item->pos.y + (UW_HITE / 2), item->pos.z, item->room_number, UW_HITE);
+
+    switch (coll->coll_type)
+    {
+        case COLL_FRONT:
+            if (item->pos.x_rot > ANGLE(35))
+                item->pos.x_rot += UW_WALLDEFLECT;
+            else if (item->pos.x_rot < -ANGLE(35))
+                item->pos.x_rot -= UW_WALLDEFLECT;
+            else
+                item->fallspeed = 0;
+            break;
+        case COLL_TOP:
+            item->pos.x_rot -= UW_WALLDEFLECT;
+            break;
+        case COLL_TOPFRONT:
+            item->fallspeed = 0;
+            break;
+        case COLL_LEFT:
+            item->pos.y_rot += ANGLE(5);
+            break;
+        case COLL_RIGHT:
+            item->pos.y_rot -= ANGLE(5);
+            break;
+    }
+
+    if (coll->mid_floor < 0 && coll->mid_floor != -NO_HEIGHT)
+        item->pos.y += coll->mid_floor;
+
+    ShiftItem(item, coll);
+    coll->old.x = item->pos.x;
+    coll->old.y = item->pos.y;
+    coll->old.z = item->pos.z;
+}

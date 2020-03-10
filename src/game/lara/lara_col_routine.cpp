@@ -375,7 +375,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
     {
         if (CHK_ANY(TrInput, (IN_LEFT | IN_LSTEP)))
         {
-            if (CanLaraHangSideways(item, coll, -0x4000))
+            if (CanLaraHangSideways(item, coll, -ANGLE(90)))
             {
                 item->state_next = STATE_LARA_SHIMMY_LEFT;
                 return;
@@ -393,7 +393,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
         }
         else if (CHK_ANY(TrInput, (IN_RIGHT | IN_RSTEP)))
         {
-            if (CanLaraHangSideways(item, coll, 0x4000))
+            if (CanLaraHangSideways(item, coll, ANGLE(90)))
             {
                 item->state_next = STATE_LARA_SHIMMY_RIGHT;
                 return;
@@ -1767,7 +1767,7 @@ void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
         if (edge_catch < 0 && !LaraTestHangOnClimbWall(item, coll))
             return;
 
-        angle = GetCatchAngle(item);
+        angle = GetCatchAngle(item, HANG_ANGLE);
         if (angle & 0x3FFF)
             return;
 

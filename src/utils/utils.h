@@ -11,7 +11,7 @@ extern void S_LogValue(LPCSTR content, ...);
 extern void S_Log(LPCSTR content, ...);
 extern void S_Log(LPCSTR content, bool isEntered, ...);
 extern void S_Log(LPCSTR funcName, LPCSTR content, bool isEntered, ...);
-extern void WriteWorldItemAngle(ITEM_INFO* item);
+extern LPCSTR WriteWorldItemAngle(ITEM_INFO* item);
 extern void SetAnimationForItemAS(ITEM_INFO* item, int animation, int state);
 extern void SetAnimationForItemASN(ITEM_INFO* item, int animation, int state, bool needStateNext);
 extern void SetAnimationForItemASF(ITEM_INFO* item, int animation, int state, int frameNow);
@@ -43,7 +43,8 @@ extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
 extern short* AssignMeshes(short objNumber, short meshID);
 extern void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll);
-extern short GetCatchAngle(ITEM_INFO* item); // for lara grapping angle.
+extern short GetCatchAngle(ITEM_INFO* item, short angleToCheck); // for lara grapping angle.
+extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle);
 
 /// new:
 extern void phd_SwapPushMatrix(int frac);
