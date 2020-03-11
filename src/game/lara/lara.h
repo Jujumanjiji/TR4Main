@@ -23,6 +23,11 @@
     var -= incValue;\
     if (var < -maxValue) var = -maxValue
 
+
+#define GUN_HAND_RIGHT 11
+#define GUN_HAND_LEFT 13
+#define INFINITE_AMMO -1
+
 #define LARA_AIR (2*30*30)
 #define LARA_HITPOINTS 1000
 #define LARA_DASH_TIME (30*4)
@@ -520,20 +525,49 @@ extern void animate_pistols(int weapon_type);
 #pragma endregion
 
 #pragma region larafire
+#define SHOTGUN_RANDOM_AMMO1 1820
+#define SHOTGUN_RANDOM_AMMO2 5460
+#define SHOTGUN_BULLET_MAX 6
+#define SHOTGUN_SMOKE_MAX 7
+#define SHOTGUN_SPARKS_MAX 12
+#define SHOTGUN_GUNPOS_SMOKEDIST_MAX 1280
+#define GRENADEGUN_SMOKE_MAX 5
+#define GRENADE_TIMER 120
+
+extern void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv);
 extern int weapon_object(int weapon_type);
+extern int weapon_meshes(int weapon_type);
+extern void fire_shotgun(void);
+extern void fire_grenade(void);
+extern void fire_crossbow(PHD_3DPOS* haveDefinedPos);
+extern void InitialiseNewWeapons(void);
+extern short* GetCurrentAmmo(int weapon_type);
+extern void LaraTargetInfo(WEAPON_INFO* winfo);
+extern void LaraGetNewTarget(WEAPON_INFO* winfo);
 
 #ifdef DLL_INJECT
-#define legacy_weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
-#define weapon_meshes ((int(__cdecl*)(int weapon_type)) 0x0042EAC0)
-#define fire_shotgun ((void(__cdecl*)(void)) 0x00429260)
-#define fire_grenade ((void(__cdecl*)(void)) 0x00429480)
-#define fire_crossbow ((void(__cdecl*)(PHD_3DPOS* haveDefinedPos)) 0x0042A270)
-#define InitialiseNewWeapons ((void(__cdecl*)(void)) 0x0042DDF0)
-#define LaraTargetInfo ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042DF30)
-#define LaraGetNewTarget ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042E0D0)
+///#define legacy_weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
+///#define legacy_weapon_meshes ((int(__cdecl*)(int weapon_type)) 0x0042EAC0)
+///#define legacy_fire_shotgun ((void(__cdecl*)(void)) 0x00429260)
+///#define legacy_fire_grenade ((void(__cdecl*)(void)) 0x00429480)
+///#define legacy_fire_crossbow ((void(__cdecl*)(PHD_3DPOS* haveDefinedPos)) 0x0042A270)
+///#define legacy_InitialiseNewWeapons ((void(__cdecl*)(void)) 0x0042DDF0)
+///#define legacy_GetCurrentAmmo ((short*(__cdecl*)(int weapon_type)) 0x0042F480)
+///#define legacy_LaraTargetInfo ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042DF30)
+///#define legacy_LaraGetNewTarget ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042E0D0)
 #define AimWeapon ((void(__cdecl*)(WEAPON_INFO* winfo, LARA_ARM* arm)) 0x0042E560)
 #define FireWeapon ((BOOL(__cdecl*)(int weapon_type, ITEM_INFO* target, ITEM_INFO* laraitem, short angles[2])) 0x0042E630)
 #define LaraGun ((void(__cdecl*)(void)) 0x0042D840)
+#define find_target_point ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* pos)) 0x0042E4A0)
+#endif
+#pragma endregion
+
+#pragma region lara_flare
+
+
+#ifdef DLL_INJECT
+#define draw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF10)
+#define undraw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF30)
 #endif
 #pragma endregion
 

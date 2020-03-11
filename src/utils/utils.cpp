@@ -1073,3 +1073,124 @@ void phd_SwapPutPolygons(int frac, int clip, short** mesh)
     else
         phd_PutPolygons(*mesh, clip);
 }
+
+WEAPON_AMMO weapon_ammo;
+short WEAPON_AMMO::get(int weapon_type)
+{
+    switch (weapon_type)
+    {
+        case LG_REVOLVER:
+            return lara.revolver_ammo_count;
+
+        case LG_UZIS:
+            return lara.uzi_ammo_count;
+
+        case LG_SHOTGUN:
+            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
+                return lara.shotgun_ammo1_count;
+            else
+                return lara.shotgun_ammo2_count;
+            break;
+        case LG_GRENADEGUN:
+            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
+                return lara.grenade_ammo1_count;
+            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
+                return lara.grenade_ammo2_count;
+            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
+                return lara.grenade_ammo3_count;
+            break;
+
+        case LG_CROSSBOW:
+            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
+                return lara.crossbow_ammo1_count;
+            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
+                return lara.crossbow_ammo2_count;
+            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
+                return lara.crossbow_ammo3_count;
+            break;
+
+        case LG_PISTOLS:
+        default:
+            return lara.pistol_ammo_count;
+    }
+}
+
+void WEAPON_AMMO::increase(int weapon_type, int value)
+{
+    switch (weapon_type)
+    {
+        case LG_REVOLVER:
+            lara.revolver_ammo_count += value;
+
+        case LG_UZIS:
+            lara.uzi_ammo_count += value;
+
+        case LG_SHOTGUN:
+            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
+                lara.shotgun_ammo1_count += value;
+            else
+                lara.shotgun_ammo2_count += value;
+            break;
+        case LG_GRENADEGUN:
+            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
+                lara.grenade_ammo1_count += value;
+            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
+                lara.grenade_ammo2_count += value;
+            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
+                lara.grenade_ammo3_count += value;
+            break;
+
+        case LG_CROSSBOW:
+            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
+                lara.crossbow_ammo1_count += value;
+            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
+                lara.crossbow_ammo2_count += value;
+            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
+                lara.crossbow_ammo3_count += value;
+            break;
+
+        case LG_PISTOLS:
+        default:
+            lara.pistol_ammo_count += value;
+    }
+}
+
+void WEAPON_AMMO::decrease(int weapon_type, int value)
+{
+    switch (weapon_type)
+    {
+        case LG_REVOLVER:
+            lara.revolver_ammo_count -= value;
+
+        case LG_UZIS:
+            lara.uzi_ammo_count -= value;
+
+        case LG_SHOTGUN:
+            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
+                lara.shotgun_ammo1_count -= value;
+            else
+                lara.shotgun_ammo2_count -= value;
+            break;
+        case LG_GRENADEGUN:
+            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
+                lara.grenade_ammo1_count -= value;
+            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
+                lara.grenade_ammo2_count -= value;
+            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
+                lara.grenade_ammo3_count -= value;
+            break;
+
+        case LG_CROSSBOW:
+            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
+                lara.crossbow_ammo1_count -= value;
+            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
+                lara.crossbow_ammo2_count -= value;
+            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
+                lara.crossbow_ammo3_count -= value;
+            break;
+
+        case LG_PISTOLS:
+        default:
+            lara.pistol_ammo_count -= value;
+    }
+}

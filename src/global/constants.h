@@ -2,6 +2,7 @@
 
 using namespace std;
 
+#define DEBUG_CHEAT
 #define LOG_DEBUG
 #define LOG_FOLDER "log"
 #define LOG_PATH "log/debug.log"

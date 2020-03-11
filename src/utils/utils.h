@@ -2,6 +2,15 @@
 
 extern LPCSTR lpWeaponName[12];
 
+class WEAPON_AMMO
+{
+public:
+    short get(int weapon_type);
+    void increase(int weapon_type, int value);
+    void decrease(int weapon_type, int value);
+};
+extern WEAPON_AMMO weapon_ammo;
+
 extern void dummy_func(ITEM_INFO* item, COLL_INFO* coll); // for lara control & collision routines !
 extern bool isFolderExists(LPCSTR folderName);
 extern bool isFileExists(LPCSTR fileName);

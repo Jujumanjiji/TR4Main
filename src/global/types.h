@@ -711,30 +711,30 @@ struct SPARKS
     short zvel;
     short gravity;
     short rotang;
-    short flags;
+    short flags; // SPF_ flags
     unsigned char sSize;
     unsigned char dSize;
     unsigned char size;
     unsigned char friction;
     unsigned char scalar;
-    unsigned char def;
+    unsigned char def; // sprite id (need SPF_DEF flags !)
     char rotadd;
     char maxyvel;
-    unsigned char on;
-    unsigned char sR;
-    unsigned char sG;
-    unsigned char sB;
-    unsigned char dR;
-    unsigned char dG;
-    unsigned char dB;
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
+    unsigned char on; // can be bool later
+    BYTE sR;
+    BYTE sG;
+    BYTE sB;
+    BYTE dR;
+    BYTE dG;
+    BYTE dB;
+    BYTE r;
+    BYTE g;
+    BYTE b;
     unsigned char colfadespeed;
     unsigned char fadetoblack;
     unsigned char sLife;
     unsigned char life;
-    unsigned char transtype;
+    unsigned char transtype; // TRANS_ flags
     unsigned char extras;
     char dynamic;
     unsigned char fx_obj;
@@ -1059,12 +1059,12 @@ struct LARA_INFO
     char rope_flag;
     char move_count;
     int rope_count;
-    char pistols_type_carried;
-    char uzi_type_carried;
-    char shotgun_type_carried;
-    char crossbow_type_carried;
-    char grenadegun_type_carried;
-    char sixshooter_type_carried;
+    char pistols_type_carried;    // CR_ flags
+    char uzi_type_carried;        // CR_ flags
+    char shotgun_type_carried;    // CR_ flags
+    char crossbow_type_carried;   // CR_ flags
+    char grenadegun_type_carried; // CR_ flags
+    char revolver_type_carried;   // CR_ flags
     char lasersight;
     char binoculars;
     char crowbar;
@@ -1086,7 +1086,7 @@ struct LARA_INFO
     short flare_count;
     short pistol_ammo_count;
     short uzi_ammo_count;
-    short sixshooter_ammo_count;
+    short revolver_ammo_count;
     short shotgun_ammo1_count;
     short shotgun_ammo2_count;
     short grenade_ammo1_count;

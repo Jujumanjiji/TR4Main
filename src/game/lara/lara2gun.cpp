@@ -17,7 +17,7 @@ int weapon_holsters(int weapon_type)
         case LG_UZIS:
             return LARA_HOLSTERS_UZIS;
         case LG_REVOLVER:
-            return LARA_HOLSTERS_SIXSHOOTER;
+            return LARA_HOLSTERS_REVOLVER;
     }
 }
 

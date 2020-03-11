@@ -129,6 +129,20 @@ void shotgun_handler(int weapon_type)
         }
     }
 
+#ifdef DEBUG_CHEAT
+    if (CHK_ANY(TrInput, IN_FLARE))
+    {
+        lara.shotgun_ammo1_count = INFINITE_AMMO;
+        lara.shotgun_ammo2_count = INFINITE_AMMO;
+        lara.grenade_ammo1_count = INFINITE_AMMO;
+        lara.grenade_ammo2_count = INFINITE_AMMO;
+        lara.grenade_ammo3_count = INFINITE_AMMO;
+        lara.crossbow_ammo1_count = INFINITE_AMMO;
+        lara.crossbow_ammo2_count = INFINITE_AMMO;
+        lara.crossbow_ammo3_count = INFINITE_AMMO;
+    }
+#endif
+
     if (weapon_type == LG_REVOLVER)
         animate_pistols(weapon_type);
     else
@@ -142,14 +156,14 @@ void shotgun_handler(int weapon_type)
                 pos.x = SHOTGUN_GUNPOS_X;
                 pos.y = SHOTGUN_GUNPOS_Y;
                 pos.z = SHOTGUN_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_R);
+                GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
                 TriggerDynamicSwap(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
                 break;
             case LG_REVOLVER:
                 pos.x = REVOLVER_GUNPOS_X;
                 pos.y = REVOLVER_GUNPOS_Y;
                 pos.z = REVOLVER_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_R);
+                GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
                 TriggerDynamicSwap(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) - 64, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
                 break;
         }
@@ -160,7 +174,7 @@ void animate_shotgun(int weapon_type)
 {
     ITEM_INFO* item = &items[lara.weapon_item];
     PHD_VECTOR pos;
-    static BOOL fired = FALSE, reload = FALSE;
+    static BOOL m16_fired = FALSE, harpoon_reload = FALSE;
     short frame;
 
     if (SmokeCountL)
@@ -184,7 +198,7 @@ void animate_shotgun(int weapon_type)
                 break;
         }
 
-        GetLaraHandAbsPosition(&pos, HAND_R);
+        GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
         if (lara_item->mesh_bits)
             TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
     }
@@ -193,12 +207,12 @@ void animate_shotgun(int weapon_type)
     switch (item->state_current)
     {
         case W_AIM:
-            fired = FALSE;
+            m16_fired = FALSE;
 
-            if (reload)
+            if (harpoon_reload)
             {
                 item->state_next = W_RELOAD;
-                reload = FALSE;
+                harpoon_reload = FALSE;
             }
             else if (lara.water_status == LWS_UNDERWATER)
                 item->state_next = W_UAIM;
@@ -212,7 +226,7 @@ void animate_shotgun(int weapon_type)
             {
                 item->state_next = W_UNAIM;
 
-                if (lara.water_status != LWS_UNDERWATER && !reload)
+                if (lara.water_status != LWS_UNDERWATER && !harpoon_reload)
                 {
                     if (CHK_ANY(TrInput, IN_ACTION) && (!lara.target || lara.l_arm.lock))
                     {
@@ -220,16 +234,12 @@ void animate_shotgun(int weapon_type)
                         {
                             case LG_SHOTGUN:
                                 fire_shotgun();
-                                fired = TRUE;
                                 break;
                             case LG_GRENADEGUN:
                                 fire_grenade();
-                                fired = FALSE;
-                                reload = TRUE;
                                 break;
                             case LG_CROSSBOW:
                                 fire_crossbow(nullptr);
-                                fired = FALSE;
                                 break;
                         }
 
@@ -241,13 +251,13 @@ void animate_shotgun(int weapon_type)
                     }
                 }
 
-                if (item->state_next != W_RECOIL && fired)
+                if (item->state_next != W_RECOIL && m16_fired)
                 {
                     SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x5000000);
-                    fired = FALSE;
+                    m16_fired = FALSE;
                 }
             }
-            else if (fired)
+            else if (m16_fired)
             {
                 SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x5000000);
                 SoundEffect(SFX_HECKLER_KOCH_FIRE, &lara_item->pos, 0);
