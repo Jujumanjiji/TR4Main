@@ -2,7 +2,6 @@
 #include "utils/utils.h"
 #include "specific/json/scripts.h"
 
-
 #define DLL_EXPORT __declspec(dllexport)
 BOOL DLL_EXPORT CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {

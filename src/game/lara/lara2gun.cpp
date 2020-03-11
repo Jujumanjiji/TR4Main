@@ -45,23 +45,23 @@ void set_arm_info(LARA_ARM* arm, short frame)
 void draw_pistol_meshes(int weapon_type)
 {
     lara.holsters = LARA_HOLSTERS;
-    lara.mesh.hand_r = AssignMeshes(weapon_meshes(weapon_type), HAND_R);
+    lara.mesh.hand_r = classic_meshes(weapon_meshes(weapon_type), HAND_R);
     if (weapon_type != LG_REVOLVER)
-        lara.mesh.hand_l = AssignMeshes(weapon_meshes(weapon_type), HAND_L);
+        lara.mesh.hand_l = classic_meshes(weapon_meshes(weapon_type), HAND_L);
 }
 
 void undraw_pistols_left(int weapon_type)
 {
     if (weapon_type != LG_REVOLVER)
     {
-        lara.mesh.hand_l = AssignMeshes(LARA, HAND_L);
+        lara.mesh.hand_l = classic_meshes(LARA, HAND_L);
         lara.holsters = weapon_holsters(weapon_type);
     }
 }
 
 void undraw_pistols_right(int weapon_type)
 {
-    lara.mesh.hand_r = AssignMeshes(LARA, HAND_R);
+    lara.mesh.hand_r = classic_meshes(LARA, HAND_R);
     lara.holsters = weapon_holsters(weapon_type);
 }
 

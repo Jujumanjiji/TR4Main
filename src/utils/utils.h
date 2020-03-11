@@ -41,7 +41,7 @@ extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
 extern void Spawner(ITEM_INFO* item);
 extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
-extern short* AssignMeshes(short objNumber, short meshID);
+extern short* classic_meshes(short objNumber, short meshID);
 extern void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll);
 extern short GetCatchAngle(ITEM_INFO* item, short angleToCheck); // for lara grapping angle.
 extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle);

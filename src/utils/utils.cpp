@@ -915,7 +915,7 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
     return distance;
 }
 
-short* AssignMeshes(short objNumber, short meshID)
+short* classic_meshes(short objNumber, short meshID)
 {
     return meshes[objects[objNumber].mesh_index + meshID * 2];
 }

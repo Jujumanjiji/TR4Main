@@ -459,19 +459,18 @@ LARA_FUNC(lara_col_ropefwd);
 #pragma endregion
 
 #pragma region lara1gun
-enum LARA_SHOTGUN_STATE
+enum WEAPON_ANIM
 {
-    LSS_LAND_AIM,
-    LSS_LAND_DRAW,
-    LSS_LAND_RECOIL,
-    LSS_LAND_UNDRAW,
-    LSS_LAND_UNAIM,
-    LSS_LAND_RELOAD,
-    LSS_WATER_AIM,
-    LSS_WATER_UNAIM,
-    LSS_WATER_FIRE,
-    LSS_WATER_UNDRAW,
-    LSS_WATER_WADE_UNDRAW,
+    W_AIM,
+    W_DRAW,
+    W_RECOIL,
+    W_UNDRAW,
+    W_UNAIM,
+    W_RELOAD,
+    W_UAIM,
+    W_UUNAIM,
+    W_URECOIL,
+    W_SURF_UNDRAW
 };
 
 extern void draw_shotgun_meshes(int weapon_type);
@@ -483,13 +482,14 @@ extern void shotgun_handler(int weapon_type);
 extern void animate_shotgun(int weapon_type);
 
 #ifdef DLL_INJECT
-#define legacy_draw_shotgun_meshes        ADDRESS_STRUCT(0x00428E40, draw_shotgun_meshes)
-#define legacy_undraw_shotgun_meshes      ADDRESS_STRUCT(0x00428E70, undraw_shotgun_meshes)
-#define legacy_ready_shotgun              ADDRESS_STRUCT(0x00428EA0, ready_shotgun)
-#define legacy_draw_shotgun               ADDRESS_STRUCT(0x0042AE50, draw_shotgun)
-#define legacy_undraw_shotgun             ADDRESS_STRUCT(0x0042AFE0, undraw_shotgun)
-#define legacy_shotgun_handler            ADDRESS_STRUCT(0x00428F10, shotgun_handler)
-#define legacy_animate_shotgun            ADDRESS_STRUCT(0x0042B100, animate_shotgun)
+#define LARA1GUN_FUNC(addr)               ((void(__cdecl*)(int weapon_type)) addr)
+#define legacy_draw_shotgun_meshes        LARA1GUN_FUNC(0x00428E40)
+#define legacy_undraw_shotgun_meshes      LARA1GUN_FUNC(0x00428E70)
+#define legacy_ready_shotgun              LARA1GUN_FUNC(0x00428EA0)
+#define legacy_draw_shotgun               LARA1GUN_FUNC(0x0042AE50)
+#define legacy_undraw_shotgun             LARA1GUN_FUNC(0x0042AFE0)
+#define legacy_shotgun_handler            LARA1GUN_FUNC(0x00428F10)
+#define legacy_animate_shotgun            LARA1GUN_FUNC(0x0042B100)
 #endif
 
 #pragma endregion
@@ -520,9 +520,10 @@ extern void animate_pistols(int weapon_type);
 #pragma endregion
 
 #pragma region larafire
+extern int weapon_object(int weapon_type);
 
 #ifdef DLL_INJECT
-#define weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
+#define legacy_weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
 #define weapon_meshes ((int(__cdecl*)(int weapon_type)) 0x0042EAC0)
 #define fire_shotgun ((void(__cdecl*)(void)) 0x00429260)
 #define fire_grenade ((void(__cdecl*)(void)) 0x00429480)

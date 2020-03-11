@@ -2445,7 +2445,7 @@ void AnimateLara(ITEM_INFO* item)
                             (type == SFX_LANDONLY  && (lara.water_surface_dist >= 0 || lara.water_surface_dist == -NO_HEIGHT)) ||
                             (type == SFX_WATERONLY &&  lara.water_surface_dist <  0 && lara.water_surface_dist != -NO_HEIGHT))
 						{
-							num = *(command+1) & 0x3FFF;
+							num = *(command + 1) & 0x3FFF;
 							SoundEffect((int)num, &item->pos, SFX_ALWAYS);
 						}
                     }
@@ -2551,11 +2551,11 @@ BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll)
         switch (rotationAngle)
         {
         case NORTH:
-            item->pos.z = (item->pos.z | (WALL_L - 1)) - LARA_RAD;
+            item->pos.z = (item->pos.z |  (WALL_L - 1)) - LARA_RAD;
             item->pos.x += coll->shift.x;
             break;
         case EAST:
-            item->pos.x = (item->pos.x | (WALL_L - 1)) - LARA_RAD;
+            item->pos.x = (item->pos.x |  (WALL_L - 1)) - LARA_RAD;
             item->pos.z += coll->shift.z;
             break;
         case SOUTH:
