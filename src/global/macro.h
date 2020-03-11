@@ -30,6 +30,8 @@
 #define BONE3(id) *(bone + (3 + (id * 4)))
 #define MESH(object, x) (object->mesh_index + x * 2)
 
+#define ABS(x) (((x)<0) ? (-(x)):(x))
+
 #define CustABS(A, B)\
 {\
 if (A > B)\

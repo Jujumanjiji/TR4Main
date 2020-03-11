@@ -1693,10 +1693,13 @@ BOOL UseSpecialItem(ITEM_INFO* item)
 
 BOOL TestLaraSlide(ITEM_INFO* item, COLL_INFO* coll)
 {
-    short old_angle = 1;
+    static short old_angle = 1;
     short adif, angle;
+    char a, b;
 
-    if (abs(coll->tilt_x) <= 2 && abs(coll->tilt_z) <= 2)
+    a = ABS(coll->tilt_x);
+    b = ABS(coll->tilt_z);
+    if (a <= 2 && b <= 2)
         return FALSE;
 
     angle = 0;
@@ -1705,9 +1708,9 @@ BOOL TestLaraSlide(ITEM_INFO* item, COLL_INFO* coll)
     else if (coll->tilt_x < -2)
         angle = 0x4000;
 
-    if (coll->tilt_z > 2 && coll->tilt_z > abs(coll->tilt_x))
+    if (coll->tilt_z > 2 && coll->tilt_z > a)
         angle = -0x8000;
-    else if (coll->tilt_z < -2 && -coll->tilt_z < abs(coll->tilt_x))
+    else if (coll->tilt_z < -2 && -coll->tilt_z < a)
         angle = 0;
 
     adif = angle - item->pos.y_rot;

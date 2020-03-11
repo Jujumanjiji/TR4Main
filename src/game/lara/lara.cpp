@@ -12,7 +12,6 @@ void injector::inject_lara()
     this->inject(ADDRESS_STRUCT(0x00432DA0, LaraWaterCurrent));
 
     /// CONTROL ROUTINES:
-    /*
     this->inject(legacy_lara_as_walk);
     this->inject(legacy_lara_as_run);
     this->inject(legacy_lara_as_stop);
@@ -167,6 +166,6 @@ void injector::inject_lara()
     this->inject(legacy_lara_col_poledown);
     this->inject(legacy_lara_col_duck2);
     this->inject(legacy_lara_col_rope);
-    this->inject(legacy_lara_col_ropefwd);*/
+    this->inject(legacy_lara_col_ropefwd);
 }
 #endif

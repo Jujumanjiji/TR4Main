@@ -590,7 +590,6 @@ extern short GetClimbTrigger(int x, int y, int z, short roomNumber);
 extern void SnapLaraToEdgeOfBlock(ITEM_INFO* item, COLL_INFO* coll, short angle);
 extern void GetLaraCollisionInfo(ITEM_INFO* item, COLL_INFO* coll);
 extern void AnimateLara(ITEM_INFO* item);
-
 extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 
@@ -598,7 +597,7 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 ///#define legacy_LaraFloorFront ((short(__cdecl*)(ITEM_INFO* item, short angle, int distance)) 0x00421620)
 ///#define legacy_LaraCeilingFront ((short(__cdecl*)(ITEM_INFO* item, short angle, int distance, int height)) 0x00420A80)
 ///#define legacy_LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
-///#define LaraHangTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004230E0)
+///#define legacy_LaraHangTest ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004230E0)
 ///#define legacy_LaraDeflectEdge ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422400)
 ///#define legacy_LaraDeflectEdgeDuck ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00421880)
 ///#define legacy_LaraDeflectEdgeJump ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422C50)
