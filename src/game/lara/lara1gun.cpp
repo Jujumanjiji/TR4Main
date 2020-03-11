@@ -130,7 +130,7 @@ void shotgun_handler(int weapon_type)
     }
 
     if (weapon_type == LG_REVOLVER)
-        animate_pistols(LG_REVOLVER);
+        animate_pistols(weapon_type);
     else
         animate_shotgun(weapon_type);
 

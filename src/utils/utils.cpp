@@ -485,6 +485,11 @@ void set_gun_smoke_left(int weapon_type)
                 pos.y = UZIS_GUNPOS_Y;
                 pos.z = UZIS_GUNPOS_Z;
                 break;
+            default:
+                pos.x = 0;
+                pos.y = 0;
+                pos.z = 0;
+                break;
         }
 
         GetLaraHandAbsPosition(&pos, HAND_L);
@@ -514,6 +519,11 @@ void set_gun_smoke_right(int weapon_type)
                 pos.x = REVOLVER_GUNPOS_X;
                 pos.y = REVOLVER_GUNPOS_Y;
                 pos.z = REVOLVER_GUNPOS_Z;
+                break;
+            default:
+                pos.x = 0;
+                pos.y = 0;
+                pos.z = 0;
                 break;
         }
 

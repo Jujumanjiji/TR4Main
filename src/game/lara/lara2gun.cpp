@@ -23,20 +23,20 @@ int weapon_holsters(int weapon_type)
 
 void set_arm_info(LARA_ARM* arm, short frame)
 {
-    PISTOL_DEF* table;
-    short animIndex;
+    PISTOL_DEF* p;
+    short anim_base;
 
-    table = &pistols_table[lara.gun_type];
-    animIndex = objects[table->object_number].anim_index;
+    p = &pistols_table[lara.gun_type];
+    anim_base = objects[p->object_number].anim_index;
 
-    if (frame < table->draw1_anim)
-        arm->anim_curr = animIndex + 0;
-    if (frame < table->draw2_anim)
-        arm->anim_curr = animIndex + 1;
-    else if (frame < table->recoil_anim)
-        arm->anim_curr = animIndex + 2;
+    if (frame < p->draw1_anim)
+        arm->anim_curr = anim_base + 0;
+    else if (frame < p->draw2_anim)
+        arm->anim_curr = anim_base + 1;
+    else if (frame < p->recoil_anim)
+        arm->anim_curr = anim_base + 2;
     else
-        arm->anim_curr = animIndex + 3;
+        arm->anim_curr = anim_base + 3;
 
     arm->frame_base = anims[arm->anim_curr].frame_ptr;
     arm->frame_curr = frame;
@@ -68,28 +68,28 @@ void undraw_pistols_right(int weapon_type)
 void draw_pistols(int weapon_type)
 {
     PISTOL_DEF* table;
-    short frame;
+    short ani;
 
     table = &pistols_table[lara.gun_type];
-    frame = lara.l_arm.frame_curr + 1;
+    ani = lara.l_arm.frame_curr + 1;
 
-    if ((frame < table->draw1_anim) || (frame > table->recoil_anim - 1))
+    if (ani < table->draw1_anim || ani > (table->recoil_anim - 1))
     {
-        frame = table->draw1_anim;
+        ani = table->draw1_anim;
     }
-    else if (frame == table->draw2_anim)
+    else if (ani == table->draw2_anim)
     {
         draw_pistol_meshes(weapon_type);
         SoundEffect(SFX_LARA_DRAW, &lara_item->pos, 0);
     }
-    else if (frame == (table->recoil_anim - 1))
+    else if (ani == (table->recoil_anim - 1))
     {
         ready_pistols(weapon_type);
-        frame = 0;
+        ani = 0;
     }
 
-    set_arm_info(&lara.r_arm, frame);
-    set_arm_info(&lara.l_arm, frame);
+    set_arm_info(&lara.r_arm, ani);
+    set_arm_info(&lara.l_arm, ani);
 }
 
 void undraw_pistols(int weapon_type)
@@ -183,18 +183,20 @@ void ready_pistols(int weapon_type)
 {
     lara.gun_status = LHS_READY;
     lara.target = NULL;
+
+    lara.l_arm.frame_curr = 0;
     lara.l_arm.z_rot = 0;
     lara.l_arm.y_rot = 0;
     lara.l_arm.x_rot = 0;
+    lara.l_arm.lock = FALSE;
+
+    lara.r_arm.frame_curr = 0;
     lara.r_arm.z_rot = 0;
     lara.r_arm.y_rot = 0;
     lara.r_arm.x_rot = 0;
-    lara.r_arm.frame_curr = 0;
-    lara.l_arm.frame_curr = 0;
     lara.r_arm.lock = FALSE;
-    lara.l_arm.lock = FALSE;
-    lara.r_arm.frame_base = objects[weapon_object(weapon_type)].frame_base;
-    lara.l_arm.frame_base = lara.r_arm.frame_base;
+
+    lara.l_arm.frame_base = lara.r_arm.frame_base = objects[weapon_object(weapon_type)].frame_base;
 }
 
 void pistol_handler(int weapon_type)
@@ -205,6 +207,7 @@ void pistol_handler(int weapon_type)
     LaraGetNewTarget(winfo);
     if (CHK_ANY(TrInput, IN_ACTION))
         LaraTargetInfo(winfo);
+
     AimWeapon(winfo, &lara.l_arm);
     AimWeapon(winfo, &lara.r_arm);
 
@@ -257,28 +260,26 @@ void pistol_handler(int weapon_type)
 void animate_pistols(int weapon_type)
 {
     WEAPON_INFO* winfo;
-    PISTOL_DEF* table;
+    PISTOL_DEF* p;
     short angles[2];
     short frameL, frameR;
-    bool uzi_left = false, uzi_right = false, has_fired;
-
-    has_fired = false;
-    winfo = &weapons[weapon_type];
-    table = &pistols_table[lara.gun_type];
-    frameL = lara.l_arm.frame_curr;
-    frameR = lara.r_arm.frame_curr;
+    bool uzi_left = false, uzi_right = false, has_fired = false;
 
     set_gun_smoke_left(weapon_type);
     set_gun_smoke_right(weapon_type);
 
+    winfo = &weapons[weapon_type];
+    p = &pistols_table[lara.gun_type];
+
     /// process right arm
+    frameR = lara.r_arm.frame_curr;
     if (lara.r_arm.lock || (CHK_ANY(TrInput, IN_ACTION) && !lara.target))
     {
-        if ((frameR >= 0) && (frameR < table->draw1_anim2))
+        if ((frameR >= 0) && (frameR < p->draw1_anim2))
         {
             frameR++;
         }
-        else if (frameR == table->draw1_anim2)
+        else if (frameR == p->draw1_anim2)
         {
             if (CHK_ANY(TrInput, IN_ACTION))
             {
@@ -302,14 +303,15 @@ void animate_pistols(int weapon_type)
                     }
                 }
 
-                frameR = table->recoil_anim;
+                frameR = p->recoil_anim;
             }
             else if (uzi_right)
             {
                 SoundEffect(winfo->sample_id + 1, &lara_item->pos, 0);
+                uzi_right = false;
             }
         }
-        else if (frameR >= table->recoil_anim)
+        else if (frameR >= p->recoil_anim)
         {
             if (weapon_type == LG_UZIS)
             {
@@ -318,15 +320,15 @@ void animate_pistols(int weapon_type)
             }
 
             frameR++;
-            if (frameR == (table->recoil_anim + winfo->recoil_frame))
-                frameR = table->draw1_anim2;
+            if (frameR == (p->recoil_anim + winfo->recoil_frame))
+                frameR = p->draw1_anim2;
         }
     }
     else
     {
-        if (frameR >= table->recoil_anim)
-            frameR = table->draw1_anim2;
-        else if ((frameR > 0) && (frameR <= table->draw1_anim2))
+        if (frameR >= p->recoil_anim)
+            frameR = p->draw1_anim2;
+        else if ((frameR > 0) && (frameR <= p->draw1_anim2))
             frameR--;
 
         if (uzi_right)
@@ -338,48 +340,47 @@ void animate_pistols(int weapon_type)
     set_arm_info(&lara.r_arm, frameR);
 
     /// process left arm
+    frameL = lara.l_arm.frame_curr;
     if (lara.l_arm.lock || (CHK_ANY(TrInput, IN_ACTION) && !lara.target))
     {
-        if ((frameL >= 0) && (frameL < table->draw1_anim2))
+        if ((frameL >= 0) && (frameL < p->draw1_anim2))
         {
             frameL++;
         }
-        else if (frameL == table->draw1_anim2)
+        else if (frameL == p->draw1_anim2)
         {
             if (CHK_ANY(TrInput, IN_ACTION))
             {
-                if (weapon_type != LG_REVOLVER)
+                angles[0] = lara.l_arm.y_rot + lara_item->pos.y_rot;
+                angles[1] = lara.l_arm.x_rot;
+
+                if (FireWeapon(weapon_type, lara.target, lara_item, angles))
                 {
-                    angles[0] = lara.l_arm.y_rot + lara_item->pos.y_rot;
-                    angles[1] = lara.l_arm.x_rot;
+                    SmokeCountL = 28;
+                    SmokeWeapon = weapon_type;
+                    TriggerGunShell(FALSE, GUNSHELL, weapon_type);
+                    lara.l_arm.flash_gun = winfo->flash_time;
 
-                    if (FireWeapon(weapon_type, lara.target, lara_item, angles))
+                    if (!has_fired)
                     {
-                        SmokeCountL = 28;
-                        SmokeWeapon = weapon_type;
-                        TriggerGunShell(FALSE, GUNSHELL, weapon_type);
-                        lara.l_arm.flash_gun = winfo->flash_time;
-                        
-                        if (!has_fired)
-                        {
-                            SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x2000000);
-                            SoundEffect(winfo->sample_id, &lara_item->pos, 0);
-                        }
-
-                        if (weapon_type == LG_UZIS)
-                            uzi_left = true;
-                        ++savegame_ammoused;
+                        SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x2000000);
+                        SoundEffect(winfo->sample_id, &lara_item->pos, 0);
                     }
+
+                    if (weapon_type == LG_UZIS)
+                        uzi_left = true;
+                    ++savegame_ammoused;
                 }
 
-                frameL = table->recoil_anim;
+                frameL = p->recoil_anim;
             }
             else if (uzi_left)
             {
                 SoundEffect(winfo->sample_id + 1, &lara_item->pos, 0);
+                uzi_left = false;
             }
         }
-        else if (frameL >= table->recoil_anim)
+        else if (frameL >= p->recoil_anim)
         {
             if (weapon_type == LG_UZIS)
             {
@@ -388,15 +389,15 @@ void animate_pistols(int weapon_type)
             }
 
             frameL++;
-            if (frameL == (table->recoil_anim + winfo->recoil_frame))
-                frameL = table->draw1_anim2;
+            if (frameL == (p->recoil_anim + winfo->recoil_frame))
+                frameL = p->draw1_anim2;
         }
     }
     else
     {
-        if (frameL >= table->recoil_anim)
-            frameL = table->draw1_anim2;
-        else if ((frameL > 0) && (frameL <= table->draw1_anim2))
+        if (frameL >= p->recoil_anim)
+            frameL = p->draw1_anim2;
+        else if ((frameL > 0) && (frameL <= p->draw1_anim2))
             frameL--;
 
         if (uzi_left)
