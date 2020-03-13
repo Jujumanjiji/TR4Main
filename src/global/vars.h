@@ -115,6 +115,7 @@
 #define fp_level                            VAR_U_(0x00533A74, LPFILE)
 #define savegame_ammoused                   VAR_U_(0x007F785A, int)
 #define savegame_ammohit                    VAR_U_(0x007F785E, int)
+#define savegame_kills                      VAR_U_(0x007F7876, short)
 #define height_type                         VAR_U_(0x007FE290, int) // height_types enum
 #define interpolated_bounds                 ARRAY_(0x007FE140, short, [6])
 #define LeftClimbTab                        ARRAY_(0x004AD800, short, [4])

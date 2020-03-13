@@ -549,6 +549,8 @@ extern void AimWeapon(WEAPON_INFO* winfo, LARA_ARM* arm);
 extern void find_target_point(ITEM_INFO* item, GAME_VECTOR* target);
 extern BOOL FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[2]);
 extern int GetTargetOnLOS(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, BOOL firing);
+extern void HitTarget(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags);
+extern void LaraGun(void);
 
 #ifdef DLL_INJECT
 ///#define legacy_weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
@@ -565,17 +567,39 @@ extern int GetTargetOnLOS(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, 
 ///#define legacy_find_target_point ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* pos)) 0x0042E4A0)
 ///#define legacy_FireWeapon ((int(__cdecl*)(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[2])) 0x0042E630)
 ///#define legacy_GetTargetOnLOS ((int(__cdecl*)(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, BOOL firing)) 0x0044D890)
-#define HitTarget ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)) 0x0042E920)
-#define LaraGun ((void(__cdecl*)(void)) 0x0042D840)
+///#define legacy_HitTarget ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)) 0x0042E920)
+///#define legacy_LaraGun ((void(__cdecl*)(void)) 0x0042D840)
+#define CheckForHoldingState ((int(__cdecl*)(short state_current)) 0x0042DDC0)
 #endif
 #pragma endregion
 
 #pragma region lara_flare
-
+#define FL_HOLD_FT		  1
+#define FL_THROW_FT		  32
+#define FL_DRAW_FT		  39
+#define FL_IGNITE_FT	  23
+#define FL_2HOLD_FT		  15
+#define FL_HOLD_F		  0
+#define FL_THROW_F		  (FL_HOLD_F+FL_HOLD_FT)
+#define FL_DRAW_F		  (FL_THROW_F+FL_THROW_FT)
+#define FL_IGNITE_F		  (FL_DRAW_F+FL_DRAW_FT)
+#define FL_2HOLD_F		  (FL_IGNITE_F+FL_IGNITE_FT)
+#define FL_END_F		  (FL_2HOLD_F+FL_2HOLD_FT)
+#define FL_DRAWGOTIT_F	  (13+FL_DRAW_F)
+#define FL_PICKUP_F		  58
+#define FL_THROWRELEASE_F (20+FL_THROW_F)
+#define FL_THROW_FRAMES	  32
 
 #ifdef DLL_INJECT
+#define TorchControl ((void(__cdecl*)(void)) 0x0041F7C0)
+
+#define DoFlareInHand ((void(__cdecl*)(short age)) 0x0042F6F0)
+#define set_flare_arm ((void(__cdecl*)(short frame)) 0x0042FB00)
+#define CreateFlare ((void(__cdecl*)(short objNumber, BOOL isThrowed)) 0x0042F880)
 #define draw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF10)
 #define undraw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF30)
+#define draw_flare ((void(__cdecl*)(void)) 0x0042FB50)
+#define undraw_flare ((void(__cdecl*)(void)) 0x0042FC60)
 #endif
 #pragma endregion
 

@@ -711,10 +711,10 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
 {
     ITEM_INFO* item;
     OBJECT_INFO* obj;
-    ROOM_INFO* r;
     MESH_INFO* mesh;
     FLOOR_INFO* floor;
     PHD_VECTOR vec;
+    BOOL result;
     int los, closest;
     short room_number;
     short static_obj;
@@ -740,6 +740,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
             if (firing && !los)
                 TriggerRicochetSpark(src, lara_item->pos.y_rot, 8, 0);
         }
+        result = FALSE;
     }
     else
     {
@@ -788,15 +789,15 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 
                 switch (obj->hit_effect)
                 {
-                case HIT_BLOOD:
-                    DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.y_rot, item->room_number);
-                    break;
-                case HIT_SMOKE:
-                    TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, -5); // no fragment, just smoke !
-                    break;
-                case HIT_FRAGMENT:
-                    TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
-                    break;
+                    case HIT_BLOOD:
+                        DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.y_rot, item->room_number);
+                        break;
+                    case HIT_SMOKE:
+                        TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, -5); // no fragment, just smoke !
+                        break;
+                    case HIT_FRAGMENT:
+                        TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                        break;
                 }
 
                 item->hit_status = TRUE;
@@ -818,9 +819,9 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 else
                 {
                     short item_number;
-                    short switch_count = GetSwitchTrigger(item, &item_number, 1);
+                    short number_trigger = GetSwitchTrigger(item, &item_number, 1);
                     
-                    for (int i = 0; i < switch_count; i++)
+                    for (int i = 0; i < number_trigger; i++)
                     {
                         AddActiveItem(item_number);
                         items[item_number].flags |= IFLAG_CODEBITS | IFLAG_SWITCH_ONESHOT;
@@ -833,9 +834,10 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
             }
         }
+        result = TRUE;
     }
 
-    if (drawtarget && !los)
+    if (drawtarget && (result || !los))
     {
         LaserSightActive = TRUE;
         LaserSightPos.z = src->x;
@@ -843,7 +845,265 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
         LaserSightPos.y = src->z;
         TriggerDynamic(src->x, src->y, src->z, 16, 32, 0, 0);
     }
-    return TRUE;
+    return result;
+}
+
+void HitTarget(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)
+{
+    if (item->data == nullptr)
+        return;
+
+    CREATURE_INFO* creature = (CREATURE_INFO*)item->data;
+    OBJECT_INFO* obj = &objects[item->object_number];
+
+    item->hit_status = TRUE;
+    if (creature && item != lara_item)
+        creature->hurt_by_lara = TRUE;
+
+    if (src)
+    {
+        switch (obj->hit_effect)
+        {
+            case HIT_BLOOD:
+                if (item->object_number == BADDY_2 && (item->state_current == 8 || GetRandomControl() & 1) && (lara.gun_type == LG_PISTOLS || lara.gun_type == LG_SHOTGUN || lara.gun_type == LG_UZIS))
+                {
+                    SoundEffect(SFX_BAD_SWORD_RICO, &item->pos, 0);
+                    TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                    return;
+                }
+                DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.y_rot, item->room_number);
+                break;
+            case HIT_SMOKE:
+                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, -5); // no fragment, just smoke !
+                break;
+            case HIT_FRAGMENT:
+                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                break;
+        }
+    }
+
+    if (!obj->undead || flags || item->hit_points != DONT_TARGET)
+    {
+        if (item->hit_points > 0 && item->hit_points <= damage)
+            savegame_kills++;
+        item->hit_points -= damage;
+    }
+}
+
+void LaraGun(void)
+{
+    if (lara.l_arm.flash_gun > 0)
+        lara.l_arm.flash_gun--;
+    if (lara.r_arm.flash_gun > 0)
+        lara.r_arm.flash_gun--;
+
+    if (lara.gun_type == LG_TORCH)
+    {
+        TorchControl();
+        return;
+    }
+
+    if (lara_item->hit_points <= 0)
+    {
+        lara.gun_status = LHS_ARMLESS;
+    }
+    else if (lara.gun_status == LHS_ARMLESS)
+    {
+        if (CHK_ANY(TrInput, IN_DRAW))
+        {
+            lara.gun_request_type = lara.gun_last_type;
+        }
+        else if (CHK_ANY(TrInput, IN_FLARE) && CHK_NOP(gf_level_flags, SLEV_YOUNG_LARA))
+        {
+            if (lara_item->state_current == STATE_LARA_CROUCH_IDLE && lara_item->current_anim != ANIMATION_LARA_CROUCH_IDLE)
+                return;
+
+            if (lara.gun_type == LG_FLARE)
+            {
+                lara.gun_status = LHS_UNDRAW;
+            }
+            else if (lara.flare_count != -1)
+            {
+                lara.flare_count--;
+                lara.gun_request_type = LG_FLARE;
+            }
+        }
+
+        if (CHK_ANY(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
+        {
+            short state_current = lara_item->state_current;
+            if ((state_current == STATE_LARA_CROUCH_IDLE
+            ||   state_current == STATE_LARA_CROUCH_TURN_LEFT
+            ||   state_current == STATE_LARA_CROUCH_TURN_RIGHT)
+            &&  (lara.gun_request_type == LG_SHOTGUN || lara.gun_request_type == LG_CROSSBOW || lara.gun_request_type == LG_GRENADEGUN))
+                return;
+            
+            if (lara.gun_request_type == LG_FLARE
+            ||  lara.skidoo == NO_ITEM
+            &&  lara.water_status == LWS_ABOVEWATER
+            && (lara.water_status != LWS_WADE || lara.water_surface_dist <= -weapons[lara.gun_type].gun_height))
+            {
+                if (lara.gun_type == LG_FLARE)
+                {
+                    CreateFlare(FLARE_ITEM, FALSE);
+                    undraw_flare_meshes();
+                    lara.flare_control_left = FALSE;
+                }
+
+                lara.gun_type = lara.gun_request_type;
+                InitialiseNewWeapons();
+                lara.gun_status = LHS_DRAW;
+                lara.l_arm.frame_curr = 0;
+                lara.r_arm.frame_curr = 0;
+            }
+            else
+            {
+                lara.gun_last_type = lara.gun_request_type;
+                if (lara.gun_type == LG_FLARE)
+                    lara.gun_request_type = LG_FLARE;
+                else
+                    lara.gun_type = lara.gun_request_type;
+            }
+        }
+    }
+    else if (lara.gun_status == LHS_READY)
+    {
+        if (CHK_ANY(TrInput, IN_FLARE))
+        {
+            if (lara.flare_count != -1)
+            {
+                lara.flare_count--;
+                lara.gun_request_type = LG_FLARE;
+            }
+        }
+
+        if (CHK_ANY(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
+            lara.gun_status = LHS_UNDRAW;
+        else if (lara.water_status != LWS_ABOVEWATER
+        &&      (lara.water_status != LWS_WADE || lara.water_surface_dist < -weapons[lara.gun_type].gun_height))
+        {
+            lara.gun_status = LHS_UNDRAW;
+        }
+    }
+
+    switch (lara.gun_status)
+    {
+        case LHS_ARMLESS:
+            if (lara.gun_type == LG_FLARE)
+            {
+                if (lara.skidoo != NO_ITEM || CheckForHoldingState(lara_item->state_current))
+                {
+                    if (lara.l_arm.frame_curr != FL_HOLD_F)
+                    {
+                        lara.l_arm.frame_curr++;
+                        if (lara.l_arm.frame_curr == FL_END_F)
+                            lara.l_arm.frame_curr = FL_HOLD_F;
+                    }
+                    else if (!lara.flare_control_left)
+                    {
+                        lara.flare_control_left = TRUE;
+                        lara.l_arm.frame_curr = FL_2HOLD_F;
+                    }
+                }
+                else
+                {
+                    lara.flare_control_left = FALSE;
+                }
+
+                DoFlareInHand(lara.flare_age);
+                set_flare_arm(lara.l_arm.frame_curr);
+            }
+            break;
+        case LHS_HANDBUSY:
+            if (lara.gun_type == LG_FLARE && lara.mesh.hand_l == classic_meshes(FLARE_ANIM, HAND_L))
+            {
+                lara.flare_control_left = (lara.skidoo != NO_ITEM || CheckForHoldingState(lara_item->state_current));
+                DoFlareInHand(lara.flare_age);
+                set_flare_arm(lara.l_arm.frame_curr);
+            }
+            break;
+        case LHS_DRAW:
+            if (lara.gun_type != LG_FLARE && lara.gun_type != LG_UNARMED)
+                lara.gun_last_type = lara.gun_type;
+
+            switch (lara.gun_type)
+            {
+                case LG_PISTOLS:
+                case LG_REVOLVER:
+                case LG_UZIS:
+                    if (camera.type != CINEMATIC_CAMERA && camera.type != LOOK_CAMERA && camera.type != HEAVY_CAMERA)
+                        camera.type = COMBAT_CAMERA;
+                    draw_pistols(lara.gun_type);
+                    break;
+                case LG_SHOTGUN:
+                case LG_GRENADEGUN:
+                case LG_CROSSBOW:
+                    if (camera.type != CINEMATIC_CAMERA && camera.type != LOOK_CAMERA && camera.type != HEAVY_CAMERA)
+                        camera.type = COMBAT_CAMERA;
+                    draw_shotgun(lara.gun_type);
+                    break;
+                case LG_FLARE:
+                    draw_flare();
+                    break;
+                default:
+                    lara.gun_status = LG_UNARMED;
+                    break;
+            }
+            break;
+        case LHS_UNDRAW:
+            lara.mesh.head = classic_meshes(LARA, HEAD);
+
+            switch (lara.gun_type)
+            {
+                case LG_PISTOLS:
+                case LG_REVOLVER:
+                case LG_UZIS:
+                    undraw_pistols(lara.gun_type);
+                    break;
+                case LG_SHOTGUN:
+                case LG_GRENADEGUN:
+                case LG_CROSSBOW:
+                    undraw_shotgun(lara.gun_type);
+                    break;
+                case LG_FLARE:
+                    undraw_flare();
+                    break;
+            }
+            break;
+        case LHS_READY:
+            if (CHK_ANY(TrInput, IN_ACTION))
+                lara.mesh.head = classic_meshes(LARA_SCREAM, HEAD);
+            else
+                lara.mesh.head = classic_meshes(LARA, HEAD);
+
+            if (camera.type != CINEMATIC_CAMERA && camera.type != LOOK_CAMERA && camera.type != HEAVY_CAMERA)
+                camera.type = COMBAT_CAMERA;
+
+            if (CHK_ANY(TrInput, IN_ACTION) && !weapon_ammo.get(lara.gun_type))
+            {
+                SoundEffect(SFX_SARLID_PALACES, &lara_item->pos, 0);
+                lara.gun_request_type = LG_PISTOLS;
+                return;
+            }
+
+            switch (lara.gun_type)
+            {
+                case LG_PISTOLS:
+                case LG_UZIS:
+                    pistol_handler(lara.gun_type);
+                    break;
+                case LG_REVOLVER:
+                case LG_SHOTGUN:
+                case LG_GRENADEGUN:
+                case LG_CROSSBOW:
+                    shotgun_handler(lara.gun_type);
+                    break;
+            }
+            break;
+        case LHS_SPECIAL:
+            draw_flare();
+            break;
+    }
 }
 
 #ifdef DLL_INJECT
@@ -863,5 +1123,7 @@ void injector::inject_larafire()
     this->inject(ADDRESS_STRUCT(0x0042E4A0, find_target_point));
     this->inject(ADDRESS_STRUCT(0x0042E630, FireWeapon));
     this->inject(ADDRESS_STRUCT(0x0044D890, GetTargetOnLOS));
+    this->inject(ADDRESS_STRUCT(0x0042E920, HitTarget));
+    this->inject(ADDRESS_STRUCT(0x0042D840, LaraGun));
 }
 #endif

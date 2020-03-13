@@ -243,7 +243,7 @@ void pistol_handler(int weapon_type)
     }
 
 #ifdef DEBUG_CHEAT
-    if (CHK_ANY(TrInput, IN_FLARE))
+    if (CHK_ANY(TrInput, IN_SPRINT))
         lara.uzi_ammo_count = INFINITE_AMMO;
 #endif
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef DLL_INJECT
-#define GetSwitchTrigger ((short(__cdecl*)(ITEM_INFO* item, short* index, int flags)) 0x00461BD0)
+#define GetSwitchTrigger ((short(__cdecl*)(ITEM_INFO* item, short* item_number, int flags)) 0x00461BD0) // return the number of trigger in the switch pad !
 
 #define SwitchCollision COLLISION(0x00461D60)
 #define SwitchControl CONTROL(0x00461CF0)
