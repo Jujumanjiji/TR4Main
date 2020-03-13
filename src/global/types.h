@@ -571,11 +571,11 @@ struct LARA_ARM
     short flash_gun;
 };
 
-struct UnknownStruct
+struct LOCATION
 {
-    char byte_80E137;
-    char byte_80E138;
-    char byte_80E139;
+    char current;
+    char highest;
+    char pad;
 };
 
 struct LARA_MESH
@@ -1137,7 +1137,7 @@ struct LARA_INFO
     short crossbow_ammo3_count;
     char location;
     char blind_timer;
-    UnknownStruct unknown;
+    LOCATION locate;
     short dash_timer;
 };
 

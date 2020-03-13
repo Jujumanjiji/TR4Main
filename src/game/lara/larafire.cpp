@@ -44,8 +44,8 @@ WEAPON_INFO weapons[LG_MAX_HOLD] = {
     },
     {   // PISTOLS
         { PISTOL_LOCK_YMIN, PISTOL_LOCK_YMAX, PISTOL_LOCK_XMIN, PISTOL_LOCK_XMAX },
-		{ PISTOL_LARM_YMIN, PISTOL_LARM_YMAX, PISTOL_LARM_XMIN, PISTOL_LARM_XMAX },
-		{ PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN, PISTOL_RARM_XMAX },
+        { PISTOL_LARM_YMIN, PISTOL_LARM_YMAX, PISTOL_LARM_XMIN, PISTOL_LARM_XMAX },
+        { PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN, PISTOL_RARM_XMAX },
         ANGLE(10),
         ANGLE(8),
         650,
@@ -96,7 +96,7 @@ WEAPON_INFO weapons[LG_MAX_HOLD] = {
         9,
         3,
         10,
-        SFX_LARA_SHOTGUN,
+        SFX_LARA_SHOTGUN
     },
     {   // GRENADEGUN
         { GRENADE_LOCK_YMIN, GRENADE_LOCK_YMAX, GRENADE_LOCK_XMIN, GRENADE_LOCK_XMAX },
@@ -110,7 +110,7 @@ WEAPON_INFO weapons[LG_MAX_HOLD] = {
         0,
         2,
         10,
-        NULL,
+        NULL // animation sound !
     },
     {   // CROSSBOW
         { CROSSBOW_LOCK_YMIN, CROSSBOW_LOCK_YMAX, CROSSBOW_LOCK_XMIN, CROSSBOW_LOCK_XMAX },
@@ -124,7 +124,7 @@ WEAPON_INFO weapons[LG_MAX_HOLD] = {
         0,
         2,
         10,
-        NULL
+        NULL // animation sound !
     },
     {   // FLARE
         { 0, 0, 0, 0 },
@@ -164,7 +164,7 @@ WEAPON_INFO weapons[LG_MAX_HOLD] = {
         0,
         2,
         0,
-        SFX_LARA_UZI_FIRE,
+        SFX_LARA_UZI_FIRE
     },
 };
 

@@ -179,7 +179,7 @@
 #define ropes                               ARRAY_(0x007FB4C0, ROPE_STRUCT, [MAX_ROPES])
 #define collide_item                        ARRAY_(0x00804F80, ITEM_INFO*, [256]) // not sure for the size !
 #define collide_meshes                      ARRAY_(0x00805380, MESH_INFO*, [256]) // not sure for the size !
-#define effect_routines                     ARRAY_(0x004ADE8C, EFFECT_ROUTINES_STRUCT, [50])
+#define effect_routines                     ARRAY_(0x004ADE8C, EFFECT_ROUTINES_STRUCT, [47])
 
 
 
