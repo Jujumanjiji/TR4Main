@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\camera.cpp" />
+    <ClCompile Include="src\game\debris.cpp" />
     <ClCompile Include="src\game\lara\lara.cpp" />
     <ClCompile Include="src\game\lara\lara1gun.cpp" />
     <ClCompile Include="src\game\lara\lara2gun.cpp" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\camera.h" />
+    <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\lara\lara.h" />
     <ClInclude Include="src\extern\bass\bass.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

@@ -216,7 +216,7 @@ struct MESH_INFO
     int z;
     short y_rot;
     short shade;
-    short ocb;
+    short ocb; // MESH_OCB flags
     short static_number;
 };
 
@@ -246,6 +246,45 @@ struct DOORS
 {
     WORD number_doors;
     DOOR_INFO door_info;
+};
+
+struct PCLIGHT
+{
+    int x, y, z;       // Position of light, in world coordinates
+    int r, g, b;       // Colour of the light
+    unsigned int ShadowIntensity;    // only if LightType == LIGHT_SHADOW
+    int In;            // Cosine of the IN value for light / size of IN value
+    int Out;           // Cosine of the OUT value for light / size of OUT value
+    int RadIn;         // (IN radians) * 2
+    int RadOut;        // (OUT radians) * 2
+    int Range;         // Range of light
+    int dx, dy, dz;    // Direction - used only by sun and spot lights
+    int x2, y2, z2;      // Same as position, only in integer.
+    int dx2, dy2, dz2;   // Same as direction, only in integer.
+    int r2, g2, b2;
+    int r3, g3, b3;
+    int UnknownInt;
+    BYTE LightType;
+    BYTE UnknownByte;
+    int dx3, dy3, dz3;
+    int magnsq;
+};
+
+struct ILIGHT
+{
+    short x;
+    short y;
+    short z;
+    short pad;
+    BYTE r;
+    BYTE g;
+    BYTE b;
+    BYTE cd;
+};
+
+struct ITEM_LIGHT
+{
+    ILIGHT light[4];
 };
 
 struct ROOM_INFO
@@ -300,6 +339,7 @@ struct ROOM_INFO
     void* pLightObject;
 };
 
+
 struct ITEM_INFO
 {
     int floor;
@@ -331,7 +371,7 @@ struct ITEM_INFO
     short reserved_4;
     void* data;
     PHD_3DPOS pos;
-    unsigned char light_data[5528];
+    BYTE light_data[5528];
     unsigned int active : 1;
     unsigned int status : 2;
     unsigned int gravity_status : 1;
@@ -417,24 +457,24 @@ struct OBJECT_INFO
     short pivot_length;
     short radius;
     short shadow_size;
-    unsigned short bit_offset;
-    unsigned short loaded : 1;
-    unsigned short intelligent : 1;
-    unsigned short non_lot : 1;                // can fly correctly
-    unsigned short save_position : 1;
-    unsigned short save_hitpoints : 1;
-    unsigned short save_flags : 1;
-    unsigned short save_anim : 1;
-    unsigned short semi_transparent : 1;
-    unsigned short water_creature : 1;
-    unsigned short using_drawanimating_item : 1;
-    unsigned short hit_effect : 2;
-    unsigned short undead : 1;
-    unsigned short save_mesh : 1;
-    unsigned short unknown : 2;
+    WORD bit_offset;
+    WORD loaded : 1;
+    WORD intelligent : 1;
+    WORD non_lot : 1;
+    WORD save_position : 1;
+    WORD save_hitpoints : 1;
+    WORD save_flags : 1;
+    WORD save_anim : 1;
+    WORD semi_transparent : 1;
+    WORD water_creature : 1;
+    WORD using_drawanimating_item : 1;
+    WORD hit_effect : 2;
+    WORD undead : 1;
+    WORD save_mesh : 1;
+    WORD unknown : 2;
     LPDRAWEXTRA draw_routine_extra;
-    unsigned int explodable_meshbits;
-    unsigned int pad;
+    int explodable_meshbits;
+    int pad;
 };
 
 struct RANGE_STRUCT
@@ -1320,6 +1360,24 @@ struct PICKUP_STRUCT
 {
     short timer;
     short object_number;
+};
+
+struct SPHERE
+{
+    int x;
+    int y;
+    int z;
+    int r;
+};
+
+struct SHATTER_ITEM
+{
+    SPHERE sptr;
+    ITEM_LIGHT *il;
+    short *meshp;
+    int bit;
+    short yrot;
+    short flags;
 };
 
 struct D3DTLBUMPVERTEX

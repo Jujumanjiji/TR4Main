@@ -72,6 +72,7 @@
 #define BinocularRange                      VAR_I_(0x004BF3E4, int, 0)
 #define LaserSight                          VAR_I_(0x004BF3F0, int, 0)
 #define LaserSightActive                    VAR_I_(0x004BF37E, int, 0)
+#define LaserSightPos                       VAR_U_(0x00800160, PHD_VECTOR)
 #define gf_mirror_room                      VAR_U_(0x007FD250, unsigned char)
 #define Lightning                           ARRAY_(0x007FE130, unsigned short, [])
 #define LightningDraw                       VAR_U_(0x007FDF68, short)
@@ -113,6 +114,7 @@
 #define level_data                          VAR_U_(0x005333A4, char*)
 #define fp_level                            VAR_U_(0x00533A74, LPFILE)
 #define savegame_ammoused                   VAR_U_(0x007F785A, int)
+#define savegame_ammohit                    VAR_U_(0x007F785E, int)
 #define height_type                         VAR_U_(0x007FE290, int) // height_types enum
 #define interpolated_bounds                 ARRAY_(0x007FE140, short, [6])
 #define LeftClimbTab                        ARRAY_(0x004AD800, short, [4])
@@ -122,6 +124,17 @@
 #define SelectedObject                      VAR_I_(0x004AE06C, int, NO_ITEM)
 #define current_pendulum                    VAR_U_(0x007FD1A0, PENDULUM)
 #define FXType                              VAR_U_(0x007FE7E0, short)
+#define number_los_rooms                    VAR_I_(0x004BF418, int, 0)
+#define los_rooms                           ARRAY_(0x007FE260, short, [20])
+#define ClosestItem                         VAR_U_(0x007FE2E0, int)
+#define ClosestDist                         VAR_U_(0x007FE380, int)
+#define ClosestCoord                        VAR_U_(0x007FE330, PHD_VECTOR)
+#define SmashedMeshCount                    VAR_I_(0x004BF3FE, short, 0)
+#define SmashedMeshRoom                     ARRAY_(0x007FE360, short, [16])
+#define SmashedMesh                         ARRAY_(0x007FE7A0, GAME_VECTOR*, [4])
+#define ShatterItem                         VAR_U_(0x007FE960, SHATTER_ITEM)
+
+
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

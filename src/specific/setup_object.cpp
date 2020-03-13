@@ -85,7 +85,8 @@ void SetupObject::switchs()
         obj->collision = NULL;
         obj->save_anim = true;
         obj->save_flags = true;
-        obj->unknown = 1;
+        obj->explodable_meshbits = 1;
+        //obj->unknown = TRUE;
     }
 
     obj = &objects[SWITCH_TYPE8];

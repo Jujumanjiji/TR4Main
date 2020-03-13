@@ -56,6 +56,7 @@ using namespace std;
 #define MODIFY 0x0008
 #define FOLLOW 0x0010
 #define PATROL2 0x0020
+#define ALL_AIOBJ (GUARD|AMBUSH|PATROL1|MODIFY|FOLLOW|PATROL2)
 
 #define TIMID FALSE
 #define VIOLENT TRUE

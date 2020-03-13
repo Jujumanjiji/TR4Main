@@ -8,6 +8,12 @@ enum HEADINGS
     WEST
 };
 
+enum MESH_OCB
+{
+    MESH_INVISIBLE,
+    MESH_VISIBLE,
+};
+
 enum CARRIED_TYPES
 {
     CR_EMPTY = 0x0,

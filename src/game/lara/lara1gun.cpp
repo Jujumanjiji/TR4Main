@@ -132,6 +132,7 @@ void shotgun_handler(int weapon_type)
 #ifdef DEBUG_CHEAT
     if (CHK_ANY(TrInput, IN_FLARE))
     {
+        lara.revolver_ammo_count = INFINITE_AMMO;
         lara.shotgun_ammo1_count = INFINITE_AMMO;
         lara.shotgun_ammo2_count = INFINITE_AMMO;
         lara.grenade_ammo1_count = INFINITE_AMMO;
@@ -239,7 +240,8 @@ void animate_shotgun(int weapon_type)
                                 fire_grenade();
                                 break;
                             case LG_CROSSBOW:
-                                fire_crossbow(nullptr);
+                                if (!LaserSight) // dont delete more ammo that necessary !
+                                    fire_crossbow(nullptr);
                                 break;
                         }
 

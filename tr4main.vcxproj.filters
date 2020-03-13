@@ -227,6 +227,9 @@
     <ClCompile Include="src\game\lara\laracontrol.cpp">
       <Filter>src\game\lara</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\debris.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -390,6 +393,9 @@
     </ClInclude>
     <ClInclude Include="src\global\injector.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\debris.h">
+      <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

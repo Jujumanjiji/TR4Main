@@ -65,6 +65,8 @@ else if (A < -B)\
 #define TRIGMULT3(a, b, c) TRIGMULT2(TRIGMULT2(a, b), c)
 
 #define CHK_ANY(x, y) (x & y) != 0
+#define CHK_EXI(x, y) (x & y)
+#define CHK_EQA(x, y) (x & y) != y
 #define CHK_NOP(x, y) !(x & y)
 
 #define INITIALISE(add) ((void(__cdecl*)(short itemNumber)) add)

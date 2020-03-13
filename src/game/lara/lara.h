@@ -540,10 +540,15 @@ extern int weapon_meshes(int weapon_type);
 extern void fire_shotgun(void);
 extern void fire_grenade(void);
 extern void fire_crossbow(PHD_3DPOS* haveDefinedPos);
+extern void FireCrossbowBoltFromLaserSight(GAME_VECTOR* dest, GAME_VECTOR* src);
 extern void InitialiseNewWeapons(void);
 extern short* GetCurrentAmmo(int weapon_type);
 extern void LaraTargetInfo(WEAPON_INFO* winfo);
 extern void LaraGetNewTarget(WEAPON_INFO* winfo);
+extern void AimWeapon(WEAPON_INFO* winfo, LARA_ARM* arm);
+extern void find_target_point(ITEM_INFO* item, GAME_VECTOR* target);
+extern BOOL FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[2]);
+extern int GetTargetOnLOS(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, BOOL firing);
 
 #ifdef DLL_INJECT
 ///#define legacy_weapon_object ((int(__cdecl*)(int weapon_type)) 0x0042EA70)
@@ -551,14 +556,17 @@ extern void LaraGetNewTarget(WEAPON_INFO* winfo);
 ///#define legacy_fire_shotgun ((void(__cdecl*)(void)) 0x00429260)
 ///#define legacy_fire_grenade ((void(__cdecl*)(void)) 0x00429480)
 ///#define legacy_fire_crossbow ((void(__cdecl*)(PHD_3DPOS* haveDefinedPos)) 0x0042A270)
+///#define legacy_FireCrossbowBoltFromLaserSight ((void(__cdecl*)(GAME_VECTOR* dest, GAME_VECTOR* src)) 0x0044D820)
 ///#define legacy_InitialiseNewWeapons ((void(__cdecl*)(void)) 0x0042DDF0)
 ///#define legacy_GetCurrentAmmo ((short*(__cdecl*)(int weapon_type)) 0x0042F480)
 ///#define legacy_LaraTargetInfo ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042DF30)
 ///#define legacy_LaraGetNewTarget ((void(__cdecl*)(WEAPON_INFO* winfo)) 0x0042E0D0)
-#define AimWeapon ((void(__cdecl*)(WEAPON_INFO* winfo, LARA_ARM* arm)) 0x0042E560)
-#define FireWeapon ((BOOL(__cdecl*)(int weapon_type, ITEM_INFO* target, ITEM_INFO* laraitem, short angles[2])) 0x0042E630)
+///#define legacy_AimWeapon ((void(__cdecl*)(WEAPON_INFO* winfo, LARA_ARM* arm)) 0x0042E560)
+///#define legacy_find_target_point ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* pos)) 0x0042E4A0)
+///#define legacy_FireWeapon ((int(__cdecl*)(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[2])) 0x0042E630)
+///#define legacy_GetTargetOnLOS ((int(__cdecl*)(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, BOOL firing)) 0x0044D890)
+#define HitTarget ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)) 0x0042E920)
 #define LaraGun ((void(__cdecl*)(void)) 0x0042D840)
-#define find_target_point ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* pos)) 0x0042E4A0)
 #endif
 #pragma endregion
 
