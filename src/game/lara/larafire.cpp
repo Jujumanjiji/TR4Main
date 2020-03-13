@@ -13,6 +13,162 @@
 
 #define NEAR_ANGLE ANGLE(15)
 
+PISTOL_DEF pistols_table[4] = {
+    { // UNARMED
+        0, 0, 0, 0, 0
+    },
+    { // PISTOLS
+        PISTOLS_ANIM, 4, 5, 13, 24
+    },
+    { // REVOLVER
+        REVOLVER_ANIM, 7, 8, 15, 29
+    },
+    { // UZIS
+        UZI_ANIM, 4, 5, 13, 24
+    }
+};
+
+WEAPON_INFO weapons[LG_MAX_HOLD] = {
+    {   // UNARMED
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 0 },
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    },
+    {   // PISTOLS
+        { PISTOL_LOCK_YMIN, PISTOL_LOCK_YMAX, PISTOL_LOCK_XMIN, PISTOL_LOCK_XMAX },
+		{ PISTOL_LARM_YMIN, PISTOL_LARM_YMAX, PISTOL_LARM_XMIN, PISTOL_LARM_XMAX },
+		{ PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN, PISTOL_RARM_XMAX },
+        ANGLE(10),
+        ANGLE(8),
+        650,
+        SECTOR(8),
+        1,
+        9,
+        3,
+        0,
+        SFX_LARA_FIRE
+    },
+    {   // REVOLVER
+        { REVOLVER_LOCK_YMIN, REVOLVER_LOCK_YMAX, REVOLVER_LOCK_XMIN, REVOLVER_LOCK_XMAX },
+        { REVOLVER_LARM_YMIN, REVOLVER_LARM_YMAX, REVOLVER_LARM_XMIN, REVOLVER_LARM_XMAX },
+        { REVOLVER_RARM_YMIN, REVOLVER_RARM_YMAX, REVOLVER_RARM_XMIN, REVOLVER_RARM_XMAX },
+        ANGLE(10),
+        ANGLE(4),
+        650,
+        SECTOR(8),
+        21,
+        16,
+        3,
+        0,
+        SFX_REVOLVER_FIRE
+    },
+    {   // UZIS
+        { PISTOL_LOCK_YMIN, PISTOL_LOCK_YMAX, PISTOL_LOCK_XMIN, PISTOL_LOCK_XMAX },
+        { PISTOL_LARM_YMIN, PISTOL_LARM_YMAX, PISTOL_LARM_XMIN, PISTOL_LARM_XMAX },
+        { PISTOL_RARM_YMIN, PISTOL_RARM_YMAX, PISTOL_RARM_XMIN, PISTOL_RARM_XMAX },
+        ANGLE(10),
+        ANGLE(8),
+        650,
+        SECTOR(8),
+        1,
+        3,
+        3,
+        0,
+        SFX_LARA_UZI_FIRE
+    },
+    {   // SHOTGUN
+        { SHOTGUN_LOCK_YMIN, SHOTGUN_LOCK_YMAX, SHOTGUN_LOCK_XMIN, SHOTGUN_LOCK_XMAX },
+        { SHOTGUN_LARM_YMIN, SHOTGUN_LARM_YMAX, SHOTGUN_LARM_XMIN, SHOTGUN_LARM_XMAX },
+        { SHOTGUN_RARM_YMIN, SHOTGUN_RARM_YMAX, SHOTGUN_RARM_XMIN, SHOTGUN_RARM_XMAX },
+        ANGLE(10),
+        0,              // pullet randomized !
+        500,
+        SECTOR(8),
+        3,
+        9,
+        3,
+        10,
+        SFX_LARA_SHOTGUN,
+    },
+    {   // GRENADEGUN
+        { GRENADE_LOCK_YMIN, GRENADE_LOCK_YMAX, GRENADE_LOCK_XMIN, GRENADE_LOCK_XMAX },
+        { GRENADE_LARM_YMIN, GRENADE_LARM_YMAX, GRENADE_LARM_XMIN, GRENADE_LARM_XMAX },
+        { GRENADE_RARM_YMIN, GRENADE_RARM_YMAX, GRENADE_RARM_XMIN, GRENADE_RARM_XMAX },
+        ANGLE(10),
+        ANGLE(8),
+        500,
+        SECTOR(8),
+        20,
+        0,
+        2,
+        10,
+        NULL,
+    },
+    {   // CROSSBOW
+        { CROSSBOW_LOCK_YMIN, CROSSBOW_LOCK_YMAX, CROSSBOW_LOCK_XMIN, CROSSBOW_LOCK_XMAX },
+        { CROSSBOW_LARM_YMIN, CROSSBOW_LARM_YMAX, CROSSBOW_LARM_XMIN, CROSSBOW_LARM_XMAX },
+        { CROSSBOW_RARM_YMIN, CROSSBOW_RARM_YMAX, CROSSBOW_RARM_XMIN, CROSSBOW_RARM_XMAX },
+        ANGLE(10),
+        ANGLE(8),
+        500,
+        SECTOR(8),
+        5,
+        0,
+        2,
+        10,
+        NULL
+    },
+    {   // FLARE
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 0 },
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    },
+    {   // TORCH
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 0 },
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    },
+    {   // SKIDOO GUNS
+        { SKID_LOCK_YMIN, SKID_LOCK_YMAX, SKID_LOCK_XMIN, SKID_LOCK_XMAX },
+        { SKID_LARM_YMIN, SKID_LARM_YMAX, SKID_LARM_XMIN, SKID_LARM_XMAX },
+        { SKID_RARM_YMIN, SKID_RARM_YMAX, SKID_RARM_XMIN, SKID_RARM_XMAX },
+        ANGLE(10), // aiming speed
+        ANGLE(8),  // randomness
+        400,
+        SECTOR(8),
+        3, // like uzis
+        0,
+        2,
+        0,
+        SFX_LARA_UZI_FIRE,
+    },
+};
+
+
 // work nice :D
 void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv)
 {
@@ -242,7 +398,6 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
         ITEM_INFO* item;
         FLOOR_INFO* floor;
         PHD_VECTOR pos;
-        int x, y, z;
         int height;
 
         short item_number = CreateItem();
@@ -631,10 +786,8 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
     GAME_VECTOR vsrc, vdest;
     WEAPON_INFO* winfo;
     SPHERE* sptr, slist[33];
-    FLOOR_INFO* floor;
     int r, i, nums, bestdist, best;
-    int x, z;
-    short room_number, angle;
+    short room_number;
     short ammo;
     
     winfo = &weapons[weapon_type];
@@ -722,7 +875,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
     los = LOS(dest, src);
     GetFloor(src->x, src->y, src->z, &src->room_number);
     if (firing && LaserSight && lara.gun_type == LG_REVOLVER)
-        SoundEffect(SFX_DESERT_EAGLE_FIRE, &lara_item->pos, 0);
+        SoundEffect(SFX_REVOLVER_FIRE, &lara_item->pos, 0);
 
     closest = ObjectOnLOS2(dest, src, &vec, &mesh);
     if (closest == 999)

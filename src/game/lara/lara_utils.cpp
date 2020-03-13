@@ -1744,7 +1744,7 @@ BOOL TestLaraSlide(ITEM_INFO* item, COLL_INFO* coll)
 
 BOOL TestLaraVault(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (CHK_NOP(TrInput, IN_ACTION) || lara.gun_status == LHS_HANDBUSY)
+    if (CHK_NOP(TrInput, IN_ACTION) || lara.gun_status != LHS_ARMLESS)
         return FALSE;
 
     if (coll->coll_type == COLL_FRONT)

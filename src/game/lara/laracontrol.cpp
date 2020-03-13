@@ -513,8 +513,8 @@ void LaraWaterCurrent(COLL_INFO* coll)
         angle = ((mGetAngle(target.x, target.z, item->pos.x, item->pos.z) - 0x4000) >> 4) & 0xFFF;
         dx = speed * rcossin_tbl[2 * angle] >> 2;
         dz = speed * rcossin_tbl[2 * angle + 1] >> 2;
-        lara.current_xvel += (dx - lara.current_xvel) >> 4;
-        lara.current_zvel += (dz - lara.current_zvel) >> 4;
+        lara.current_xvel += (short)(dx - lara.current_xvel) >> 4;
+        lara.current_zvel += (short)(dz - lara.current_zvel) >> 4;
         item->pos.y += (target.y - item->pos.y) >> 4;
     }
 

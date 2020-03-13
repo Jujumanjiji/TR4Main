@@ -1113,6 +1113,8 @@ short WEAPON_AMMO::get(int weapon_type)
         default:
             return lara.pistol_ammo_count;
     }
+
+    return -2; // NOT FOUND!
 }
 
 void WEAPON_AMMO::increase(int weapon_type, int value)

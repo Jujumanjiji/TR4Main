@@ -369,7 +369,7 @@ enum LARA_HAND
 
 enum LARA_HOLD
 {
-    LG_UNARMED = 0,
+    LG_UNARMED,      // NOTHING
     LG_PISTOLS,      // WEAPON
     LG_REVOLVER,     // WEAPON
     LG_UZIS,         // WEAPON
@@ -377,10 +377,8 @@ enum LARA_HOLD
     LG_GRENADEGUN,   // WEAPON
     LG_CROSSBOW,     // WEAPON
     LG_FLARE,        // WEAPON
-    LG_TORCH,        // ITEM
-    LG_FIRED_TORCH,  // ITEM
-    LG_JEEP,         // VEHICLE
-    LG_SIDECAR,      // VEHICLE
+    LG_TORCH,        // WEAPON
+    LG_SKIDOO,       // VEHICLES
     LG_MAX_HOLD      // END_OF_LARA_HOLD (DONT DELETE IT !!)
 };
 
@@ -1180,7 +1178,7 @@ enum SOUND_EFFECT_ID
     SFX_WATER_LOOP,
     SFX_VONCROY_JUMP,
     SFX_LOCUSTS_LOOP,
-    SFX_DESERT_EAGLE_FIRE,
+    SFX_REVOLVER_FIRE,
     SFX_BOULDER_FALL,
     SFX_LARA_MINI_LOAD,
     SFX_LARA_MINI_LOCK,
