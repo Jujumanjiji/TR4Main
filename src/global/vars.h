@@ -190,4 +190,7 @@
 
 
 
+
+#define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
+
 #endif

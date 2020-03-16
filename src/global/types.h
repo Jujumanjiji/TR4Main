@@ -9,6 +9,19 @@ struct JMP
     DWORD offset;    // jump offset
 };
 
+struct INVOBJ
+{
+    short object_number;
+    short yoff;
+    short scale;
+    short yrot;
+    short xrot;
+    short zrot;
+    short flags;
+    short name;
+    DWORD meshbits;
+};
+
 struct LARA_MATRIX
 {
     int hips[12];
