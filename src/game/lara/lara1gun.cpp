@@ -73,8 +73,8 @@ void draw_shotgun(int weapon_type)
         item->state_next = W_UAIM;
 
     lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->current_anim].frame_ptr;
-    lara.l_arm.frame_curr = lara.r_arm.frame_curr = item->current_frame - anims[item->current_anim].frame_base;
-    lara.l_arm.anim_curr  = lara.r_arm.anim_curr  = item->current_anim;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->current_frame - anims[item->current_anim].frame_base;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->current_anim;
 }
 
 void undraw_shotgun(int weapon_type)
@@ -95,8 +95,8 @@ void undraw_shotgun(int weapon_type)
         lara.l_arm.y_rot = 0;
         KillItem(lara.weapon_item);
         lara.weapon_item = NO_ITEM;
-        lara.r_arm.frame_curr = 0;
-        lara.l_arm.frame_curr = 0;
+        lara.r_arm.frame_number = 0;
+        lara.l_arm.frame_number = 0;
     }
     else if (item->state_current == W_UNDRAW && GetCurrentFrame(item) == 21)
     {
@@ -104,8 +104,8 @@ void undraw_shotgun(int weapon_type)
     }
 
     lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->current_anim].frame_ptr;
-    lara.l_arm.frame_curr = lara.r_arm.frame_curr = item->current_frame - anims[item->current_anim].frame_base;
-    lara.l_arm.anim_curr  = lara.r_arm.anim_curr  = item->current_anim;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->current_frame - anims[item->current_anim].frame_base;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->current_anim;
 }
 
 void shotgun_handler(int weapon_type)
@@ -282,8 +282,8 @@ void animate_shotgun(int weapon_type)
 
     AnimateItem(item);
     lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->current_anim].frame_ptr;
-    lara.l_arm.frame_curr = lara.r_arm.frame_curr = item->current_frame - anims[item->current_anim].frame_base;
-    lara.l_arm.anim_curr  = lara.r_arm.anim_curr  = item->current_anim;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->current_frame - anims[item->current_anim].frame_base;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->current_anim;
 }
 
 #ifdef DLL_INJECT

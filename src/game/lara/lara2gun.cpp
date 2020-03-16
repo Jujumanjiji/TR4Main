@@ -30,16 +30,16 @@ void set_arm_info(LARA_ARM* arm, short frame)
     anim_base = objects[p->object_number].anim_index;
 
     if (frame < p->draw1_anim)
-        arm->anim_curr = anim_base + 0;
+        arm->anim_number = anim_base + 0;
     else if (frame < p->draw2_anim)
-        arm->anim_curr = anim_base + 1;
+        arm->anim_number = anim_base + 1;
     else if (frame < p->recoil_anim)
-        arm->anim_curr = anim_base + 2;
+        arm->anim_number = anim_base + 2;
     else
-        arm->anim_curr = anim_base + 3;
+        arm->anim_number = anim_base + 3;
 
-    arm->frame_base = anims[arm->anim_curr].frame_ptr;
-    arm->frame_curr = frame;
+    arm->frame_base = anims[arm->anim_number].frame_ptr;
+    arm->frame_number = frame;
 }
 
 void draw_pistol_meshes(int weapon_type)
@@ -71,7 +71,7 @@ void draw_pistols(int weapon_type)
     short ani;
 
     table = &pistols_table[lara.gun_type];
-    ani = lara.l_arm.frame_curr + 1;
+    ani = lara.l_arm.frame_number + 1;
 
     if (ani < table->draw1_anim || ani > (table->recoil_anim - 1))
     {
@@ -100,15 +100,15 @@ void undraw_pistols(int weapon_type)
     table = &pistols_table[lara.gun_type];
 
     // frame left
-    frameL = lara.l_arm.frame_curr;
+    frameL = lara.l_arm.frame_number;
     if (frameL >= table->recoil_anim)
     {
         frameL = table->draw1_anim2;
     }
     else if ((frameL > 0) && (frameL < table->draw1_anim))
     {
-        lara.l_arm.x_rot -= (lara.l_arm.x_rot / lara.l_arm.frame_curr);
-        lara.l_arm.y_rot -= (lara.l_arm.y_rot / lara.l_arm.frame_curr);
+        lara.l_arm.x_rot -= (lara.l_arm.x_rot / lara.l_arm.frame_number);
+        lara.l_arm.y_rot -= (lara.l_arm.y_rot / lara.l_arm.frame_number);
         frameL--;
     }
     else if (frameL == 0)
@@ -130,15 +130,15 @@ void undraw_pistols(int weapon_type)
     set_arm_info(&lara.l_arm, frameL);
 
     // frame right
-    frameR = lara.r_arm.frame_curr;
+    frameR = lara.r_arm.frame_number;
     if (frameR >= table->recoil_anim)
     {
         frameR = table->draw1_anim2;
     }
     else if ((frameR > 0) && (frameR < table->draw1_anim))
     {
-        lara.r_arm.x_rot -= (lara.r_arm.x_rot / lara.r_arm.frame_curr);
-        lara.r_arm.y_rot -= (lara.r_arm.y_rot / lara.r_arm.frame_curr);
+        lara.r_arm.x_rot -= (lara.r_arm.x_rot / lara.r_arm.frame_number);
+        lara.r_arm.y_rot -= (lara.r_arm.y_rot / lara.r_arm.frame_number);
         frameR--;
     }
     else if (frameR == 0)
@@ -163,8 +163,8 @@ void undraw_pistols(int weapon_type)
     if (frameL == table->draw1_anim && frameR == table->draw1_anim)
     {
         lara.gun_status = LHS_ARMLESS;
-        lara.l_arm.frame_curr = 0;
-        lara.r_arm.frame_curr = 0;
+        lara.l_arm.frame_number = 0;
+        lara.r_arm.frame_number = 0;
         lara.l_arm.lock = FALSE;
         lara.r_arm.lock = FALSE;
         lara.target = NULL;
@@ -184,13 +184,13 @@ void ready_pistols(int weapon_type)
     lara.gun_status = LHS_READY;
     lara.target = NULL;
 
-    lara.l_arm.frame_curr = 0;
+    lara.l_arm.frame_number = 0;
     lara.l_arm.z_rot = 0;
     lara.l_arm.y_rot = 0;
     lara.l_arm.x_rot = 0;
     lara.l_arm.lock = FALSE;
 
-    lara.r_arm.frame_curr = 0;
+    lara.r_arm.frame_number = 0;
     lara.r_arm.z_rot = 0;
     lara.r_arm.y_rot = 0;
     lara.r_arm.x_rot = 0;
@@ -277,7 +277,7 @@ void animate_pistols(int weapon_type)
     p = &pistols_table[lara.gun_type];
 
     /// process right arm
-    frameR = lara.r_arm.frame_curr;
+    frameR = lara.r_arm.frame_number;
     if (lara.r_arm.lock || (CHK_ANY(TrInput, IN_ACTION) && !lara.target))
     {
         if ((frameR >= 0) && (frameR < p->draw1_anim2))
@@ -345,7 +345,7 @@ void animate_pistols(int weapon_type)
     set_arm_info(&lara.r_arm, frameR);
 
     /// process left arm
-    frameL = lara.l_arm.frame_curr;
+    frameL = lara.l_arm.frame_number;
     if (lara.l_arm.lock || (CHK_ANY(TrInput, IN_ACTION) && !lara.target))
     {
         if ((frameL >= 0) && (frameL < p->draw1_anim2))

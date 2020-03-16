@@ -15,11 +15,18 @@
 
 #define phd_mxptr                           VAR_U_(0x007E71D8, int*)
 #define w2v_matrix                          ARRAY_(0x00753CC8, int, [12])
+#define IM_ptr                              VAR_U_(0x007FE124, int*)
+#define IM_rate                             VAR_U_(0x007FE120, int)
+#define IM_frac                             VAR_U_(0x007FDF54, int)
 
 ///===============================///
 ///             OTHER             ///
 ///===============================///
 
+#define lara_matrix_normal_type2            ARRAY_(0x0080EA00, int, [12][12])
+#define lara_matrix_holsters_type2          ARRAY_(0x0080E720, int, [12][12]) // first [12] = joint, second [12] = matrix
+#define lara_matrix_normal                  VAR_U_(0x0080EA00, LARA_MATRIX)
+#define lara_matrix_holsters                VAR_U_(0x0080E720, LARA_MATRIX)
 #define phd_laralefthand                    ARRAY_(0x0080E9C0, int, [12])
 #define phd_lararighthand                   ARRAY_(0x0080E930, int, [12])
 #define phd_left                            VAR_U_(0x00753C78, int)
@@ -87,7 +94,7 @@
 #define gfLayer2Color                       VAR_U_(0x007FD25C, unsigned short)
 #define gfLayer2Color2                      VAR_U_(0x007FDF5E, unsigned short)
 #define CurrentDeathItemRoom                VAR_U_(0x007FDF50, short)
-#define CurrentDeathItemColor               VAR_I_(0x004AD7D4, unsigned int, 0x0FF000000)
+#define CurrentDeathItemColor               VAR_I_(0x004AD7D4, unsigned int, 0xFF000000)
 #define TargetType                          VAR_U_(0x007FE9B8, short) // use TARGET_TYPE enum
 #define vbufdoor                            ARRAY_(0x007FDF20, DOOR_VBUF, [4])
 #define GunFlashColor                       VAR_U_(0x005C047C, unsigned int)
@@ -101,7 +108,7 @@
 #define dummy_rotation                      ARRAY_(0x004BF630, short, [12])
 #define Setting_MusicVolume                 VAR_U_(0x004B38AC, int)
 #define Setting_SFXVolume                   VAR_U_(0x004B38B0, int)
-#define force_fixed_camera                VAR_U_(0x007FE8C0, bool)
+#define force_fixed_camera                  VAR_U_(0x007FE8C0, bool)
 #define baddie_slots                        VAR_U_(0x007FD1FC, CREATURE_INFO*)
 #define trigger_index                       VAR_U_(0x007FE248, short*)
 #define number_boxes                        VAR_U_(0x007FE9B4, int)
@@ -134,8 +141,8 @@
 #define SmashedMeshRoom                     ARRAY_(0x007FE360, short, [16])
 #define SmashedMesh                         ARRAY_(0x007FE7A0, GAME_VECTOR*, [4])
 #define ShatterItem                         VAR_U_(0x007FE960, SHATTER_ITEM)
-
-
+#define lara_shadow_bbox                    VAR_U_(0x0080E710, short*)
+#define vertex_buffer                       VAR_U_(0x00753910, LPDIRECT3DVERTEXBUFFER)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

@@ -241,3 +241,8 @@
 #define legacy_lara_col_duck2     ADDRESS_STRUCT(0x00420DB0, lara_col_duck2)
 #define legacy_lara_col_rope     ADDRESS_STRUCT(0x00424270, lara_col_rope)
 #define legacy_lara_col_ropefwd    ADDRESS_STRUCT(0x00424680, lara_col_ropefwd)
+
+///#define CalcLaraMatrices ((void(__cdecl*)(int flags)) 0x0041D010)
+//WARNING: contains the weapon render !!!! (it's not in DrawLara() and DrawLaraInt() anymore !)
+//#define DEL_CalcLaraMatrices_Normal ((void(__cdecl*)(short *frame[2], int *bone, short type)) 0x0041DAF0)
+//#define DEL_CalcLaraMatrices_Interpolate ((void(__cdecl*)(short *frame1, short *frame2, int frac, int rate, int *bone, short type)) 0x0041E630)

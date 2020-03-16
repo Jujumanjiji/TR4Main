@@ -186,7 +186,7 @@ void LoadObjects(void)
     }
 
     // skinning data
-    S_Log(LT_Function, "Assigning LARA_SKIN_JOINT to LARA", true);
+    //S_Log(LT_Function, "Assigning LARA_SKIN_JOINT to LARA", true);
     CreateSkinningData();
 
     // double the mesh index & duplicate item

@@ -165,8 +165,6 @@ void injector::inject_drawprimitive()
     //this->inject(0x0047F620, DrawHorizon);
     //this->inject(0x00488950, DrawHorizonLayer);
     //this->inject(0x00489480, CalcHorizonAndLayer);
-    //this->inject(0x0041D140, DrawLara);
-    //this->inject(0x00455800, DrawLara_Mirror);
     //this->inject(0x00439B80, SetGunFlash);
     //this->inject(0x00439AE0, SetupGunFlash);
     //this->inject(0x00439C00, DrawGunFlashes);

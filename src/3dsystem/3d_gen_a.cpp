@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "3d_gen_a.h"
 
+/*
 void phd_PushMatrix(void)
 {
     int *backup = phd_mxptr;
@@ -27,7 +28,7 @@ void phd_PushUnitMatrix(void)
     phd_mxptr[M21] = 0;
     phd_mxptr[M20] = 0;
 }
-
+*/
 void phd_PopMatrix(void)
 {
     phd_mxptr -= 12;

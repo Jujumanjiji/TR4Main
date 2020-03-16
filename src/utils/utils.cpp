@@ -1034,6 +1034,14 @@ void phd_SwapGarYXZsuperpack(int frac, short** rotation1, short** rotation2)
         gar_RotYXZsuperpack(rotation1, 0);
 }
 
+void phd_SwapGarYXZsuperpack(int frac, short** rotation1, short** rotation2, int skip)
+{
+    if (frac)
+        gar_RotYXZsuperpack_I(rotation1, rotation2, skip);
+    else
+        gar_RotYXZsuperpack(rotation1, skip);
+}
+
 void phd_SwapRotY(int frac, short y)
 {
     if (frac)
@@ -1072,6 +1080,19 @@ void phd_SwapPutPolygons(int frac, int clip, short** mesh)
         phd_PutPolygons_I(*mesh, clip);
     else
         phd_PutPolygons(*mesh, clip);
+}
+
+void phd_PutMatrix(int* matrix)
+{
+    memcpy(matrix, phd_mxptr, 48);
+}
+
+void phd_PutMatrix_I(int* matrix)
+{
+    phd_PushMatrix();
+    InterpolateMatrix();
+    memcpy(matrix, phd_mxptr, 48);
+    phd_PopMatrix();
 }
 
 WEAPON_AMMO weapon_ammo;

@@ -491,14 +491,14 @@ void InitialiseNewWeapons(void)
 {
     lara.target = nullptr;
 
-    lara.l_arm.frame_curr = 0;
+    lara.l_arm.frame_number = 0;
     lara.l_arm.x_rot = 0;
     lara.l_arm.y_rot = 0;
     lara.l_arm.z_rot = 0;
     lara.l_arm.lock = FALSE;
     lara.l_arm.flash_gun = 0;
 
-    lara.r_arm.frame_curr = 0;
+    lara.r_arm.frame_number = 0;
     lara.r_arm.x_rot = 0;
     lara.r_arm.y_rot = 0;
     lara.r_arm.z_rot = 0;
@@ -1106,8 +1106,8 @@ void LaraGun(void)
                 lara.gun_type = lara.gun_request_type;
                 InitialiseNewWeapons();
                 lara.gun_status = LHS_DRAW;
-                lara.l_arm.frame_curr = 0;
-                lara.r_arm.frame_curr = 0;
+                lara.l_arm.frame_number = 0;
+                lara.r_arm.frame_number = 0;
             }
             else
             {
@@ -1146,16 +1146,16 @@ void LaraGun(void)
             {
                 if (lara.skidoo != NO_ITEM || CheckForHoldingState(lara_item->state_current))
                 {
-                    if (lara.l_arm.frame_curr != FL_HOLD_F)
+                    if (lara.l_arm.frame_number != FL_HOLD_F)
                     {
-                        lara.l_arm.frame_curr++;
-                        if (lara.l_arm.frame_curr == FL_END_F)
-                            lara.l_arm.frame_curr = FL_HOLD_F;
+                        lara.l_arm.frame_number++;
+                        if (lara.l_arm.frame_number == FL_END_F)
+                            lara.l_arm.frame_number = FL_HOLD_F;
                     }
                     else if (!lara.flare_control_left)
                     {
                         lara.flare_control_left = TRUE;
-                        lara.l_arm.frame_curr = FL_2HOLD_F;
+                        lara.l_arm.frame_number = FL_2HOLD_F;
                     }
                 }
                 else
@@ -1164,7 +1164,7 @@ void LaraGun(void)
                 }
 
                 DoFlareInHand(lara.flare_age);
-                set_flare_arm(lara.l_arm.frame_curr);
+                set_flare_arm(lara.l_arm.frame_number);
             }
             break;
         case LHS_HANDBUSY:
@@ -1172,7 +1172,7 @@ void LaraGun(void)
             {
                 lara.flare_control_left = (lara.skidoo != NO_ITEM || CheckForHoldingState(lara_item->state_current));
                 DoFlareInHand(lara.flare_age);
-                set_flare_arm(lara.l_arm.frame_curr);
+                set_flare_arm(lara.l_arm.frame_number);
             }
             break;
         case LHS_DRAW:
@@ -1278,5 +1278,6 @@ void injector::inject_larafire()
     this->inject(ADDRESS_STRUCT(0x0044D890, GetTargetOnLOS));
     this->inject(ADDRESS_STRUCT(0x0042E920, HitTarget));
     this->inject(ADDRESS_STRUCT(0x0042D840, LaraGun));
+
 }
 #endif

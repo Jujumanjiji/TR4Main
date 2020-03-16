@@ -9,6 +9,25 @@ struct JMP
     DWORD offset;    // jump offset
 };
 
+struct LARA_MATRIX
+{
+    int hips[12];
+    int thigh_l[12];
+    int calf_l[12];
+    int foot_l[12];
+    int thigh_r[12];
+    int calf_r[12];
+    int foot_r[12];
+    int torso[12];
+    int head[12];
+    int uarm_r[12];
+    int larm_r[12];
+    int hand_r[12];
+    int uarm_l[12];
+    int larm_l[12];
+    int hand_l[12];
+};
+
 /* // for later !
 struct LEVEL_DATA
 {
@@ -562,8 +581,8 @@ struct CAMERA_INFO
 struct LARA_ARM
 {
     short *frame_base;
-    short frame_curr;
-    short anim_curr;
+    short frame_number;
+    short anim_number;
     short lock;
     short y_rot;
     short x_rot;
@@ -1135,7 +1154,7 @@ struct LARA_INFO
     short crossbow_ammo1_count;
     short crossbow_ammo2_count;
     short crossbow_ammo3_count;
-    char location;
+    char unknown;
     char blind_timer;
     LOCATION locate;
     short dash_timer;

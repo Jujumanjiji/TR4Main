@@ -400,7 +400,8 @@ enum LARA_MESHES
     TORSO,
     UARM_R, LARM_R, HAND_R,
     UARM_L, LARM_L, HAND_L,
-    HEAD
+    HEAD,
+    MAX_LARA_MESHES
 };
 
 enum height_types
