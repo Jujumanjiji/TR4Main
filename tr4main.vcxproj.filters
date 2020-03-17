@@ -233,6 +233,9 @@
     <ClCompile Include="src\utils\lara_render.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\inventory.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -402,6 +405,9 @@
     </ClInclude>
     <ClInclude Include="src\utils\lara_render.h">
       <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\inventory.h">
+      <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

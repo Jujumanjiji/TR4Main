@@ -53,6 +53,7 @@ void injector::inject_game()
     inject_effect2();
     inject_effects();
     inject_health();
+    inject_inventory();
     inject_items();
     inject_lara();
     inject_lara_utils();

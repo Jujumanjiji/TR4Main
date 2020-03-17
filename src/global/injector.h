@@ -50,6 +50,7 @@ private:
     void inject_effect2();
     void inject_effects();
     void inject_health();
+    void inject_inventory();
     void inject_items();
     void inject_lara();
     void inject_lara_utils();

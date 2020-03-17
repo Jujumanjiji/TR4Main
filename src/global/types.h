@@ -9,6 +9,14 @@ struct JMP
     DWORD offset;    // jump offset
 };
 
+struct COMBINELIST
+{
+    void(*combine_routine)(int flag);
+    short item_a;
+    short item_b;
+    short result;
+};
+
 struct INVOBJ
 {
     short object_number;
@@ -1073,7 +1081,7 @@ struct LARA_INFO
     short back_gun;
     short flare_frame;
     short poisoned;
-    short electric;
+    short poisoned_2;
     unsigned char anxiety;
     unsigned char wet[15];
     WORD flare_control_left : 1; // LOBYTE: 0x1
