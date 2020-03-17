@@ -52,8 +52,8 @@ void DEL_CalcLaraMatrices_Interpolate(short *frame1, short *frame2, int frac, in
 #ifdef DLL_INJECT
 void injector::inject_delstuff()
 {
-    this->inject(ADDRESS_STRUCT(0x0041D010, CalcLaraMatrices));
-    this->inject(ADDRESS_STRUCT(0x0041DAF0, DEL_CalcLaraMatrices_Normal));
-    this->inject(ADDRESS_STRUCT(0x0041E630, DEL_CalcLaraMatrices_Interpolate));
+    this->inject(0x0041D010, CalcLaraMatrices);
+    this->inject(0x0041DAF0, DEL_CalcLaraMatrices_Normal);
+    this->inject(0x0041E630, DEL_CalcLaraMatrices_Interpolate);
 }
 #endif

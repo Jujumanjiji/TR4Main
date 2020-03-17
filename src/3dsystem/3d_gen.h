@@ -14,8 +14,12 @@
 #define phd_RotYXZ ((void(__cdecl*)(short y, short x, short z)) 0x00490820)
 #define phd_GetVectorAngles ((void(__cdecl*)(int x, int y, int z, short* dest)) 0x00490A90)
 #define phd_PutPolygons ((void(__cdecl*)(short* ptr, int clip)) 0x0047DA60)
+#define phd_PutPolygons_inv ((void(__cdecl*)(short* ptr, float x, float y, DWORD rgba)) 0x0047E8B0)
 #define phd_atan ((int(__cdecl*)(int x, int y)) 0x00490210)
 #define phd_sqrt ((int(__cdecl*)(int x)) 0x00490280)
 #define ShiftMatrixBasedPos ((void(__cdecl*)(PHD_VECTOR* shift)) 0x0048FB60)
 #define phd_InitWindow ((void(__cdecl*)(int x, int y, int width, int height, int nearz, int farz, int view_angle)) 0x0048FC10)
+
+
+#define SetD3DViewMatrix ((void(__cdecl*)(void)) 0x00490B30)
 #endif

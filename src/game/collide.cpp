@@ -14,6 +14,6 @@ void ShiftItem(ITEM_INFO* item, COLL_INFO* coll)
 #ifdef DLL_INJECT
 void injector::inject_collide()
 {
-    this->inject(ADDRESS_STRUCT(0x00446F70, ShiftItem));
+    this->inject(0x00446F70, ShiftItem);
 }
 #endif

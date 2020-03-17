@@ -16,12 +16,12 @@ void void_func(void)
 ///           INJECT_COMMAND           ///
 ///====================================///
 
-void injector::inject(ADDRESS_STRUCT addr) // from: address, to: function
+void injector::inject(DWORD addr, LPVOID function) // from: address, to: function
 {
-    if (addr.address != NULL)
+    if (addr != NULL)
     {
-        ((JMP*)(addr.address))->opCode = 0xE9;
-        ((JMP*)(addr.address))->offset = (DWORD)(addr.function) - ((DWORD)(addr.address) + sizeof(JMP));
+        ((JMP*)(addr))->opCode = 0xE9;
+        ((JMP*)(addr))->offset = (DWORD)(function) - ((DWORD)(addr) + sizeof(JMP));
     }
 }
 

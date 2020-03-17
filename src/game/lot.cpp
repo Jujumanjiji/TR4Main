@@ -286,11 +286,11 @@ void ClearLOT(LOT_INFO* LOT)
 #ifdef DLL_INJECT
 void injector::inject_lot()
 {
-    this->inject(ADDRESS_STRUCT(0x00455200, InitialiseLOT));
-    this->inject(ADDRESS_STRUCT(0x00455270, DisableBaddieAI));
-    this->inject(ADDRESS_STRUCT(0x004552B0, EnableBaddieAI));
-    this->inject(ADDRESS_STRUCT(0x00455470, InitialiseSlot));
-    this->inject(ADDRESS_STRUCT(0x004556A0, CreateZone));
-    this->inject(ADDRESS_STRUCT(0x004557B0, CreateZone));
+    this->inject(0x00455200, InitialiseLOT);
+    this->inject(0x00455270, DisableBaddieAI);
+    this->inject(0x004552B0, EnableBaddieAI);
+    this->inject(0x00455470, InitialiseSlot);
+    this->inject(0x004556A0, CreateZone);
+    this->inject(0x004557B0, ClearLOT);
 }
 #endif

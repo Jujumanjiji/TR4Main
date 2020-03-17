@@ -994,6 +994,31 @@ void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
     }
 }
 
+CVECTOR DWORD_TO_RGBA(DWORD color)
+{
+    CVECTOR result;
+    result.r = color & MAXBYTE; color >>= 8;
+    result.g = color & MAXBYTE; color >>= 8;
+    result.b = color & MAXBYTE; color >>= 8;
+    result.a = color & MAXBYTE;
+    return result;
+}
+
+DWORD RGBA_VECTORGET(CVECTOR color)
+{
+    return (((((color.a << 8) + color.r) << 8) + color.g) << 8) + color.b;
+}
+
+DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b)
+{
+    return RGBA_VECTORGET(r, g, b, 0);
+}
+
+DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b, BYTE a)
+{
+    return (((((a << 8) + r) << 8) + g) << 8) + b;
+}
+
 void phd_SwapPushMatrix(int frac)
 {
     if (frac) // interpolate
@@ -1144,9 +1169,11 @@ void WEAPON_AMMO::increase(int weapon_type, int value)
     {
         case LG_REVOLVER:
             lara.revolver_ammo_count += value;
+            break;
 
         case LG_UZIS:
             lara.uzi_ammo_count += value;
+            break;
 
         case LG_SHOTGUN:
             if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
@@ -1154,6 +1181,7 @@ void WEAPON_AMMO::increase(int weapon_type, int value)
             else
                 lara.shotgun_ammo2_count += value;
             break;
+
         case LG_GRENADEGUN:
             if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
                 lara.grenade_ammo1_count += value;
@@ -1175,6 +1203,7 @@ void WEAPON_AMMO::increase(int weapon_type, int value)
         case LG_PISTOLS:
         default:
             lara.pistol_ammo_count += value;
+            break;
     }
 }
 
@@ -1184,9 +1213,11 @@ void WEAPON_AMMO::decrease(int weapon_type, int value)
     {
         case LG_REVOLVER:
             lara.revolver_ammo_count -= value;
+            break;
 
         case LG_UZIS:
             lara.uzi_ammo_count -= value;
+            break;
 
         case LG_SHOTGUN:
             if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
@@ -1194,6 +1225,7 @@ void WEAPON_AMMO::decrease(int weapon_type, int value)
             else
                 lara.shotgun_ammo2_count -= value;
             break;
+
         case LG_GRENADEGUN:
             if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
                 lara.grenade_ammo1_count -= value;
@@ -1215,5 +1247,6 @@ void WEAPON_AMMO::decrease(int weapon_type, int value)
         case LG_PISTOLS:
         default:
             lara.pistol_ammo_count -= value;
+            break;
     }
 }

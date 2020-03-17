@@ -13,7 +13,6 @@ void InitialiseObjects(void)
 {
     OBJECT_INFO* obj;
 
-    S_Log(LT_Enter, "InitialiseObjects()", false);
     for (int i = 0; i < NUMBER_OBJECTS; i++)
     {
         obj = &objects[i];
@@ -60,7 +59,6 @@ void InitialiseObjects(void)
 
 void BaddyObjects(void)
 {
-    S_Log(LT_Enter, "BaddyObjects()", false);
     setup_entity.lara_obj();
     setup_entity.motor_bike();
     setup_entity.jeep();
@@ -115,7 +113,6 @@ void BaddyObjects(void)
 
 void ObjectObjects(void)
 {
-    S_Log(LT_Enter, "ObjectObjects()", false);
     setup_object.camera_target();
     setup_object.flare();
     setup_object.smash_object();
@@ -178,7 +175,6 @@ void ObjectObjects(void)
 
 void TrapObjects(void)
 {
-    S_Log(LT_Enter, "TrapObjects()", false);
     setup_trap.floor_4blade();
     setup_trap.roof_4blade();
     setup_trap.bird_blade();
@@ -223,8 +219,6 @@ void GetCarriedItems(void)
     int i;
     short pickup_number;
 
-    S_Log(LT_Enter, "GetCarriedItems()", false);
-
     // initialise carriedItems from all level items.
     // get all carried items by default in the same sector (512 XZmax)
     for (i = 0; i < level_items; i++)
@@ -260,8 +254,6 @@ void GetAIPickups(void)
     AIOBJECT* obj;
     int i, num;
 
-    S_Log(LT_Enter, "GetAIPickups()", false);
-
     for (i = 0; i < level_items; i++)
     {
         item = &items[i];
@@ -289,11 +281,11 @@ void GetAIPickups(void)
 #ifdef DLL_INJECT
 void injector::inject_setup()
 {
-    this->inject(legacy_InitialiseObjects);
-    this->inject(legacy_BaddyObjects);
-    this->inject(legacy_ObjectObjects);
-    this->inject(legacy_TrapObjects);
-    this->inject(legacy_GetCarriedItems);
-    this->inject(legacy_GetAIPickups);
+    this->inject(0x0045C0D0, InitialiseObjects);
+    this->inject(0x0045C1E0, BaddyObjects);
+    this->inject(0x0045E1F0, ObjectObjects);
+    this->inject(0x0045DC10, TrapObjects);
+    this->inject(0x0045EB40, GetCarriedItems);
+    this->inject(0x0045EC50, GetAIPickups);
 }
 #endif

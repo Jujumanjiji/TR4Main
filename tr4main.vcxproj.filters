@@ -236,6 +236,12 @@
     <ClCompile Include="src\game\inventory.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\specific\loadsave.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\text.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -408,6 +414,12 @@
     </ClInclude>
     <ClInclude Include="src\game\inventory.h">
       <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\loadsave.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\text.h">
+      <Filter>src\specific</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

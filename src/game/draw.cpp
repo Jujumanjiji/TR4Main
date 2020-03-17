@@ -399,11 +399,11 @@ void injector::inject_draw()
     //this->inject(0x00450760, gar_RotYXZsuperpack);
     //this->inject(0x00450810, phd_PutPolygons_I);
     //this->inject(0x00450840, InterpolateMatrix);
-    this->inject(ADDRESS_STRUCT(0x00450AB0, InterpolateArmMatrix));
+    this->inject(0x00450AB0, InterpolateArmMatrix);
     //this->inject(0x00450BB0, CalculateObjectLighting);
     //this->inject(0x00450CB0, CalculateObjectLightingLara);
-    //this->inject(ADDRESS_STRUCT(0x00450DC0, GetFrames));
-    //this->inject(ADDRESS_STRUCT(0x00450E60, GetBoundsAccurate));
+    //this->inject(0x00450DC0, GetFrames);
+    //this->inject(0x00450E60, GetBoundsAccurate);
     //this->inject(0x00450EE0, GetBestFrame);
 }
 #endif

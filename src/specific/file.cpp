@@ -236,8 +236,8 @@ void LoadObjects(void)
 void injector::inject_file()
 {
     //this->inject(0x00473F20, LoadTextures); // (int roomtex, int objtex, int dumptex)
-    //this->inject(ADDRESS_STRUCT(0x004749C0, LoadRooms));
-    this->inject(ADDRESS_STRUCT(0x00474E10, LoadObjects));
+    //this->inject(0x004749C0, LoadRooms); // need fix !!!
+    this->inject(0x00474E10, LoadObjects);
     //this->inject(0x004752A0, AdjustUV);
     //this->inject(0x00475730, LoadSprites);
     //this->inject(0x00475970, LoadCameras);

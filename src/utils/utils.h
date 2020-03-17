@@ -55,6 +55,11 @@ extern void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll);
 extern short GetCatchAngle(ITEM_INFO* item, short angleToCheck); // for lara grapping angle.
 extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle);
 
+extern DWORD RGBA_VECTORGET(CVECTOR color);
+extern DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b);
+extern DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b, BYTE a);
+extern CVECTOR DWORD_TO_RGBA(DWORD color);
+
 /// new:
 extern void phd_SwapPushMatrix(int frac);
 extern void phd_SwapPopMatrix(int frac);

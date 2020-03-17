@@ -1,5 +1,7 @@
 #pragma once
 
+#define INVENTORY_INPUT_REPEAT 8
+
 enum OPTION_TABLE_VALUE
 {
     OPTION_CROSSBOW = 0x80,
@@ -11,25 +13,36 @@ enum OPTION_TABLE_VALUE
 
 
 extern void construct_inventory_2D(void);
+extern void do_debounced_input(void);
+extern void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay);
+extern void DrawInventoryItem(ITEM_INFO *item, int shade, int overlay, BOOL shade_flags);
+extern int go_and_load_game(void);
+extern int go_and_save_game(void);
+extern void construct_combine_object_list(void);
+extern void insert_object_into_list_combine(short num);
+extern void construct_object_list(void);
+extern void insert_object_into_list_inventory(short num);
+extern void draw_current_object_list(INVENTORY_RING_TYPE ring_type);
+
 
 #ifdef DLL_INJECT
-#define show_inventory ((int(__cdecl*)(void)) 0x0043B760)
+#define show_inventory ((int(__cdecl*)(void)) 0x0043B760) // in the end !!
 ///#define construct_inventory_2D ((void(__cdecl*)(void)) 0x0043B9B0)
-#define do_debounced_input ((void(__cdecl*)(void)) 0x0043BC30)
-#define DrawThreeDeeObject2D ((void(__cdecl*)(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay)) 0x0043BD80)
-#define DrawInventoryItem ((void(__cdecl*)(ITEM_INFO *item, int shade, int overlay, int shadflag)) 0x0043BF10)
-#define go_and_load_game ((int(__cdecl*)(void)) 0x0043C400)
-#define go_and_save_game ((int(__cdecl*)(void)) 0x0043C410)
-#define construct_combine_object_list ((void(__cdecl*)(void)) 0x0043C420)
-#define insert_object_into_list_v2 ((void(__cdecl*)(short inv_item)) 0x0043C5A0)
-#define construct_object_list ((void(__cdecl*)(void)) 0x0043C610)
-#define insert_object_into_list ((void(__cdecl*)(short inv_item)) 0x0043CA90)
-#define draw_current_object_list ((void(__cdecl*)(int ringnum)) 0x0043CAE0)
+///#define do_debounced_input ((void(__cdecl*)(void)) 0x0043BC30)
+///#define DrawThreeDeeObject2D ((void(__cdecl*)(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay)) 0x0043BD80)
+///#define DrawInventoryItem ((void(__cdecl*)(ITEM_INFO *item, int shade, int overlay, BOOL shade_flags)) 0x0043BF10)
+///#define go_and_load_game ((int(__cdecl*)(void)) 0x0043C400)
+///#define go_and_save_game ((int(__cdecl*)(void)) 0x0043C410)
+///#define construct_combine_object_list ((void(__cdecl*)(void)) 0x0043C420)
+///#define insert_object_into_list_combine ((void(__cdecl*)(short num)) 0x0043C5A0)
+///#define construct_object_list ((void(__cdecl*)(void)) 0x0043C610)
+///#define insert_object_into_list_inventory ((void(__cdecl*)(short num)) 0x0043CA90)
+///#define draw_current_object_list ((void(__cdecl*)(int ringnum)) 0x0043CAE0)
 #define handle_object_changeover ((void(__cdecl*)(void)) 0x0043D450)
 #define setup_ammo_selector ((void(__cdecl*)(void)) 0x0043D470)
 #define fade_ammo_selector ((void(__cdecl*)(void)) 0x0043DE30)
 #define draw_ammo_selector ((void(__cdecl*)(void)) 0x0043DED0)
-#define spinback ((void(__cdecl*)(WORD angle)) 0x0043E140)
+#define spinback ((void(__cdecl*)(WORD* angle)) 0x0043E140)
 #define update_laras_weapons_status ((void(__cdecl*)(void)) 0x0043E1B0)
 #define is_item_currently_combinable ((BOOL(__cdecl*)(short objNumber)) 0x0043E250)
 #define have_i_got_item ((BOOL(__cdecl*)(short objNumber)) 0x0043E2F0)
@@ -64,7 +77,7 @@ extern void construct_inventory_2D(void);
 #define setup_objectlist_startposition ((void(__cdecl*)(short inv_item)) 0x0043E860)
 #define use_current_item ((void(__cdecl*)(void)) 0x0043E8A0)
 #define picked_up_object ((void(__cdecl*)(short objNumber)) 0x0043EB80)
-#define have_i_got_object ((void(__cdecl*)(short objNumber)) 0x0043EF60)
+#define have_i_got_object ((BOOL(__cdecl*)(short objNumber)) 0x0043EF60)
 #define search_detector ((void(__cdecl*)(short objNumber)) 0x0043F050)
 #define convert_obj_to_invobj ((void(__cdecl*)(short objNumber)) 0x0043F150)
 #define do_compass_mode ((void(__cdecl*)(void)) 0x0043F180)

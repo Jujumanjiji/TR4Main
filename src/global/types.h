@@ -30,6 +30,29 @@ struct INVOBJ
     DWORD meshbits;
 };
 
+struct INVLIST
+{
+    short inv_item;
+    WORD yrot;
+    WORD bright;
+};
+
+struct RING2D
+{
+    INVLIST current_obj_list[MAX_INVOBJ];
+    BOOL active;
+    int obj_list_movement;
+    int cur_obj_in_list;
+    int num_obj_in_list;
+};
+
+struct AMMOLIST
+{
+    short inv_item;
+    short amount;
+    WORD yrot;
+};
+
 struct LARA_MATRIX
 {
     int hips[12];
@@ -66,6 +89,24 @@ struct LEVEL_DATA
     int number_statics;
 };
 */
+
+struct GAMEFLOW
+{
+    UINT cheat_enabled : 1;        // LOBYTE: 0x1
+    UINT load_save_enabled : 1;    // LOBYTE: 0x2
+    UINT title_enabled : 1;        // LOBYTE: 0x4
+    UINT play_any_level : 1;       // LOBYTE: 0x8
+    UINT languages : 3;            // LOBYTE: 0x10
+    UINT demo_disc : 1;            // LOBYTE: 0x20
+    UINT unused : 24;              // LOBYTE: 0x40 HIBYTE: 0x1
+    UINT input_timeout;
+    BYTE security_tag;
+    BYTE number_level;
+    BYTE number_filename;
+    BYTE pad;
+    WORD filename_length;
+    WORD script_length;
+};
 
 struct HANG_STRUCT
 {
@@ -229,6 +270,38 @@ struct FLOOR_INFO
     char ceiling;
 };
 
+struct CVECTOR
+{
+    BYTE r;
+    BYTE g;
+    BYTE b;
+    BYTE a;
+
+    CVECTOR()
+    {
+        this->r = 0;
+        this->g = 0;
+        this->b = 0;
+        this->a = 0;
+    }
+
+    CVECTOR(BYTE r, BYTE g, BYTE b)
+    {
+        this->r = r;
+        this->g = g;
+        this->b = b;
+        this->a = 0;
+    }
+
+    CVECTOR(BYTE r, BYTE g, BYTE b, BYTE a)
+    {
+        this->r = r;
+        this->g = g;
+        this->b = b;
+        this->a = a;
+    }
+};
+
 struct LIGHT_INFO
 {
     int x;
@@ -290,41 +363,36 @@ struct DOORS
 
 struct PCLIGHT
 {
-    int x, y, z;       // Position of light, in world coordinates
-    int r, g, b;       // Colour of the light
-    unsigned int ShadowIntensity;    // only if LightType == LIGHT_SHADOW
-    int In;            // Cosine of the IN value for light / size of IN value
-    int Out;           // Cosine of the OUT value for light / size of OUT value
-    int RadIn;         // (IN radians) * 2
-    int RadOut;        // (OUT radians) * 2
-    int Range;         // Range of light
-    int dx, dy, dz;    // Direction - used only by sun and spot lights
+    float x, y, z;       // Position of light, in world coordinates
+    float r, g, b;       // Colour of the light
+    unsigned int shadow_intensity;    // only if LightType == LIGHT_SHADOW
+    float In;            // Cosine of the IN value for light / size of IN value
+    float Out;           // Cosine of the OUT value for light / size of OUT value
+    float RadIn;         // (IN radians) * 2
+    float RadOut;        // (OUT radians) * 2
+    float Range;         // Range of light
+    float dx, dy, dz;    // Direction - used only by sun and spot lights
     int x2, y2, z2;      // Same as position, only in integer.
     int dx2, dy2, dz2;   // Same as direction, only in integer.
-    int r2, g2, b2;
-    int r3, g3, b3;
-    int UnknownInt;
-    BYTE LightType;
-    BYTE UnknownByte;
+    float r2, g2, b2;
+    float r3, g3, b3;
+    int unknown;
+    BYTE light_type;
+    BYTE unknown_2;
     int dx3, dy3, dz3;
     int magnsq;
 };
 
-struct ILIGHT
-{
-    short x;
-    short y;
-    short z;
-    short pad;
-    BYTE r;
-    BYTE g;
-    BYTE b;
-    BYTE cd;
-};
-
 struct ITEM_LIGHT
 {
-    ILIGHT light[4];
+    int r;
+    int g;
+    int b;
+    CVECTOR room_ambient;
+    int d_r;
+    int d_g;
+    int d_b;
+    int room_number;
 };
 
 struct ROOM_INFO
@@ -382,9 +450,9 @@ struct ROOM_INFO
 
 struct ITEM_INFO
 {
-    int floor;
-    int touch_bits;
-    int mesh_bits;
+    long floor;
+    DWORD touch_bits;
+    DWORD mesh_bits;
     short object_number;
     short state_current;
     short state_next;
@@ -397,21 +465,30 @@ struct ITEM_INFO
     short speed;
     short fallspeed;
     short hit_points;
-    unsigned short box_number;
+    WORD box_number;
     short timer;
     short flags;                       // For oneshot and code switches (i.e. NOT flags)
     short shade;
     short ocb_bits;                      // trigger_bits
     short carried_item;
     short after_death;
-    unsigned short fired_weapon;
+    WORD fired_weapon;
     short reserved_1;
     short reserved_2;
     short reserved_3;
     short reserved_4;
-    void* data;
+    LPVOID data;
     PHD_3DPOS pos;
-    BYTE light_data[5528];
+    ITEM_LIGHT il;
+    PCLIGHT lights_1[21];
+    PCLIGHT lights_2[21];
+    DWORD num_lights_1;
+    DWORD num_lights_2;
+    DWORD light_room_num;
+    DWORD unknown;
+    PHD_VECTOR ambient_light_pos;
+    PCLIGHT* ptr_lights_1;
+    PCLIGHT* ptr_lights_2;
     unsigned int active : 1;
     unsigned int status : 2;
     unsigned int gravity_status : 1;
@@ -423,7 +500,7 @@ struct ITEM_INFO
     unsigned int ai_bits : 5;
     unsigned int really_active : 1;
     unsigned int in_draw_room : 1;
-    int meshswap_meshbits;
+    DWORD meshswap_meshbits;
     short drawRoom;
     short TOSSPAD;
 };

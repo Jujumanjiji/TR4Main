@@ -3,36 +3,10 @@
 extern void void_func(void);
 
 #ifdef DLL_INJECT
-struct ADDRESS_STRUCT
-{
-    LPVOID function;
-    DWORD address;
-
-    ADDRESS_STRUCT()
-    {
-        this->address = NULL;
-        this->function = void_func;
-    }
-
-    // empty the function !
-    ADDRESS_STRUCT(DWORD address)
-    {
-        this->address = address;
-        this->function = void_func;
-    }
-
-    // replace the old function with the new one !
-    ADDRESS_STRUCT(DWORD address, LPVOID function)
-    {
-        this->address = address;
-        this->function = function;
-    }
-};
-
 class injector
 {
 private:
-    void inject(ADDRESS_STRUCT addr);
+    void inject(DWORD addr, LPVOID function);
 
     /// 3DSYSTEM
     void inject_3d_gen();

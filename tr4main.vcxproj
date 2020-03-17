@@ -156,6 +156,7 @@
     <ClCompile Include="src\specific\json\reader.cpp" />
     <ClCompile Include="src\specific\json\scripts.cpp" />
     <ClCompile Include="src\specific\json\writer.cpp" />
+    <ClCompile Include="src\specific\loadsave.cpp" />
     <ClCompile Include="src\specific\output.cpp" />
     <ClCompile Include="src\specific\setup_object.cpp" />
     <ClCompile Include="src\specific\setup_trap.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="src\specific\setup.cpp" />
     <ClCompile Include="src\specific\setup_entity.cpp" />
     <ClCompile Include="src\specific\specific.cpp" />
+    <ClCompile Include="src\specific\text.cpp" />
     <ClCompile Include="src\utils\file_utils.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\utils\utils_render.cpp" />
@@ -218,6 +220,7 @@
     <ClInclude Include="src\specific\json\reader.h" />
     <ClInclude Include="src\specific\json\scripts.h" />
     <ClInclude Include="src\specific\json\writer.h" />
+    <ClInclude Include="src\specific\loadsave.h" />
     <ClInclude Include="src\specific\output.h" />
     <ClInclude Include="src\specific\setup_object.h" />
     <ClInclude Include="src\specific\setup_trap.h" />
@@ -231,6 +234,7 @@
     <ClInclude Include="src\specific\setup.h" />
     <ClInclude Include="src\specific\setup_entity.h" />
     <ClInclude Include="src\specific\specific.h" />
+    <ClInclude Include="src\specific\text.h" />
     <ClInclude Include="src\utils\file_utils.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="src\utils\lara_render.h" />

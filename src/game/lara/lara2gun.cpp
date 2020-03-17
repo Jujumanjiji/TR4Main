@@ -242,11 +242,6 @@ void pistol_handler(int weapon_type)
         }
     }
 
-#ifdef DEBUG_CHEAT
-    if (CHK_ANY(TrInput, IN_SPRINT))
-        lara.uzi_ammo_count = INFINITE_AMMO;
-#endif
-
     animate_pistols(weapon_type);
 
     if (lara.l_arm.flash_gun)
@@ -417,17 +412,14 @@ void animate_pistols(int weapon_type)
 #ifdef DLL_INJECT
 void injector::inject_lara2gun()
 {
-    // FINISHED !
-    /*
-    this->inject(legacy_set_arm_info);
-    this->inject(legacy_draw_pistol_meshes);
-    this->inject(legacy_undraw_pistols_left);
-    this->inject(legacy_undraw_pistols_right);
-    this->inject(legacy_draw_pistols);
-    this->inject(legacy_undraw_pistols);
-    this->inject(legacy_ready_pistols);
-    this->inject(legacy_pistol_handler);
-    this->inject(legacy_animate_pistols);
-    */
+    this->inject(0x0042B7C0, set_arm_info);
+    this->inject(0x0042BB20, draw_pistol_meshes);
+    this->inject(0x0042BB70, undraw_pistols_left);
+    this->inject(0x0042BBB0, undraw_pistols_right);
+    this->inject(0x0042B720, draw_pistols);
+    this->inject(0x0042B840, undraw_pistols);
+    this->inject(0x0042BAB0, ready_pistols);
+    this->inject(0x0042BBF0, pistol_handler);
+    this->inject(0x0042BE40, animate_pistols);
 }
 #endif

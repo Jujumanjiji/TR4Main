@@ -392,7 +392,7 @@ void fire_grenade(void)
 
 void fire_crossbow(PHD_3DPOS* haveDefinedPos)
 {
-    short ammo = weapon_ammo.get(LG_GRENADEGUN);
+    short ammo = weapon_ammo.get(LG_CROSSBOW);
     if (ammo)
     {
         ITEM_INFO* item;
@@ -458,8 +458,8 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
             item->speed = 512;
             AddActiveItem(item_number);
 
-            //if (ammo != INFINITE_AMMO)
-            //    weapon_ammo.decrease(LG_CROSSBOW, 1);
+            if (ammo != INFINITE_AMMO)
+                weapon_ammo.decrease(LG_CROSSBOW, 1);
 
             if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
                 item->reserved_1 = 1; // normal
@@ -1262,22 +1262,22 @@ void LaraGun(void)
 #ifdef DLL_INJECT
 void injector::inject_larafire()
 {
-    this->inject(ADDRESS_STRUCT(0x0042EA70, weapon_object));
-    this->inject(ADDRESS_STRUCT(0x0042EAC0, weapon_meshes));
-    this->inject(ADDRESS_STRUCT(0x00429260, fire_shotgun));
-    this->inject(ADDRESS_STRUCT(0x00429480, fire_grenade));
-    this->inject(ADDRESS_STRUCT(0x0042A270, fire_crossbow));
-    this->inject(ADDRESS_STRUCT(0x0044D820, FireCrossbowBoltFromLaserSight));
-    this->inject(ADDRESS_STRUCT(0x0042DDF0, InitialiseNewWeapons));
-    this->inject(ADDRESS_STRUCT(0x0042F480, GetCurrentAmmo));
-    this->inject(ADDRESS_STRUCT(0x0042DF30, LaraTargetInfo));
-    this->inject(ADDRESS_STRUCT(0x0042E0D0, LaraGetNewTarget));
-    this->inject(ADDRESS_STRUCT(0x0042E560, AimWeapon));
-    this->inject(ADDRESS_STRUCT(0x0042E4A0, find_target_point));
-    this->inject(ADDRESS_STRUCT(0x0042E630, FireWeapon));
-    this->inject(ADDRESS_STRUCT(0x0044D890, GetTargetOnLOS));
-    this->inject(ADDRESS_STRUCT(0x0042E920, HitTarget));
-    this->inject(ADDRESS_STRUCT(0x0042D840, LaraGun));
+    this->inject(0x0042EA70, weapon_object);
+    this->inject(0x0042EAC0, weapon_meshes);
+    this->inject(0x00429260, fire_shotgun);
+    this->inject(0x00429480, fire_grenade);
+    this->inject(0x0042A270, fire_crossbow);
+    this->inject(0x0044D820, FireCrossbowBoltFromLaserSight);
+    this->inject(0x0042DDF0, InitialiseNewWeapons);
+    this->inject(0x0042F480, GetCurrentAmmo);
+    this->inject(0x0042DF30, LaraTargetInfo);
+    this->inject(0x0042E0D0, LaraGetNewTarget);
+    this->inject(0x0042E560, AimWeapon);
+    this->inject(0x0042E4A0, find_target_point);
+    this->inject(0x0042E630, FireWeapon);
+    this->inject(0x0044D890, GetTargetOnLOS);
+    this->inject(0x0042E920, HitTarget);
+    this->inject(0x0042D840, LaraGun);
 
 }
 #endif

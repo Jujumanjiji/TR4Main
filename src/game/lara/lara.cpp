@@ -6,10 +6,10 @@
 void injector::inject_lara()
 {
     /// LARA ROUTINES:
-    this->inject(ADDRESS_STRUCT(0x00420B10, LaraAboveWater));
-    this->inject(ADDRESS_STRUCT(0x00431AA0, LaraSurface));
-    this->inject(ADDRESS_STRUCT(0x004323A0, LaraUnderWater));
-    this->inject(ADDRESS_STRUCT(0x00432DA0, LaraWaterCurrent));
+    this->inject(0x00420B10, LaraAboveWater);
+    this->inject(0x00431AA0, LaraSurface);
+    this->inject(0x004323A0, LaraUnderWater);
+    this->inject(0x00432DA0, LaraWaterCurrent);
 
     /// CONTROL ROUTINES:
     // no more need to inject these one since i recreated these array from the function above !
