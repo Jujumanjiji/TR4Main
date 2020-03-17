@@ -10,11 +10,11 @@ enum OPTION_TABLE_VALUE
 };
 
 
-
+extern void construct_inventory_2D(void);
 
 #ifdef DLL_INJECT
-#define ShowInventory ((int(__cdecl*)(void)) 0x0043B760)
-#define ConstructInventory ((void(__cdecl*)(void)) 0x0043B9B0)
+#define show_inventory ((int(__cdecl*)(void)) 0x0043B760)
+///#define construct_inventory_2D ((void(__cdecl*)(void)) 0x0043B9B0)
 #define do_debounced_input ((void(__cdecl*)(void)) 0x0043BC30)
 #define DrawThreeDeeObject2D ((void(__cdecl*)(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay)) 0x0043BD80)
 #define DrawInventoryItem ((void(__cdecl*)(ITEM_INFO *item, int shade, int overlay, int shadflag)) 0x0043BF10)
