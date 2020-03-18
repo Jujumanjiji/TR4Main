@@ -209,6 +209,7 @@ enum OPTION_TABLE_VALUE
     OPTION_ALL = (OPTION_PISTOLS|OPTION_SHOTGUN|OPTION_GRENADEGUN|OPTION_CROSSBOW|OPTION_REVOLVER|OPTION_UZIS)
 };
 
+#ifdef DLL_INJECT
 #define current_selected_option             VAR_U_(0x007FEA1B, BYTE)
 #define compass_needle                      VAR_U_(0x007E71DC, int)
 #define GLOBAL_invitemlastchosen            VAR_I_(0x004AE064, int, NO_ITEM)
@@ -243,7 +244,7 @@ enum OPTION_TABLE_VALUE
 #define go_deselect                         VAR_U_(0x007FEA54, bool)
 #define left_repeat                         VAR_U_(0x007FF021, char)
 #define right_repeat                        VAR_U_(0x007FEA39, char)
-#define loading_or_saving                   VAR_U_(0x007FE9CB, bool)
+#define loading_or_saving                   VAR_U_(0x007FE9CB, char)
 #define use_items                           VAR_U_(0x007FEA44, bool)
 #define num_ammo_slots                      VAR_U_(0x007FE9D0, char)
 #define inv_pistols_ammo_count              VAR_I_(0x004BF3C0, short, 0)
@@ -286,9 +287,19 @@ enum OPTION_TABLE_VALUE
 #define save_grenadegun_ammo_type           VAR_I_(0x004BF3BA, char, 0)
 #define save_crossbow_ammo_type             VAR_I_(0x004BF3BD, char, 0)
 #define save_current_selection              VAR_I_(0x007FEA4D, char, 0)
+#endif
 
-
+#define CONSTRUCT_ITEM 0
+#define DECONSTRUCT_ITEM 1
 #define INVENTORY_INPUT_REPEAT 8
+#define INV_COMBO1 3
+#define INV_COMBO2 12
+#define INV_COMBO3 48
+#define INV_COMBO4 192
+#define INV_COMBO5 768
+#define INV_COMBO6 3072
+#define INV_COMBO7 12288
+#define INV_COMBO8 49152
 
 extern void construct_inventory_2D(void);
 extern void do_debounced_input(void);
@@ -303,6 +314,43 @@ extern void insert_object_into_list_inventory(short num);
 extern void draw_current_object_list(int ring_type); // TODO: need to change the item counter (inventory) !!!!
 extern void handle_object_changeover(void);
 extern void handle_inventry_menu(void);
+extern void fade_ammo_selector(void);
+extern void draw_ammo_selector(void);
+extern void spinback(WORD* yangle);
+extern void update_laras_weapons_status(void);
+extern BOOL is_item_currently_combinable(short inv_item);
+extern BOOL have_i_got_item(short inv_item);
+extern BOOL do_these_objects_combine(short item_a, short item_b);
+extern void combine_these_two_objects(short item_a, short item_b);
+extern void seperate_object(short inv_item);
+extern void combine_revolver(int flag);
+extern void combine_crossbow(int flag);
+extern void combine_puzzle_item1(int flag);
+extern void combine_puzzle_item2(int flag);
+extern void combine_puzzle_item3(int flag);
+extern void combine_puzzle_item4(int flag);
+extern void combine_puzzle_item5(int flag);
+extern void combine_puzzle_item6(int flag);
+extern void combine_puzzle_item7(int flag);
+extern void combine_puzzle_item8(int flag);
+extern void combine_key_item1(int flag);
+extern void combine_key_item2(int flag);
+extern void combine_key_item3(int flag);
+extern void combine_key_item4(int flag);
+extern void combine_key_item5(int flag);
+extern void combine_key_item6(int flag);
+extern void combine_key_item7(int flag);
+extern void combine_key_item8(int flag);
+extern void combine_pickup_item1(int flag);
+extern void combine_pickup_item2(int flag);
+extern void combine_pickup_item3(int flag);
+extern void combine_pickup_item4(int flag);
+extern void combine_clockwork(int flag);
+extern void combine_waterskin(int flag);
+extern void setup_objectlist_startposition_invitem(short inv_item);
+extern void setup_objectlist_startposition_objnumber(short object_number);
+extern void use_current_item(void);
+extern void picked_up_object(short object_number);
 
 #ifdef DLL_INJECT
 #define show_inventory ((int(__cdecl*)(void)) 0x0043B760) // in the end !!
@@ -319,47 +367,47 @@ extern void handle_inventry_menu(void);
 ///#define draw_current_object_list ((void(__cdecl*)(int ringnum)) 0x0043CAE0)
 ///#define handle_object_changeover ((void(__cdecl*)(void)) 0x0043D450)
 ///#define setup_ammo_selector ((void(__cdecl*)(void)) 0x0043D470)
-#define fade_ammo_selector ((void(__cdecl*)(void)) 0x0043DE30)
-#define draw_ammo_selector ((void(__cdecl*)(void)) 0x0043DED0)
-#define spinback ((void(__cdecl*)(WORD* angle)) 0x0043E140)
-#define update_laras_weapons_status ((void(__cdecl*)(void)) 0x0043E1B0)
-#define is_item_currently_combinable ((BOOL(__cdecl*)(short objNumber)) 0x0043E250)
-#define have_i_got_item ((BOOL(__cdecl*)(short objNumber)) 0x0043E2F0)
-#define do_these_objects_combine ((BOOL(__cdecl*)(short item_a, short item_b)) 0x0043E320)
-#define combine_these_two_objects ((void(__cdecl*)(short item_a, short item_b)) 0x0043E360)
-#define seperate_object ((void(__cdecl*)(short objNumber)) 0x0043E3D0)
-#define combine_revolver ((void(__cdecl*)(int flag)) 0x0043E420)
-#define combine_crossbow ((void(__cdecl*)(int flag)) 0x0043E480)
-#define combine_puzzle_item1 ((void(__cdecl*)(int flag)) 0x0043E4E0)
-#define combine_puzzle_item2 ((void(__cdecl*)(int flag)) 0x0043E500)
-#define combine_puzzle_item3 ((void(__cdecl*)(int flag)) 0x0043E520)
-#define combine_puzzle_item4 ((void(__cdecl*)(int flag)) 0x0043E540)
-#define combine_puzzle_item5 ((void(__cdecl*)(int flag)) 0x0043E560)
-#define combine_puzzle_item6 ((void(__cdecl*)(int flag)) 0x0043E580)
-#define combine_puzzle_item7 ((void(__cdecl*)(int flag)) 0x0043E5A0)
-#define combine_puzzle_item8 ((void(__cdecl*)(int flag)) 0x0043E5C0)
-#define combine_key_item1 ((void(__cdecl*)(int flag)) 0x0043E5E0)
-#define combine_key_item2 ((void(__cdecl*)(int flag)) 0x0043E600)
-#define combine_key_item3 ((void(__cdecl*)(int flag)) 0x0043E620)
-#define combine_key_item4 ((void(__cdecl*)(int flag)) 0x0043E640)
-#define combine_key_item5 ((void(__cdecl*)(int flag)) 0x0043E660)
-#define combine_key_item6 ((void(__cdecl*)(int flag)) 0x0043E680)
-#define combine_key_item7 ((void(__cdecl*)(int flag)) 0x0043E6A0)
-#define combine_key_item8 ((void(__cdecl*)(int flag)) 0x0043E6C0)
-#define combine_pickup_item1 ((void(__cdecl*)(int flag)) 0x0043E6E0)
-#define combine_pickup_item2 ((void(__cdecl*)(int flag)) 0x0043E700)
-#define combine_pickup_item3 ((void(__cdecl*)(int flag)) 0x0043E720)
-#define combine_pickup_item4 ((void(__cdecl*)(int flag)) 0x0043E740)
-#define combine_clockwork ((void(__cdecl*)(int flag)) 0x0043E760)
-#define combine_waterskin ((void(__cdecl*)(int flag)) 0x0043E770)
-#define setup_objectlist_startposition2 ((void(__cdecl*)(short inv_item)) 0x0043E830)
-#define setup_objectlist_startposition ((void(__cdecl*)(short inv_item)) 0x0043E860)
-#define use_current_item ((void(__cdecl*)(void)) 0x0043E8A0)
-#define picked_up_object ((void(__cdecl*)(short objNumber)) 0x0043EB80)
+///#define fade_ammo_selector ((void(__cdecl*)(void)) 0x0043DE30)
+///#define draw_ammo_selector ((void(__cdecl*)(void)) 0x0043DED0)
+///#define spinback ((void(__cdecl*)(WORD* angle)) 0x0043E140)
+///#define update_laras_weapons_status ((void(__cdecl*)(void)) 0x0043E1B0)
+///#define is_item_currently_combinable ((BOOL(__cdecl*)(short inv_item)) 0x0043E250)
+///#define have_i_got_item ((BOOL(__cdecl*)(short inv_item)) 0x0043E2F0)
+///#define do_these_objects_combine ((BOOL(__cdecl*)(short item_a, short item_b)) 0x0043E320)
+///#define combine_these_two_objects ((void(__cdecl*)(short item_a, short item_b)) 0x0043E360)
+///#define seperate_object ((void(__cdecl*)(short inv_item)) 0x0043E3D0)
+///#define combine_revolver ((void(__cdecl*)(int flag)) 0x0043E420)
+///#define combine_crossbow ((void(__cdecl*)(int flag)) 0x0043E480)
+///#define combine_puzzle_item1 ((void(__cdecl*)(int flag)) 0x0043E4E0)
+///#define combine_puzzle_item2 ((void(__cdecl*)(int flag)) 0x0043E500)
+///#define combine_puzzle_item3 ((void(__cdecl*)(int flag)) 0x0043E520)
+///#define combine_puzzle_item4 ((void(__cdecl*)(int flag)) 0x0043E540)
+///#define combine_puzzle_item5 ((void(__cdecl*)(int flag)) 0x0043E560)
+///#define combine_puzzle_item6 ((void(__cdecl*)(int flag)) 0x0043E580)
+///#define combine_puzzle_item7 ((void(__cdecl*)(int flag)) 0x0043E5A0)
+///#define combine_puzzle_item8 ((void(__cdecl*)(int flag)) 0x0043E5C0)
+///#define combine_key_item1 ((void(__cdecl*)(int flag)) 0x0043E5E0)
+///#define combine_key_item2 ((void(__cdecl*)(int flag)) 0x0043E600)
+///#define combine_key_item3 ((void(__cdecl*)(int flag)) 0x0043E620)
+///#define combine_key_item4 ((void(__cdecl*)(int flag)) 0x0043E640)
+///#define combine_key_item5 ((void(__cdecl*)(int flag)) 0x0043E660)
+///#define combine_key_item6 ((void(__cdecl*)(int flag)) 0x0043E680)
+///#define combine_key_item7 ((void(__cdecl*)(int flag)) 0x0043E6A0)
+///#define combine_key_item8 ((void(__cdecl*)(int flag)) 0x0043E6C0)
+///#define combine_pickup_item1 ((void(__cdecl*)(int flag)) 0x0043E6E0)
+///#define combine_pickup_item2 ((void(__cdecl*)(int flag)) 0x0043E700)
+///#define combine_pickup_item3 ((void(__cdecl*)(int flag)) 0x0043E720)
+///#define combine_pickup_item4 ((void(__cdecl*)(int flag)) 0x0043E740)
+///#define combine_clockwork ((void(__cdecl*)(int flag)) 0x0043E760)
+///#define combine_waterskin ((void(__cdecl*)(int flag)) 0x0043E770)
+///#define setup_objectlist_startposition_invitem ((void(__cdecl*)(short inv_item)) 0x0043E830)
+///#define setup_objectlist_startposition_objnumber ((void(__cdecl*)(short object_number)) 0x0043E860)
+///#define use_current_item ((void(__cdecl*)(void)) 0x0043E8A0)
+///#define picked_up_object ((void(__cdecl*)(short objNumber)) 0x0043EB80)
 #define have_i_got_object ((BOOL(__cdecl*)(short objNumber)) 0x0043EF60)
 #define search_detector ((void(__cdecl*)(short objNumber)) 0x0043F050)
 #define convert_obj_to_invobj ((void(__cdecl*)(short objNumber)) 0x0043F150)
 #define do_compass_mode ((void(__cdecl*)(void)) 0x0043F180)
 #define do_examine_mode ((void(__cdecl*)(void)) 0x0043F1E0)
-#define give_lara_items_cheat ((void(__cdecl*)(void)) 0x0043F4C0)
+///#define give_lara_items_cheat ((void(__cdecl*)(void)) 0x0043F4C0) /// not used anymore !!
 #endif

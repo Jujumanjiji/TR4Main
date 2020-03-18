@@ -9,6 +9,17 @@ struct JMP
     DWORD offset;    // jump offset
 };
 
+struct STATS
+{
+    DWORD timer;
+    DWORD distance;
+    DWORD ammo_used;
+    DWORD ammo_hits;
+    WORD kills;
+    BYTE secrets;
+    BYTE health_used;
+};
+
 struct LARA_MATRIX
 {
     int hips[12];

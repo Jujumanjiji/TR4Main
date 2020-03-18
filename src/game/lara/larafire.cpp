@@ -297,7 +297,7 @@ void fire_shotgun(void)
         lara.r_arm.flash_gun = weapons[LG_SHOTGUN].flash_time;
         SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x1400000);
         SoundEffect(weapons[LG_SHOTGUN].sample_id, &lara_item->pos, 0);
-        ++savegame_ammoused;
+        savegame_level.ammo_used++;
     }
 }
 
@@ -386,7 +386,7 @@ void fire_grenade(void)
                 item->reserved_1 = 2; // super
             else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
                 item->reserved_1 = 3; // flash
-            ++savegame_ammoused;
+            savegame_level.ammo_used++;
         }
     }
 }
@@ -469,7 +469,7 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
             else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
                 item->reserved_1 = 3; // explosive
             SoundEffect(SFX_LARA_CROSSBOW, &lara_item->pos, 0);
-            ++savegame_ammoused;
+            savegame_level.ammo_used++;
         }
     }
 }
@@ -846,7 +846,7 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
         }
         else
         {
-            savegame_ammohit++;
+            savegame_level.ammo_hits++;
             vsrc.x = vdest.x + (bestdist * phd_mxptr[M20] >> W2V_SHIFT);
             vsrc.y = vdest.y + (bestdist * phd_mxptr[M21] >> W2V_SHIFT);
             vsrc.z = vdest.z + (bestdist * phd_mxptr[M22] >> W2V_SHIFT);
@@ -1039,7 +1039,7 @@ void HitTarget(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)
     if (!obj->undead || flags || item->hit_points != DONT_TARGET)
     {
         if (item->hit_points > 0 && item->hit_points <= damage)
-            savegame_kills++;
+            savegame_level.kills++;
         item->hit_points -= damage;
     }
 }

@@ -20,6 +20,7 @@ void construct_inventory_2D(void)
     lara.busy = FALSE;
 
     GLOBAL_invitemchosen = NO_ITEM;
+    GLOBAL_invitemlastchosen = NO_ITEM;
     left_debounce = false;
     right_debounce = false;
     up_debounce = false;
@@ -34,7 +35,7 @@ void construct_inventory_2D(void)
     go_deselect = false;
     left_repeat = false;
     right_repeat = false;
-    loading_or_saving = false;
+    loading_or_saving = 0;
     use_items = false;
 
     inv_pistols_ammo_count = lara.pistol_ammo_count;
@@ -57,7 +58,7 @@ void construct_inventory_2D(void)
         {
             if (have_i_got_item(GLOBAL_invitemlastchosen))
             {
-                setup_objectlist_startposition2(GLOBAL_invitemlastchosen);
+                setup_objectlist_startposition_invitem(GLOBAL_invitemlastchosen);
             }
             else
             {
@@ -66,7 +67,7 @@ void construct_inventory_2D(void)
                     for (int i = INV_WATERSKIN_EMPTY; i <= INV_WATERSKIN1_3; i++)
                     {
                         if (have_i_got_item(i))
-                            setup_objectlist_startposition2(i);
+                            setup_objectlist_startposition_invitem(i);
                     }
                 }
                 else if (GLOBAL_invitemlastchosen >= INV_WATERSKIN2_EMPTY && GLOBAL_invitemlastchosen <= INV_WATERSKIN2_5)
@@ -74,7 +75,7 @@ void construct_inventory_2D(void)
                     for (int i = INV_WATERSKIN2_EMPTY; i <= INV_WATERSKIN2_5; i++)
                     {
                         if (have_i_got_item(i))
-                            setup_objectlist_startposition2(i);
+                            setup_objectlist_startposition_invitem(i);
                     }
                 }
             }
@@ -85,7 +86,7 @@ void construct_inventory_2D(void)
     else
     {
         if (have_i_got_object(GLOBAL_invEnter))
-            setup_objectlist_startposition(GLOBAL_invEnter);
+            setup_objectlist_startposition_objnumber(GLOBAL_invEnter);
         GLOBAL_invEnter = NO_ITEM;
     }
 
@@ -445,12 +446,12 @@ void construct_object_list(void)
     for (int i = 0; i < MAX_INVOBJ; i++)
         ring2D[RING_INVENTORY]->current_obj_list[i].inv_item = NO_ITEM;
 
-    current_pistols_ammo_type = NULL;
-    current_uzi_ammo_type = NULL;
-    current_revolver_ammo_type = NULL;
-    current_shotgun_ammo_type = NULL;
-    current_grenadegun_ammo_type = NULL;
-    current_crossbow_ammo_type = NULL;
+    current_pistols_ammo_type = AINV_AMMO1;
+    current_uzi_ammo_type = AINV_AMMO1;
+    current_revolver_ammo_type = AINV_AMMO1;
+    current_shotgun_ammo_type = AINV_AMMO1;
+    current_grenadegun_ammo_type = AINV_AMMO1;
+    current_crossbow_ammo_type = AINV_AMMO1;
 
     if (CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
     {
@@ -482,7 +483,7 @@ void construct_object_list(void)
         {
             insert_object_into_list_inventory(INV_SHOTGUN);
             if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO2))
-                current_crossbow_ammo_type = AINV_AMMO2;
+                current_shotgun_ammo_type = AINV_AMMO2;
         }
         else
         {
@@ -713,7 +714,7 @@ void draw_current_object_list(int ring_type)
             {
                 combine_type_flag = 0;
                 construct_object_list();
-                setup_objectlist_startposition2(combine_obj1);
+                setup_objectlist_startposition_invitem(combine_obj1);
             }
             else if (seperate_type_flag)
             {
@@ -928,8 +929,8 @@ void draw_current_object_list(int ring_type)
             else
                 y = 190;
 
-            centerx = (phd_centerx * 0.00390625   * STEP_L);
-            centery = (phd_centery * 0.0083333338 * y);
+            centerx = int(phd_centerx * 0.00390625   * STEP_L);
+            centery = int(phd_centery * 0.0083333338 * y);
             inventoryX = inventory_xpos + centerx + (i * objlist_spacing) + xoff;
             inventoryY = inventory_ypos + centery;
             DrawThreeDeeObject2D(inventoryX, inventoryY, ring->current_obj_list[current_obj].inv_item, shade, NULL, ring->current_obj_list[current_obj].yrot, NULL, ring->current_obj_list[current_obj].bright, FALSE);
@@ -1086,7 +1087,7 @@ void handle_inventry_menu(void)
     short inv_ammo = ammo->current_obj_list[ammo->cur_obj_in_list].inv_item;
     short opts;
     int posY;
-    int n, num;
+    int num;
 
     if (ammo->active)
     {
@@ -1361,6 +1362,915 @@ void handle_inventry_menu(void)
     }
 }
 
+void fade_ammo_selector(void)
+{
+    if (ring2D[RING_INVENTORY]->active && (right_repeat >= INVENTORY_INPUT_REPEAT || left_repeat >= INVENTORY_INPUT_REPEAT))
+    {
+        ammo_selector_fade_val = 0;
+    }
+    else if (ammo_selector_fade_dir == 1)
+    {
+        if (ammo_selector_fade_val < 128)
+            ammo_selector_fade_val += 32;
+
+        if (ammo_selector_fade_val > 128)
+        {
+            ammo_selector_fade_val = 128;
+            ammo_selector_fade_dir = 0;
+        }
+    }
+    else if (ammo_selector_fade_dir == 2)
+    {
+        if (ammo_selector_fade_val > 0)
+            ammo_selector_fade_val -= 32;
+
+        if (ammo_selector_fade_val < 0)
+        {
+            ammo_selector_fade_val = 0;
+            ammo_selector_fade_dir = 0;
+        }
+    }
+}
+
+void draw_ammo_selector(void)
+{
+    if (ammo_selector_flag)
+    {
+        AMMOLIST* ammo;
+        int space;
+        int i;
+        char buffer[128];
+
+        space = ((2 * phd_centerx) - objlist_spacing) >> 1;
+        switch (num_ammo_slots)
+        {
+            case 2:
+                space += objlist_spacing / -2;
+                break;
+            case 3:
+                space -= objlist_spacing;
+                break;
+        }
+
+        i = 0;
+        if (num_ammo_slots)
+        {
+            for (i = 0; i < num_ammo_slots; i++)
+            {
+                ammo = &ammo_object_list[i];
+                if (i == *current_ammo_type)
+                {
+                    if (inventry_objects_list[ammo->inv_item].flags & 2)
+                        ammo->yrot += 1022;
+                }
+                else
+                {
+                    spinback(&ammo->yrot);
+                }
+
+                if (i == *current_ammo_type)
+                {
+                    if (ammo->amount == -1)
+                        sprintf(buffer, &gfStringWad[gfStringOffset[STR_UNLIMITED]], &gfStringWad[gfStringOffset[inventry_objects_list[ammo->inv_item].name]]);
+                    else
+                        sprintf(buffer, "%d x %s", ammo->amount, &gfStringWad[gfStringOffset[inventry_objects_list[ammo->inv_item].name]]);
+
+                    if (ammo_selector_fade_val)
+                        PrintString(phd_centerx, font_height + phd_centery + 2 * font_height - 9, 8, buffer, FF_CENTER);
+                }
+
+                DrawThreeDeeObject2D(
+                    int(inventory_xpos + (phd_centerx * 0.00390625   * 64.0 ) + space),
+                    int(inventory_ypos + (phd_centery * 0.0083333338 * 190.0)),
+                    ammo->inv_item,
+                    ammo_selector_fade_val,
+                    NULL,
+                    ammo->yrot,
+                    NULL,
+                    i != *current_ammo_type,
+                    FALSE);
+                space += objlist_spacing;
+            }
+        }
+    }
+}
+
+void spinback(WORD* yangle)
+{
+    WORD sYAngle = *yangle;
+    WORD save, posi, nega;
+    WORD result;
+
+    save = sYAngle;
+    if (sYAngle)
+    {
+        posi = sYAngle;
+        if (sYAngle <= 0x8000)
+        {
+            if (sYAngle < 1022)
+                sYAngle = 1022;
+            if (sYAngle > 0x4000)
+                sYAngle = 0x4000;
+            result = posi - (save >> 3);
+            if (result > 0x8000)
+                result = 0;
+        }
+        else
+        {
+            nega = -sYAngle;
+            if (nega < 1022)
+                posi = 1022;
+            if (nega > 0x4000)
+                nega = 0x4000;
+            result = (nega >> 3) + posi;
+            if (result < 0x8000)
+            {
+                *yangle = 0;
+                return;
+            }
+        }
+
+        *yangle = result;
+    }
+}
+
+void update_laras_weapons_status(void)
+{
+    if (CHK_ANY(lara.shotgun_type_carried, CR_PRESENT))
+    {
+        lara.shotgun_type_carried &= ~(CR_AMMOMASK); // delete all the ammo flag
+
+        switch (current_shotgun_ammo_type)
+        {
+            case AINV_AMMO1:
+                lara.shotgun_type_carried |= CR_AMMO1;
+                break;
+            case AINV_AMMO2:
+                lara.shotgun_type_carried |= CR_AMMO2;
+                break;
+        }
+    }
+
+    if (CHK_ANY(lara.grenadegun_type_carried, CR_PRESENT))
+    {
+        lara.grenadegun_type_carried &= ~(CR_AMMOMASK);
+
+        switch (current_grenadegun_ammo_type)
+        {
+            case AINV_AMMO1:
+                lara.grenadegun_type_carried |= CR_AMMO1;
+                break;
+            case AINV_AMMO2:
+                lara.grenadegun_type_carried |= CR_AMMO2;
+                break;
+            case AINV_AMMO3:
+                lara.grenadegun_type_carried |= CR_AMMO3;
+                break;
+        }
+    }
+
+    if (CHK_ANY(lara.crossbow_type_carried, CR_PRESENT))
+    {
+        lara.crossbow_type_carried &= ~(CR_AMMOMASK);
+
+        switch (current_crossbow_ammo_type)
+        {
+            case AINV_AMMO1:
+                lara.crossbow_type_carried |= CR_AMMO1;
+                break;
+            case AINV_AMMO2:
+                lara.crossbow_type_carried |= CR_AMMO2;
+                break;
+            case AINV_AMMO3:
+                lara.crossbow_type_carried |= CR_AMMO3;
+                break;
+        }
+    }
+}
+
+BOOL is_item_currently_combinable(short inv_item)
+{
+    int i;
+    if (inv_item < INV_WATERSKIN_EMPTY || inv_item > INV_WATERSKIN2_5)
+    {
+        for (i = 0; i < 19; i++)
+        {
+            short item_a = combine_table[i].item_a;
+            short item_b = combine_table[i].item_b;
+            if (item_a == inv_item)
+            {
+                if (have_i_got_item(item_b))
+                    return TRUE;
+            }
+            else if (item_b == inv_item)
+            {
+                if (have_i_got_item(item_a))
+                    return TRUE;
+            }
+        }
+    }
+    else if (inv_item > INV_WATERSKIN1_3)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            if (have_i_got_item(i + INV_WATERSKIN_EMPTY))
+                return TRUE;
+        }
+    }
+    else
+    {
+        for (i = 0; i < 6; i++)
+        {
+            if (have_i_got_item(i + INV_WATERSKIN2_EMPTY))
+                return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+BOOL have_i_got_item(short inv_item)
+{
+    RING2D* inv = ring2D[RING_INVENTORY];
+
+    for (int i = 0; i < MAX_INVOBJ; i++)
+    {
+        if (inv_item == inv->current_obj_list[i].inv_item)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+BOOL do_these_objects_combine(short item_a, short item_b)
+{
+    COMBINELIST* list;
+
+    for (int i = 0; i < 19; i++)
+    {
+        list = &combine_table[i];
+        if (list->item_a == item_a && list->item_b == item_b)        // item_a == TRUE
+            return TRUE;
+        else if (list->item_a == item_b && list->item_b == item_a)   // item_b == TRUE
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+void combine_these_two_objects(short item_a, short item_b)
+{
+    int i;
+    COMBINELIST* list;
+    for (i = 0; i < 19; i++)
+    {
+        list = &combine_table[i];
+        if (list->item_a == item_a && list->item_b == item_b)
+            break;
+        else if (list->item_a == item_b && list->item_b == item_a)
+            break;
+    }
+
+    if (list != nullptr) // check for nullptr !!
+    {
+        list->combine_routine(CONSTRUCT_ITEM);
+        construct_object_list();
+        setup_objectlist_startposition_invitem(list->result);
+        handle_object_changeover();
+    }
+}
+
+void seperate_object(short inv_item)
+{
+    int i;
+    COMBINELIST* list;
+    for (i = 0; i < 19; i++)
+    {
+        list = &combine_table[i];
+        if (list->result == inv_item)
+            break;
+    }
+
+    if (list != nullptr) // check for nullptr !!
+    {
+        list->combine_routine(DECONSTRUCT_ITEM);
+        construct_object_list();
+        setup_objectlist_startposition_invitem(list->item_a);
+    }
+}
+
+void combine_revolver(int flag)
+{
+    switch (flag)
+    {
+        case CONSTRUCT_ITEM:
+            lara.lasersight = FALSE;
+            lara.revolver_type_carried |= CR_LASERSIGHT;
+            break;
+        case DECONSTRUCT_ITEM:
+            lara.lasersight = TRUE;
+            lara.revolver_type_carried &= ~(CR_LASERSIGHT);
+            break;
+    }
+
+    if (lara.gun_status != LG_UNARMED && lara.gun_type == LG_REVOLVER)
+    {
+        undraw_pistols_left(LG_REVOLVER);
+        draw_pistol_meshes(LG_REVOLVER);
+    }
+}
+
+void combine_crossbow(int flag)
+{
+    switch (flag)
+    {
+        case CONSTRUCT_ITEM:
+            lara.lasersight = FALSE;
+            lara.crossbow_type_carried |= CR_LASERSIGHT;
+            break;
+        case DECONSTRUCT_ITEM:
+            lara.lasersight = TRUE;
+            lara.crossbow_type_carried &= ~(CR_LASERSIGHT);
+            break;
+    }
+
+    if (lara.gun_status != LG_UNARMED && lara.gun_type == LG_CROSSBOW)
+    {
+        undraw_shotgun_meshes(LG_CROSSBOW);
+        draw_shotgun_meshes(LG_CROSSBOW);
+    }
+}
+
+void combine_puzzle_item1(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO1);
+    lara.puzzleitems[0] = 1;
+}
+
+void combine_puzzle_item2(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO2);
+    lara.puzzleitems[1] = 1;
+}
+
+void combine_puzzle_item3(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO3);
+    lara.puzzleitems[2] = 1;
+}
+
+void combine_puzzle_item4(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO4);
+    lara.puzzleitems[3] = 1;
+}
+
+void combine_puzzle_item5(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO4);
+    lara.puzzleitems[4] = 1;
+}
+
+void combine_puzzle_item6(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO5);
+    lara.puzzleitems[5] = 1;
+}
+
+void combine_puzzle_item7(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO6);
+    lara.puzzleitems[6] = 1;
+}
+
+void combine_puzzle_item8(int flag)
+{
+    lara.puzzleitemscombo &= ~(INV_COMBO7);
+    lara.puzzleitems[7] = 1;
+}
+
+void combine_key_item1(int flag)
+{
+    lara.keyitems |= 1;
+    lara.keyitemscombo &= ~(INV_COMBO1);
+}
+
+void combine_key_item2(int flag)
+{
+    lara.keyitems |= 2;
+    lara.keyitemscombo &= ~(INV_COMBO2);
+}
+
+void combine_key_item3(int flag)
+{
+    lara.keyitems |= 4;
+    lara.keyitemscombo &= ~(INV_COMBO3);
+}
+
+void combine_key_item4(int flag)
+{
+    lara.keyitems |= 8;
+    lara.keyitemscombo &= ~(INV_COMBO4);
+}
+
+void combine_key_item5(int flag)
+{
+    lara.keyitems |= 16;
+    lara.keyitemscombo &= ~(INV_COMBO5);
+}
+
+void combine_key_item6(int flag)
+{
+    lara.keyitems |= 32;
+    lara.keyitemscombo &= ~(INV_COMBO6);
+}
+
+void combine_key_item7(int flag)
+{
+    lara.keyitems |= 64;
+    lara.keyitemscombo &= ~(INV_COMBO7);
+}
+
+void combine_key_item8(int flag)
+{
+    lara.keyitems |= 128;
+    lara.keyitemscombo &= ~(INV_COMBO8);
+}
+
+void combine_pickup_item1(int flag)
+{
+    lara.pickupitems |= 1;
+    lara.pickupitemscombo &= ~(INV_COMBO1);
+}
+
+void combine_pickup_item2(int flag)
+{
+    lara.pickupitems |= 2;
+    lara.pickupitemscombo &= ~(INV_COMBO2);
+}
+
+void combine_pickup_item3(int flag)
+{
+    lara.pickupitems |= 4;
+    lara.pickupitemscombo &= ~(INV_COMBO3);
+}
+
+void combine_pickup_item4(int flag)
+{
+    lara.pickupitems |= 8;
+    lara.pickupitemscombo &= ~(INV_COMBO4);
+}
+
+void combine_clockwork(int flag)
+{
+    lara.clockwork_beetle = 1;
+}
+
+void combine_waterskin(int flag)
+{
+    int empty_count;
+    int empty2_count;
+    int slotcount_1;
+    int slotcount_2;
+    int i, j;
+
+    empty_count = lara.water_skin_empty1 - 1;
+    empty2_count = lara.water_skin_empty2 - 1;
+    slotcount_1 = 3 - empty_count;
+    slotcount_2 = 5 - empty2_count;
+
+    if (flag)
+    {
+        if (lara.water_skin_empty2 != 1 && empty_count != 3)
+        {
+            i = lara.water_skin_empty2 - 1;
+            do
+            {
+                if (slotcount_1)
+                {
+                    empty_count++;
+                    empty2_count--;
+                    --slotcount_1;
+                }
+                --i;
+            } while (i);
+            lara.water_skin_empty1 = empty_count + 1;
+            lara.water_skin_empty2 = empty2_count + 1;
+            combine_obj1 = (empty_count + 1) + (INV_WATERSKIN_EMPTY - 1);
+        }
+    }
+    else if (lara.water_skin_empty1 != 1 && empty2_count != 5)
+    {
+        j = lara.water_skin_empty1 - 1;
+        do
+        {
+            if (slotcount_2)
+            {
+                empty_count = empty_count - 1;
+                empty2_count = empty2_count + 1;
+                --slotcount_2;
+            }
+            --j;
+        } while (j);
+        lara.water_skin_empty1 = empty_count + 1;
+        lara.water_skin_empty2 = empty2_count + 1;
+        combine_obj1 = (empty2_count + 1) + (INV_WATERSKIN2_EMPTY - 1);
+    }
+}
+
+void setup_objectlist_startposition_invitem(short inv_item)
+{
+    RING2D* inv = ring2D[RING_INVENTORY];
+
+    for (int i = 0; i < MAX_INVOBJ; i++)
+    {
+        if (inv_item == inv->current_obj_list[i].inv_item)
+        {
+            inv->cur_obj_in_list = i;
+            inv = ring2D[RING_INVENTORY]; // reset the old ring...
+        }
+    }
+}
+
+void setup_objectlist_startposition_objnumber(short object_number)
+{
+    RING2D* inv = ring2D[RING_INVENTORY];
+
+    for (int i = 0; i < MAX_INVOBJ; i++)
+    {
+        if (object_number == inventry_objects_list[inv->current_obj_list[i].inv_item].object_number)
+        {
+            inv->cur_obj_in_list = i;
+            inv = ring2D[RING_INVENTORY]; // reset the old ring...
+        }
+    }
+}
+
+void use_current_item(void)
+{
+    int rangeBackup = BinocularRange;
+    BinocularRange = 0;
+    BinocularEnabled = false;
+    lara_item->mesh_bits = -1;
+
+    short inv_item = ring2D[RING_INVENTORY]->current_obj_list[ring2D[RING_INVENTORY]->cur_obj_in_list].inv_item;
+    short object_number = inventry_objects_list[inv_item].object_number;
+
+    /// WEAPON
+    if (lara.water_status == LWS_ABOVEWATER || lara.water_status == LWS_WADE)
+    {
+        switch (object_number)
+        {
+            case PISTOLS_ITEM:
+                lara.gun_request_type = LG_PISTOLS;
+                if (lara.gun_status == LHS_ARMLESS && lara.gun_type == LG_PISTOLS)
+                    lara.gun_status = LHS_DRAW;
+                break;
+            case SHOTGUN_ITEM:
+                lara.gun_request_type = LG_SHOTGUN;
+                if (lara.gun_status == LHS_ARMLESS && lara.gun_type == LG_SHOTGUN)
+                    lara.gun_status = LHS_DRAW;
+                break;
+            case UZI_ITEM:
+                lara.gun_request_type = LG_UZIS;
+                if (lara.gun_status == LHS_ARMLESS && lara.gun_type == LG_UZIS)
+                    lara.gun_status = LHS_DRAW;
+                break;
+            case REVOLVER_ITEM:
+                lara.gun_request_type = LG_REVOLVER;
+                if (lara.gun_status == LHS_ARMLESS && lara.gun_type == LG_REVOLVER)
+                    lara.gun_status = LHS_DRAW;
+                break;
+            case GRENADE_GUN_ITEM:
+                lara.gun_request_type = LG_GRENADEGUN;
+                if (lara.gun_status == LHS_ARMLESS && lara.gun_type == LG_GRENADEGUN)
+                    lara.gun_status = LHS_DRAW;
+                break;
+            case CROSSBOW_ITEM:
+                lara.gun_request_type = LG_CROSSBOW;
+                if (lara.gun_status == LHS_ARMLESS && lara.gun_type == LG_CROSSBOW)
+                    lara.gun_status = LHS_DRAW;
+                break;
+        }
+    }
+
+    /// FLARE
+    if (object_number == FLARE_INV_ITEM)
+    {
+        if (lara.gun_status == LHS_ARMLESS)
+        {
+            if (lara_item->state_current != STATE_LARA_CRAWL_IDLE
+            &&  lara_item->state_current != STATE_LARA_CRAWL_FORWARD
+            &&  lara_item->state_current != STATE_LARA_CRAWL_TURN_LEFT
+            &&  lara_item->state_current != STATE_LARA_CRAWL_TURN_RIGHT
+            &&  lara_item->state_current != STATE_LARA_CRAWL_BACK
+            &&  lara_item->state_current != STATE_LARA_CRAWL_TO_CLIMB)
+            {
+                if (lara.gun_type != LG_FLARE)
+                {
+                    TrInput = IN_FLARE;
+                    LaraGun();
+                    TrInput = IN_NONE;
+                    GLOBAL_invitemchosen = object_number;
+                }
+                return;
+            }
+        }
+        else
+        {
+            SayNo();
+        }
+    }
+
+    /// MEDIKIT
+    if (object_number == BIGMEDI_ITEM)
+    {
+        if ((lara_item->hit_points > 0 && lara_item->hit_points < LARA_HITPOINTS) || lara.poisoned)
+        {
+            if (lara.large_medipack_count != INFINITE_AMMO)
+                lara.large_medipack_count--;
+
+            lara.poisoned_2 = 0;
+            lara_item->hit_points += LARA_HITPOINTS;
+            if (lara_item->hit_points > LARA_HITPOINTS)
+                lara_item->hit_points = LARA_HITPOINTS;
+            SoundEffect(SFX_MENU_MEDI, nullptr, SFX_ALWAYS);
+            savegame_level.health_used++;
+        }
+        else
+        {
+            SayNo();
+        }
+    }
+
+    if (object_number == SMALLMEDI_ITEM)
+    {
+        if ((lara_item->hit_points > 0 && lara_item->hit_points < LARA_HITPOINTS) || lara.poisoned)
+        {
+            if (lara.small_medipack_count != INFINITE_AMMO)
+                lara.small_medipack_count--;
+
+            lara.poisoned_2 = 0;
+            lara_item->hit_points += LARA_HITPOINTS / 2;
+            if (lara_item->hit_points > LARA_HITPOINTS)
+                lara_item->hit_points = LARA_HITPOINTS;
+            SoundEffect(SFX_MENU_MEDI, nullptr, SFX_ALWAYS);
+            savegame_level.health_used++;
+        }
+        else
+        {
+            SayNo();
+        }
+    }
+    else if (object_number != BINOCULARS_ITEM)
+    {
+        GLOBAL_invitemchosen = object_number;
+        return;
+    }
+
+    /// BINOCULARS
+    if (object_number == BINOCULARS_ITEM)
+    {
+        if ((lara_item->state_current == STATE_LARA_IDLE && lara_item->current_anim == ANIMATION_LARA_STAY_IDLE) || (lara.is_ducked && CHK_NOP(TrInput, IN_DUCK)))
+        {
+            BinocularEnabled = true;
+            BinocularRange = 128;
+            if (lara.gun_status != LHS_ARMLESS)
+                lara.gun_status = LHS_UNDRAW;
+            GLOBAL_invitemchosen = object_number;
+        }
+    }
+
+    if (rangeBackup)
+        BinocularRange = rangeBackup;
+    else
+        BinocularOldCamera = camera.old_type;
+}
+
+void picked_up_object(short object_number)
+{
+    switch (object_number)
+    {
+        case WATERSKIN1_EMPTY:
+            lara.water_skin_empty1 = 1;
+            break;
+        case WATERSKIN2_EMPTY:
+            lara.water_skin_empty2 = 1;
+            break;
+        case UZI_ITEM:
+            if (CHK_NOP(lara.uzi_type_carried, CR_PRESENT))
+                lara.uzi_type_carried |= (CR_PRESENT | CR_AMMO1);
+            if (lara.uzi_ammo_count != INFINITE_AMMO)
+                lara.uzi_ammo_count += 30;
+            break;
+        case PISTOLS_ITEM:
+            if (CHK_NOP(lara.pistols_type_carried, CR_PRESENT))
+                lara.pistols_type_carried |= (CR_PRESENT | CR_AMMO1);
+            lara.pistol_ammo_count = INFINITE_AMMO;
+            return;
+        case SHOTGUN_ITEM:
+            if (CHK_NOP(lara.shotgun_type_carried, CR_PRESENT))
+                lara.shotgun_type_carried |= (CR_PRESENT | CR_AMMO1);
+            if (lara.shotgun_ammo1_count != INFINITE_AMMO)
+                lara.shotgun_ammo1_count += (6 * 6);
+            break;
+        case REVOLVER_ITEM:
+            if (CHK_NOP(lara.revolver_type_carried, CR_PRESENT))
+                lara.revolver_type_carried |= (CR_PRESENT | CR_AMMO1);
+            if (lara.revolver_ammo_count != INFINITE_AMMO)
+                lara.revolver_ammo_count += 6;
+            break;
+        case CROSSBOW_ITEM:
+            if (CHK_NOP(lara.crossbow_type_carried, CR_PRESENT))
+                lara.crossbow_type_carried |= (CR_PRESENT | CR_AMMO1);
+            if (lara.crossbow_ammo1_count != INFINITE_AMMO)
+                lara.crossbow_ammo1_count += 10;
+            break;
+        case GRENADE_GUN_ITEM:
+            if (CHK_NOP(lara.grenadegun_type_carried, CR_PRESENT))
+                lara.grenadegun_type_carried |= (CR_PRESENT | CR_AMMO1);
+            if (lara.grenade_ammo1_count != INFINITE_AMMO)
+                lara.grenade_ammo1_count += 10;
+            break;
+        case SHOTGUN_AMMO1_ITEM:
+            if (lara.shotgun_ammo1_count != INFINITE_AMMO)
+                lara.shotgun_ammo1_count += (6 * 6);
+            break;
+        case SHOTGUN_AMMO2_ITEM:
+            if (lara.shotgun_ammo2_count != INFINITE_AMMO)
+                lara.shotgun_ammo2_count += (6 * 6);
+            break;
+        case GRENADE_GUN_AMMO1_ITEM:
+            if (lara.grenade_ammo1_count != INFINITE_AMMO)
+                lara.grenade_ammo1_count += 4;
+            break;
+        case GRENADE_GUN_AMMO2_ITEM:
+            if (lara.grenade_ammo2_count != INFINITE_AMMO)
+                lara.grenade_ammo2_count += 4;
+            break;
+        case GRENADE_GUN_AMMO3_ITEM:
+            if (lara.grenade_ammo3_count != INFINITE_AMMO)
+                lara.grenade_ammo3_count += 4;
+            break;
+        case CROSSBOW_AMMO1_ITEM:
+            if (lara.crossbow_ammo1_count != INFINITE_AMMO)
+                lara.crossbow_ammo1_count += 10;
+            break;
+        case CROSSBOW_AMMO2_ITEM:
+            if (lara.crossbow_ammo2_count != INFINITE_AMMO)
+                lara.crossbow_ammo2_count += 10;
+            break;
+        case CROSSBOW_AMMO3_ITEM:
+            if (lara.crossbow_ammo3_count != INFINITE_AMMO)
+                lara.crossbow_ammo3_count += 10;
+            break;
+        case REVOLVER_AMMO_ITEM:
+            if (lara.revolver_ammo_count != INFINITE_AMMO)
+                lara.revolver_ammo_count += 6;
+            break;
+        case UZI_AMMO_ITEM:
+            if (lara.uzi_ammo_count != INFINITE_AMMO)
+                lara.uzi_ammo_count += 30;
+            break;
+        case FLARE_INV_ITEM:
+            if (lara.flare_count != INFINITE_AMMO)
+                lara.flare_count += 12;
+            break;
+        case LASERSIGHT_ITEM:
+            if (CHK_NOP(lara.pistols_type_carried, CR_LASERSIGHT)
+            ||  CHK_NOP(lara.uzi_type_carried, CR_LASERSIGHT)
+            ||  CHK_NOP(lara.shotgun_type_carried, CR_LASERSIGHT)
+            ||  CHK_NOP(lara.grenadegun_type_carried, CR_LASERSIGHT)
+            ||  CHK_NOP(lara.crossbow_type_carried, CR_LASERSIGHT)
+            ||  CHK_NOP(lara.revolver_type_carried, CR_LASERSIGHT))
+            {
+                lara.lasersight = 1;
+            }
+            break;
+        case BIGMEDI_ITEM:
+            if (lara.large_medipack_count != INFINITE_AMMO)
+                lara.large_medipack_count++;
+            break;
+        case SMALLMEDI_ITEM:
+            if (lara.small_medipack_count != INFINITE_AMMO)
+                lara.small_medipack_count++;
+            break;
+        case BINOCULARS_ITEM:
+            lara.binoculars = 1;
+            break;
+        case CROWBAR_ITEM:
+            lara.crowbar = 1;
+            break;
+        case CLOCKWORK_BEETLE:
+            lara.clockwork_beetle |= 1;
+            break;
+        case CLOCKWORK_BEETLE_COMBO1:
+            lara.clockwork_beetle |= 2;
+            break;
+        case CLOCKWORK_BEETLE_COMBO2:
+            lara.clockwork_beetle |= 4;
+            break;
+        case EXAMINE1:
+            lara.examine1 = 1;
+            break;
+        case EXAMINE2:
+            lara.examine2 = 1;
+            break;
+        case EXAMINE3:
+            lara.examine3 = 1;
+            break;
+        case PUZZLE_ITEM1:
+        case PUZZLE_ITEM2:
+        case PUZZLE_ITEM3:
+        case PUZZLE_ITEM4:
+        case PUZZLE_ITEM5:
+        case PUZZLE_ITEM6:
+        case PUZZLE_ITEM7:
+        case PUZZLE_ITEM8:
+        case PUZZLE_ITEM9:
+        case PUZZLE_ITEM10:
+        case PUZZLE_ITEM11:
+        case PUZZLE_ITEM12:
+            lara.puzzleitems[object_number - PUZZLE_ITEM1]++;
+            break;
+        case PUZZLE_ITEM1_COMBO1:
+        case PUZZLE_ITEM1_COMBO2:
+        case PUZZLE_ITEM2_COMBO1:
+        case PUZZLE_ITEM2_COMBO2:
+        case PUZZLE_ITEM3_COMBO1:
+        case PUZZLE_ITEM3_COMBO2:
+        case PUZZLE_ITEM4_COMBO1:
+        case PUZZLE_ITEM4_COMBO2:
+        case PUZZLE_ITEM5_COMBO1:
+        case PUZZLE_ITEM5_COMBO2:
+        case PUZZLE_ITEM6_COMBO1:
+        case PUZZLE_ITEM6_COMBO2:
+        case PUZZLE_ITEM8_COMBO1:
+        case PUZZLE_ITEM8_COMBO2:
+            lara.puzzleitemscombo |= (1 << (object_number + 69));
+            break;
+        case KEY_ITEM1:
+        case KEY_ITEM2:
+        case KEY_ITEM3:
+        case KEY_ITEM4:
+        case KEY_ITEM5:
+        case KEY_ITEM6:
+        case KEY_ITEM7:
+        case KEY_ITEM8:
+        case KEY_ITEM9:
+        case KEY_ITEM10:
+        case KEY_ITEM11:
+        case KEY_ITEM12:
+            lara.keyitems |= (1 << (object_number + 53));
+            break;
+        case KEY_ITEM1_COMBO1:
+        case KEY_ITEM1_COMBO2:
+        case KEY_ITEM2_COMBO1:
+        case KEY_ITEM2_COMBO2:
+        case KEY_ITEM3_COMBO1:
+        case KEY_ITEM3_COMBO2:
+        case KEY_ITEM4_COMBO1:
+        case KEY_ITEM4_COMBO2:
+        case KEY_ITEM5_COMBO1:
+        case KEY_ITEM5_COMBO2:
+        case KEY_ITEM6_COMBO1:
+        case KEY_ITEM6_COMBO2:
+        case KEY_ITEM7_COMBO1:
+        case KEY_ITEM7_COMBO2:
+        case KEY_ITEM8_COMBO1:
+        case KEY_ITEM8_COMBO2:
+            lara.keyitemscombo |= (1 << (object_number + 41));
+            break;
+        case PICKUP_ITEM1:
+        case PICKUP_ITEM2:
+        case PICKUP_ITEM3:
+        case PICKUP_ITEM4:
+            lara.pickupitems |= (1 << (object_number + 25));
+            break;
+        case PICKUP_ITEM1_COMBO1:
+        case PICKUP_ITEM1_COMBO2:
+        case PICKUP_ITEM2_COMBO1:
+        case PICKUP_ITEM2_COMBO2:
+        case PICKUP_ITEM3_COMBO1:
+        case PICKUP_ITEM3_COMBO2:
+        case PICKUP_ITEM4_COMBO1:
+        case PICKUP_ITEM4_COMBO2:
+            lara.pickupitemscombo |= 1 << (object_number + 21);
+            break;
+        case QUEST_ITEM1:
+        case QUEST_ITEM2:
+        case QUEST_ITEM3:
+        case QUEST_ITEM4:
+        case QUEST_ITEM5:
+        case QUEST_ITEM6:
+            lara.questitems |= (1 << (object_number + 4));
+            break;
+        default:
+            S_Log(LT_Function, "not found any variables to store this object_number: %d", false, object_number); // just in case i missed something or missed implemented a new item...
+            break;
+    }
+}
+
 #ifdef DLL_INJECT
 void injector::inject_inventory()
 {
@@ -1377,5 +2287,42 @@ void injector::inject_inventory()
     this->inject(0x0043CAE0, draw_current_object_list);
     this->inject(0x0043D450, handle_object_changeover);
     this->inject(0x0043D470, handle_inventry_menu);
+    this->inject(0x0043DE30, fade_ammo_selector);
+    this->inject(0x0043DED0, draw_ammo_selector);
+    this->inject(0x0043E140, spinback);
+    this->inject(0x0043E1B0, update_laras_weapons_status);
+    this->inject(0x0043E250, is_item_currently_combinable);
+    this->inject(0x0043E2F0, have_i_got_item);
+    this->inject(0x0043E320, do_these_objects_combine);
+    this->inject(0x0043E360, combine_these_two_objects);
+    this->inject(0x0043E3D0, seperate_object);
+    this->inject(0x0043E420, combine_revolver);
+    this->inject(0x0043E480, combine_crossbow);
+    this->inject(0x0043E4E0, combine_puzzle_item1);
+    this->inject(0x0043E500, combine_puzzle_item2);
+    this->inject(0x0043E520, combine_puzzle_item3);
+    this->inject(0x0043E540, combine_puzzle_item4);
+    this->inject(0x0043E560, combine_puzzle_item5);
+    this->inject(0x0043E580, combine_puzzle_item6);
+    this->inject(0x0043E5A0, combine_puzzle_item7);
+    this->inject(0x0043E5C0, combine_puzzle_item8);
+    this->inject(0x0043E5E0, combine_key_item1);
+    this->inject(0x0043E600, combine_key_item2);
+    this->inject(0x0043E620, combine_key_item3);
+    this->inject(0x0043E640, combine_key_item4);
+    this->inject(0x0043E660, combine_key_item5);
+    this->inject(0x0043E680, combine_key_item6);
+    this->inject(0x0043E6A0, combine_key_item7);
+    this->inject(0x0043E6C0, combine_key_item8);
+    this->inject(0x0043E6E0, combine_pickup_item1);
+    this->inject(0x0043E700, combine_pickup_item2);
+    this->inject(0x0043E720, combine_pickup_item3);
+    this->inject(0x0043E740, combine_pickup_item4);
+    this->inject(0x0043E760, combine_clockwork);
+    this->inject(0x0043E770, combine_waterskin);
+    this->inject(0x0043E830, setup_objectlist_startposition_invitem);
+    this->inject(0x0043E860, setup_objectlist_startposition_objnumber);
+    this->inject(0x0043E8A0, use_current_item);
+    this->inject(0x0043EB80, picked_up_object);
 }
 #endif

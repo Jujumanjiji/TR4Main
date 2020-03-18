@@ -72,6 +72,8 @@
 #define draw_rooms_number                   VAR_U_(0x007FD304, int)
 #define RenderTypeDebug                     VAR_U_(0x007E71E0, int)
 #define BinocularRange                      VAR_I_(0x004BF3E4, int, 0)
+#define BinocularEnabled                    VAR_U_(0x007FE9C0, bool)
+#define BinocularOldCamera                  VAR_I_(0x004BF3EC, int, CHASE_CAMERA)
 #define LaserSight                          VAR_I_(0x004BF3F0, int, 0)
 #define LaserSightActive                    VAR_I_(0x004BF37E, int, 0)
 #define LaserSightPos                       VAR_U_(0x00800160, PHD_VECTOR)
@@ -107,9 +109,6 @@
 #define EnemyOffset                         ARRAY_(0x004AED00, BITE_INFO, [11])
 #define level_data                          VAR_U_(0x005333A4, char*)
 #define fp_level                            VAR_U_(0x00533A74, LPFILE)
-#define savegame_ammoused                   VAR_U_(0x007F785A, int)
-#define savegame_ammohit                    VAR_U_(0x007F785E, int)
-#define savegame_kills                      VAR_U_(0x007F7876, short)
 #define height_type                         VAR_U_(0x007FE290, int) // height_types enum
 #define interpolated_bounds                 ARRAY_(0x007FE140, short, [6])
 #define LeftClimbTab                        ARRAY_(0x004AD800, short, [4])
@@ -130,6 +129,7 @@
 #define ShatterItem                         VAR_U_(0x007FE960, SHATTER_ITEM)
 #define lara_shadow_bbox                    VAR_U_(0x0080E710, short*)
 #define vertex_buffer                       VAR_U_(0x00753910, LPDIRECT3DVERTEXBUFFER)
+#define font_height                         VAR_U_(0x007F5050, int)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
@@ -174,5 +174,6 @@
 #define collide_item                        ARRAY_(0x00804F80, ITEM_INFO*, [256]) // not sure for the size !
 #define collide_meshes                      ARRAY_(0x00805380, MESH_INFO*, [256]) // not sure for the size !
 #define effect_routines                     ARRAY_(0x004ADE8C, EFFECT_ROUTINES_STRUCT, [47])
-
+#define savegame_level                      VAR_U_(0x007F7852, STATS)
+#define savegame_game                       VAR_U_(0x007F7866, STATS)
 #endif

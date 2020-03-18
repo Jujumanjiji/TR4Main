@@ -299,7 +299,7 @@ void animate_pistols(int weapon_type)
                         has_fired = true;
                         if (weapon_type == LG_UZIS)
                             uzi_right = true;
-                        ++savegame_ammoused;
+                        savegame_level.ammo_used++;
                     }
                 }
 
@@ -369,7 +369,7 @@ void animate_pistols(int weapon_type)
 
                     if (weapon_type == LG_UZIS)
                         uzi_left = true;
-                    ++savegame_ammoused;
+                    savegame_level.ammo_used++;
                 }
 
                 frameL = p->recoil_anim;
