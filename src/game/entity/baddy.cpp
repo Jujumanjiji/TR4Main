@@ -1,14 +1,15 @@
 #include "framework.h"
-#include "../oldobjects.h"
-#include "3dsystem/3d_gen.h"
-#include "game/box.h"
-#include "game/control.h"
-#include "game/draw.h"
-#include "game/items.h"
-#include "game/effect2.h"
-#include "game/people.h"
-#include "utils/utils.h"
-#include "utils/utils_render.h"
+#include "oldobjects.h"
+#include "3d_gen.h"
+#include "box.h"
+#include "control.h"
+#include "draw.h"
+#include "gameflow.h"
+#include "items.h"
+#include "effect2.h"
+#include "people.h"
+#include "utils.h"
+#include "utils_render.h"
 
 enum BADDY_ANIMATION
 {
@@ -1031,7 +1032,7 @@ void Baddy1Control(short itemNumber)
     CreatureJoint(item, 3, rot.head_x);
 
     // for any train level.
-    if (CHK_ANY(gf_level_flags, SLEV_TRAIN) && item->pos.y > -STEP_L)
+    if (CHK_ANY(gfLevelFlags, SLEV_TRAIN) && item->pos.y > -STEP_L)
     {
 
     }

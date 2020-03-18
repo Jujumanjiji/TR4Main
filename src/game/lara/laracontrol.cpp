@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "collide.h"
 #include "control.h"
+#include "gameflow.h"
 #include "items.h"
 #include "sound.h"
 #include "utils.h"
@@ -296,7 +297,7 @@ void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (item->state_current != STATE_LARA_DEATH && CHK_ANY(gf_level_flags, SLEV_TRAIN) && item->pos.y >= 0)
+    if (item->state_current != STATE_LARA_DEATH && CHK_ANY(gfLevelFlags, SLEV_TRAIN) && item->pos.y >= 0)
     {
         if (item->pos.z <= 51900 || item->pos.z >= 53554)
         {

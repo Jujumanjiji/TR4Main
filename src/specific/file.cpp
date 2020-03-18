@@ -127,7 +127,6 @@ void LoadObjects(void)
     int number_objects;
     int number_static;
 
-    S_Log(LT_Enter, "LoadObjects()", false);
     ZeroMemory(objects, sizeof(OBJECT_INFO[NUMBER_OBJECTS]));
     ZeroMemory(static_objects, sizeof(STATIC_INFO[NUMBER_STATIC_OBJECTS]));
 

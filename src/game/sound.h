@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef DLL_INJECT
+#define SayNo ((void(__cdecl*)(void)) 0x0045FAD0)
 #define CDPlay ((void(__cdecl*)(int index, int mode)) 0x0046E180)
 #define S_CDPlay ((void(__cdecl*)(int index, int mode)) 0x0046D610)
 #define S_CDStop ((void(__cdecl*)(void)) 0x0046D6B0)

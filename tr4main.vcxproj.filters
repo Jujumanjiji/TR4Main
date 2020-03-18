@@ -242,6 +242,9 @@
     <ClCompile Include="src\specific\text.cpp">
       <Filter>src\specific</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\gameflow.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -420,6 +423,9 @@
     </ClInclude>
     <ClInclude Include="src\specific\text.h">
       <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\gameflow.h">
+      <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

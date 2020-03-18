@@ -5,6 +5,7 @@
 #include "draw.h"
 #include "control.h"
 #include "effect2.h"
+#include "gameflow.h"
 #include "items.h"
 #include "sphere.h"
 #include "sound.h"
@@ -1066,7 +1067,7 @@ void LaraGun(void)
         {
             lara.gun_request_type = lara.gun_last_type;
         }
-        else if (CHK_ANY(TrInput, IN_FLARE) && CHK_NOP(gf_level_flags, SLEV_YOUNG_LARA))
+        else if (CHK_ANY(TrInput, IN_FLARE) && CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
         {
             if (lara_item->state_current == STATE_LARA_CROUCH_IDLE && lara_item->current_anim != ANIMATION_LARA_CROUCH_IDLE)
                 return;

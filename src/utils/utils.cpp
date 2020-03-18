@@ -6,6 +6,7 @@
 #include "control.h"
 #include "draw.h"
 #include "effect2.h"
+#include "gameflow.h"
 #include "items.h"
 #include "lara.h"
 #include "lot.h"
@@ -246,7 +247,7 @@ short GetCurrentFrame(ITEM_INFO* item)
 
 void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue)
 {
-    if (CHK_ANY(gf_level_flags, SLEV_MIRROR) && lara_item->room_number == short(gf_mirror_room))
+    if (CHK_ANY(gfLevelFlags, SLEV_MIRROR) && lara_item->room_number == short(gfMirrorRoom))
         TriggerDynamic_Mirror(x, y, z, intensity, red, green, blue);
     else
         TriggerDynamic(x, y, z, intensity, red, green, blue);

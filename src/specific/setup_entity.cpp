@@ -1,9 +1,10 @@
 #include "framework.h"
 #include "setup_entity.h"
+#include "oldobjects.h"
 #include "collide.h"
 #include "box.h"
 #include "lara.h"
-#include "oldobjects.h"
+#include "gameflow.h"
 #include "json/reader.h"
 #include "utils.h"
 
@@ -783,7 +784,7 @@ void SetupEntity::enemy_jeep()
     if (obj->loaded)
     {
         // the train level consider it as not a entity !
-        if (gf_level_flags & SLEV_TRAIN)
+        if (CHK_ANY(gfLevelFlags, SLEV_TRAIN))
         {
             obj->initialise = InitialiseEnemyJeepTrain;
             obj->control = EnemyJeepTrainControl;

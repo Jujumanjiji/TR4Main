@@ -9,50 +9,6 @@ struct JMP
     DWORD offset;    // jump offset
 };
 
-struct COMBINELIST
-{
-    void(*combine_routine)(int flag);
-    short item_a;
-    short item_b;
-    short result;
-};
-
-struct INVOBJ
-{
-    short object_number;
-    short yoff;
-    short scale;
-    short yrot;
-    short xrot;
-    short zrot;
-    short flags;
-    short name;
-    DWORD meshbits;
-};
-
-struct INVLIST
-{
-    short inv_item;
-    WORD yrot;
-    WORD bright;
-};
-
-struct RING2D
-{
-    INVLIST current_obj_list[MAX_INVOBJ];
-    BOOL active;
-    int obj_list_movement;
-    int cur_obj_in_list;
-    int num_obj_in_list;
-};
-
-struct AMMOLIST
-{
-    short inv_item;
-    short amount;
-    WORD yrot;
-};
-
 struct LARA_MATRIX
 {
     int hips[12];
