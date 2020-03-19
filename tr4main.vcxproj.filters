@@ -245,6 +245,12 @@
     <ClCompile Include="src\game\gameflow.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\specific\libgpu.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\input.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -425,6 +431,12 @@
       <Filter>src\specific</Filter>
     </ClInclude>
     <ClInclude Include="src\game\gameflow.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\libgpu.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\input.h">
       <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>

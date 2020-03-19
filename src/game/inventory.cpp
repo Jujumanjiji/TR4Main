@@ -5,16 +5,136 @@
 #include "draw.h"
 #include "gameflow.h"
 #include "lara.h"
+#include "input.h"
 #include "sound.h"
 #include "loadsave.h"
 #include "text.h"
+#include "output.h"
+#include "libgpu.h"
+#include "specific.h"
 #include "utils.h"
 
-void construct_inventory_2D(void)
+int show_inventory_2d(void)
+{
+    short flag;
+    int end, val;
+
+    old_lara_busy = lara.busy;
+    friggrimmer1 = false;
+    if (CHK_ANY(TrInput, IN_SELECT))
+        friggrimmer1 = true;
+
+    ring2D[RING_INVENTORY] = &GadwPolygonBuffers_RingNormal;
+    ring2D[RING_COMBINE] = &GadwPolygonBuffers_RingCombine;
+    CreateScreenSurface();
+    in_inventory = TRUE;
+    construct_inventory_2d();
+    camera.number_frames = 2;
+    flag = 0;
+    end = 0;
+
+    do
+    {
+        if (reset_flag)
+            break;
+        objlist_spacing = phd_centerx >> 1;
+        if (inventory_camera_angle != WALL_L)
+            inventory_camera_angle -= 32;
+
+        GPU_BeginScene();
+        SetDebounce = 1;
+        S_UpdateInput();
+        TrInput = TrInputDB;
+        UpdatePulseColour();
+        GameTimer++;
+
+        if (CHK_EXI(dbinput, IN_OPTION))
+        {
+            SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
+            flag = 1;
+        }
+
+        if (thread_started)
+            return thread_started;
+
+        draw_outlines();
+        do_debounced_input();
+
+        if (examine_mode)
+        {
+            do_examine_mode();
+        }
+        else
+        {
+            draw_current_object_list(RING_INVENTORY);
+            handle_inventry_menu();
+            if (ring2D[RING_COMBINE]->active)
+                draw_current_object_list(RING_COMBINE);
+            draw_ammo_selector();
+            fade_ammo_selector();
+            do_compass_mode();
+        }
+
+        if (use_items && TrInput == IN_NONE)
+            flag = 1;
+
+        S_OutputPolyList();
+        camera.number_frames = S_DumpScreen();
+
+        if (loading_or_saving)
+        {
+            do
+            {
+                GPU_BeginScene();
+                val = 0;
+                SetDebounce = 1;
+                S_UpdateInput();
+                TrInput = TrInputDB;
+                UpdatePulseColour();
+
+                if (loading_or_saving == 1)
+                {
+                    val = go_and_load_game();
+                }
+                else
+                {
+                    if (go_and_save_game())
+                        val = 1;
+                }
+            } while (val == 0);
+
+            if (val == 1 && loading_or_saving == val)
+            {
+                end = 1;
+                flag = 1;
+            }
+
+            friggrimmer2 = true;
+            friggrimmer1 = true;
+            deselect_debounce = false;
+            go_deselect = false;
+            loading_or_saving = 0;
+        }
+    }
+    while (!flag);
+
+    ///InitialisePickUpDisplay(); // it reset the pickup display !
+    GLOBAL_invitemlastchosen = ring2D[RING_INVENTORY]->current_obj_list[ring2D[RING_INVENTORY]->cur_obj_in_list].inv_item;
+    update_laras_weapons_status();
+    if (use_items)
+        use_current_item();
+    DeleteScreenSurface();
+    in_inventory = false;
+    lara.busy = old_lara_busy;
+
+    return end;
+}
+
+void construct_inventory_2d(void)
 {
     inventory_camera_angle = SECTOR(4);
-    examine_mode = FALSE;
-    stats_mode = FALSE;
+    examine_mode = 0;
+    stats_mode = 0;
 
     AlterFOV(DEFAULT_FOV);
     lara.busy = FALSE;
@@ -416,9 +536,9 @@ void construct_combine_object_list(void)
             insert_object_into_list_combine(INV_PICKUP1_COMBO1 + i);
     }
 
-    if (CHK_ANY(lara.clockwork_beetle, CLOCK_COMBO1_PRESENT))
+    if (lara.clockwork_beetle & CLOCK_COMBO1_PRESENT)
         insert_object_into_list_combine(INV_CLOCKWORK_BEETLE_COMBO1);
-    if (CHK_ANY(lara.clockwork_beetle, CLOCK_COMBO2_PRESENT))
+    if (lara.clockwork_beetle & CLOCK_COMBO2_PRESENT)
         insert_object_into_list_combine(INV_CLOCKWORK_BEETLE_COMBO2);
 
     ring2D[RING_COMBINE]->obj_list_movement = 0;
@@ -1209,12 +1329,12 @@ void handle_inventry_menu(void)
                 current_options[num].type = 5;
                 current_options[num++].text = &gfStringWad[gfStringOffset[options_table[124]]];
             }
-            if (opts & 192 || opts & 256)
+            if ((opts & 192) || (opts & 256))
             {
                 current_options[num].type = 2;
                 current_options[num++].text = &gfStringWad[gfStringOffset[options_table[121]]];
             }
-            if (opts & 8 && is_item_currently_combinable(inv_item))
+            if ((opts & 8) && is_item_currently_combinable(inv_item))
             {
                 current_options[num].type = 3;
                 current_options[num++].text = &gfStringWad[gfStringOffset[options_table[122]]];
@@ -1315,8 +1435,8 @@ void handle_inventry_menu(void)
                         loading_or_saving = 2;
                         break;
                     case 11:
-                        examine_mode = true;
-                        stats_mode = false;
+                        examine_mode = 1;
+                        stats_mode = 0;
                         break;
                     case 6:
                     case 7:
@@ -1553,10 +1673,11 @@ BOOL is_item_currently_combinable(short inv_item)
     int i;
     if (inv_item < INV_WATERSKIN_EMPTY || inv_item > INV_WATERSKIN2_5)
     {
-        for (i = 0; i < 19; i++)
+        for (i = 0; i < 22; i++)
         {
             short item_a = combine_table[i].item_a;
             short item_b = combine_table[i].item_b;
+            
             if (item_a == inv_item)
             {
                 if (have_i_got_item(item_b))
@@ -1585,7 +1706,6 @@ BOOL is_item_currently_combinable(short inv_item)
                 return TRUE;
         }
     }
-
     return FALSE;
 }
 
@@ -1910,7 +2030,7 @@ void use_current_item(void)
 {
     int rangeBackup = BinocularRange;
     BinocularRange = 0;
-    BinocularEnabled = false;
+    old_lara_busy = false;
     lara_item->mesh_bits = -1;
 
     short inv_item = ring2D[RING_INVENTORY]->current_obj_list[ring2D[RING_INVENTORY]->cur_obj_in_list].inv_item;
@@ -2033,7 +2153,7 @@ void use_current_item(void)
     {
         if ((lara_item->state_current == STATE_LARA_IDLE && lara_item->current_anim == ANIMATION_LARA_STAY_IDLE) || (lara.is_ducked && CHK_NOP(TrInput, IN_DUCK)))
         {
-            BinocularEnabled = true;
+            old_lara_busy = true;
             BinocularRange = 128;
             if (lara.gun_status != LHS_ARMLESS)
                 lara.gun_status = LHS_UNDRAW;
@@ -2271,10 +2391,234 @@ void picked_up_object(short object_number)
     }
 }
 
+BOOL have_i_got_object(short object_number)
+{
+    if (object_number >= PUZZLE_ITEM1_COMBO1 && object_number <= PUZZLE_ITEM8_COMBO2)
+        return (lara.puzzleitemscombo >> (object_number + 69)) & 1;
+    else if (object_number >= PUZZLE_ITEM1 && object_number <= PUZZLE_ITEM12)
+        return (lara.puzzleitems[object_number - PUZZLE_ITEM1]);
+    else if (object_number >= KEY_ITEM1_COMBO1 && object_number <= KEY_ITEM8_COMBO2)
+        return (lara.keyitemscombo >> (object_number + 41)) & 1;
+    else if (object_number >= KEY_ITEM1 && object_number <= KEY_ITEM12)
+        return (lara.keyitems >> (object_number + 53)) & 1;
+    else if (object_number >= PICKUP_ITEM1_COMBO1 && object_number <= PICKUP_ITEM4_COMBO2)
+        return (lara.pickupitemscombo >> (object_number + 21)) & 1;
+    else if (object_number >= PICKUP_ITEM1 && object_number <= PICKUP_ITEM4)
+        return (lara.pickupitems >> (object_number + 25)) & 1;
+    else if (object_number >= QUEST_ITEM1 && object_number <= QUEST_ITEM6)
+        return (lara.questitems >> (object_number + 4)) & 1;
+    else if (object_number == CROWBAR_ITEM)
+        return (lara.crowbar);
+    else
+        return 0;
+}
+
+void found_item_with_detector(short object_number)
+{
+    switch (object_number)
+    {
+        case PUZZLE_ITEM1:
+        case PUZZLE_ITEM2:
+        case PUZZLE_ITEM3:
+        case PUZZLE_ITEM4:
+        case PUZZLE_ITEM5:
+        case PUZZLE_ITEM6:
+        case PUZZLE_ITEM7:
+        case PUZZLE_ITEM8:
+        case PUZZLE_ITEM9:
+        case PUZZLE_ITEM10:
+        case PUZZLE_ITEM11:
+        case PUZZLE_ITEM12:
+            lara.puzzleitems[object_number - PUZZLE_ITEM1]--;
+            break;
+        case PUZZLE_ITEM1_COMBO1:
+        case PUZZLE_ITEM1_COMBO2:
+        case PUZZLE_ITEM2_COMBO1:
+        case PUZZLE_ITEM2_COMBO2:
+        case PUZZLE_ITEM3_COMBO1:
+        case PUZZLE_ITEM3_COMBO2:
+        case PUZZLE_ITEM4_COMBO1:
+        case PUZZLE_ITEM4_COMBO2:
+        case PUZZLE_ITEM5_COMBO1:
+        case PUZZLE_ITEM5_COMBO2:
+        case PUZZLE_ITEM6_COMBO1:
+        case PUZZLE_ITEM6_COMBO2:
+        case PUZZLE_ITEM8_COMBO1:
+        case PUZZLE_ITEM8_COMBO2:
+            lara.puzzleitemscombo &= ~(1 << (object_number + 69));
+            break;
+        case KEY_ITEM1:
+        case KEY_ITEM2:
+        case KEY_ITEM3:
+        case KEY_ITEM4:
+        case KEY_ITEM5:
+        case KEY_ITEM6:
+        case KEY_ITEM7:
+        case KEY_ITEM8:
+        case KEY_ITEM9:
+        case KEY_ITEM10:
+        case KEY_ITEM11:
+        case KEY_ITEM12:
+            lara.keyitems &= ~(1 << (object_number + 53));
+            break;
+        case KEY_ITEM1_COMBO1:
+        case KEY_ITEM1_COMBO2:
+        case KEY_ITEM2_COMBO1:
+        case KEY_ITEM2_COMBO2:
+        case KEY_ITEM3_COMBO1:
+        case KEY_ITEM3_COMBO2:
+        case KEY_ITEM4_COMBO1:
+        case KEY_ITEM4_COMBO2:
+        case KEY_ITEM5_COMBO1:
+        case KEY_ITEM5_COMBO2:
+        case KEY_ITEM6_COMBO1:
+        case KEY_ITEM6_COMBO2:
+        case KEY_ITEM7_COMBO1:
+        case KEY_ITEM7_COMBO2:
+        case KEY_ITEM8_COMBO1:
+        case KEY_ITEM8_COMBO2:
+            lara.keyitemscombo &= ~(1 << (object_number + 41));
+            break;
+        case PICKUP_ITEM1:
+        case PICKUP_ITEM2:
+        case PICKUP_ITEM3:
+        case PICKUP_ITEM4:
+            lara.pickupitems &= ~(1 << (object_number + 25));
+            break;
+        case PICKUP_ITEM1_COMBO1:
+        case PICKUP_ITEM1_COMBO2:
+        case PICKUP_ITEM2_COMBO1:
+        case PICKUP_ITEM2_COMBO2:
+        case PICKUP_ITEM3_COMBO1:
+        case PICKUP_ITEM3_COMBO2:
+        case PICKUP_ITEM4_COMBO1:
+        case PICKUP_ITEM4_COMBO2:
+            lara.pickupitemscombo &= ~(1 << (object_number + 21));
+            break;
+        case QUEST_ITEM1:
+        case QUEST_ITEM2:
+        case QUEST_ITEM3:
+        case QUEST_ITEM4:
+        case QUEST_ITEM5:
+        case QUEST_ITEM6:
+            lara.questitems &= ~(1 << (object_number + 4));
+            break;
+    }
+}
+
+int convert_obj_to_invobj(short object_number)
+{
+    for (int i = 0; i < MAX_INVOBJ; i++)
+    {
+        INVOBJ* list = &inventry_objects_list[i];
+        if (object_number == list->object_number)
+            return i;
+    }
+
+    return NO_ITEM;
+}
+
+void do_compass_mode(void)
+{
+    DrawThreeDeeObject2D(
+        int(inventory_xpos + (phd_centerx * 0.00390625 * 60.0)),
+        int(inventory_ypos + (phd_centery)),
+        INV_COMPASS,
+        128,
+        0,
+        0,
+        0,
+        0,
+        FALSE);
+}
+
+void do_examine_mode(void)
+{
+    static int examine2_y = font_height;
+    static int examine3_y = font_height * 5;
+    short saved_scale;
+    short inv_item = ring2D[RING_INVENTORY]->current_obj_list[ring2D[RING_INVENTORY]->cur_obj_in_list].inv_item;
+    INVOBJ* obj = &inventry_objects_list[inv_item];
+
+
+    if (examine_mode < 128)
+        examine_mode += 8;
+    if (examine_mode > 128)
+        examine_mode = 128;
+
+    switch (inv_item)
+    {
+        case INV_EXAMINE1:
+            saved_scale = obj->scale;
+            obj->scale = 300;
+
+            DrawThreeDeeObject2D(
+                int(inventory_xpos + (phd_centerx * 0.00390625   * STEP_L)),
+                int(inventory_ypos + (phd_centery * 0.0083333338 * STEP_L) / 2),
+                INV_EXAMINE1,
+                examine_mode,
+                0x8000,
+                0x4000,
+                0x4000,
+                96,
+                FALSE);
+
+            obj->scale = saved_scale;
+            break;
+        case INV_EXAMINE2:
+            saved_scale = obj->scale;
+            obj->scale = 300;
+
+            DrawThreeDeeObject2D(
+                int(inventory_xpos + (phd_centerx * 0.00390625   * STEP_L)),
+                int(inventory_ypos + (phd_centery * 0.0083333338 * STEP_L) / 2),
+                INV_EXAMINE2,
+                examine_mode,
+                0,
+                0,
+                0,
+                0,
+                0);
+
+            obj->scale = saved_scale;
+
+            PrintString(phd_centerx, examine2_y,                     5, &gfStringWad[gfStringOffset[201]], FF_CENTER);
+            PrintString(phd_centerx, examine2_y + phd_winheight / 2, 5, &gfStringWad[gfStringOffset[202]], FF_CENTER);
+            break;
+        case INV_EXAMINE3:
+            saved_scale = obj->scale;
+            obj->scale = 400;
+
+            DrawThreeDeeObject2D(
+                int(inventory_xpos + (phd_centerx * 0.00390625   * STEP_L)),
+                int(inventory_ypos + (phd_centery * 0.0083333338 * STEP_L) / 2 - 8),
+                INV_EXAMINE3,
+                examine_mode,
+                0x8000,
+                0x4000,
+                0x4000,
+                96,
+                0);
+
+            obj->scale = saved_scale;
+
+            PrintString(phd_centerx, examine3_y, 8, &gfStringWad[gfStringOffset[203]], FF_CENTER);
+            break;
+    }
+
+    if (go_deselect)
+    {
+        SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
+        go_deselect = false;
+        examine_mode = 0;
+    }
+}
+
 #ifdef DLL_INJECT
 void injector::inject_inventory()
 {
-    this->inject(0x0043B9B0, construct_inventory_2D);
+    this->inject(0x0043B760, show_inventory_2d);
+    this->inject(0x0043B9B0, construct_inventory_2d);
     this->inject(0x0043BC30, do_debounced_input);
     this->inject(0x0043BD80, DrawThreeDeeObject2D);
     this->inject(0x0043BF10, DrawInventoryItem);
@@ -2324,5 +2668,10 @@ void injector::inject_inventory()
     this->inject(0x0043E860, setup_objectlist_startposition_objnumber);
     this->inject(0x0043E8A0, use_current_item);
     this->inject(0x0043EB80, picked_up_object);
+    this->inject(0x0043EF60, have_i_got_object);
+    this->inject(0x0043F050, found_item_with_detector);
+    this->inject(0x0043F150, convert_obj_to_invobj);
+    this->inject(0x0043F180, do_compass_mode);
+    this->inject(0x0043F1E0, do_examine_mode);
 }
 #endif

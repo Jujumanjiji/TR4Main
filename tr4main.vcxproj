@@ -101,6 +101,7 @@
     <ClCompile Include="src\game\camera.cpp" />
     <ClCompile Include="src\game\debris.cpp" />
     <ClCompile Include="src\game\gameflow.cpp" />
+    <ClCompile Include="src\game\input.cpp" />
     <ClCompile Include="src\game\inventory.cpp" />
     <ClCompile Include="src\game\lara\lara.cpp" />
     <ClCompile Include="src\game\lara\lara1gun.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="src\specific\json\reader.cpp" />
     <ClCompile Include="src\specific\json\scripts.cpp" />
     <ClCompile Include="src\specific\json\writer.cpp" />
+    <ClCompile Include="src\specific\libgpu.cpp" />
     <ClCompile Include="src\specific\loadsave.cpp" />
     <ClCompile Include="src\specific\output.cpp" />
     <ClCompile Include="src\specific\setup_object.cpp" />
@@ -175,6 +177,7 @@
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\gameflow.h" />
+    <ClInclude Include="src\game\input.h" />
     <ClInclude Include="src\game\inventory.h" />
     <ClInclude Include="src\game\lara\lara.h" />
     <ClInclude Include="src\extern\bass\bass.h">
@@ -222,6 +225,7 @@
     <ClInclude Include="src\specific\json\reader.h" />
     <ClInclude Include="src\specific\json\scripts.h" />
     <ClInclude Include="src\specific\json\writer.h" />
+    <ClInclude Include="src\specific\libgpu.h" />
     <ClInclude Include="src\specific\loadsave.h" />
     <ClInclude Include="src\specific\output.h" />
     <ClInclude Include="src\specific\setup_object.h" />

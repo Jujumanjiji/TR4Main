@@ -116,8 +116,8 @@ enum INVENTORY_ITEM_ID
     INV_BURNING_TORCH,
     INV_CROWBAR,
     INV_CLOCKWORK_BEETLE,
-    INV_CLOCKWORK_BEETLE_COMBO2,
     INV_CLOCKWORK_BEETLE_COMBO1,
+    INV_CLOCKWORK_BEETLE_COMBO2,
     INV_EXAMINE1,
     INV_EXAMINE2,
     INV_EXAMINE3,
@@ -210,6 +210,7 @@ enum OPTION_TABLE_VALUE
 };
 
 #ifdef DLL_INJECT
+#define in_inventory                        VAR_I_(0x004BF3C8, int, 0)
 #define current_selected_option             VAR_U_(0x007FEA1B, BYTE)
 #define compass_needle                      VAR_U_(0x007E71DC, int)
 #define GLOBAL_invitemlastchosen            VAR_I_(0x004AE064, int, NO_ITEM)
@@ -217,7 +218,7 @@ enum OPTION_TABLE_VALUE
 #define GLOBAL_invitemchosen                VAR_I_(0x004AE06C, int, NO_ITEM)
 #define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
 #define ring2D                              ARRAY_(0x007FEA20, RING2D*, [MAX_RING])
-#define combine_table                       ARRAY_(0x004AEAC0, COMBINELIST, [19])
+#define combine_table                       ARRAY_(0x004AEAC0, COMBINELIST, [22])
 #define ammo_object_list                    ARRAY_(0x007FEA00, AMMOLIST, [3])
 #define current_options                     ARRAY_(0x007FE9E0, MENU, [3])
 #define options_table                       ARRAY_(0x004AE9BC, short, [129])
@@ -228,7 +229,7 @@ enum OPTION_TABLE_VALUE
 #define inventory_drawY                     VAR_U_(0x007FEA2C, float)
 #define inventory_light                     VAR_I_(0x004AE060, DWORD, RGBA_VECTORGET(127, 127, 127)) // r: 127, g: 127, b: 127
 #define inventory_camera_angle              VAR_U_(0x007FEA50, int)
-#define examine_mode                        VAR_I_(0x004BF3CC, BOOL, FALSE)
+#define examine_mode                        VAR_I_(0x004BF3CC, short, 0)
 #define stats_mode                          VAR_U_(0x007FEA18, short)
 #define left_debounce                       VAR_U_(0x007FE9C9, bool)
 #define right_debounce                      VAR_U_(0x007FEA38, bool)
@@ -287,6 +288,9 @@ enum OPTION_TABLE_VALUE
 #define save_grenadegun_ammo_type           VAR_I_(0x004BF3BA, char, 0)
 #define save_crossbow_ammo_type             VAR_I_(0x004BF3BD, char, 0)
 #define save_current_selection              VAR_I_(0x007FEA4D, char, 0)
+
+#define GadwPolygonBuffers_RingNormal       VAR_U_(0x007FED40, RING2D)
+#define GadwPolygonBuffers_RingCombine         VAR_U_(0x007FEA60, RING2D)
 #endif
 
 #define CONSTRUCT_ITEM 0
@@ -301,7 +305,8 @@ enum OPTION_TABLE_VALUE
 #define INV_COMBO7 12288
 #define INV_COMBO8 49152
 
-extern void construct_inventory_2D(void);
+extern int show_inventory_2d(void);
+extern void construct_inventory_2d(void);
 extern void do_debounced_input(void);
 extern void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay);
 extern void DrawInventoryItem(ITEM_INFO *item, int shade, int overlay, BOOL shade_flags);
@@ -351,10 +356,14 @@ extern void setup_objectlist_startposition_invitem(short inv_item);
 extern void setup_objectlist_startposition_objnumber(short object_number);
 extern void use_current_item(void);
 extern void picked_up_object(short object_number);
+extern BOOL have_i_got_object(short object_number);
+extern int convert_obj_to_invobj(short object_number);
+extern void do_compass_mode(void);
+extern void do_examine_mode(void);
 
 #ifdef DLL_INJECT
-#define show_inventory ((int(__cdecl*)(void)) 0x0043B760) // in the end !!
-///#define construct_inventory_2D ((void(__cdecl*)(void)) 0x0043B9B0)
+///#define show_inventory_2d ((int(__cdecl*)(void)) 0x0043B760) // in the end !!
+///#define construct_inventory_2d ((void(__cdecl*)(void)) 0x0043B9B0)
 ///#define do_debounced_input ((void(__cdecl*)(void)) 0x0043BC30)
 ///#define DrawThreeDeeObject2D ((void(__cdecl*)(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay)) 0x0043BD80)
 ///#define DrawInventoryItem ((void(__cdecl*)(ITEM_INFO *item, int shade, int overlay, BOOL shade_flags)) 0x0043BF10)
@@ -403,11 +412,11 @@ extern void picked_up_object(short object_number);
 ///#define setup_objectlist_startposition_invitem ((void(__cdecl*)(short inv_item)) 0x0043E830)
 ///#define setup_objectlist_startposition_objnumber ((void(__cdecl*)(short object_number)) 0x0043E860)
 ///#define use_current_item ((void(__cdecl*)(void)) 0x0043E8A0)
-///#define picked_up_object ((void(__cdecl*)(short objNumber)) 0x0043EB80)
-#define have_i_got_object ((BOOL(__cdecl*)(short objNumber)) 0x0043EF60)
-#define search_detector ((void(__cdecl*)(short objNumber)) 0x0043F050)
-#define convert_obj_to_invobj ((void(__cdecl*)(short objNumber)) 0x0043F150)
-#define do_compass_mode ((void(__cdecl*)(void)) 0x0043F180)
-#define do_examine_mode ((void(__cdecl*)(void)) 0x0043F1E0)
+///#define picked_up_object ((void(__cdecl*)(short object_number)) 0x0043EB80)
+///#define have_i_got_object ((BOOL(__cdecl*)(short object_number)) 0x0043EF60)
+///#define search_detector ((void(__cdecl*)(short object_number)) 0x0043F050)
+///#define convert_obj_to_invobj ((int(__cdecl*)(short object_number)) 0x0043F150)
+///#define do_compass_mode ((void(__cdecl*)(void)) 0x0043F180)
+///#define do_examine_mode ((void(__cdecl*)(void)) 0x0043F1E0)
 ///#define give_lara_items_cheat ((void(__cdecl*)(void)) 0x0043F4C0) /// not used anymore !!
 #endif
