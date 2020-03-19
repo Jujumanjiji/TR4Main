@@ -35,7 +35,7 @@ using namespace std;
 #define LT_Warning             "Warning"
 #define LT_Version             "Version"
 
-#define NO_MESH -1
+#define ALL_MESH -1
 #define NO_TRACK -1
 #define NO_FLY 0
 #define NO_HORIZON -1

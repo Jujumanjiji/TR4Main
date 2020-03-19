@@ -171,7 +171,8 @@ enum INV_AMMO_TYPE
 {
     AINV_AMMO1,
     AINV_AMMO2,
-    AINV_AMMO3
+    AINV_AMMO3,
+    MAX_AMMO,
 };
 
 enum TABLE_OPTION_TYPE
@@ -286,9 +287,11 @@ struct INV_OPTION
 };
 
 extern RING2D* ring_2d[MAX_RING];
+extern INVOBJ inventry_objects_list[MAX_INVOBJ];
 extern MENU current_options[MAX_MENU];
 extern INV_OPTION options_table[MAX_INVOBJ];
 extern COMBINELIST combine_table[MAX_COMBINE];
+extern AMMOLIST ammo_object_list[MAX_AMMO];
 extern DWORD inventory_light;
 extern float inventory_drawX;
 extern float inventory_drawY;
@@ -368,10 +371,10 @@ extern bool friggrimmer2;
 #define GLOBAL_invitemlastchosen               VAR_I_(0x004AE064, int, NO_ITEM)
 #define GLOBAL_invEnter                        VAR_I_(0x004AE068, int, NO_ITEM)
 #define GLOBAL_invitemchosen                   VAR_I_(0x004AE06C, int, NO_ITEM)
-#define inventry_objects_list                  ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
+///#define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
 ///#define ring_2d                             ARRAY_(0x007FEA20, RING2D*, [MAX_RING])
 ///#define combine_table                       ARRAY_(0x004AEAC0, COMBINELIST, [22])
-#define ammo_object_list                       ARRAY_(0x007FEA00, AMMOLIST, [3])
+///#define ammo_object_list                    ARRAY_(0x007FEA00, AMMOLIST, [3])
 ///#define current_options                     ARRAY_(0x007FE9E0, MENU, [3])
 ///#define options_table                       ARRAY_(0x004AE9BC, short, [129])
 ///#define options_name                        ARRAY_(0x004AEAAA, short, [9])
