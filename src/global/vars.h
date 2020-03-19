@@ -72,7 +72,6 @@
 #define draw_rooms_number                   VAR_U_(0x007FD304, int)
 #define RenderTypeDebug                     VAR_U_(0x007E71E0, int)
 #define BinocularRange                      VAR_I_(0x004BF3E4, int, 0)
-#define old_lara_busy                       VAR_U_(0x007FE9C0, char)
 #define BinocularOldCamera                  VAR_I_(0x004BF3EC, int, CHASE_CAMERA)
 #define LaserSight                          VAR_I_(0x004BF3F0, int, 0)
 #define LaserSightActive                    VAR_I_(0x004BF37E, int, 0)

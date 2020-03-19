@@ -124,6 +124,34 @@ enum INVENTORY_ITEM_ID
     MAX_INVOBJ,
 };
 
+enum COMBINE_ITEM
+{
+    COMBINE_REVOLVER,
+    COMBINE_CROSSBOW,
+    COMBINE_PUZZLE1,
+    COMBINE_PUZZLE2,
+    COMBINE_PUZZLE3,
+    COMBINE_PUZZLE4,
+    COMBINE_PUZZLE5,
+    COMBINE_PUZZLE6,
+    COMBINE_PUZZLE7,
+    COMBINE_PUZZLE8,
+    COMBINE_KEY1,
+    COMBINE_KEY2,
+    COMBINE_KEY3,
+    COMBINE_KEY4,
+    COMBINE_KEY5,
+    COMBINE_KEY6,
+    COMBINE_KEY7,
+    COMBINE_KEY8,
+    COMBINE_PICKUP1,
+    COMBINE_PICKUP2,
+    COMBINE_PICKUP3,
+    COMBINE_PICKUP4,
+    COMBINE_CLOCKWORK_BEETLE,
+    MAX_COMBINE,
+};
+
 enum INVENTORY_RING_TYPE
 {
     RING_INVENTORY = 0,
@@ -144,6 +172,49 @@ enum INV_AMMO_TYPE
     AINV_AMMO1,
     AINV_AMMO2,
     AINV_AMMO3
+};
+
+enum TABLE_OPTION_TYPE
+{
+    T_NONE,
+    T_USE,
+    T_CHOOSE_AMMO,
+    T_COMBINE,
+    T_SEPARATE,
+    T_EQUIP,
+    T_INVAMMO1,
+    T_INVAMMO2,
+    T_INVAMMO3,
+    T_LOAD,
+    T_SAVE,
+    T_EXAMINE,
+    MAX_TABLE_TYPE
+};
+
+enum TABLE_OPTION
+{
+    OPTION_COMBINE_ITEM = 0x1,
+    OPTION_EQUIP = 0x2,
+    OPTION_USE = 0x4,
+    OPTION_COMBINE = 0x8,
+    OPTION_SEPARATE = 0x10,
+    OPTION_EXAMINE = 0x20,
+    OPTION_SHOTGUN = 0x40,
+    OPTION_CROSSBOW = 0x80,
+    OPTION_GRENADEGUN = 0x100,
+    OPTION_UZIS = 0x200,
+    OPTION_PISTOLS = 0x400,
+    OPTION_REVOLVER = 0x800,
+    OPTION_LOAD = 0x1000,
+    OPTION_SAVE = 0x2000
+};
+
+enum MENU_INVENTORY
+{
+    MENU_1, // use, examine, load, save
+    MENU_2, // choose_ammo, combine, separate
+    MENU_3, // combine, separate
+    MAX_MENU
 };
 
 #pragma pack(push, 1)
@@ -198,99 +269,165 @@ struct MENU
 };
 #pragma pack(pop)
 
-enum OPTION_TABLE_VALUE
-{
-    OPTION_SHOTGUN = 0x40,
-    OPTION_CROSSBOW = 0x80,
-    OPTION_GRENADEGUN = 0x100,
-    OPTION_UZIS = 0x200,
-    OPTION_PISTOLS = 0x400,
-    OPTION_REVOLVER = 0x800,
-    OPTION_ALL = (OPTION_PISTOLS|OPTION_SHOTGUN|OPTION_GRENADEGUN|OPTION_CROSSBOW|OPTION_REVOLVER|OPTION_UZIS)
-};
+extern RING2D* ring_2d[MAX_RING];
+extern MENU current_options[MAX_MENU];
+extern short options_table[MAX_INVOBJ];
+extern COMBINELIST combine_table[MAX_COMBINE];
+extern DWORD inventory_light;
+extern float inventory_drawX;
+extern float inventory_drawY;
+extern int inventory_xpos;
+extern int inventory_ypos;
+extern int compass_needle_angle;
+extern int objlist_spacing;
+extern int combine_obj1;
+extern int combine_obj2;
+extern short normal_ring_fade_val;
+extern short normal_ring_fade_dir;
+extern short ammo_selector_fade_val;
+extern short ammo_selector_fade_dir;
+extern short combine_ring_fade_val;
+extern short combine_ring_fade_dir;
+extern short examine_mode;
+extern short stats_mode;
+extern short inv_pistols_ammo_count;
+extern short inv_shotgun_ammo1_count;
+extern short inv_shotgun_ammo2_count;
+extern short inv_uzi_ammo_count;
+extern short inv_grenadegun_ammo1_count;
+extern short inv_grenadegun_ammo2_count;
+extern short inv_grenadegun_ammo3_count;
+extern short inv_crossbow_ammo1_count;
+extern short inv_crossbow_ammo2_count;
+extern short inv_crossbow_ammo3_count;
+extern short inv_revolver_ammo_count;
+extern char current_selected_option;
+extern char num_ammo_slots;
+extern char current_ammo_type;
+extern char combine_type_flag;
+extern char ammo_selector_flag;
+extern char seperate_type_flag;
+extern char old_lara_busy;
+extern char left_repeat;
+extern char right_repeat;
+extern char loading_or_saving;
+extern char current_pistols_ammo_type;
+extern char current_shotgun_ammo_type;
+extern char current_uzi_ammo_type;
+extern char current_grenadegun_ammo_type;
+extern char current_crossbow_ammo_type;
+extern char current_revolver_ammo_type;
+extern char save_current_selection;
+extern char save_pistols_ammo_type;
+extern char save_shotgun_ammo_type;
+extern char save_uzi_ammo_type;
+extern char save_grenadegun_ammo_type;
+extern char save_crossbow_ammo_type;
+extern char save_revolver_ammo_type;
+extern bool menu_active;
+extern bool ammo_active;
+extern bool left_debounce;
+extern bool right_debounce;
+extern bool up_debounce;
+extern bool down_debounce;
+extern bool go_left;
+extern bool go_right;
+extern bool go_up;
+extern bool go_down;
+extern bool select_debounce;
+extern bool deselect_debounce;
+extern bool go_select;
+extern bool go_deselect;
+extern bool use_items;
+extern bool friggrimmer1;
+extern bool friggrimmer2;
+
+#define OPTION_ALL_WEAPONS (OPTION_PISTOLS|OPTION_SHOTGUN|OPTION_GRENADEGUN|OPTION_CROSSBOW|OPTION_REVOLVER|OPTION_UZIS)
 
 #ifdef DLL_INJECT
+///#define old_lara_busy                       VAR_U_(0x007FE9C0, char)
 #define in_inventory                        VAR_I_(0x004BF3C8, int, 0)
-#define current_selected_option             VAR_U_(0x007FEA1B, BYTE)
+///#define current_selected_option             VAR_U_(0x007FEA1B, char)
 #define compass_needle                      VAR_U_(0x007E71DC, int)
 #define GLOBAL_invitemlastchosen            VAR_I_(0x004AE064, int, NO_ITEM)
 #define GLOBAL_invEnter                     VAR_I_(0x004AE068, int, NO_ITEM)
 #define GLOBAL_invitemchosen                VAR_I_(0x004AE06C, int, NO_ITEM)
 #define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
-#define ring2D                              ARRAY_(0x007FEA20, RING2D*, [MAX_RING])
-#define combine_table                       ARRAY_(0x004AEAC0, COMBINELIST, [22])
+///#define ring_2d                              ARRAY_(0x007FEA20, RING2D*, [MAX_RING])
+///#define combine_table                       ARRAY_(0x004AEAC0, COMBINELIST, [22])
 #define ammo_object_list                    ARRAY_(0x007FEA00, AMMOLIST, [3])
-#define current_options                     ARRAY_(0x007FE9E0, MENU, [3])
-#define options_table                       ARRAY_(0x004AE9BC, short, [129])
-#define objlist_spacing                     VAR_U_(0x007FE9BC, int)
-#define inventory_xpos                      VAR_I_(0x004BF3D0, int, 0)
-#define inventory_ypos                      VAR_I_(0x004BF3D2, int, 0)
-#define inventory_drawX                     VAR_U_(0x007FE9CC, float)
-#define inventory_drawY                     VAR_U_(0x007FEA2C, float)
-#define inventory_light                     VAR_I_(0x004AE060, DWORD, RGBA_VECTORGET(127, 127, 127)) // r: 127, g: 127, b: 127
-#define inventory_camera_angle              VAR_U_(0x007FEA50, int)
-#define examine_mode                        VAR_I_(0x004BF3CC, short, 0)
-#define stats_mode                          VAR_U_(0x007FEA18, short)
-#define left_debounce                       VAR_U_(0x007FE9C9, bool)
-#define right_debounce                      VAR_U_(0x007FEA38, bool)
-#define up_debounce                         VAR_U_(0x007FEA4C, bool)
-#define down_debounce                       VAR_U_(0x007FE9F8, bool)
-#define go_left                             VAR_U_(0x007FE9C1, bool)
-#define go_right                            VAR_U_(0x007FE9CA, bool)
-#define go_up                               VAR_U_(0x007FEA45, bool)
-#define go_down                             VAR_U_(0x007FEA4B, bool)
-#define select_debounce                     VAR_U_(0x007FEA43, bool)
-#define deselect_debounce                   VAR_U_(0x007FEA12, bool)
-#define go_select                           VAR_U_(0x007FF022, bool)
-#define go_deselect                         VAR_U_(0x007FEA54, bool)
-#define left_repeat                         VAR_U_(0x007FF021, char)
-#define right_repeat                        VAR_U_(0x007FEA39, char)
-#define loading_or_saving                   VAR_U_(0x007FE9CB, char)
-#define use_items                           VAR_U_(0x007FEA44, bool)
-#define num_ammo_slots                      VAR_U_(0x007FE9D0, char)
-#define inv_pistols_ammo_count              VAR_I_(0x004BF3C0, short, 0)
-#define inv_shotgun_ammo1_count             VAR_I_(0x004BF3AE, short, 0)
-#define inv_shotgun_ammo2_count             VAR_I_(0x004BF3AC, short, 0)
-#define inv_uzi_ammo_count                  VAR_I_(0x004BF3C4, short, 0)
-#define inv_grenadegun_ammo1_count          VAR_I_(0x004BF3AA, short, 0)
-#define inv_grenadegun_ammo2_count          VAR_I_(0x004BF3A6, short, 0)
-#define inv_grenadegun_ammo3_count          VAR_I_(0x004BF3A8, short, 0)
-#define inv_crossbow_ammo1_count            VAR_I_(0x004BF3B6, short, 0)
-#define inv_crossbow_ammo2_count            VAR_I_(0x004BF3B4, short, 0)
-#define inv_crossbow_ammo3_count            VAR_I_(0x004BF3B8, short, 0)
-#define inv_revolver_ammo_count             VAR_I_(0x004BF3BE, short, 0)
-#define current_ammo_type                   VAR_U_(0x007FEA3C, char*)
-#define current_pistols_ammo_type           VAR_I_(0x004BF3B0, char, 0)
-#define current_shotgun_ammo_type           VAR_I_(0x004BF3B2, char, 0)
-#define current_uzi_ammo_type               VAR_I_(0x004BF3BB, char, 0)
-#define current_grenadegun_ammo_type        VAR_I_(0x004BF3A4, char, 0)
-#define current_crossbow_ammo_type          VAR_I_(0x004BF3C6, char, 0)
-#define current_revolver_ammo_type          VAR_I_(0x004BF3B1, char, 0)
-#define ammo_selector_flag                  VAR_U_(0x007FEA4A, char)
-#define ammo_selector_fade_val              VAR_U_(0x007FEA2A, short)
-#define ammo_selector_fade_dir              VAR_U_(0x007FEA48, short)
-#define combine_ring_fade_val               VAR_U_(0x007FEA16, short)
-#define combine_ring_fade_dir               VAR_U_(0x007FEA40, short)
-#define combine_type_flag                   VAR_U_(0x007FF020, char)
-#define seperate_type_flag                  VAR_U_(0x007FEA1A, char)
-#define combine_obj1                        VAR_U_(0x007FEA34, int)
-#define combine_obj2                        VAR_U_(0x007FEA30, int)
-#define normal_ring_fade_val                VAR_U_(0x007FEA28, short)
-#define normal_ring_fade_dir                VAR_U_(0x007FEA46, short)
-#define menu_active                         VAR_U_(0x007FE9C8, bool)
-#define ammo_active                         VAR_U_(0x007FEA42, bool)
-#define friggrimmer1                        VAR_U_(0x007FEA14, bool)
-#define friggrimmer2                        VAR_U_(0x007FEA13, bool)
-#define save_pistol_ammo_type               VAR_I_(0x004BF3BC, char, 0)
-#define save_uzi_ammo_type                  VAR_I_(0x004BF3C4, char, 0)
-#define save_revolver_ammo_type             VAR_I_(0x004BF3BE, char, 0)
-#define save_shotgun_ammo_type              VAR_I_(0x004BF3C2, char, 0)
-#define save_grenadegun_ammo_type           VAR_I_(0x004BF3BA, char, 0)
-#define save_crossbow_ammo_type             VAR_I_(0x004BF3BD, char, 0)
-#define save_current_selection              VAR_I_(0x007FEA4D, char, 0)
+///#define current_options                     ARRAY_(0x007FE9E0, MENU, [3])
+///#define options_table                       ARRAY_(0x004AE9BC, short, [129])
+#define option_name                            ARRAY_(0x004AEAAA, short, [9])
+///#define objlist_spacing                     VAR_U_(0x007FE9BC, int)
+///#define inventory_xpos                      VAR_I_(0x004BF3D0, int, 0)
+///#define inventory_ypos                      VAR_I_(0x004BF3D2, int, 0)
+///#define inventory_drawX                     VAR_U_(0x007FE9CC, float)
+///#define inventory_drawY                     VAR_U_(0x007FEA2C, float)
+///#define inventory_light                     VAR_I_(0x004AE060, DWORD, RGBA_VECTORGET(127, 127, 127)) // r: 127, g: 127, b: 127
+///#define compass_needle_angle                VAR_U_(0x007FEA50, int)
+///#define examine_mode                        VAR_I_(0x004BF3CC, short, 0)
+///#define stats_mode                          VAR_U_(0x007FEA18, short)
+///#define left_debounce                       VAR_U_(0x007FE9C9, bool)
+///#define right_debounce                      VAR_U_(0x007FEA38, bool)
+///#define up_debounce                         VAR_U_(0x007FEA4C, bool)
+///#define down_debounce                       VAR_U_(0x007FE9F8, bool)
+///#define go_left                             VAR_U_(0x007FE9C1, bool)
+///#define go_right                            VAR_U_(0x007FE9CA, bool)
+///#define go_up                               VAR_U_(0x007FEA45, bool)
+///#define go_down                             VAR_U_(0x007FEA4B, bool)
+///#define select_debounce                     VAR_U_(0x007FEA43, bool)
+///#define deselect_debounce                   VAR_U_(0x007FEA12, bool)
+///#define go_select                           VAR_U_(0x007FF022, bool)
+///#define go_deselect                         VAR_U_(0x007FEA54, bool)
+///#define left_repeat                         VAR_U_(0x007FF021, char)
+///#define right_repeat                        VAR_U_(0x007FEA39, char)
+///#define loading_or_saving                   VAR_U_(0x007FE9CB, char)
+///#define use_items                           VAR_U_(0x007FEA44, bool)
+///#define num_ammo_slots                      VAR_U_(0x007FE9D0, char)
+///#define inv_pistols_ammo_count              VAR_I_(0x004BF3C0, short, 0)
+///#define inv_shotgun_ammo1_count             VAR_I_(0x004BF3AE, short, 0)
+///#define inv_shotgun_ammo2_count             VAR_I_(0x004BF3AC, short, 0)
+///#define inv_uzi_ammo_count                  VAR_I_(0x004BF3C4, short, 0)
+///#define inv_grenadegun_ammo1_count          VAR_I_(0x004BF3AA, short, 0)
+///#define inv_grenadegun_ammo2_count          VAR_I_(0x004BF3A6, short, 0)
+///#define inv_grenadegun_ammo3_count          VAR_I_(0x004BF3A8, short, 0)
+///#define inv_crossbow_ammo1_count            VAR_I_(0x004BF3B6, short, 0)
+///#define inv_crossbow_ammo2_count            VAR_I_(0x004BF3B4, short, 0)
+///#define inv_crossbow_ammo3_count            VAR_I_(0x004BF3B8, short, 0)
+///#define inv_revolver_ammo_count             VAR_I_(0x004BF3BE, short, 0)
+///#define current_ammo_type                   VAR_U_(0x007FEA3C, char*)
+///#define current_pistols_ammo_type           VAR_I_(0x004BF3B0, char, 0)
+///#define current_shotgun_ammo_type           VAR_I_(0x004BF3B2, char, 0)
+///#define current_uzi_ammo_type               VAR_I_(0x004BF3BB, char, 0)
+///#define current_grenadegun_ammo_type        VAR_I_(0x004BF3A4, char, 0)
+///#define current_crossbow_ammo_type          VAR_I_(0x004BF3C6, char, 0)
+///#define current_revolver_ammo_type          VAR_I_(0x004BF3B1, char, 0)
+///#define ammo_selector_flag                  VAR_U_(0x007FEA4A, char)
+///#define ammo_selector_fade_val              VAR_U_(0x007FEA2A, short)
+///#define ammo_selector_fade_dir              VAR_U_(0x007FEA48, short)
+///#define combine_ring_fade_val               VAR_U_(0x007FEA16, short)
+///#define combine_ring_fade_dir               VAR_U_(0x007FEA40, short)
+///#define combine_type_flag                   VAR_U_(0x007FF020, char)
+///#define seperate_type_flag                  VAR_U_(0x007FEA1A, char)
+///#define combine_obj1                        VAR_U_(0x007FEA34, int)
+///#define combine_obj2                        VAR_U_(0x007FEA30, int)
+///#define normal_ring_fade_val                VAR_U_(0x007FEA28, short)
+///#define normal_ring_fade_dir                VAR_U_(0x007FEA46, short)
+///#define menu_active                         VAR_U_(0x007FE9C8, bool)
+///#define ammo_active                         VAR_U_(0x007FEA42, bool)
+///#define friggrimmer1                        VAR_U_(0x007FEA14, bool)
+///#define friggrimmer2                        VAR_U_(0x007FEA13, bool)
+///#define save_pistol_ammo_type               VAR_I_(0x004BF3BC, char, 0)
+///#define save_uzi_ammo_type                  VAR_I_(0x004BF3C4, char, 0)
+///#define save_revolver_ammo_type             VAR_I_(0x004BF3BE, char, 0)
+///#define save_shotgun_ammo_type              VAR_I_(0x004BF3C2, char, 0)
+///#define save_grenadegun_ammo_type           VAR_I_(0x004BF3BA, char, 0)
+///#define save_crossbow_ammo_type             VAR_I_(0x004BF3BD, char, 0)
+///#define save_current_selection              VAR_I_(0x007FEA4D, char, 0)
 
 #define GadwPolygonBuffers_RingNormal       VAR_U_(0x007FED40, RING2D)
-#define GadwPolygonBuffers_RingCombine         VAR_U_(0x007FEA60, RING2D)
+#define GadwPolygonBuffers_RingCombine      VAR_U_(0x007FEA60, RING2D)
 #endif
 
 #define CONSTRUCT_ITEM 0
@@ -360,63 +497,3 @@ extern BOOL have_i_got_object(short object_number);
 extern int convert_obj_to_invobj(short object_number);
 extern void do_compass_mode(void);
 extern void do_examine_mode(void);
-
-#ifdef DLL_INJECT
-///#define show_inventory_2d ((int(__cdecl*)(void)) 0x0043B760) // in the end !!
-///#define construct_inventory_2d ((void(__cdecl*)(void)) 0x0043B9B0)
-///#define do_debounced_input ((void(__cdecl*)(void)) 0x0043BC30)
-///#define DrawThreeDeeObject2D ((void(__cdecl*)(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay)) 0x0043BD80)
-///#define DrawInventoryItem ((void(__cdecl*)(ITEM_INFO *item, int shade, int overlay, BOOL shade_flags)) 0x0043BF10)
-///#define go_and_load_game ((int(__cdecl*)(void)) 0x0043C400)
-///#define go_and_save_game ((int(__cdecl*)(void)) 0x0043C410)
-///#define construct_combine_object_list ((void(__cdecl*)(void)) 0x0043C420)
-///#define insert_object_into_list_combine ((void(__cdecl*)(short num)) 0x0043C5A0)
-///#define construct_object_list ((void(__cdecl*)(void)) 0x0043C610)
-///#define insert_object_into_list_inventory ((void(__cdecl*)(short num)) 0x0043CA90)
-///#define draw_current_object_list ((void(__cdecl*)(int ringnum)) 0x0043CAE0)
-///#define handle_object_changeover ((void(__cdecl*)(void)) 0x0043D450)
-///#define setup_ammo_selector ((void(__cdecl*)(void)) 0x0043D470)
-///#define fade_ammo_selector ((void(__cdecl*)(void)) 0x0043DE30)
-///#define draw_ammo_selector ((void(__cdecl*)(void)) 0x0043DED0)
-///#define spinback ((void(__cdecl*)(WORD* angle)) 0x0043E140)
-///#define update_laras_weapons_status ((void(__cdecl*)(void)) 0x0043E1B0)
-///#define is_item_currently_combinable ((BOOL(__cdecl*)(short inv_item)) 0x0043E250)
-///#define have_i_got_item ((BOOL(__cdecl*)(short inv_item)) 0x0043E2F0)
-///#define do_these_objects_combine ((BOOL(__cdecl*)(short item_a, short item_b)) 0x0043E320)
-///#define combine_these_two_objects ((void(__cdecl*)(short item_a, short item_b)) 0x0043E360)
-///#define seperate_object ((void(__cdecl*)(short inv_item)) 0x0043E3D0)
-///#define combine_revolver ((void(__cdecl*)(int flag)) 0x0043E420)
-///#define combine_crossbow ((void(__cdecl*)(int flag)) 0x0043E480)
-///#define combine_puzzle_item1 ((void(__cdecl*)(int flag)) 0x0043E4E0)
-///#define combine_puzzle_item2 ((void(__cdecl*)(int flag)) 0x0043E500)
-///#define combine_puzzle_item3 ((void(__cdecl*)(int flag)) 0x0043E520)
-///#define combine_puzzle_item4 ((void(__cdecl*)(int flag)) 0x0043E540)
-///#define combine_puzzle_item5 ((void(__cdecl*)(int flag)) 0x0043E560)
-///#define combine_puzzle_item6 ((void(__cdecl*)(int flag)) 0x0043E580)
-///#define combine_puzzle_item7 ((void(__cdecl*)(int flag)) 0x0043E5A0)
-///#define combine_puzzle_item8 ((void(__cdecl*)(int flag)) 0x0043E5C0)
-///#define combine_key_item1 ((void(__cdecl*)(int flag)) 0x0043E5E0)
-///#define combine_key_item2 ((void(__cdecl*)(int flag)) 0x0043E600)
-///#define combine_key_item3 ((void(__cdecl*)(int flag)) 0x0043E620)
-///#define combine_key_item4 ((void(__cdecl*)(int flag)) 0x0043E640)
-///#define combine_key_item5 ((void(__cdecl*)(int flag)) 0x0043E660)
-///#define combine_key_item6 ((void(__cdecl*)(int flag)) 0x0043E680)
-///#define combine_key_item7 ((void(__cdecl*)(int flag)) 0x0043E6A0)
-///#define combine_key_item8 ((void(__cdecl*)(int flag)) 0x0043E6C0)
-///#define combine_pickup_item1 ((void(__cdecl*)(int flag)) 0x0043E6E0)
-///#define combine_pickup_item2 ((void(__cdecl*)(int flag)) 0x0043E700)
-///#define combine_pickup_item3 ((void(__cdecl*)(int flag)) 0x0043E720)
-///#define combine_pickup_item4 ((void(__cdecl*)(int flag)) 0x0043E740)
-///#define combine_clockwork ((void(__cdecl*)(int flag)) 0x0043E760)
-///#define combine_waterskin ((void(__cdecl*)(int flag)) 0x0043E770)
-///#define setup_objectlist_startposition_invitem ((void(__cdecl*)(short inv_item)) 0x0043E830)
-///#define setup_objectlist_startposition_objnumber ((void(__cdecl*)(short object_number)) 0x0043E860)
-///#define use_current_item ((void(__cdecl*)(void)) 0x0043E8A0)
-///#define picked_up_object ((void(__cdecl*)(short object_number)) 0x0043EB80)
-///#define have_i_got_object ((BOOL(__cdecl*)(short object_number)) 0x0043EF60)
-///#define search_detector ((void(__cdecl*)(short object_number)) 0x0043F050)
-///#define convert_obj_to_invobj ((int(__cdecl*)(short object_number)) 0x0043F150)
-///#define do_compass_mode ((void(__cdecl*)(void)) 0x0043F180)
-///#define do_examine_mode ((void(__cdecl*)(void)) 0x0043F1E0)
-///#define give_lara_items_cheat ((void(__cdecl*)(void)) 0x0043F4C0) /// not used anymore !!
-#endif

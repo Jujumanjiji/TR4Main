@@ -17,5 +17,5 @@
 #define gfLayer2Vel                         VAR_U_(0x007FD251, char)
 #define gfLayer1Color                       VAR_U_(0x007FD264, CVECTOR)
 #define gfLayer2Color                       VAR_U_(0x007FD25C, CVECTOR)
-#define gfStringWad                         VAR_U_(0x007FD2B8, CHAR*)
+#define gfStringWad                         VAR_U_(0x007FD2B8, char*)
 #define gfStringOffset                      VAR_U_(0x007FD274, WORD*)

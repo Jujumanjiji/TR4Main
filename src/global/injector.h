@@ -47,6 +47,7 @@ private:
     /// SPECIFIC
     void inject_drawprimitive();
     void inject_file();
+    void inject_loadsave();
     void inject_setup();
 
 public:
