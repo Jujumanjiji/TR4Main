@@ -193,7 +193,8 @@ enum TABLE_OPTION_TYPE
 
 enum TABLE_OPTION
 {
-    OPTION_COMBINE_ITEM = 0x1,
+    OPTION_NONE = 0x0,
+    OPTION_MEDIKIT = 0x1,
     OPTION_EQUIP = 0x2,
     OPTION_USE = 0x4,
     OPTION_COMBINE = 0x8,
@@ -206,7 +207,9 @@ enum TABLE_OPTION
     OPTION_PISTOLS = 0x400,
     OPTION_REVOLVER = 0x800,
     OPTION_LOAD = 0x1000,
-    OPTION_SAVE = 0x2000
+    OPTION_SAVE = 0x2000,
+    OPTION_CHOOSE_AMMO = 0x4000,
+    OPTION_AMMO = 0x8000,
 };
 
 enum MENU_INVENTORY
@@ -269,9 +272,22 @@ struct MENU
 };
 #pragma pack(pop)
 
+struct INV_OPTION
+{
+    bool can_use;
+    bool can_equip;
+    bool can_choose_ammo;
+    bool can_examine;
+    bool can_load;
+    bool can_save;
+    bool can_combine;
+    bool can_separate;
+    short flags;
+};
+
 extern RING2D* ring_2d[MAX_RING];
 extern MENU current_options[MAX_MENU];
-extern short options_table[MAX_INVOBJ];
+extern INV_OPTION options_table[MAX_INVOBJ];
 extern COMBINELIST combine_table[MAX_COMBINE];
 extern DWORD inventory_light;
 extern float inventory_drawX;
@@ -346,19 +362,19 @@ extern bool friggrimmer2;
 
 #ifdef DLL_INJECT
 ///#define old_lara_busy                       VAR_U_(0x007FE9C0, char)
-#define in_inventory                        VAR_I_(0x004BF3C8, int, 0)
+#define in_inventory                           VAR_I_(0x004BF3C8, int, 0)
 ///#define current_selected_option             VAR_U_(0x007FEA1B, char)
-#define compass_needle                      VAR_U_(0x007E71DC, int)
-#define GLOBAL_invitemlastchosen            VAR_I_(0x004AE064, int, NO_ITEM)
-#define GLOBAL_invEnter                     VAR_I_(0x004AE068, int, NO_ITEM)
-#define GLOBAL_invitemchosen                VAR_I_(0x004AE06C, int, NO_ITEM)
-#define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
-///#define ring_2d                              ARRAY_(0x007FEA20, RING2D*, [MAX_RING])
+#define compass_needle                         VAR_U_(0x007E71DC, int)
+#define GLOBAL_invitemlastchosen               VAR_I_(0x004AE064, int, NO_ITEM)
+#define GLOBAL_invEnter                        VAR_I_(0x004AE068, int, NO_ITEM)
+#define GLOBAL_invitemchosen                   VAR_I_(0x004AE06C, int, NO_ITEM)
+#define inventry_objects_list                  ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
+///#define ring_2d                             ARRAY_(0x007FEA20, RING2D*, [MAX_RING])
 ///#define combine_table                       ARRAY_(0x004AEAC0, COMBINELIST, [22])
-#define ammo_object_list                    ARRAY_(0x007FEA00, AMMOLIST, [3])
+#define ammo_object_list                       ARRAY_(0x007FEA00, AMMOLIST, [3])
 ///#define current_options                     ARRAY_(0x007FE9E0, MENU, [3])
 ///#define options_table                       ARRAY_(0x004AE9BC, short, [129])
-#define option_name                            ARRAY_(0x004AEAAA, short, [9])
+///#define options_name                        ARRAY_(0x004AEAAA, short, [9])
 ///#define objlist_spacing                     VAR_U_(0x007FE9BC, int)
 ///#define inventory_xpos                      VAR_I_(0x004BF3D0, int, 0)
 ///#define inventory_ypos                      VAR_I_(0x004BF3D2, int, 0)

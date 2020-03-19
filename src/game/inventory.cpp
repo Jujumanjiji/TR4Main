@@ -17,12 +17,131 @@
 RING2D* ring_2d[MAX_RING];
 MENU current_options[MAX_MENU];
 
-short options_table[MAX_INVOBJ] = {
-    522, // INV_UZI
-    (OPTION_PISTOLS|OPTION_EQUIP), // INV_PISTOLS
+INV_OPTION options_table[MAX_INVOBJ] =
+{
+    { false, true, false, false, false, false, false, false, OPTION_UZIS },         // INV_UZI
+    { false, true, false, false, false, false, false, false, OPTION_PISTOLS },      // INV_PISTOLS
+    { false, true, true,  false, false, false, false, false, OPTION_SHOTGUN },      // INV_SHOTGUN
+    { false, true, false, false, false, false, true,  false, OPTION_REVOLVER },     // INV_REVOLVER
+    { false, true, false, false, false, false, false, true,  OPTION_REVOLVER },     // INV_REVOLVER_LASER
+    { false, true, true,  false, false, false, true,  false, OPTION_CROSSBOW },     // INV_CROSSBOW
+    { false, true, true,  false, false, false, false, true,  OPTION_CROSSBOW },     // INV_CROSSBOW_LASER
+    { false, true, true,  false, false, false, false, false, OPTION_GRENADEGUN },   // INV_GRENADEGUN
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_SHOTGUN_AMMO1
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_SHOTGUN_AMMO2
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_GRENADEGUN_AMMO1
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_GRENADEGUN_AMMO2
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_GRENADEGUN_AMMO3
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_CROSSBOW_AMMO1
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_CROSSBOW_AMMO2
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_CROSSBOW_AMMO3
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_REVOLVER_AMMO
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_UZI_AMMO
+    { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_PISTOLS_AMMO
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_LASERSIGHT
+    { true,  false, false, false, false, false, false, false, OPTION_MEDIKIT },     // INV_BIGMEDI
+    { true,  false, false, false, false, false, false, false, OPTION_MEDIKIT },     // INV_SMALLMEDI
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_BINOCULARS
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_FLARE
+    { false, false, false, false, false, false, false, false, OPTION_NONE },        // INV_COMPASS
+    { false, false, false, false, true,  false, false, false, OPTION_NONE },        // INV_MEMCARD_LOAD
+    { false, false, false, false, false, true,  false, false, OPTION_NONE },        // INV_MEMCARD_SAVE
+    { true,  false, false, false, false, false, true,  false, OPTION_NONE },        // INV_WATERSKIN_EMPTY
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN1_1
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN1_2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN1_3
+    { true,  false, false, false, false, false, true,  false, OPTION_NONE },        // INV_WATERSKIN2_EMPTY
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN2_1
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN2_2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN2_3
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN2_4
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_WATERSKIN2_5
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE1
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE3
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE4
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE5
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE6
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE7
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE8
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE9
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE10
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE11
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PUZZLE12
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE1_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE1_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE2_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE2_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE3_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE3_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE4_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE4_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE5_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE5_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE6_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE6_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE7_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE7_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE8_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PUZZLE8_COMBO2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY1
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY3
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY4
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY5
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY6
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY7
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY8
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY9
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY10
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY11
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_KEY12
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY1_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY1_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY2_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY2_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY3_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY3_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY4_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY4_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY5_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY5_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY6_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY6_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY7_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY7_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY8_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_KEY8_COMBO2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PICKUP1
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PICKUP2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PICKUP3
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_PICKUP4
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP1_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP1_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP2_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP2_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP3_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP3_COMBO2
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP4_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_PICKUP4_COMBO2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_QUEST1
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_QUEST2
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_QUEST3
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_QUEST4
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_QUEST5
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_QUEST6
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_BURNING_TORCH
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_CROWBAR
+    { true,  false, false, false, false, false, false, false, OPTION_NONE },        // INV_CLOCKWORK_BEETLE
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_CLOCKWORK_BEETLE_COMBO1
+    { false, false, false, false, false, false, true,  false, OPTION_NONE },        // INV_CLOCKWORK_BEETLE_COMBO2
+    { false, false, false, true,  false, false, false, false, OPTION_NONE },        // INV_EXAMINE1
+    { false, false, false, true,  false, false, false, false, OPTION_NONE },        // INV_EXAMINE2
+    { false, false, false, true,  false, false, false, false, OPTION_NONE }         // INV_EXAMINE3
 };
 
-COMBINELIST combine_table[MAX_COMBINE] = {
+COMBINELIST combine_table[MAX_COMBINE] =
+{
     { combine_revolver, INV_REVOLVER, INV_LASERSIGHT, INV_REVOLVER_LASER },
     { combine_crossbow, INV_CROSSBOW, INV_LASERSIGHT, INV_CROSSBOW_LASER },
     { combine_puzzle_item1, INV_PUZZLE1_COMBO1, INV_PUZZLE1_COMBO2, INV_PUZZLE1 },
@@ -650,13 +769,13 @@ void construct_combine_object_list(void)
     ring_2d[RING_COMBINE]->active = FALSE;
 }
 
-void insert_object_into_list_combine(short num)
+void insert_object_into_list_combine(short inv_item)
 {
-    if (options_table[num] & 9)
+    if (options_table[inv_item].can_combine)
     {
-        if (ring_2d[RING_INVENTORY]->current_obj_list[ring_2d[RING_INVENTORY]->cur_obj_in_list].inv_item != num)
+        if (ring_2d[RING_INVENTORY]->current_obj_list[ring_2d[RING_INVENTORY]->cur_obj_in_list].inv_item != inv_item)
         {
-            ring_2d[RING_COMBINE]->current_obj_list[ring_2d[RING_COMBINE]->num_obj_in_list].inv_item = num;
+            ring_2d[RING_COMBINE]->current_obj_list[ring_2d[RING_COMBINE]->num_obj_in_list].inv_item = inv_item;
             ring_2d[RING_COMBINE]->current_obj_list[ring_2d[RING_COMBINE]->num_obj_in_list].yrot = 0;
             ring_2d[RING_COMBINE]->current_obj_list[ring_2d[RING_COMBINE]->num_obj_in_list].bright = 32; // RGBA_TO_DWORD(32, 32, 32, 0), in DrawInventoryItem()
             ring_2d[RING_COMBINE]->num_obj_in_list++;
@@ -1217,7 +1336,7 @@ void draw_current_object_list(int ring_type)
 
 void setup_ammo_selector(void)
 {
-    short opts = options_table[ring_2d[RING_INVENTORY]->current_obj_list[ring_2d[RING_INVENTORY]->cur_obj_in_list].inv_item];
+    INV_OPTION opts = options_table[ring_2d[RING_INVENTORY]->current_obj_list[ring_2d[RING_INVENTORY]->cur_obj_in_list].inv_item];
     ammo_selector_flag = 0;
     num_ammo_slots = 0;
 
@@ -1227,12 +1346,12 @@ void setup_ammo_selector(void)
         ammo_object_list[AINV_AMMO2].yrot = 0;
         ammo_object_list[AINV_AMMO3].yrot = 0;
 
-        if (CHK_ANY(opts, OPTION_ALL_WEAPONS))
+        if (opts.can_equip)
         {
             ammo_selector_flag = 1;
             ammo_selector_fade_dir = 1;
 
-            if (CHK_EXI(opts, OPTION_SHOTGUN))
+            if (CHK_EXI(opts.flags, OPTION_SHOTGUN))
             {
                 ammo_object_list[0].inv_item = INV_SHOTGUN_AMMO1;
                 ammo_object_list[0].amount = inv_shotgun_ammo1_count;
@@ -1242,7 +1361,7 @@ void setup_ammo_selector(void)
                 num_ammo_slots = 2;
             }
 
-            if (CHK_EXI(opts, OPTION_CROSSBOW))
+            if (CHK_EXI(opts.flags, OPTION_CROSSBOW))
             {
                 ammo_object_list[0].inv_item = INV_CROSSBOW_AMMO1;
                 ammo_object_list[0].amount = inv_crossbow_ammo1_count;
@@ -1254,7 +1373,7 @@ void setup_ammo_selector(void)
                 num_ammo_slots = 3;
             }
 
-            if (CHK_EXI(opts, OPTION_GRENADEGUN))
+            if (CHK_EXI(opts.flags, OPTION_GRENADEGUN))
             {
                 ammo_object_list[0].inv_item = INV_GRENADEGUN_AMMO1;
                 ammo_object_list[0].amount = inv_grenadegun_ammo1_count;
@@ -1266,7 +1385,7 @@ void setup_ammo_selector(void)
                 num_ammo_slots = 3;
             }
 
-            if (CHK_EXI(opts, OPTION_UZIS))
+            if (CHK_EXI(opts.flags, OPTION_UZIS))
             {
                 ammo_object_list[0].inv_item = INV_UZI_AMMO;
                 ammo_object_list[0].amount = inv_uzi_ammo_count;
@@ -1274,7 +1393,7 @@ void setup_ammo_selector(void)
                 num_ammo_slots = 1;
             }
 
-            if (CHK_EXI(opts, OPTION_PISTOLS))
+            if (CHK_EXI(opts.flags, OPTION_PISTOLS))
             {
                 ammo_object_list[0].inv_item = INV_PISTOLS_AMMO;
                 ammo_object_list[0].amount = inv_pistols_ammo_count; // normally INFINITE_AMMO...
@@ -1282,7 +1401,7 @@ void setup_ammo_selector(void)
                 num_ammo_slots = 1;
             }
 
-            if (CHK_EXI(opts, OPTION_REVOLVER))
+            if (CHK_EXI(opts.flags, OPTION_REVOLVER))
             {
                 ammo_object_list[0].inv_item = INV_REVOLVER_AMMO;
                 ammo_object_list[0].amount = inv_revolver_ammo_count;
@@ -1302,25 +1421,26 @@ void handle_object_changeover(void)
 
 void handle_inventry_menu(void)
 {
-    RING2D* item = ring_2d[RING_INVENTORY];
-    RING2D* ammo = ring_2d[RING_AMMO];
-    INVOBJ* inv_ammo1 = &inventry_objects_list[ammo_object_list[0].inv_item];
-    INVOBJ* inv_ammo2 = &inventry_objects_list[ammo_object_list[1].inv_item];
-    INVOBJ* inv_ammo3 = &inventry_objects_list[ammo_object_list[2].inv_item];
-    short inv_item = item->current_obj_list[item->cur_obj_in_list].inv_item;
-    short inv_ammo = ammo->current_obj_list[ammo->cur_obj_in_list].inv_item;
-    short opts;
+    RING2D* item;
+    RING2D* ammo;
+    INVOBJ* inv_ammo1, *inv_ammo2, *inv_ammo3;
+    INV_OPTION opts;
+    short inv_item;
+    short inv_ammo;
     int posY;
     int num;
 
-    for (int i = 0; i < MAX_INVOBJ; i++)
-    {
-        S_LogValue("id: %d, option_table: %d", i, options_table[i]);
-    }
+    item = ring_2d[RING_INVENTORY];
+    ammo = ring_2d[RING_AMMO];
+    inv_ammo1 = &inventry_objects_list[ammo_object_list[AINV_AMMO1].inv_item];
+    inv_ammo2 = &inventry_objects_list[ammo_object_list[AINV_AMMO2].inv_item];
+    inv_ammo3 = &inventry_objects_list[ammo_object_list[AINV_AMMO3].inv_item];
+    inv_item = item->current_obj_list[item->cur_obj_in_list].inv_item;
+    inv_ammo = ammo->current_obj_list[ammo->cur_obj_in_list].inv_item;
 
     if (ammo->active)
     {
-        PrintString(phd_centerx, phd_centery, 1, &gfStringWad[gfStringOffset[option_name[125]]], FF_CENTER);
+        PrintString(phd_centerx, phd_centery, 1, &gfStringWad[gfStringOffset[STR_COMBINE_WITH]], FF_CENTER);
 
         if (item->obj_list_movement)
             return;
@@ -1372,102 +1492,96 @@ void handle_inventry_menu(void)
         for (int i = 0; i < 3; i++)
         {
             current_options[i].text = nullptr;
-            current_options[i].type = 0;
+            current_options[i].type = T_NONE;
         }
 
         num = 0;
         opts = options_table[inv_item];
         if (ammo_active)
         {
-            if (CHK_ANY(opts, OPTION_SHOTGUN)
-            ||  CHK_ANY(opts, OPTION_CROSSBOW)
-            ||  CHK_ANY(opts, OPTION_GRENADEGUN)
-            ||  CHK_ANY(opts, OPTION_PISTOLS)
-            ||  CHK_ANY(opts, OPTION_REVOLVER)
-            ||  CHK_ANY(opts, OPTION_UZIS))
+            if (CHK_EXI(opts.flags, OPTION_SHOTGUN)
+            ||  CHK_EXI(opts.flags, OPTION_CROSSBOW)
+            ||  CHK_EXI(opts.flags, OPTION_GRENADEGUN)
+            ||  CHK_EXI(opts.flags, OPTION_PISTOLS)
+            ||  CHK_EXI(opts.flags, OPTION_REVOLVER)
+            ||  CHK_EXI(opts.flags, OPTION_UZIS))
             {
                 /// AMMO1 TEXT
                 num = 1;
-                current_options[0].type = T_INVAMMO1;
-                current_options[0].text = &gfStringWad[gfStringOffset[inv_ammo1->name]];
+                current_options[MENU_1].type = T_INVAMMO1;
+                current_options[MENU_1].text = &gfStringWad[gfStringOffset[inv_ammo1->name]];
             }
             
-            if (CHK_ANY(opts, OPTION_SHOTGUN)
-            ||  CHK_ANY(opts, OPTION_CROSSBOW)
-            ||  CHK_ANY(opts, OPTION_GRENADEGUN))
+            if (CHK_EXI(opts.flags, OPTION_SHOTGUN)
+            ||  CHK_EXI(opts.flags, OPTION_CROSSBOW)
+            ||  CHK_EXI(opts.flags, OPTION_GRENADEGUN))
             {
                 /// AMMO2 TEXT
                 num = 2;
-                current_options[1].type = T_INVAMMO2;
-                current_options[1].text = &gfStringWad[gfStringOffset[inv_ammo2->name]];
+                current_options[MENU_2].type = T_INVAMMO2;
+                current_options[MENU_2].text = &gfStringWad[gfStringOffset[inv_ammo2->name]];
             }
 
-            if (CHK_ANY(opts, OPTION_CROSSBOW)
-            ||  CHK_ANY(opts, OPTION_GRENADEGUN))
+            if (CHK_EXI(opts.flags, OPTION_CROSSBOW)
+            ||  CHK_EXI(opts.flags, OPTION_GRENADEGUN))
             {
                 /// AMMO3 TEXT
                 num = 3;
-                current_options[2].type = T_INVAMMO3;
-                current_options[2].text = &gfStringWad[gfStringOffset[inv_ammo3->name]];
+                current_options[MENU_3].type = T_INVAMMO3;
+                current_options[MENU_3].text = &gfStringWad[gfStringOffset[inv_ammo3->name]];
             }
 
             current_selected_option = current_ammo_type;
         }
         else
         {
-            if (CHK_EXI(opts, OPTION_LOAD))
+            if (opts.can_load)
             {
                 num = 1;
                 current_options[MENU_1].type = T_LOAD;
-                current_options[MENU_1].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_LOADGAME]]];
+                current_options[MENU_1].text = &gfStringWad[gfStringOffset[STR_LOAD_GAME]];
             }
-            else if (CHK_EXI(opts, OPTION_SAVE))
+            
+            if (opts.can_save)
             {
-                num = 1;
-                current_options[MENU_1].type = T_SAVE;
-                current_options[MENU_1].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_SAVEGAME]]];
+                current_options[num].type = T_SAVE;
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_SAVE_GAME]];
             }
-            else if (CHK_EXI(opts, OPTION_EXAMINE))
+            
+            if (opts.can_examine)
             {
-                num = 1;
-                current_options[MENU_1].type = T_EXAMINE;
-                current_options[MENU_1].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_EXAMINE]]];
+                current_options[num].type = T_EXAMINE;
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_EXAMINE]];
             }
 
-            if (CHK_EXI(opts, OPTION_USE))
+            if (opts.can_use)
             {
                 current_options[num].type = T_USE;
-                current_options[num++].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_USE]]];
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_USE]];
             }
 
-            if (CHK_EXI(opts, OPTION_EQUIP))
+            if (opts.can_equip)
             {
                 current_options[num].type = T_EQUIP;
-                current_options[num++].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_EQUIP]]];
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_EQUIP]];
             }
 
-            if (CHK_EXI(opts, OPTION_SHOTGUN) || CHK_EXI(opts, OPTION_CROSSBOW) || CHK_EXI(opts, OPTION_GRENADEGUN))
+            if (opts.can_choose_ammo)
             {
                 current_options[num].type = T_CHOOSE_AMMO;
-                current_options[num++].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_CHOOSE_AMMO]]];
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_CHOOSE_AMMO]];
             }
 
-            if (CHK_EXI(opts, OPTION_COMBINE) && is_item_currently_combinable(inv_item))
+            if (opts.can_combine && is_item_currently_combinable(inv_item))
             {
                 current_options[num].type = T_COMBINE;
-                current_options[num++].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_COMBINE]]];
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_COMBINE]];
             }
 
-            if (CHK_EXI(opts, OPTION_COMBINE_ITEM)) // not found yet but crash at combine button if i use my S_LogValue() (buffer overflow) to check the button name...
-            {
-                current_options[num].type = T_COMBINE;
-                current_options[num++].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_COMBINE]]];
-            }
-
-            if (CHK_EXI(opts, OPTION_SEPARATE))
+            if (opts.can_separate)
             {
                 current_options[num].type = T_SEPARATE;
-                current_options[num++].text = &gfStringWad[gfStringOffset[options_table[STR_BUTTON_SEPARATE]]];
+                current_options[num++].text = &gfStringWad[gfStringOffset[STR_SEPARATE]];
             }
         }
 
@@ -1537,7 +1651,7 @@ void handle_inventry_menu(void)
 
                 switch (menu->type)
                 {
-                    case 2:
+                    case T_CHOOSE_AMMO:
                         item->active = FALSE;
                         save_current_selection = current_selected_option;
                         save_pistols_ammo_type = current_pistols_ammo_type;
@@ -1546,26 +1660,26 @@ void handle_inventry_menu(void)
                         save_shotgun_ammo_type = current_shotgun_ammo_type;
                         save_grenadegun_ammo_type = current_grenadegun_ammo_type;
                         save_crossbow_ammo_type = current_crossbow_ammo_type;
-                        ammo_active = 1;
+                        ammo_active = true;
                         break;
-                    case 9:
+                    case T_LOAD:
                         loading_or_saving = 1;
                         break;
-                    case 10:
+                    case T_SAVE:
                         loading_or_saving = 2;
                         break;
-                    case 11:
+                    case T_EXAMINE:
                         examine_mode = 1;
                         stats_mode = 0;
                         break;
-                    case 6:
-                    case 7:
-                    case 8:
+                    case T_INVAMMO1:
+                    case T_INVAMMO2:
+                    case T_INVAMMO3:
                         ammo_active = false;
-                        item->active = true;
+                        item->active = TRUE;
                         current_selected_option = 0;
                         break;
-                    case 3: // TYPE_COMBINE ?
+                    case T_COMBINE:
                         construct_combine_object_list();
                         item->active = FALSE;
                         ammo->active = TRUE;
@@ -1573,12 +1687,12 @@ void handle_inventry_menu(void)
                         menu_active = false;
                         combine_ring_fade_dir = 1;
                         break;
-                    case 4:
+                    case T_SEPARATE:
                         seperate_type_flag = 1;
                         normal_ring_fade_dir = 2;
                         break;
-                    case 5:
-                    case 1:
+                    case T_EQUIP:
+                    case T_USE:
                         menu_active = false;
                         use_items = true;
                         break;
