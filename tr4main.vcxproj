@@ -168,6 +168,7 @@
     <ClCompile Include="src\specific\setup_entity.cpp" />
     <ClCompile Include="src\specific\specific.cpp" />
     <ClCompile Include="src\specific\text.cpp" />
+    <ClCompile Include="src\specific\timer.cpp" />
     <ClCompile Include="src\utils\file_utils.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\utils\utils_render.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="src\specific\setup_entity.h" />
     <ClInclude Include="src\specific\specific.h" />
     <ClInclude Include="src\specific\text.h" />
+    <ClInclude Include="src\specific\timer.h" />
     <ClInclude Include="src\utils\file_utils.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="src\utils\lara_render.h" />

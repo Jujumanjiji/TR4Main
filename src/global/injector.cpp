@@ -82,5 +82,6 @@ void injector::inject_specific()
 {
     inject_drawprimitive();
     inject_file();
+    inject_loadsave();
     inject_setup();
 }

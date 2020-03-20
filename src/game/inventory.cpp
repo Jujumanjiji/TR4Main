@@ -142,14 +142,14 @@ INVOBJ inventry_objects_list[MAX_INVOBJ] =
 
 INV_OPTION options_table[MAX_INVOBJ] =
 {
-    { false, true, false, false, false, false, false, false, OPTION_UZIS },         // INV_UZI
-    { false, true, false, false, false, false, false, false, OPTION_PISTOLS },      // INV_PISTOLS
-    { false, true, true,  false, false, false, false, false, OPTION_SHOTGUN },      // INV_SHOTGUN
-    { false, true, false, false, false, false, true,  false, OPTION_REVOLVER },     // INV_REVOLVER
-    { false, true, false, false, false, false, false, true,  OPTION_REVOLVER },     // INV_REVOLVER_LASER
-    { false, true, true,  false, false, false, true,  false, OPTION_CROSSBOW },     // INV_CROSSBOW
-    { false, true, true,  false, false, false, false, true,  OPTION_CROSSBOW },     // INV_CROSSBOW_LASER
-    { false, true, true,  false, false, false, false, false, OPTION_GRENADEGUN },   // INV_GRENADEGUN
+    { false, true,  false, false, false, false, false, false, OPTION_UZIS },        // INV_UZI
+    { false, true,  false, false, false, false, false, false, OPTION_PISTOLS },     // INV_PISTOLS
+    { false, true,  true,  false, false, false, false, false, OPTION_SHOTGUN },     // INV_SHOTGUN
+    { false, true,  false, false, false, false, true,  false, OPTION_REVOLVER },    // INV_REVOLVER
+    { false, true,  false, false, false, false, false, true,  OPTION_REVOLVER },    // INV_REVOLVER_LASER
+    { false, true,  true,  false, false, false, true,  false, OPTION_CROSSBOW },    // INV_CROSSBOW
+    { false, true,  true,  false, false, false, false, true,  OPTION_CROSSBOW },    // INV_CROSSBOW_LASER
+    { false, true,  true,  false, false, false, false, false, OPTION_GRENADEGUN },  // INV_GRENADEGUN
     { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_SHOTGUN_AMMO1
     { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_SHOTGUN_AMMO2
     { false, false, false, false, false, false, false, false, OPTION_AMMO },        // INV_GRENADEGUN_AMMO1
@@ -291,13 +291,11 @@ COMBINELIST combine_table[MAX_COMBINE] =
 };
 
 AMMOLIST ammo_object_list[MAX_AMMO];
-
 DWORD inventory_light = RGBA_VECTORGET(127, 127, 127);
 float inventory_drawX;
 float inventory_drawY;
 int inventory_xpos = 0;
 int inventory_ypos = 0;
-
 int compass_needle_angle;
 int objlist_spacing;
 int combine_obj1;
