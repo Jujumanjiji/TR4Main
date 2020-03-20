@@ -451,6 +451,7 @@ extern bool friggrimmer2;
 
 #define CONSTRUCT_ITEM 0
 #define DECONSTRUCT_ITEM 1
+#define INV_RESIZE 2
 #define INVENTORY_INPUT_REPEAT 8
 #define INV_COMBO1 3
 #define INV_COMBO2 12
