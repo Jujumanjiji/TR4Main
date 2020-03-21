@@ -39,7 +39,10 @@
 #define legacy_GetTargetOnLOS ((int(__cdecl*)(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, BOOL firing)) 0x0044D890)
 #define legacy_HitTarget ((void(__cdecl*)(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)) 0x0042E920)
 #define legacy_LaraGun ((void(__cdecl*)(void)) 0x0042D840)
-
+#define legacy_LaraAboveWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420B10)
+#define legacy_LaraSurface  ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00431AA0)
+#define legacy_LaraUnderWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004323A0)
+#define legacy_LaraWaterCurrent ((void(__cdecl*)(COLL_INFO* coll)) 0x00432DA0)
 #define legacy_LaraFloorFront ((short(__cdecl*)(ITEM_INFO* item, short angle, int distance)) 0x00421620)
 #define legacy_LaraCeilingFront ((short(__cdecl*)(ITEM_INFO* item, short angle, int distance, int height)) 0x00420A80)
 #define legacy_LaraHitCeiling ((BOOL(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422390)
@@ -92,7 +95,6 @@
 #define legacy_SnapLaraToEdgeOfBlock ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll, short angle)) 0x004235B0)
 #define legacy_GetLaraCollisionInfo ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00422350)
 #define legacy_AnimateLara ((void(__cdecl*)(ITEM_INFO* item)) 0x00430B60)
-
 #define legacy_lara_as_walk     ADDRESS_STRUCT(0x00425AC0, lara_as_walk)
 #define legacy_lara_as_run      ADDRESS_STRUCT(0x00425B60, lara_as_run)
 #define legacy_lara_as_stop     ADDRESS_STRUCT(0x00424A60, lara_as_stop)

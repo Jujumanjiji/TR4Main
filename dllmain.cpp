@@ -1,17 +1,11 @@
 #include "framework.h"
-#include "utils/utils.h"
-#include "specific/json/scripts.h"
+#include "utils.h"
 
-#define DLL_EXPORT __declspec(dllexport)
-BOOL DLL_EXPORT CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+BOOL __declspec(dllexport) CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)
     {
         case DLL_PROCESS_ATTACH:
-            S_Log("================================================");
-            S_Log("Started New Logger !");
-			create_scripts();
-			load_scripts();
 #ifdef DLL_INJECT
             inject->inject_3dsystem();
             inject->inject_game();

@@ -221,7 +221,7 @@ enum MENU_INVENTORY
     MAX_MENU
 };
 
-//#pragma pack(push, 1)
+#pragma pack(push, 1)
 struct COMBINELIST
 {
     void(*combine_routine)(int flag);
@@ -271,7 +271,7 @@ struct MENU
     int type;
     char* text;
 };
-//#pragma pack(pop)
+#pragma pack(pop)
 
 struct INV_OPTION
 {
@@ -369,8 +369,6 @@ extern bool friggrimmer2;
 #define GLOBAL_invitemchosen                VAR_I_(0x004AE06C, int, NO_ITEM)
 #define GadwPolygonBuffers_RingNormal       VAR_U_(0x007FED40, RING2D)
 #define GadwPolygonBuffers_RingCombine      VAR_U_(0x007FEA60, RING2D)
-
-#define do_loadsave_mode                    ((int(__cdecl*)(int key_pressed)) 0x0047A880) // return the current selected slots
 #endif
 
 #define CONSTRUCT_ITEM 0

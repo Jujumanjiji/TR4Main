@@ -31,8 +31,8 @@ void injector::inject(DWORD addr, LPVOID function) // from: address, to: functio
 
 void injector::inject_3dsystem()
 {
-    inject_3d_gen();                          // 0%
-    inject_3d_gen_a();                        // 100%
+    inject_3d_gen();
+    inject_3d_gen_a();
 }
 
 ///====================================///
@@ -41,7 +41,6 @@ void injector::inject_3dsystem()
 
 void injector::inject_game()
 {
-    // main:
     inject_box();
     inject_collide();
     inject_control();

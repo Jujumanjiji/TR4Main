@@ -19,7 +19,5 @@
 #define phd_sqrt ((int(__cdecl*)(int x)) 0x00490280)
 #define ShiftMatrixBasedPos ((void(__cdecl*)(PHD_VECTOR* shift)) 0x0048FB60)
 #define phd_InitWindow ((void(__cdecl*)(int x, int y, int width, int height, int nearz, int farz, int view_angle)) 0x0048FC10)
-
-
 #define SetD3DViewMatrix ((void(__cdecl*)(void)) 0x00490B30)
 #endif

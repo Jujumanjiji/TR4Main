@@ -58,13 +58,13 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\lib_debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlibd.lib;bass.lib;bass_fx.lib;bassmix.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -90,7 +90,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\lib_release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_release</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;bass.lib;bass_fx.lib;bassmix.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -114,10 +114,6 @@
     <ClCompile Include="src\game\lara\larasurf.cpp" />
     <ClCompile Include="src\game\lara\laraswim.cpp" />
     <ClCompile Include="src\game\lara\lara_col_routine.cpp" />
-    <ClCompile Include="src\extern\json\Jzon.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\game\effect2.cpp" />
     <ClCompile Include="src\game\entity\baddy.cpp" />
     <ClCompile Include="src\game\entity\bat.cpp" />
@@ -155,9 +151,6 @@
     <ClCompile Include="src\specific\drawprimitive.cpp" />
     <ClCompile Include="src\specific\file.cpp" />
     <ClCompile Include="src\specific\init.cpp" />
-    <ClCompile Include="src\specific\json\reader.cpp" />
-    <ClCompile Include="src\specific\json\scripts.cpp" />
-    <ClCompile Include="src\specific\json\writer.cpp" />
     <ClCompile Include="src\specific\libgpu.cpp" />
     <ClCompile Include="src\specific\loadsave.cpp" />
     <ClCompile Include="src\specific\output.cpp" />
@@ -193,7 +186,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\extern\json\Jzon.h" />
     <ClInclude Include="src\game\effect2.h" />
     <ClInclude Include="src\game\people.h" />
     <ClInclude Include="framework.h" />
@@ -223,9 +215,6 @@
     <ClInclude Include="src\specific\drawprimitive.h" />
     <ClInclude Include="src\specific\file.h" />
     <ClInclude Include="src\specific\init.h" />
-    <ClInclude Include="src\specific\json\reader.h" />
-    <ClInclude Include="src\specific\json\scripts.h" />
-    <ClInclude Include="src\specific\json\writer.h" />
     <ClInclude Include="src\specific\libgpu.h" />
     <ClInclude Include="src\specific\loadsave.h" />
     <ClInclude Include="src\specific\output.h" />
@@ -254,13 +243,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\dirent.1.13.1\build\native\dirent.targets" Condition="Exists('packages\dirent.1.13.1\build\native\dirent.targets')" />
-    <Import Project="packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets" Condition="Exists('packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" />
+    <Import Project="packages\zlib-msvc-x86.1.2.11.8900\build\native\zlib-msvc-x86.targets" Condition="Exists('packages\zlib-msvc-x86.1.2.11.8900\build\native\zlib-msvc-x86.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\dirent.1.13.1\build\native\dirent.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\dirent.1.13.1\build\native\dirent.targets'))" />
-    <Error Condition="!Exists('packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\zlib-msvc14-x64.1.2.11.7795\build\native\zlib-msvc14-x64.targets'))" />
+    <Error Condition="!Exists('packages\zlib-msvc-x86.1.2.11.8900\build\native\zlib-msvc-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\zlib-msvc-x86.1.2.11.8900\build\native\zlib-msvc-x86.targets'))" />
   </Target>
 </Project>

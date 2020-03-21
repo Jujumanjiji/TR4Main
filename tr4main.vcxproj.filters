@@ -33,17 +33,11 @@
     <Filter Include="extern">
       <UniqueIdentifier>{49537474-9f0d-426e-8fe2-66f1af26e72b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="extern\json">
-      <UniqueIdentifier>{52396b7d-4202-400c-b9bf-a9a39353f9ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="extern\bass">
       <UniqueIdentifier>{f751061f-1432-4054-b3a2-12a3fdb91331}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\game\lara">
       <UniqueIdentifier>{af623c05-120b-4a0b-9b7e-b6e0561ecd3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\specific\json">
-      <UniqueIdentifier>{3249153e-c467-41ce-bd61-f84fb91b1651}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,18 +145,6 @@
     </ClCompile>
     <ClCompile Include="src\game\effect2.cpp">
       <Filter>src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\specific\json\writer.cpp">
-      <Filter>src\specific\json</Filter>
-    </ClCompile>
-    <ClCompile Include="src\specific\json\reader.cpp">
-      <Filter>src\specific\json</Filter>
-    </ClCompile>
-    <ClCompile Include="src\extern\json\Jzon.cpp">
-      <Filter>extern\json</Filter>
-    </ClCompile>
-    <ClCompile Include="src\specific\json\scripts.cpp">
-      <Filter>src\specific\json</Filter>
     </ClCompile>
     <ClCompile Include="src\game\sound.cpp">
       <Filter>src\game</Filter>
@@ -375,18 +357,6 @@
     </ClInclude>
     <ClInclude Include="src\game\oldobjects.h">
       <Filter>src\game\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="src\specific\json\writer.h">
-      <Filter>src\specific\json</Filter>
-    </ClInclude>
-    <ClInclude Include="src\specific\json\reader.h">
-      <Filter>src\specific\json</Filter>
-    </ClInclude>
-    <ClInclude Include="src\extern\json\Jzon.h">
-      <Filter>extern\json</Filter>
-    </ClInclude>
-    <ClInclude Include="src\specific\json\scripts.h">
-      <Filter>src\specific\json</Filter>
     </ClInclude>
     <ClInclude Include="src\game\sound.h">
       <Filter>src\game</Filter>

@@ -3,6 +3,8 @@
 ///                           OTHER                            ///
 /// ===========================================================///
 
+#define LARA_FUNC(name) extern void name(ITEM_INFO* item, COLL_INFO* coll)
+
 #ifdef DLL_INJECT
 #define InitialiseLaraLoad INITIALISE(0x00430EB0)
 #define FlareItemControl CONTROL(0x0042FF90)
@@ -12,6 +14,20 @@
 /// ===========================================================///
 ///                     LARA CONSTANTS                         ///
 /// ===========================================================///
+
+enum WEAPON_ANIM
+{
+    W_AIM,
+    W_DRAW,
+    W_RECOIL,
+    W_UNDRAW,
+    W_UNAIM,
+    W_RELOAD,
+    W_UAIM,
+    W_UUNAIM,
+    W_URECOIL,
+    W_SURF_UNDRAW
+};
 
 #define LaraClampP(var, incValue, maxValue)\
     var += incValue;\
@@ -134,212 +150,6 @@
 #define LARA_CLIMB_LNK1 29
 #define LARA_CLIMB_LNK2 58
 
-/// ==============================================================
-
-#define LARA_FUNC(name) extern void name(ITEM_INFO* item, COLL_INFO* coll)
-
-#pragma region control
-/// Lara Control Routines:
-LARA_FUNC(lara_as_walk);
-LARA_FUNC(lara_as_run);
-LARA_FUNC(lara_as_stop);
-LARA_FUNC(lara_as_forwardjump);
-LARA_FUNC(lara_as_fastback);
-LARA_FUNC(lara_as_turnr);
-LARA_FUNC(lara_as_turnl);
-LARA_FUNC(lara_as_death);
-LARA_FUNC(lara_as_fastfall);
-LARA_FUNC(lara_as_hang);
-LARA_FUNC(lara_as_reach);
-LARA_FUNC(lara_as_splat);
-LARA_FUNC(lara_as_tread);
-LARA_FUNC(lara_as_compress);
-LARA_FUNC(lara_as_back);
-LARA_FUNC(lara_as_swim);
-LARA_FUNC(lara_as_glide);
-LARA_FUNC(lara_as_null);
-LARA_FUNC(lara_as_fastturn);
-LARA_FUNC(lara_as_stepright);
-LARA_FUNC(lara_as_stepleft);
-LARA_FUNC(lara_as_slide);
-LARA_FUNC(lara_as_backjump);
-LARA_FUNC(lara_as_rightjump);
-LARA_FUNC(lara_as_leftjump);
-LARA_FUNC(lara_as_upjump);
-LARA_FUNC(lara_as_fallback);
-LARA_FUNC(lara_as_hangleft);
-LARA_FUNC(lara_as_hangright);
-LARA_FUNC(lara_as_slideback);
-LARA_FUNC(lara_as_surftread);
-LARA_FUNC(lara_as_surfswim);
-LARA_FUNC(lara_as_dive);
-LARA_FUNC(lara_as_pushblock);
-LARA_FUNC(lara_as_pullblock);
-LARA_FUNC(lara_as_ppready);
-LARA_FUNC(lara_as_pickup);
-LARA_FUNC(lara_as_switchon);
-LARA_FUNC(lara_as_switchoff);
-LARA_FUNC(lara_as_usekey);
-LARA_FUNC(lara_as_usepuzzle);
-LARA_FUNC(lara_as_uwdeath);
-LARA_FUNC(lara_as_special);
-LARA_FUNC(lara_as_surfback);
-LARA_FUNC(lara_as_surfleft);
-LARA_FUNC(lara_as_surfright);
-LARA_FUNC(lara_as_swandive);
-LARA_FUNC(lara_as_fastdive);
-LARA_FUNC(lara_as_waterout);
-LARA_FUNC(lara_as_climbstnc);
-LARA_FUNC(lara_as_climbup);
-LARA_FUNC(lara_as_climbleft);
-LARA_FUNC(lara_as_climbend);
-LARA_FUNC(lara_as_climbright);
-LARA_FUNC(lara_as_climbdown);
-LARA_FUNC(lara_as_wade);
-LARA_FUNC(lara_as_waterroll);
-LARA_FUNC(lara_as_pickupflare);
-LARA_FUNC(lara_as_deathslide);
-LARA_FUNC(lara_as_duck);
-LARA_FUNC(lara_as_dash);
-LARA_FUNC(lara_as_dashdive);
-LARA_FUNC(lara_as_hang2);
-LARA_FUNC(lara_as_monkeyswing);
-LARA_FUNC(lara_as_monkeyl);
-LARA_FUNC(lara_as_monkeyr);
-LARA_FUNC(lara_as_monkey180);
-LARA_FUNC(lara_as_all4s);
-LARA_FUNC(lara_as_crawl);
-LARA_FUNC(lara_as_hangturnl);
-LARA_FUNC(lara_as_hangturnr);
-LARA_FUNC(lara_as_all4turnl);
-LARA_FUNC(lara_as_all4turnr);
-LARA_FUNC(lara_as_crawlb);
-LARA_FUNC(lara_as_controlled);
-LARA_FUNC(lara_as_ropel);
-LARA_FUNC(lara_as_roper);
-LARA_FUNC(lara_as_controlledl);
-LARA_FUNC(lara_as_poleleft);
-LARA_FUNC(lara_as_poleright);
-LARA_FUNC(lara_as_pulley);
-LARA_FUNC(lara_as_duckl);
-LARA_FUNC(lara_as_duckr);
-LARA_FUNC(lara_as_extcornerl);
-LARA_FUNC(lara_as_extcornerr);
-LARA_FUNC(lara_as_intcornerl);
-LARA_FUNC(lara_as_intcornerr);
-LARA_FUNC(lara_as_rope);
-LARA_FUNC(lara_as_climbrope);
-LARA_FUNC(lara_as_climbroped);
-#pragma endregion
-
-#pragma region collision
-/// Lara Collision Routines:
-LARA_FUNC(lara_default_col);
-LARA_FUNC(lara_col_walk);
-LARA_FUNC(lara_col_run);
-LARA_FUNC(lara_col_stop);
-LARA_FUNC(lara_col_forwardjump);
-LARA_FUNC(lara_col_fastback);
-LARA_FUNC(lara_col_turn);
-LARA_FUNC(lara_col_death);
-LARA_FUNC(lara_col_fastfall);
-LARA_FUNC(lara_col_hang);
-LARA_FUNC(lara_col_reach);
-LARA_FUNC(lara_col_splat);
-LARA_FUNC(lara_col_tread);
-LARA_FUNC(lara_col_compress);
-LARA_FUNC(lara_col_back);
-LARA_FUNC(lara_col_swim);
-LARA_FUNC(lara_col_glide);
-LARA_FUNC(lara_col_step);
-LARA_FUNC(lara_col_roll);
-LARA_FUNC(lara_col_slide);
-LARA_FUNC(lara_col_backjump);
-LARA_FUNC(lara_col_rightjump);
-LARA_FUNC(lara_col_leftjump);
-LARA_FUNC(lara_col_upjump);
-LARA_FUNC(lara_col_fallback);
-LARA_FUNC(lara_col_hangleft);
-LARA_FUNC(lara_col_hangright);
-LARA_FUNC(lara_col_slideback);
-LARA_FUNC(lara_col_surftread);
-LARA_FUNC(lara_col_surfswim);
-LARA_FUNC(lara_col_dive);
-LARA_FUNC(lara_col_uwdeath);
-LARA_FUNC(lara_col_roll2);
-LARA_FUNC(lara_col_surfback);
-LARA_FUNC(lara_col_surfleft);
-LARA_FUNC(lara_col_surfright);
-LARA_FUNC(lara_col_swandive);
-LARA_FUNC(lara_col_fastdive);
-LARA_FUNC(lara_col_climbstnc);
-LARA_FUNC(lara_col_climbup);
-LARA_FUNC(lara_col_climbleft);
-LARA_FUNC(lara_col_climbright);
-LARA_FUNC(lara_col_climbdown);
-LARA_FUNC(lara_col_wade);
-LARA_FUNC(lara_col_waterroll);
-LARA_FUNC(lara_col_duck);
-LARA_FUNC(lara_col_dash);
-LARA_FUNC(lara_col_dashdive);
-LARA_FUNC(lara_col_hang2);
-LARA_FUNC(lara_col_monkeyswing);
-LARA_FUNC(lara_col_monkeyl);
-LARA_FUNC(lara_col_monkeyr);
-LARA_FUNC(lara_col_monkey180);
-LARA_FUNC(lara_col_all4s);
-LARA_FUNC(lara_col_crawl);
-LARA_FUNC(lara_col_hangturn);
-LARA_FUNC(lara_col_all4turn);
-LARA_FUNC(lara_col_crawlb);
-LARA_FUNC(lara_col_crawl2hang);
-LARA_FUNC(lara_col_turnswitch);
-LARA_FUNC(lara_col_polestat);
-LARA_FUNC(lara_col_poleup);
-LARA_FUNC(lara_col_poledown);
-LARA_FUNC(lara_col_duck2);
-LARA_FUNC(lara_col_rope);
-LARA_FUNC(lara_col_ropefwd);
-#pragma endregion
-
-#pragma region lara1gun
-enum WEAPON_ANIM
-{
-    W_AIM,
-    W_DRAW,
-    W_RECOIL,
-    W_UNDRAW,
-    W_UNAIM,
-    W_RELOAD,
-    W_UAIM,
-    W_UUNAIM,
-    W_URECOIL,
-    W_SURF_UNDRAW
-};
-
-extern void draw_shotgun_meshes(int weapon_type);
-extern void undraw_shotgun_meshes(int weapon_type);
-extern void ready_shotgun(int weapon_type);
-extern void draw_shotgun(int weapon_type);
-extern void undraw_shotgun(int weapon_type);
-extern void shotgun_handler(int weapon_type);
-extern void animate_shotgun(int weapon_type);
-#pragma endregion
-
-#pragma region lara2gun
-extern int weapon_holsters(int weapon_type);
-extern void set_arm_info(LARA_ARM* arm, short frame);
-extern void draw_pistol_meshes(int weapon_type);
-extern void undraw_pistols_left(int weapon_type);
-extern void undraw_pistols_right(int weapon_type);
-extern void draw_pistols(int weapon_type);
-extern void undraw_pistols(int weapon_type);
-extern void ready_pistols(int weapon_type);
-extern void pistol_handler(int weapon_type);
-extern void animate_pistols(int weapon_type);
-#pragma endregion
-
-#pragma region larafire
 #define PISTOL_LOCK_YMIN -ANGLE(60)
 #define PISTOL_LOCK_YMAX +ANGLE(60)
 #define PISTOL_LOCK_XMIN -ANGLE(60)
@@ -458,9 +268,208 @@ extern void animate_pistols(int weapon_type);
 #define GRENADEGUN_SMOKE_MAX 5
 #define GRENADE_TIMER 120
 
+#define FL_HOLD_FT 1
+#define FL_THROW_FT 32
+#define FL_DRAW_FT 39
+#define FL_IGNITE_FT 23
+#define FL_2HOLD_FT 15
+#define FL_HOLD_F 0
+#define FL_THROW_F (FL_HOLD_F+FL_HOLD_FT)
+#define FL_DRAW_F (FL_THROW_F+FL_THROW_FT)
+#define FL_IGNITE_F (FL_DRAW_F+FL_DRAW_FT)
+#define FL_2HOLD_F (FL_IGNITE_F+FL_IGNITE_FT)
+#define FL_END_F (FL_2HOLD_F+FL_2HOLD_FT)
+#define FL_DRAWGOTIT_F (13+FL_DRAW_F)
+#define FL_PICKUP_F 58
+#define FL_THROWRELEASE_F (20+FL_THROW_F)
+#define FL_THROW_FRAMES 32
+
+/// ==============================================================
+
 extern PISTOL_DEF pistols_table[4];
 extern WEAPON_INFO weapons[LG_MAX_HOLD];
 
+extern void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraSurface(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll);
+extern void LaraWaterCurrent(COLL_INFO* coll);
+
+/// Lara Control Routines:
+LARA_FUNC(lara_as_walk);
+LARA_FUNC(lara_as_run);
+LARA_FUNC(lara_as_stop);
+LARA_FUNC(lara_as_forwardjump);
+LARA_FUNC(lara_as_fastback);
+LARA_FUNC(lara_as_turnr);
+LARA_FUNC(lara_as_turnl);
+LARA_FUNC(lara_as_death);
+LARA_FUNC(lara_as_fastfall);
+LARA_FUNC(lara_as_hang);
+LARA_FUNC(lara_as_reach);
+LARA_FUNC(lara_as_splat);
+LARA_FUNC(lara_as_tread);
+LARA_FUNC(lara_as_compress);
+LARA_FUNC(lara_as_back);
+LARA_FUNC(lara_as_swim);
+LARA_FUNC(lara_as_glide);
+LARA_FUNC(lara_as_null);
+LARA_FUNC(lara_as_fastturn);
+LARA_FUNC(lara_as_stepright);
+LARA_FUNC(lara_as_stepleft);
+LARA_FUNC(lara_as_slide);
+LARA_FUNC(lara_as_backjump);
+LARA_FUNC(lara_as_rightjump);
+LARA_FUNC(lara_as_leftjump);
+LARA_FUNC(lara_as_upjump);
+LARA_FUNC(lara_as_fallback);
+LARA_FUNC(lara_as_hangleft);
+LARA_FUNC(lara_as_hangright);
+LARA_FUNC(lara_as_slideback);
+LARA_FUNC(lara_as_surftread);
+LARA_FUNC(lara_as_surfswim);
+LARA_FUNC(lara_as_dive);
+LARA_FUNC(lara_as_pushblock);
+LARA_FUNC(lara_as_pullblock);
+LARA_FUNC(lara_as_ppready);
+LARA_FUNC(lara_as_pickup);
+LARA_FUNC(lara_as_switchon);
+LARA_FUNC(lara_as_switchoff);
+LARA_FUNC(lara_as_usekey);
+LARA_FUNC(lara_as_usepuzzle);
+LARA_FUNC(lara_as_uwdeath);
+LARA_FUNC(lara_as_special);
+LARA_FUNC(lara_as_surfback);
+LARA_FUNC(lara_as_surfleft);
+LARA_FUNC(lara_as_surfright);
+LARA_FUNC(lara_as_swandive);
+LARA_FUNC(lara_as_fastdive);
+LARA_FUNC(lara_as_waterout);
+LARA_FUNC(lara_as_climbstnc);
+LARA_FUNC(lara_as_climbup);
+LARA_FUNC(lara_as_climbleft);
+LARA_FUNC(lara_as_climbend);
+LARA_FUNC(lara_as_climbright);
+LARA_FUNC(lara_as_climbdown);
+LARA_FUNC(lara_as_wade);
+LARA_FUNC(lara_as_waterroll);
+LARA_FUNC(lara_as_pickupflare);
+LARA_FUNC(lara_as_deathslide);
+LARA_FUNC(lara_as_duck);
+LARA_FUNC(lara_as_dash);
+LARA_FUNC(lara_as_dashdive);
+LARA_FUNC(lara_as_hang2);
+LARA_FUNC(lara_as_monkeyswing);
+LARA_FUNC(lara_as_monkeyl);
+LARA_FUNC(lara_as_monkeyr);
+LARA_FUNC(lara_as_monkey180);
+LARA_FUNC(lara_as_all4s);
+LARA_FUNC(lara_as_crawl);
+LARA_FUNC(lara_as_hangturnl);
+LARA_FUNC(lara_as_hangturnr);
+LARA_FUNC(lara_as_all4turnl);
+LARA_FUNC(lara_as_all4turnr);
+LARA_FUNC(lara_as_crawlb);
+LARA_FUNC(lara_as_controlled);
+LARA_FUNC(lara_as_ropel);
+LARA_FUNC(lara_as_roper);
+LARA_FUNC(lara_as_controlledl);
+LARA_FUNC(lara_as_poleleft);
+LARA_FUNC(lara_as_poleright);
+LARA_FUNC(lara_as_pulley);
+LARA_FUNC(lara_as_duckl);
+LARA_FUNC(lara_as_duckr);
+LARA_FUNC(lara_as_extcornerl);
+LARA_FUNC(lara_as_extcornerr);
+LARA_FUNC(lara_as_intcornerl);
+LARA_FUNC(lara_as_intcornerr);
+LARA_FUNC(lara_as_rope);
+LARA_FUNC(lara_as_climbrope);
+LARA_FUNC(lara_as_climbroped);
+
+LARA_FUNC(lara_default_col);
+LARA_FUNC(lara_col_walk);
+LARA_FUNC(lara_col_run);
+LARA_FUNC(lara_col_stop);
+LARA_FUNC(lara_col_forwardjump);
+LARA_FUNC(lara_col_fastback);
+LARA_FUNC(lara_col_turn);
+LARA_FUNC(lara_col_death);
+LARA_FUNC(lara_col_fastfall);
+LARA_FUNC(lara_col_hang);
+LARA_FUNC(lara_col_reach);
+LARA_FUNC(lara_col_splat);
+LARA_FUNC(lara_col_tread);
+LARA_FUNC(lara_col_compress);
+LARA_FUNC(lara_col_back);
+LARA_FUNC(lara_col_swim);
+LARA_FUNC(lara_col_glide);
+LARA_FUNC(lara_col_step);
+LARA_FUNC(lara_col_roll);
+LARA_FUNC(lara_col_slide);
+LARA_FUNC(lara_col_backjump);
+LARA_FUNC(lara_col_rightjump);
+LARA_FUNC(lara_col_leftjump);
+LARA_FUNC(lara_col_upjump);
+LARA_FUNC(lara_col_fallback);
+LARA_FUNC(lara_col_hangleft);
+LARA_FUNC(lara_col_hangright);
+LARA_FUNC(lara_col_slideback);
+LARA_FUNC(lara_col_surftread);
+LARA_FUNC(lara_col_surfswim);
+LARA_FUNC(lara_col_dive);
+LARA_FUNC(lara_col_uwdeath);
+LARA_FUNC(lara_col_roll2);
+LARA_FUNC(lara_col_surfback);
+LARA_FUNC(lara_col_surfleft);
+LARA_FUNC(lara_col_surfright);
+LARA_FUNC(lara_col_swandive);
+LARA_FUNC(lara_col_fastdive);
+LARA_FUNC(lara_col_climbstnc);
+LARA_FUNC(lara_col_climbup);
+LARA_FUNC(lara_col_climbleft);
+LARA_FUNC(lara_col_climbright);
+LARA_FUNC(lara_col_climbdown);
+LARA_FUNC(lara_col_wade);
+LARA_FUNC(lara_col_waterroll);
+LARA_FUNC(lara_col_duck);
+LARA_FUNC(lara_col_dash);
+LARA_FUNC(lara_col_dashdive);
+LARA_FUNC(lara_col_hang2);
+LARA_FUNC(lara_col_monkeyswing);
+LARA_FUNC(lara_col_monkeyl);
+LARA_FUNC(lara_col_monkeyr);
+LARA_FUNC(lara_col_monkey180);
+LARA_FUNC(lara_col_all4s);
+LARA_FUNC(lara_col_crawl);
+LARA_FUNC(lara_col_hangturn);
+LARA_FUNC(lara_col_all4turn);
+LARA_FUNC(lara_col_crawlb);
+LARA_FUNC(lara_col_crawl2hang);
+LARA_FUNC(lara_col_turnswitch);
+LARA_FUNC(lara_col_polestat);
+LARA_FUNC(lara_col_poleup);
+LARA_FUNC(lara_col_poledown);
+LARA_FUNC(lara_col_duck2);
+LARA_FUNC(lara_col_rope);
+LARA_FUNC(lara_col_ropefwd);
+
+extern void draw_shotgun_meshes(int weapon_type);
+extern void undraw_shotgun_meshes(int weapon_type);
+extern void ready_shotgun(int weapon_type);
+extern void draw_shotgun(int weapon_type);
+extern void undraw_shotgun(int weapon_type);
+extern void shotgun_handler(int weapon_type);
+extern void animate_shotgun(int weapon_type);
+extern int weapon_holsters(int weapon_type);
+extern void set_arm_info(LARA_ARM* arm, short frame);
+extern void draw_pistol_meshes(int weapon_type);
+extern void undraw_pistols_left(int weapon_type);
+extern void undraw_pistols_right(int weapon_type);
+extern void draw_pistols(int weapon_type);
+extern void undraw_pistols(int weapon_type);
+extern void ready_pistols(int weapon_type);
+extern void pistol_handler(int weapon_type);
+extern void animate_pistols(int weapon_type);
 extern void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv);
 extern int weapon_object(int weapon_type);
 extern int weapon_meshes(int weapon_type);
@@ -479,43 +488,6 @@ extern int GetTargetOnLOS(GAME_VECTOR *dest, GAME_VECTOR *src, BOOL drawtarget, 
 extern void HitTarget(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags);
 extern void LaraGun(void);
 
-#ifdef DLL_INJECT
-#define CheckForHoldingState ((int(__cdecl*)(short state_current)) 0x0042DDC0)
-#endif
-#pragma endregion
-
-#pragma region lara_flare
-#define FL_HOLD_FT 1
-#define FL_THROW_FT 32
-#define FL_DRAW_FT 39
-#define FL_IGNITE_FT 23
-#define FL_2HOLD_FT 15
-#define FL_HOLD_F 0
-#define FL_THROW_F (FL_HOLD_F+FL_HOLD_FT)
-#define FL_DRAW_F (FL_THROW_F+FL_THROW_FT)
-#define FL_IGNITE_F (FL_DRAW_F+FL_DRAW_FT)
-#define FL_2HOLD_F (FL_IGNITE_F+FL_IGNITE_FT)
-#define FL_END_F (FL_2HOLD_F+FL_2HOLD_FT)
-#define FL_DRAWGOTIT_F (13+FL_DRAW_F)
-#define FL_PICKUP_F 58
-#define FL_THROWRELEASE_F (20+FL_THROW_F)
-#define FL_THROW_FRAMES 32
-
-#ifdef DLL_INJECT
-#define TorchControl ((void(__cdecl*)(void)) 0x0041F7C0)
-#define DoFlareLight ((BOOL(__cdecl*)(PHD_3DPOS *pos, short age)) 0x0042F510)
-#define DoFlareInHand ((void(__cdecl*)(short age)) 0x0042F6F0)
-#define set_flare_arm ((void(__cdecl*)(short frame)) 0x0042FB00)
-#define CreateFlare ((void(__cdecl*)(short objNumber, BOOL isThrowed)) 0x0042F880)
-#define ready_flare ((void(__cdecl*)(void)) 0x0042FF50)
-#define draw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF10)
-#define undraw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF30)
-#define draw_flare ((void(__cdecl*)(void)) 0x0042FB50)
-#define undraw_flare ((void(__cdecl*)(void)) 0x0042FC60)
-#endif
-#pragma endregion
-
-#pragma region lara_utils
 extern short LaraFloorFront(ITEM_INFO* item, short angle, int distance);
 extern short LaraCeilingFront(ITEM_INFO* item, short angle, int distance, int height);
 extern BOOL LaraHitCeiling(ITEM_INFO* item, COLL_INFO* coll);
@@ -574,19 +546,15 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 
 #ifdef DLL_INJECT
 #define UseSpecialItem ((BOOL(__cdecl*)(ITEM_INFO* item)) 0x00424E90)
+#define CheckForHoldingState ((int(__cdecl*)(short state_current)) 0x0042DDC0)
+#define TorchControl ((void(__cdecl*)(void)) 0x0041F7C0)
+#define DoFlareLight ((BOOL(__cdecl*)(PHD_3DPOS *pos, short age)) 0x0042F510)
+#define DoFlareInHand ((void(__cdecl*)(short age)) 0x0042F6F0)
+#define set_flare_arm ((void(__cdecl*)(short frame)) 0x0042FB00)
+#define CreateFlare ((void(__cdecl*)(short objNumber, BOOL isThrowed)) 0x0042F880)
+#define ready_flare ((void(__cdecl*)(void)) 0x0042FF50)
+#define draw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF10)
+#define undraw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF30)
+#define draw_flare ((void(__cdecl*)(void)) 0x0042FB50)
+#define undraw_flare ((void(__cdecl*)(void)) 0x0042FC60)
 #endif
-#pragma endregion
-
-#pragma region lara_control
-extern void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll);
-extern void LaraSurface(ITEM_INFO* item, COLL_INFO* coll);
-extern void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll);
-extern void LaraWaterCurrent(COLL_INFO* coll);
-
-#ifdef DLL_INJECT
-#define legacy_LaraAboveWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00420B10)
-#define legacy_LaraSurface  ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x00431AA0)
-#define legacy_LaraUnderWater ((void(__cdecl*)(ITEM_INFO* item, COLL_INFO* coll)) 0x004323A0)
-#define legacy_LaraWaterCurrent ((void(__cdecl*)(COLL_INFO* coll)) 0x00432DA0)
-#endif
-#pragma endregion

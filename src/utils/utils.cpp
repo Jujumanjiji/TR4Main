@@ -13,7 +13,6 @@
 #include "lot.h"
 #include "oldobjects.h"
 #include "sphere.h"
-#include "json/reader.h"
 #include "drawprimitive.h"
 
 ofstream flog;

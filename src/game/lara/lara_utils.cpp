@@ -1684,12 +1684,10 @@ void LaraSurfaceCollision(ITEM_INFO* item, COLL_INFO* coll)
 }
 
 // TODO: need decompiling !!!
-/*
-BOOL UseSpecialItem(ITEM_INFO* item)
-{
-    return 0;
-}
-*/
+//BOOL UseSpecialItem(ITEM_INFO* item)
+//{
+//    return 0;
+//}
 
 BOOL TestLaraSlide(ITEM_INFO* item, COLL_INFO* coll)
 {
@@ -2671,7 +2669,7 @@ void injector::inject_lara_utils()
     this->inject(0x004229D0, LaraCollideStop);
     this->inject(0x004328E0, LaraSwimCollision);
     this->inject(0x004320B0, LaraSurfaceCollision);
-    ///this->inject(0x00424E90, UseSpecialItem);
+    //this->inject(0x00424E90, UseSpecialItem);
     this->inject(0x00420EA0, TestLaraSlide);
     this->inject(0x00422480, TestLaraVault);
     this->inject(0x004236B0, TestMonkeyLeft);
@@ -2692,6 +2690,5 @@ void injector::inject_lara_utils()
     this->inject(0x004235B0, SnapLaraToEdgeOfBlock);
     this->inject(0x00422350, GetLaraCollisionInfo);
     this->inject(0x00430B60, AnimateLara);
-
 }
 #endif

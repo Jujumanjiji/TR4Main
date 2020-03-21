@@ -5,7 +5,6 @@
 #include "box.h"
 #include "lara.h"
 #include "gameflow.h"
-#include "json/reader.h"
 #include "utils.h"
 
 SetupEntity setup_entity;
