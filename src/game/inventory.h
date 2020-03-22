@@ -287,7 +287,7 @@ struct INV_OPTION
 };
 
 extern RING2D* ring_2d[MAX_RING];
-extern INVOBJ inventry_objects_list[MAX_INVOBJ];
+///extern INVOBJ inventry_objects_list[MAX_INVOBJ];
 extern MENU current_options[MAX_MENU];
 extern INV_OPTION options_table[MAX_INVOBJ];
 extern COMBINELIST combine_table[MAX_COMBINE];
@@ -362,6 +362,7 @@ extern bool friggrimmer1;
 extern bool friggrimmer2;
 
 #ifdef DLL_INJECT
+#define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
 #define in_inventory                        VAR_I_(0x004BF3C8, int, 0)
 #define compass_needle                      VAR_U_(0x007E71DC, int)
 #define GLOBAL_invitemlastchosen            VAR_I_(0x004AE064, int, NO_ITEM)

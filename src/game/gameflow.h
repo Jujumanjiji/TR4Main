@@ -20,3 +20,7 @@
 #define gfLayer2Color                       VAR_U_(0x007FD25C, CVECTOR)
 #define gfStringWad                         VAR_U_(0x007FD2B8, char*)
 #define gfStringOffset                      VAR_U_(0x007FD274, WORD*)
+
+#ifdef DLL_INJECT
+#define DoGameflow ((void(__cdecl*)(void)) 0x00451770)
+#endif

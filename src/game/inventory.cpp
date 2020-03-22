@@ -17,6 +17,9 @@
 RING2D* ring_2d[MAX_RING];
 MENU current_options[MAX_MENU];
 
+// TODO: gameflow is ignored !
+// need to decompile DoGameflow() !!
+/*
 INVOBJ inventry_objects_list[MAX_INVOBJ] =
 {
     { UZI_ITEM, 0x0FFFC, 1000, 0x4000, 0x12000, 0x4000, INV_RESIZE, STR_UZIS, ALL_MESH },
@@ -139,6 +142,7 @@ INVOBJ inventry_objects_list[MAX_INVOBJ] =
     { EXAMINE2, 14, 1200, 0, 0x4000, 0, INV_RESIZE, STR_LOAD, ALL_MESH },
     { EXAMINE3, 14, 1200, 0, 0x4000, 0, INV_RESIZE, STR_LOAD, ALL_MESH },
 };
+*/
 
 INV_OPTION options_table[MAX_INVOBJ] =
 {
