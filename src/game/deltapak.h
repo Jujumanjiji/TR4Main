@@ -3,7 +3,6 @@
 #ifdef DLL_INJECT
 #define DrawCutSeqActors ((void(__cdecl*)(void)) 0x0046B2B0)
 #define UpdateAnimFrame ((void(__cdecl*)(short* actor, int nodes, short* frame)) 0x0046B220)
-///#define frigup_lara ((void(__cdecl*)(void)) 0x0046B140)
 
 #define GLOBAL_cutpos            VAR_U_(0x007E7230, int*)
 #define actor_pnodes             VAR_U_(0x007E7200, short*)

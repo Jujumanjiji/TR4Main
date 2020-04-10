@@ -1250,6 +1250,26 @@ LPCSTR InventoryItemDebugString(short inv_item)
     return "INV_NOT_FOUND_ITEM";
 }
 
+void ResetLaraMeshSkin(void)
+{
+    short mesh_target = LARA_SKIN;
+    lara.mesh.hips = classic_meshes(mesh_target, HIPS);
+    lara.mesh.thigh_l = classic_meshes(mesh_target, THIGH_L);
+    lara.mesh.calf_l = classic_meshes(mesh_target, CALF_L);
+    lara.mesh.foot_l = classic_meshes(mesh_target, FOOT_L);
+    lara.mesh.thigh_r = classic_meshes(mesh_target, THIGH_R);
+    lara.mesh.calf_r = classic_meshes(mesh_target, CALF_R);
+    lara.mesh.foot_r = classic_meshes(mesh_target, FOOT_R);
+    lara.mesh.torso = classic_meshes(mesh_target, TORSO);
+    lara.mesh.uarm_r = classic_meshes(mesh_target, UARM_R);
+    lara.mesh.larm_r = classic_meshes(mesh_target, LARM_R);
+    lara.mesh.hand_r = classic_meshes(mesh_target, HAND_R);
+    lara.mesh.uarm_l = classic_meshes(mesh_target, UARM_L);
+    lara.mesh.larm_l = classic_meshes(mesh_target, LARM_L);
+    lara.mesh.hand_l = classic_meshes(mesh_target, HAND_L);
+    lara.mesh.head = classic_meshes(mesh_target, HEAD);
+}
+
 CVECTOR DWORD_TO_RGBA(DWORD color)
 {
     CVECTOR result;

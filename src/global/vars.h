@@ -141,6 +141,7 @@
 #define dynamics                            ARRAY_(0x00804860, DYNAMIC, [MAX_DYNAMICS])
 #define lara                                VAR_U_(0x0080DFE0, LARA_INFO)
 #define lara_item                           VAR_U_(0x0080E13C, ITEM_INFO*)
+#define lara_coll                           VAR_U_(0x004AD9C4, COLL_INFO*)
 #define items                               VAR_U_(0x007FE28C, ITEM_INFO*)
 #define objects                             ARRAY_(0x0052B850, OBJECT_INFO, [NUMBER_OBJECTS])
 #define static_objects                      ARRAY_(0x005333C0, STATIC_INFO, [NUMBER_STATIC_OBJECTS])

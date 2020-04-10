@@ -225,7 +225,7 @@ int weapon_meshes(int weapon_type)
     switch (weapon_type)
     {
         case LG_REVOLVER:
-            return CHK_ANY(lara.revolver_type_carried, CR_LASERSIGHT) ? LARA_REVOLVER_LASER : REVOLVER_ANIM;
+            return CHK_EXI(lara.revolver_type_carried, CR_LASERSIGHT) ? LARA_REVOLVER_LASER : REVOLVER_ANIM;
         case LG_UZIS:
             return UZI_ANIM;
         case LG_SHOTGUN:
@@ -233,7 +233,7 @@ int weapon_meshes(int weapon_type)
         case LG_GRENADEGUN:
             return GRENADE_GUN_ANIM;
         case LG_CROSSBOW:
-            return CHK_ANY(lara.crossbow_type_carried, CR_LASERSIGHT) ? LARA_CROSSBOW_LASER : CROSSBOW_ANIM;
+            return CHK_EXI(lara.crossbow_type_carried, CR_LASERSIGHT) ? LARA_CROSSBOW_LASER : CROSSBOW_ANIM;
         case LG_PISTOLS:
         default:
             return PISTOLS_ANIM;
@@ -257,7 +257,7 @@ void fire_shotgun(void)
         dangles[1] += lara.torso_x_rot;
     }
 
-    random = CHK_ANY(lara.shotgun_type_carried, CR_AMMO1) ? SHOTGUN_RANDOM_AMMO1 : SHOTGUN_RANDOM_AMMO2;
+    random = CHK_EXI(lara.shotgun_type_carried, CR_AMMO1) ? SHOTGUN_RANDOM_AMMO1 : SHOTGUN_RANDOM_AMMO2;
     for (int i = 0; i < SHOTGUN_BULLET_MAX; i++)
     {
         r = (int)((GetRandomControl() - 0x4000) * random / 0x10000);
@@ -380,11 +380,11 @@ void fire_grenade(void)
             if (ammo != INFINITE_AMMO)
                 weapon_ammo.decrease(LG_GRENADEGUN, 1);
 
-            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
+            if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO1))
                 item->reserved_1 = 1; // normal
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
+            else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO2))
                 item->reserved_1 = 2; // super
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
+            else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO3))
                 item->reserved_1 = 3; // flash
             savegame_level.ammo_used++;
         }
@@ -462,11 +462,11 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
             if (ammo != INFINITE_AMMO)
                 weapon_ammo.decrease(LG_CROSSBOW, 1);
 
-            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
+            if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO1))
                 item->reserved_1 = 1; // normal
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
+            else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO2))
                 item->reserved_1 = 2; // poison
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
+            else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO3))
                 item->reserved_1 = 3; // explosive
             SoundEffect(SFX_LARA_CROSSBOW, &lara_item->pos, 0);
             savegame_level.ammo_used++;
@@ -546,24 +546,24 @@ short* GetCurrentAmmo(int weapon_type)
             return &lara.uzi_ammo_count;
 
         case LG_SHOTGUN:
-            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
+            if (CHK_EXI(lara.shotgun_type_carried, CR_AMMO1))
                 return &lara.shotgun_ammo1_count;
             else
                 return &lara.shotgun_ammo2_count;
             break;
         case LG_GRENADEGUN:
-            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
+            if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO1))
                 return &lara.grenade_ammo1_count;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
+            else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO2))
                 return &lara.grenade_ammo2_count;
             else
                 return &lara.grenade_ammo3_count;
             break;
 
         case LG_CROSSBOW:
-            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
+            if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO1))
                 return &lara.crossbow_ammo1_count;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
+            else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO2))
                 return &lara.crossbow_ammo2_count;
             else
                 return &lara.crossbow_ammo3_count;
@@ -1063,11 +1063,11 @@ void LaraGun(void)
     }
     else if (lara.gun_status == LHS_ARMLESS)
     {
-        if (CHK_ANY(TrInput, IN_DRAW))
+        if (CHK_EXI(TrInput, IN_DRAW))
         {
             lara.gun_request_type = lara.gun_last_type;
         }
-        else if (CHK_ANY(TrInput, IN_FLARE) && CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
+        else if (CHK_EXI(TrInput, IN_FLARE) && CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
         {
             if (lara_item->state_current == STATE_LARA_CROUCH_IDLE && lara_item->current_anim != ANIMATION_LARA_CROUCH_IDLE)
                 return;
@@ -1083,7 +1083,7 @@ void LaraGun(void)
             }
         }
 
-        if (CHK_ANY(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
+        if (CHK_EXI(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
         {
             short state_current = lara_item->state_current;
             if ((state_current == STATE_LARA_CROUCH_IDLE
@@ -1122,7 +1122,7 @@ void LaraGun(void)
     }
     else if (lara.gun_status == LHS_READY)
     {
-        if (CHK_ANY(TrInput, IN_FLARE))
+        if (CHK_EXI(TrInput, IN_FLARE))
         {
             if (lara.flare_count != -1)
             {
@@ -1131,7 +1131,7 @@ void LaraGun(void)
             }
         }
 
-        if (CHK_ANY(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
+        if (CHK_EXI(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
             lara.gun_status = LHS_UNDRAW;
         else if (lara.water_status != LWS_ABOVEWATER
         &&      (lara.water_status != LWS_WADE || lara.water_surface_dist < -weapons[lara.gun_type].gun_height))
@@ -1225,7 +1225,7 @@ void LaraGun(void)
             }
             break;
         case LHS_READY:
-            if (CHK_ANY(TrInput, IN_ACTION))
+            if (CHK_EXI(TrInput, IN_ACTION))
                 lara.mesh.head = classic_meshes(LARA_SCREAM, HEAD);
             else
                 lara.mesh.head = classic_meshes(LARA, HEAD);
@@ -1233,7 +1233,7 @@ void LaraGun(void)
             if (camera.type != CINEMATIC_CAMERA && camera.type != LOOK_CAMERA && camera.type != HEAVY_CAMERA)
                 camera.type = COMBAT_CAMERA;
 
-            if (CHK_ANY(TrInput, IN_ACTION) && !weapon_ammo.get(lara.gun_type))
+            if (CHK_EXI(TrInput, IN_ACTION) && !weapon_ammo.get(lara.gun_type))
             {
                 SoundEffect(SFX_SARLID_PALACES, &lara_item->pos, 0);
                 lara.gun_request_type = LG_PISTOLS;

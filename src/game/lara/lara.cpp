@@ -6,6 +6,7 @@
 void injector::inject_lara()
 {
     /// LARA ROUTINES:
+    this->inject(0x00430250, LaraControl);
     this->inject(0x00420B10, LaraAboveWater);
     this->inject(0x00431AA0, LaraSurface);
     this->inject(0x004323A0, LaraUnderWater);

@@ -313,3 +313,7 @@
 #define do_compass_mode ((void(__cdecl*)(void)) 0x0043F180)
 #define do_examine_mode ((void(__cdecl*)(void)) 0x0043F1E0)
 #define give_lara_items_cheat ((void(__cdecl*)(void)) 0x0043F4C0)  not used anymore !!
+
+#define frigup_lara ((void(__cdecl*)(void)) 0x0046B140)
+#define InitialiseLaraLoad INITIALISE(0x00430EB0)
+#define InterpolateArmMatrix ((void(__cdecl*)(void)) 0x00450AB0)

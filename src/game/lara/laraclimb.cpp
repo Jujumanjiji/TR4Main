@@ -12,22 +12,22 @@ void lara_as_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_baddie_push = FALSE;
     camera.target_elevation = CAM_E_CLIMBS;
 
-    if (CHK_ANY(TrInput, IN_LOOK))
+    if (CHK_EXI(TrInput, IN_LOOK))
     {
         LookUpDown();
     }
 
-    if (CHK_ANY(TrInput, (IN_LEFT | IN_LSTEP)))
+    if (CHK_EXI(TrInput, (IN_LEFT | IN_LSTEP)))
     {
         item->state_next = STATE_LARA_LADDER_LEFT;
         lara.move_angle = item->pos.y_rot - 0x4000;
     }
-    else if (CHK_ANY(TrInput, (IN_RIGHT | IN_RSTEP)))
+    else if (CHK_EXI(TrInput, (IN_RIGHT | IN_RSTEP)))
     {
         item->state_next = STATE_LARA_LADDER_RIGHT;
         lara.move_angle = item->pos.y_rot + 0x4000;
     }
-    else if (CHK_ANY(TrInput, IN_JUMP) && item->current_anim == ANIMATION_LARA_LADDER_IDLE)
+    else if (CHK_EXI(TrInput, IN_JUMP) && item->current_anim == ANIMATION_LARA_LADDER_IDLE)
     {
         item->state_next = STATE_LARA_JUMP_BACK;
         lara.move_angle = item->pos.y_rot - 0x8000;

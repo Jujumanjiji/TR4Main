@@ -5,12 +5,6 @@
 
 #define LARA_FUNC(name) extern void name(ITEM_INFO* item, COLL_INFO* coll)
 
-#ifdef DLL_INJECT
-#define InitialiseLaraLoad INITIALISE(0x00430EB0)
-#define FlareItemControl CONTROL(0x0042FF90)
-#define DrawFlareItem DRAW(0x0042F7B0)
-#endif
-
 /// ===========================================================///
 ///                     LARA CONSTANTS                         ///
 /// ===========================================================///
@@ -42,7 +36,7 @@ enum WEAPON_ANIM
 #define GUN_HAND_LEFT 13
 #define INFINITE_AMMO -1
 
-#define LARA_AIR (2*30*30)
+#define LARA_AIR ((30 * 30) * 2)
 #define LARA_HITPOINTS 1000
 #define LARA_DASH_TIME (30*4)
 #define GRAVITY 6
@@ -56,6 +50,8 @@ enum WEAPON_ANIM
 #define LARA_HANG_HEIGHT 600
 #define LARA_CRAWL_FRONT 300
 #define LARA_CRAWL_BACK -300
+#define WADE_DEPTH (STEP_L)
+#define SWIM_DEPTH 730
 #define UW_RADIUS 300
 #define UW_HITE 400
 #define CLIMB_WIDTH 120
@@ -289,10 +285,16 @@ enum WEAPON_ANIM
 extern PISTOL_DEF pistols_table[4];
 extern WEAPON_INFO weapons[LG_MAX_HOLD];
 
+extern void LaraCheat(ITEM_INFO *item, COLL_INFO *coll);
+extern void LaraControl(void);
 extern void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll);
 extern void LaraSurface(ITEM_INFO* item, COLL_INFO* coll);
 extern void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll);
 extern void LaraWaterCurrent(COLL_INFO* coll);
+
+extern void InitialiseLaraLoad(short itemNumber);
+extern void InitialiseLaraAnims(ITEM_INFO* item);
+extern void LaraInitialiseMeshes(void);
 
 /// Lara Control Routines:
 LARA_FUNC(lara_as_walk);
@@ -557,4 +559,6 @@ extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 #define undraw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF30)
 #define draw_flare ((void(__cdecl*)(void)) 0x0042FB50)
 #define undraw_flare ((void(__cdecl*)(void)) 0x0042FC60)
+#define FlareItemControl CONTROL(0x0042FF90)
+#define DrawFlareItem DRAW(0x0042F7B0)
 #endif

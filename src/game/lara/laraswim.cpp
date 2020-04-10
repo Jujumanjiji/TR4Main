@@ -13,18 +13,18 @@ void lara_as_tread(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_ROLL))
+    if (CHK_EXI(TrInput, IN_ROLL))
     {
         SetAnimationForItemAS(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND);
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_LOOK))
+    if (CHK_EXI(TrInput, IN_LOOK))
         LookUpDown();
 
     SwimTurn(item);
 
-    if (CHK_ANY(TrInput, IN_JUMP))
+    if (CHK_EXI(TrInput, IN_JUMP))
         item->state_next = STATE_LARA_UNDERWATER_FORWARD;
 
     LaraClampN(item->fallspeed, WATER_FRICTION, 0);
@@ -41,7 +41,7 @@ void lara_as_swim(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_ROLL))
+    if (CHK_EXI(TrInput, IN_ROLL))
     {
         SetAnimationForItemAS(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND);
         return;
@@ -62,13 +62,13 @@ void lara_as_glide(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_ROLL))
+    if (CHK_EXI(TrInput, IN_ROLL))
     {
         SetAnimationForItemAS(item, ANIMATION_LARA_UNDERWATER_ROLL_BEGIN, STATE_LARA_UNDERWATER_TURNAROUND);
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_JUMP))
+    if (CHK_EXI(TrInput, IN_JUMP))
         item->state_next = STATE_LARA_UNDERWATER_FORWARD;
 
     SwimTurn(item);
@@ -80,7 +80,7 @@ void lara_as_glide(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_as_dive(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (CHK_ANY(TrInput, IN_FORWARD))
+    if (CHK_EXI(TrInput, IN_FORWARD))
         item->pos.x_rot -= ONE_DEGREE;
 }
 

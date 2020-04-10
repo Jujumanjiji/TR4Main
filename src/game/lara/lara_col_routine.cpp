@@ -234,7 +234,7 @@ void lara_col_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
             }
             else
             {
-                if (CHK_ANY(TrInput, IN_FORWARD) && CHK_NOP(TrInput, IN_WALK))
+                if (CHK_EXI(TrInput, IN_FORWARD) && CHK_NOP(TrInput, IN_WALK))
                     item->state_next = STATE_LARA_RUN_FORWARD;
                 else
                     item->state_next = STATE_LARA_IDLE;
@@ -373,7 +373,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
 
     if (item->current_anim == ANIMATION_LARA_HANG_IDLE && item->current_frame == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
     {
-        if (CHK_ANY(TrInput, (IN_LEFT | IN_LSTEP)))
+        if (CHK_EXI(TrInput, (IN_LEFT | IN_LSTEP)))
         {
             if (CanLaraHangSideways(item, coll, -ANGLE(90)))
             {
@@ -391,7 +391,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
                 return;
             }
         }
-        else if (CHK_ANY(TrInput, (IN_RIGHT | IN_RSTEP)))
+        else if (CHK_EXI(TrInput, (IN_RIGHT | IN_RSTEP)))
         {
             if (CanLaraHangSideways(item, coll, ANGLE(90)))
             {
@@ -417,7 +417,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
     // TODO: enable a customize/json to disable the delay to climb up !
     if (item->current_anim == ANIMATION_LARA_HANG_IDLE && item->current_frame == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
     {
-        if (CHK_ANY(TrInput, IN_FORWARD))
+        if (CHK_EXI(TrInput, IN_FORWARD))
         {
             if (coll->front_floor > -850
             &&  coll->front_floor < -650
@@ -427,12 +427,12 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
             {
                 if (abs(coll->left_floor2 - coll->right_floor2) < SLOPE_DIF && !coll->hit_static)
                 {
-                    if (CHK_ANY(TrInput, IN_DUCK))
+                    if (CHK_EXI(TrInput, IN_DUCK))
                     {
                         item->state_next = STATE_LARA_CLIMB_TO_CRAWL;
                         item->state_required = STATE_LARA_CROUCH_IDLE;
                     }
-                    else if (CHK_ANY(TrInput, IN_WALK))
+                    else if (CHK_EXI(TrInput, IN_WALK))
                     {
                         item->state_next = STATE_LARA_HANDSTAND;
                     }
@@ -453,7 +453,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
                 }
             }
         }
-        else if (CHK_ANY(TrInput, IN_BACK) && lara.climb_status && coll->mid_floor > 344)
+        else if (CHK_EXI(TrInput, IN_BACK) && lara.climb_status && coll->mid_floor > 344)
         {
             if (LaraTestClimbStance(item, coll))
                 item->state_next = STATE_LARA_LADDER_IDLE;
@@ -708,9 +708,9 @@ void lara_col_upjump(ITEM_INFO* item, COLL_INFO* coll)
     }
     else if (item->fallspeed < -70)
     {
-        if (CHK_ANY(TrInput, IN_FORWARD) && item->speed < 5)
+        if (CHK_EXI(TrInput, IN_FORWARD) && item->speed < 5)
             item->speed++;
-        else if (CHK_ANY(TrInput, IN_BACK) && item->speed > -5)
+        else if (CHK_EXI(TrInput, IN_BACK) && item->speed > -5)
             item->speed -= 2;
     }
 
@@ -919,7 +919,7 @@ void lara_col_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
     int shift_r, shift_l;
     int ledge_r, ledge_l;
 
-    if (CHK_ANY(TrInput, IN_FORWARD))
+    if (CHK_EXI(TrInput, IN_FORWARD))
     {
         if (item->state_next == STATE_LARA_GRABBING)
             return;
@@ -962,7 +962,7 @@ void lara_col_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
         item->state_next = STATE_LARA_LADDER_UP;
         item->pos.y += shift_l;
     }
-    else if (CHK_ANY(TrInput, IN_BACK))
+    else if (CHK_EXI(TrInput, IN_BACK))
     {
         if (item->state_next == STATE_LARA_HANG)
             return;
@@ -1246,9 +1246,9 @@ void lara_col_duck(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_LEFT))
+    if (CHK_EXI(TrInput, IN_LEFT))
         item->state_next = STATE_LARA_CROUCH_TURN_LEFT;
-    else if (CHK_ANY(TrInput, IN_RIGHT))
+    else if (CHK_EXI(TrInput, IN_RIGHT))
         item->state_next = STATE_LARA_CROUCH_TURN_RIGHT;
 }
 
@@ -1334,7 +1334,7 @@ void lara_col_dashdive(ITEM_INFO* item, COLL_INFO* coll)
         }
         else
         {
-            if (CHK_ANY(TrInput, IN_FORWARD) && CHK_NOP(TrInput, IN_WALK))
+            if (CHK_EXI(TrInput, IN_FORWARD) && CHK_NOP(TrInput, IN_WALK))
                 item->state_next = STATE_LARA_RUN_FORWARD;
             else
                 item->state_next = STATE_LARA_IDLE;
@@ -1373,23 +1373,23 @@ void lara_col_hang2(ITEM_INFO* item, COLL_INFO* coll)
         coll->hit_ceiling = FALSE;
         GetCollisionInfo(coll, item->pos.x, item->pos.y, item->pos.z, item->room_number, LARA_HANG_HEIGHT);
 
-        if (CHK_ANY(TrInput, IN_FORWARD) && coll->coll_type != COLL_FRONT && abs(coll->mid_ceiling - coll->front_ceiling) < 50)
+        if (CHK_EXI(TrInput, IN_FORWARD) && coll->coll_type != COLL_FRONT && abs(coll->mid_ceiling - coll->front_ceiling) < 50)
         {
             item->state_next = STATE_LARA_MONKEYSWING_FORWARD;
         }
-        else if (CHK_ANY(TrInput, IN_LSTEP) && TestMonkeyLeft(item, coll))
+        else if (CHK_EXI(TrInput, IN_LSTEP) && TestMonkeyLeft(item, coll))
         {
             item->state_next = STATE_LARA_MONKEYSWING_LEFT;
         }
-        else if (CHK_ANY(TrInput, IN_RSTEP) && TestMonkeyRight(item, coll))
+        else if (CHK_EXI(TrInput, IN_RSTEP) && TestMonkeyRight(item, coll))
         {
             item->state_next = STATE_LARA_MONKEYSWING_RIGHT;
         }
-        else if (CHK_ANY(TrInput, IN_LEFT))
+        else if (CHK_EXI(TrInput, IN_LEFT))
         {
             item->state_next = STATE_LARA_MONKEYSWING_TURN_LEFT;
         }
-        else if (CHK_ANY(TrInput, IN_RIGHT))
+        else if (CHK_EXI(TrInput, IN_RIGHT))
         {
             item->state_next = STATE_LARA_MONKEYSWING_TURN_RIGHT;
         }
@@ -1402,7 +1402,7 @@ void lara_col_hang2(ITEM_INFO* item, COLL_INFO* coll)
 
         if (item->state_next == STATE_LARA_MONKEYSWING_IDLE)
         {
-            if (CHK_ANY(TrInput, IN_FORWARD))
+            if (CHK_EXI(TrInput, IN_FORWARD))
             {
                 if (coll->front_floor > -850
                 &&  coll->front_floor < -650
@@ -1411,14 +1411,14 @@ void lara_col_hang2(ITEM_INFO* item, COLL_INFO* coll)
                 &&  coll->right_floor2 - coll->right_ceiling2 >= 0
                 &&  !coll->hit_static)
                 {
-                    if (CHK_ANY(TrInput, IN_WALK))
+                    if (CHK_EXI(TrInput, IN_WALK))
                         item->state_next = STATE_LARA_HANDSTAND;
                     else
                         item->state_next = STATE_LARA_GRABBING;
                 }
             }
 
-            if (CHK_ANY(TrInput, (IN_DUCK | IN_FORWARD)))
+            if (CHK_EXI(TrInput, (IN_DUCK | IN_FORWARD)))
             {
                 if (coll->front_floor > -850
                 &&  coll->front_floor < -650
@@ -1431,11 +1431,11 @@ void lara_col_hang2(ITEM_INFO* item, COLL_INFO* coll)
                     item->state_required = STATE_LARA_CROUCH_IDLE;
                 }
             }
-            else if (CHK_ANY(TrInput, IN_LEFT) || CHK_ANY(TrInput, IN_LSTEP))
+            else if (CHK_EXI(TrInput, IN_LEFT) || CHK_EXI(TrInput, IN_LSTEP))
             {
                 item->state_next = STATE_LARA_SHIMMY_LEFT;
             }
-            else if (CHK_ANY(TrInput, IN_RIGHT) || CHK_ANY(TrInput, IN_RSTEP))
+            else if (CHK_EXI(TrInput, IN_RIGHT) || CHK_EXI(TrInput, IN_RSTEP))
             {
                 item->state_next = STATE_LARA_SHIMMY_LEFT;
             }
@@ -1561,19 +1561,19 @@ void lara_col_all4s(ITEM_INFO* item, COLL_INFO* coll)
     if (coll->mid_floor != -NO_HEIGHT && coll->mid_floor > -STEP_L)
         item->pos.y += coll->mid_floor;
 
-    if ((CHK_NOP(TrInput, IN_DUCK) && !lara.keep_ducked) || (CHK_ANY(TrInput, (IN_FLARE | IN_DRAW))) || lara.water_status == LWS_WADE)
+    if ((CHK_NOP(TrInput, IN_DUCK) && !lara.keep_ducked) || (CHK_EXI(TrInput, (IN_FLARE | IN_DRAW))) || lara.water_status == LWS_WADE)
     {
         item->state_next = STATE_LARA_CROUCH_IDLE;
     }
     else if (item->current_anim == ANIMATION_LARA_CRAWL_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_TO_CRAWL_END)
     {
-        if (CHK_ANY(TrInput, IN_FORWARD))
+        if (CHK_EXI(TrInput, IN_FORWARD))
         {
             front = LaraFloorFront(item, item->pos.y_rot, LARA_DUCK_FRONT);
             if (front < (STEP_L - 1) && front > -(STEP_L - 1) && height_type != BIG_SLOPE)
                 item->state_next = STATE_LARA_CRAWL_FORWARD;
         }
-        else if (CHK_ANY(TrInput, IN_BACK))
+        else if (CHK_EXI(TrInput, IN_BACK))
         {
             ceiling = LaraCeilingFront(item, item->pos.y_rot, -LARA_CRAWL_FRONT, (STEP_L / 2));
             if (ceiling == -NO_HEIGHT || ceiling > STEP_L)
@@ -1584,7 +1584,7 @@ void lara_col_all4s(ITEM_INFO* item, COLL_INFO* coll)
             {
                 item->state_next = STATE_LARA_CRAWL_BACK;
             }
-            else if (CHK_ANY(TrInput, IN_ACTION))
+            else if (CHK_EXI(TrInput, IN_ACTION))
             {
                 if (back > (STEP_L * 3) && slope < 120)
                 {
@@ -1620,11 +1620,11 @@ void lara_col_all4s(ITEM_INFO* item, COLL_INFO* coll)
                 }
             }
         }
-        else if (CHK_ANY(TrInput, IN_LEFT))
+        else if (CHK_EXI(TrInput, IN_LEFT))
         {
             SetAnimationForItemAS(item, ANIMATION_LARA_CRAWL_TURN_LEFT, STATE_LARA_CRAWL_TURN_LEFT);
         }
-        else if (CHK_ANY(TrInput, IN_RIGHT))
+        else if (CHK_EXI(TrInput, IN_RIGHT))
         {
             SetAnimationForItemAS(item, ANIMATION_LARA_CRAWL_TURN_RIGHT, STATE_LARA_CRAWL_TURN_RIGHT);
         }
@@ -1845,19 +1845,19 @@ void lara_col_polestat(ITEM_INFO* item, COLL_INFO* coll)
         coll->slopes_are_walls = TRUE;
         GetLaraCollisionInfo(item, coll);
 
-        if (CHK_ANY(TrInput, IN_ACTION))
+        if (CHK_EXI(TrInput, IN_ACTION))
         {
             item->state_next = STATE_LARA_POLE_IDLE;
 
-            if (CHK_ANY(TrInput, IN_LEFT))
+            if (CHK_EXI(TrInput, IN_LEFT))
                 item->state_next = STATE_LARA_POLE_TURN_LEFT;
-            else if (CHK_ANY(TrInput, IN_RIGHT))
+            else if (CHK_EXI(TrInput, IN_RIGHT))
                 item->state_next = STATE_LARA_POLE_TURN_RIGHT;
 
-            if (CHK_ANY(TrInput, IN_LOOK))
+            if (CHK_EXI(TrInput, IN_LOOK))
                 LookUpDown();
 
-            if (CHK_ANY(TrInput, IN_FORWARD))
+            if (CHK_EXI(TrInput, IN_FORWARD))
             {
                 FLOOR_INFO* floor;
                 int ceiling;
@@ -1869,13 +1869,13 @@ void lara_col_polestat(ITEM_INFO* item, COLL_INFO* coll)
                 if ((item->pos.y - ceiling) > WALL_L)
                     item->state_next = STATE_LARA_POLE_UP;
             }
-            else if (CHK_ANY(TrInput, IN_BACK) && coll->mid_floor > 0)
+            else if (CHK_EXI(TrInput, IN_BACK) && coll->mid_floor > 0)
             {
                 item->state_next = STATE_LARA_POLE_DOWN;
                 item->reserved_3 = 0;
             }
 
-            if (CHK_ANY(TrInput, IN_JUMP))
+            if (CHK_EXI(TrInput, IN_JUMP))
                 item->state_next = STATE_LARA_JUMP_BACK;
         }
         else if (coll->mid_floor <= 0)
@@ -1906,7 +1906,7 @@ void lara_col_poleup(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = FALSE;
 
-    if (CHK_ANY(TrInput, IN_LOOK))
+    if (CHK_EXI(TrInput, IN_LOOK))
         LookUpDown();
 
     if (CHK_NOP(TrInput, IN_FORWARD) || CHK_NOP(TrInput, IN_ACTION))
@@ -1957,9 +1957,9 @@ void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
         item->state_next = STATE_LARA_POLE_IDLE;
     }
 
-    if (CHK_ANY(TrInput, IN_LEFT))
+    if (CHK_EXI(TrInput, IN_LEFT))
         item->pos.y_rot += STEP_L;
-    else if (CHK_ANY(TrInput, IN_RIGHT))
+    else if (CHK_EXI(TrInput, IN_RIGHT))
         item->pos.y_rot -= STEP_L;
 
     if (item->current_anim == ANIMATION_LARA_POLE_CLIMB_DOWN_TO_IDLE)
@@ -1985,7 +1985,7 @@ void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
 void lara_col_duck2(ITEM_INFO* item, COLL_INFO* coll)
 {
     lara.is_ducked = TRUE;
-    if (CHK_ANY(TrInput, IN_LOOK))
+    if (CHK_EXI(TrInput, IN_LOOK))
         LookUpDown();
 
     lara.move_angle = item->pos.y_rot;
@@ -2027,27 +2027,27 @@ void lara_col_rope(ITEM_INFO* item, COLL_INFO* coll)
 
     UpdateRopeSwing(item);
 
-    if (CHK_ANY(TrInput, IN_SPRINT))
+    if (CHK_EXI(TrInput, IN_SPRINT))
     {
         lara.rope_dframe = (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 32) << 8;
         lara.rope_frame = lara.rope_dframe;
         item->state_next = STATE_LARA_ROPE_SWING;
     }
-    else if (CHK_ANY(TrInput, IN_FORWARD) && lara.rope_segment > 4)
+    else if (CHK_EXI(TrInput, IN_FORWARD) && lara.rope_segment > 4)
     {
         item->state_next = STATE_LARA_ROPE_CLIMB_UP;
     }
-    else if (CHK_ANY(TrInput, IN_BACK) && lara.rope_segment < 21)
+    else if (CHK_EXI(TrInput, IN_BACK) && lara.rope_segment < 21)
     {
         item->state_next = STATE_LARA_ROPE_CLIMB_DOWN;
         lara.rope_flag = 0;
         lara.rope_count = 0;
     }
-    else if (CHK_ANY(TrInput, IN_LEFT))
+    else if (CHK_EXI(TrInput, IN_LEFT))
     {
         item->state_next = STATE_LARA_ROPE_TURN_LEFT;
     }
-    else if (CHK_ANY(TrInput, IN_RIGHT))
+    else if (CHK_EXI(TrInput, IN_RIGHT))
     {
         item->state_next = STATE_LARA_ROPE_TURN_RIGHT;
     }
@@ -2061,7 +2061,7 @@ void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
 
     if (item->current_anim == ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD)
     {
-        if (CHK_ANY(TrInput, IN_SPRINT))
+        if (CHK_EXI(TrInput, IN_SPRINT))
         {
             int absX = abs(lara.rope_last_x);
             if (absX < 9000)
@@ -2094,7 +2094,7 @@ void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
             SetAnimationForItemAS(item, ANIMATION_LARA_MONKEY_TO_ROPE_END, STATE_LARA_ROPE_IDLE);
         }
 
-        if (CHK_ANY(TrInput, IN_JUMP))
+        if (CHK_EXI(TrInput, IN_JUMP))
             JumpOffRope(item);
     }
     else if (item->current_frame == (anims[ANIMATION_LARA_ROPE_IDLE_TO_SWING].frame_base + 15))

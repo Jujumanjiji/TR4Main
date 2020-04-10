@@ -1,72 +1,93 @@
 #include "framework.h"
 #include "file_utils.h"
 
-uint8_t ReadUByte()
+int8 ReadByte()
 {
-    const uint8_t ret = *(uint8_t*)level_data;
+    const int8 ret = *(int8*)level_data;
     level_data += 1;
     return ret;
 }
 
-int8_t ReadSByte()
+uint8 ReadUByte()
 {
-    const int8_t ret = *(int8_t*)level_data;
+    const uint8 ret = *(uint8*)level_data;
     level_data += 1;
     return ret;
 }
 
-int16_t ReadSWord()
+sint8 ReadSByte()
 {
-    const int16_t ret = *(int16_t*)level_data;
-    level_data += 2;
+    const sint8 ret = *(sint8*)level_data;
+    level_data += 1;
     return ret;
 }
 
-uint16_t ReadUWord()
+int16 ReadWord()
 {
-    const uint16_t ret = *(uint16_t*)level_data;
-    level_data += 2;
+    const int16 ret = *(int16*)level_data;
+    level_data += sizeof(int16);
     return ret;
 }
 
-int32_t ReadSDword()
+sint16 ReadSWord()
 {
-    const int32_t ret = *(int32_t*)level_data;
-    level_data += 4;
+    const sint16 ret = *(sint16*)level_data;
+    level_data += sizeof(sint16);
     return ret;
 }
 
-uint32_t ReadUDword()
+uint16 ReadUWord()
 {
-    const uint32_t ret = *(uint32_t*)level_data;
-    level_data += 4;
+    const uint16 ret = *(uint16*)level_data;
+    level_data += sizeof(uint16);
     return ret;
 }
 
-uint16_t FReadWord()
+int32 ReadDword()
 {
-    uint16_t ret;
-    fread(&ret, 2, 1, fp_level);
+    const int32 ret = *(int32*)level_data;
+    level_data += sizeof(int32);
     return ret;
 }
 
-uint32_t FReadDword()
+sint32 ReadSDword()
 {
-    uint32_t ret;
-    fread(&ret, 4, 1, fp_level);
+    const sint32 ret = *(sint32*)level_data;
+    level_data += sizeof(sint32);
     return ret;
 }
 
-void ReadBytes(LPVOID dst, uint32_t count)
+uint32 ReadUDword()
+{
+    const uint32 ret = *(uint32*)level_data;
+    level_data += sizeof(uint32);
+    return ret;
+}
+
+uint16 FReadWord()
+{
+    uint16 ret;
+    fread(&ret, sizeof(uint16), 1, fp_level);
+    return ret;
+}
+
+uint32 FReadDword()
+{
+    uint32 ret;
+    fread(&ret, sizeof(uint32), 1, fp_level);
+    return ret;
+}
+
+void ReadBytes(LPVOID dst, uint32 count)
 {
     memcpy(dst, level_data, count);
     level_data += count;
 }
 
-void FReadBytes(LPVOID dst, uint32_t count)
+void FReadBytes(LPVOID dst, uint32 count)
 {
     if (dst == nullptr)
         fseek(fp_level, count, SEEK_CUR);
     else
-        fread(dst, 1, count, fp_level);
+        fread(dst, sizeof(char), count, fp_level);
 }

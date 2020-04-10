@@ -1,10 +1,7 @@
 #pragma once
 
-///extern void DrawLara(ITEM_INFO* item, BOOL lightDisabled);
-
-
+extern int GetFrames(ITEM_INFO* item, short* frame[], int* rate);
 extern void InterpolateArmMatrix(void);
-///extern int GetFrames(ITEM_INFO* item, short *frame[2], int *rate);
 
 #ifdef DLL_INJECT
 #define SetLaraUnderwaterNodes ((void(__cdecl*)(void)) 0x0041F260)
@@ -32,10 +29,9 @@ extern void InterpolateArmMatrix(void);
 #define gar_RotYXZsuperpack ((void(__cdecl*)(short **pprot, int skip)) 0x00450760)
 #define phd_PutPolygons_I ((void(__cdecl*)(short* ptr, int clip)) 0x00450810)
 #define InterpolateMatrix ((void(__cdecl*)(void)) 0x00450840)
-///#define InterpolateArmMatrix ((void(__cdecl*)(void)) 0x00450AB0)
 #define CalculateObjectLighting ((void(__cdecl*)(ITEM_INFO* item, short* frame)) 0x00450BB0)
 #define CalculateObjectLightingLara ((void(__cdecl*)(void)) 0x00450CB0)
-#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[2], int *rate)) 0x00450DC0)
+///#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[], int *rate)) 0x00450DC0)
 #define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
 #define GetBestFrame ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450EE0)
 #endif

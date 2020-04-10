@@ -5,20 +5,22 @@
 #include "output.h"
 #include "specific.h"
 #include "utils.h"
-/*
-int GetFrames(ITEM_INFO* item, short* frame[2], int* rate)
+
+int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
 {
     ANIM_STRUCT *anim;
     int frm;
-    int first, second;
+    int first = 0, second = 0;
     int frame_size;
+    int interl;
     int interp, rat;
 
     frm = item->current_frame;
     anim = &anims[item->current_anim];
-    frame[0] = anim->frame_ptr;
-    frame[1] = anim->frame_ptr;
-    rat = *rate = LOBYTE(anim->interpolation);
+    frame[0] = frame[1] = anim->frame_ptr;
+    interl = LOBYTE(anim->interpolation);
+    rat = interl;
+    *rate = interl;
     frame_size = anim->interpolation >> 8;
     frm -= anim->frame_base;
     first = frm / rat;
@@ -26,13 +28,12 @@ int GetFrames(ITEM_INFO* item, short* frame[2], int* rate)
     frame[0] += first * frame_size;				  // Get Frame pointers
     frame[1] = frame[0] + frame_size;               // and store away
     if (interp == 0)
-        return(0);
+        return 0;
     second = first * rat + rat;
     if (second > anim->frame_end)                       // Clamp KeyFrame to End if need be
         *rate = anim->frame_end - (second - rat);
-    return(interp);
+    return interp;
 }
-*/
 
 void InterpolateArmMatrix(void)
 {
@@ -104,7 +105,7 @@ void injector::inject_draw()
     this->inject(0x00450AB0, InterpolateArmMatrix);
     //this->inject(0x00450BB0, CalculateObjectLighting);
     //this->inject(0x00450CB0, CalculateObjectLightingLara);
-    //this->inject(0x00450DC0, GetFrames);
+    this->inject(0x00450DC0, GetFrames);
     //this->inject(0x00450E60, GetBoundsAccurate);
     //this->inject(0x00450EE0, GetBestFrame);
 }

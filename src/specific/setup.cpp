@@ -8,6 +8,7 @@
 #include "pickup.h"
 #include "rope.h"
 #include "utils.h"
+#include "oldobjects.h"
 
 void InitialiseObjects(void)
 {

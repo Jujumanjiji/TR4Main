@@ -131,9 +131,6 @@
     <ClCompile Include="src\game\sphere.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\entity\crocodile.cpp">
-      <Filter>src\game\entity</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\people.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
@@ -145,12 +142,6 @@
     </ClCompile>
     <ClCompile Include="src\specific\init.cpp">
       <Filter>src\specific</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\entity\bat.cpp">
-      <Filter>src\game\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\entity\baddy.cpp">
-      <Filter>src\game\entity</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\utils_render.cpp">
       <Filter>src\utils</Filter>

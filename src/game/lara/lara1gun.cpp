@@ -130,7 +130,7 @@ void shotgun_handler(int weapon_type)
     }
 
 #ifdef DEBUG_CHEAT
-    if (CHK_ANY(TrInput, IN_SPRINT))
+    if (CHK_EXI(TrInput, IN_SPRINT))
     {
         lara.revolver_ammo_count = INFINITE_AMMO;
         lara.shotgun_ammo1_count = INFINITE_AMMO;
@@ -217,7 +217,7 @@ void animate_shotgun(int weapon_type)
             }
             else if (lara.water_status == LWS_UNDERWATER)
                 item->state_next = W_UAIM;
-            else if ((CHK_ANY(TrInput, IN_ACTION) && !lara.target) || lara.l_arm.lock)
+            else if ((CHK_EXI(TrInput, IN_ACTION) && !lara.target) || lara.l_arm.lock)
                 item->state_next = W_RECOIL;
             else
                 item->state_next = W_UNAIM;
@@ -229,7 +229,7 @@ void animate_shotgun(int weapon_type)
 
                 if (lara.water_status != LWS_UNDERWATER && !harpoon_reload)
                 {
-                    if (CHK_ANY(TrInput, IN_ACTION) && (!lara.target || lara.l_arm.lock))
+                    if (CHK_EXI(TrInput, IN_ACTION) && (!lara.target || lara.l_arm.lock))
                     {
                         switch (weapon_type)
                         {

@@ -1,11 +1,11 @@
 #include "framework.h"
 #include "setup_entity.h"
-#include "oldobjects.h"
 #include "collide.h"
 #include "box.h"
 #include "lara.h"
 #include "gameflow.h"
 #include "utils.h"
+#include "oldobjects.h"
 
 SetupEntity setup_entity;
 void SetupEntity::lara_obj()
@@ -175,8 +175,8 @@ void SetupEntity::baddy_1()
     {
         obj->bit_offset = 1;
         obj->initialise = InitialiseBaddy;
-        obj->control = Baddy1Control;
-        obj->draw_routine = DrawBaddy1; // custom render to switch between uzi & sword.
+        obj->control = BaddyControl;
+        //obj->draw_routine = DrawBaddy; // custom render to switch between uzi & sword.
         obj->collision = CreatureCollision;
         obj->shadow_size = 128;
         obj->hit_points = initHealth(BADDY_1);

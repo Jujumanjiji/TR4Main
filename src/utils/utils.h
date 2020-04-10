@@ -56,6 +56,7 @@ extern void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll);
 extern short GetCatchAngle(ITEM_INFO* item, short angleToCheck); // for lara grapping angle.
 extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle);
 extern LPCSTR InventoryItemDebugString(short inv_item);
+extern void ResetLaraMeshSkin(void);
 
 extern DWORD RGBA_VECTORGET(CVECTOR color);
 extern DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b);

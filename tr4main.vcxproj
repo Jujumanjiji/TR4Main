@@ -117,8 +117,6 @@
     <ClCompile Include="src\game\lara\laraswim.cpp" />
     <ClCompile Include="src\game\lara\lara_col_routine.cpp" />
     <ClCompile Include="src\game\effect2.cpp" />
-    <ClCompile Include="src\game\entity\baddy.cpp" />
-    <ClCompile Include="src\game\entity\bat.cpp" />
     <ClCompile Include="src\game\lara\lara_as_routine.cpp" />
     <ClCompile Include="src\game\lara\lara_utils.cpp" />
     <ClCompile Include="src\game\people.cpp" />
@@ -138,7 +136,6 @@
     <ClCompile Include="src\game\door.cpp" />
     <ClCompile Include="src\game\draw.cpp" />
     <ClCompile Include="src\game\effects.cpp" />
-    <ClCompile Include="src\game\entity\crocodile.cpp" />
     <ClCompile Include="src\game\health.cpp" />
     <ClCompile Include="src\game\items.cpp" />
     <ClCompile Include="src\game\lot.cpp" />

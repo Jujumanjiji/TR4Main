@@ -6,8 +6,8 @@
 #include "lara.h"
 #include "pickup.h"
 #include "puzzle.h"
-#include "oldobjects.h"
 #include "switchs.h"
+#include "oldobjects.h"
 
 SetupObject setup_object;
 

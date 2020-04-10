@@ -3,6 +3,20 @@
 
 typedef FILE* LPFILE;
 
+typedef char            int8;
+typedef unsigned char	uint8;
+typedef signed char		sint8;
+typedef short           int16;
+typedef unsigned short	uint16;
+typedef signed short	sint16;
+typedef int             int32;
+typedef unsigned int	uint32;
+typedef signed int		sint32;
+/// Cant be 32 since int is set, so i renommed it, but it's not 64, it's 32 !
+typedef long            int64;
+typedef unsigned long	uint64;
+typedef signed long		sint64;
+
 struct JMP
 {
     BYTE opCode;     // must be 0xE9;
@@ -456,12 +470,12 @@ struct ITEM_INFO
     PHD_VECTOR ambient_light_pos;
     PCLIGHT* ptr_lights_1;
     PCLIGHT* ptr_lights_2;
-    unsigned int active : 1;
-    unsigned int status : 2;
-    unsigned int gravity_status : 1;
-    unsigned int hit_status : 1;
-    unsigned int collidable : 1;
-    unsigned int looked_at : 1;
+    unsigned int active : 1;            // LOBYTE: 0x1
+    unsigned int status : 2;            // LOBYTE: 0x4
+    unsigned int gravity_status : 1;    // LOBYTE: 0x8
+    unsigned int hit_status : 1;        // LOBYTE: 0x10
+    unsigned int collidable : 1;        // LOBYTE: 0x20
+    unsigned int looked_at : 1;         // LOBYTE: 0x40
     unsigned int dynamic_light : 1;
     unsigned int poisoned : 1;
     unsigned int ai_bits : 5;

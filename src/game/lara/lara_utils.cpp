@@ -1354,9 +1354,9 @@ void LaraDoClimbLeftRight(ITEM_INFO* item, COLL_INFO* coll, int result, int shif
 {
     if (result == TRUE)
     {
-        if (CHK_ANY(TrInput, IN_LEFT))
+        if (CHK_EXI(TrInput, IN_LEFT))
             item->state_next = STATE_LARA_LADDER_LEFT;
-        else if (CHK_ANY(TrInput, IN_RIGHT))
+        else if (CHK_EXI(TrInput, IN_RIGHT))
             item->state_next = STATE_LARA_LADDER_RIGHT;
         else
             item->state_next = STATE_LARA_LADDER_IDLE;
@@ -1389,7 +1389,7 @@ void LaraDoClimbLeftRight(ITEM_INFO* item, COLL_INFO* coll, int result, int shif
         return;
     }
 
-    if (CHK_ANY(TrInput, IN_LEFT))
+    if (CHK_EXI(TrInput, IN_LEFT))
     {
         int test_left = LaraClimbLeftCornerTest(item, coll);
         if (test_left != 0)
@@ -1401,7 +1401,7 @@ void LaraDoClimbLeftRight(ITEM_INFO* item, COLL_INFO* coll, int result, int shif
             return;
         }
     }
-    else if (CHK_ANY(TrInput, IN_RIGHT))
+    else if (CHK_EXI(TrInput, IN_RIGHT))
     {
         int test_right = LaraClimbRightCornerTest(item, coll);
         if (test_right != 0)
@@ -1576,9 +1576,9 @@ void LaraCollideStop(ITEM_INFO* item, COLL_INFO* coll)
             item->current_anim = coll->old_anim_number;
             item->current_frame = coll->old_frame_number;
 
-            if (CHK_ANY(TrInput, IN_LEFT))
+            if (CHK_EXI(TrInput, IN_LEFT))
                 item->state_next = STATE_LARA_TURN_LEFT_SLOW;
-            else if (CHK_ANY(TrInput, IN_RIGHT))
+            else if (CHK_EXI(TrInput, IN_RIGHT))
                 item->state_next = STATE_LARA_TURN_RIGHT_SLOW;
             else
                 item->state_next = STATE_LARA_IDLE;
@@ -2001,19 +2001,19 @@ BOOL TestWall(ITEM_INFO* item, int front, int right, int height)
 
 void SwimTurn(ITEM_INFO* item)
 {
-    if (CHK_ANY(TrInput, IN_FORWARD))
+    if (CHK_EXI(TrInput, IN_FORWARD))
         item->pos.x_rot -= 2 * ONE_DEGREE;
-    else if (CHK_ANY(TrInput, IN_BACK))
+    else if (CHK_EXI(TrInput, IN_BACK))
         item->pos.x_rot += 2 * ONE_DEGREE;
 
-    if (CHK_ANY(TrInput, IN_LEFT))
+    if (CHK_EXI(TrInput, IN_LEFT))
     {
         lara.turn_rate -= LARA_TURN_RATE;
         if (lara.turn_rate < -LARA_MED_TURN)
             lara.turn_rate = -LARA_MED_TURN;
         item->pos.z_rot -= (LARA_LEAN_RATE * 2);
     }
-    else if (CHK_ANY(TrInput, IN_RIGHT))
+    else if (CHK_EXI(TrInput, IN_RIGHT))
     {
         lara.turn_rate += LARA_TURN_RATE;
         if (lara.turn_rate > LARA_MED_TURN)

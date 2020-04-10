@@ -205,7 +205,7 @@ void pistol_handler(int weapon_type)
     PHD_VECTOR pos;
 
     LaraGetNewTarget(winfo);
-    if (CHK_ANY(TrInput, IN_ACTION))
+    if (CHK_EXI(TrInput, IN_ACTION))
         LaraTargetInfo(winfo);
 
     AimWeapon(winfo, &lara.l_arm);
@@ -273,7 +273,7 @@ void animate_pistols(int weapon_type)
 
     /// process right arm
     frameR = lara.r_arm.frame_number;
-    if (lara.r_arm.lock || (CHK_ANY(TrInput, IN_ACTION) && !lara.target))
+    if (lara.r_arm.lock || (CHK_EXI(TrInput, IN_ACTION) && !lara.target))
     {
         if ((frameR >= 0) && (frameR < p->draw1_anim2))
         {
@@ -281,7 +281,7 @@ void animate_pistols(int weapon_type)
         }
         else if (frameR == p->draw1_anim2)
         {
-            if (CHK_ANY(TrInput, IN_ACTION))
+            if (CHK_EXI(TrInput, IN_ACTION))
             {
                 if (weapon_type != LG_REVOLVER)
                 {
@@ -341,7 +341,7 @@ void animate_pistols(int weapon_type)
 
     /// process left arm
     frameL = lara.l_arm.frame_number;
-    if (lara.l_arm.lock || (CHK_ANY(TrInput, IN_ACTION) && !lara.target))
+    if (lara.l_arm.lock || (CHK_EXI(TrInput, IN_ACTION) && !lara.target))
     {
         if ((frameL >= 0) && (frameL < p->draw1_anim2))
         {
@@ -349,7 +349,7 @@ void animate_pistols(int weapon_type)
         }
         else if (frameL == p->draw1_anim2)
         {
-            if (CHK_ANY(TrInput, IN_ACTION))
+            if (CHK_EXI(TrInput, IN_ACTION))
             {
                 angles[0] = lara.l_arm.y_rot + lara_item->pos.y_rot;
                 angles[1] = lara.l_arm.x_rot;

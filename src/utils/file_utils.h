@@ -5,16 +5,19 @@
 // it's compatible with Tomb4 since it's the same level loader.
 // https://github.com/TOMB5/TOMB5/blob/9707b4ec30b374d095af499c93780daeb3edb5f5/SPEC_PC_N/FILE.CPP#L90
 
-extern int8_t ReadSByte();
-extern uint8_t ReadUByte();
-extern int16_t ReadSWord();
-extern uint16_t ReadUWord();
-extern int32_t ReadSDword();
-extern uint32_t ReadUDword();
-extern uint16_t FReadWord();
-extern uint32_t FReadDword();
-extern void ReadBytes(LPVOID dst, uint32_t count);
-extern void FReadBytes(LPVOID dst, uint32_t count);
+extern int8 ReadByte();
+extern sint8 ReadSByte();
+extern uint8 ReadUByte();
+extern int16 ReadWord();
+extern sint16 ReadSWord();
+extern uint16 ReadUWord();
+extern int32 ReadDword();
+extern sint32 ReadSDword();
+extern uint32 ReadUDword();
+extern uint16 FReadWord();
+extern uint32 FReadDword();
+extern void ReadBytes(LPVOID dst, uint32 count);
+extern void FReadBytes(LPVOID dst, uint32 count);
 
 #define OnlyReadT(d, s, n) ReadBytes(d, sizeof(s) * n)
 #define OnlyReadTB(d, s, n) ReadBytes(d + 1, sizeof(s) * n)
