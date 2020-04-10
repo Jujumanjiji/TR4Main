@@ -13,6 +13,7 @@ extern WEAPON_AMMO weapon_ammo;
 
 extern void dummy_func(ITEM_INFO* item, COLL_INFO* coll); // for lara control & collision routines !
 extern bool isFolderExists(LPCSTR folderName);
+extern bool isFolderExists(std::string folderName);
 extern bool isFileExists(LPCSTR fileName);
 extern void createFolders(LPCSTR folderName);
 extern void S_Unimplemented(LPCSTR LT_Function_Flags);

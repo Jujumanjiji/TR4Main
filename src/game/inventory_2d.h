@@ -1,4 +1,12 @@
 #pragma once
+#include "utils.h"
+
+enum INV_TYPE
+{
+    INV_2D,
+    INV_3D
+};
+constexpr INV_TYPE INVENTORY_TYPE = INV_3D;
 
 enum INVENTORY_ITEM_ID
 {
@@ -283,8 +291,46 @@ struct INV_OPTION
     bool can_save;
     bool can_combine;
     bool can_separate;
-    short flags;
+    unsigned short flags;
 };
+
+#define CONSTRUCT_ITEM 0
+#define DECONSTRUCT_ITEM 1
+#define INV_RESIZE 2
+#define INVENTORY_INPUT_REPEAT 8
+#define INV_COMBO1 3
+#define INV_COMBO2 12
+#define INV_COMBO3 48
+#define INV_COMBO4 192
+#define INV_COMBO5 768
+#define INV_COMBO6 3072
+#define INV_COMBO7 12288
+#define INV_COMBO8 49152
+
+extern void combine_revolver(int flag);
+extern void combine_crossbow(int flag);
+extern void combine_puzzle_item1(int flag);
+extern void combine_puzzle_item2(int flag);
+extern void combine_puzzle_item3(int flag);
+extern void combine_puzzle_item4(int flag);
+extern void combine_puzzle_item5(int flag);
+extern void combine_puzzle_item6(int flag);
+extern void combine_puzzle_item7(int flag);
+extern void combine_puzzle_item8(int flag);
+extern void combine_key_item1(int flag);
+extern void combine_key_item2(int flag);
+extern void combine_key_item3(int flag);
+extern void combine_key_item4(int flag);
+extern void combine_key_item5(int flag);
+extern void combine_key_item6(int flag);
+extern void combine_key_item7(int flag);
+extern void combine_key_item8(int flag);
+extern void combine_pickup_item1(int flag);
+extern void combine_pickup_item2(int flag);
+extern void combine_pickup_item3(int flag);
+extern void combine_pickup_item4(int flag);
+extern void combine_clockwork(int flag);
+extern void combine_waterskin(int flag);
 
 extern RING2D* ring_2d[MAX_RING];
 ///extern INVOBJ inventry_objects_list[MAX_INVOBJ];
@@ -364,7 +410,7 @@ extern bool friggrimmer2;
 #ifdef DLL_INJECT
 #define inventry_objects_list               ARRAY_(0x004AE070, INVOBJ, [MAX_INVOBJ])
 #define in_inventory                        VAR_I_(0x004BF3C8, int, 0)
-#define compass_needle                      VAR_U_(0x007E71DC, int)
+#define item_rotation                       VAR_U_(0x007E71DC, int)
 #define GLOBAL_invitemlastchosen            VAR_I_(0x004AE064, int, NO_ITEM)
 #define GLOBAL_invEnter                     VAR_I_(0x004AE068, int, NO_ITEM)
 #define GLOBAL_invitemchosen                VAR_I_(0x004AE06C, int, NO_ITEM)
@@ -372,20 +418,7 @@ extern bool friggrimmer2;
 #define GadwPolygonBuffers_RingCombine      VAR_U_(0x007FEA60, RING2D)
 #endif
 
-#define CONSTRUCT_ITEM 0
-#define DECONSTRUCT_ITEM 1
-#define INV_RESIZE 2
-#define INVENTORY_INPUT_REPEAT 8
-#define INV_COMBO1 3
-#define INV_COMBO2 12
-#define INV_COMBO3 48
-#define INV_COMBO4 192
-#define INV_COMBO5 768
-#define INV_COMBO6 3072
-#define INV_COMBO7 12288
-#define INV_COMBO8 49152
-
-extern int show_inventory_2d(void);
+extern int display_inventory_2d(void);
 extern void construct_inventory_2d(void);
 extern void do_debounced_input(void);
 extern void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay);

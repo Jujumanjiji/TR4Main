@@ -30,12 +30,6 @@
     <Filter Include="src\game\vehicles">
       <UniqueIdentifier>{f69e64d2-a7db-4b8e-9d28-0ea2e657ed8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="extern">
-      <UniqueIdentifier>{49537474-9f0d-426e-8fe2-66f1af26e72b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="extern\bass">
-      <UniqueIdentifier>{f751061f-1432-4054-b3a2-12a3fdb91331}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\game\lara">
       <UniqueIdentifier>{af623c05-120b-4a0b-9b7e-b6e0561ecd3a}</UniqueIdentifier>
     </Filter>
@@ -215,9 +209,6 @@
     <ClCompile Include="src\utils\lara_render.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\inventory.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="src\specific\loadsave.cpp">
       <Filter>src\specific</Filter>
     </ClCompile>
@@ -235,6 +226,15 @@
     </ClCompile>
     <ClCompile Include="src\specific\timer.cpp">
       <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\gameflow_utils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\inventory_2d.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\inventory_3d.cpp">
+      <Filter>src\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,15 +364,6 @@
     <ClInclude Include="src\specific\init.h">
       <Filter>src\specific</Filter>
     </ClInclude>
-    <ClInclude Include="src\extern\bass\bass.h">
-      <Filter>extern\bass</Filter>
-    </ClInclude>
-    <ClInclude Include="src\extern\bass\bass_fx.h">
-      <Filter>extern\bass</Filter>
-    </ClInclude>
-    <ClInclude Include="src\extern\bass\bassmix.h">
-      <Filter>extern\bass</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\utils_render.h">
       <Filter>src\utils</Filter>
     </ClInclude>
@@ -394,9 +385,6 @@
     <ClInclude Include="src\utils\lara_render.h">
       <Filter>src\utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\inventory.h">
-      <Filter>src\game</Filter>
-    </ClInclude>
     <ClInclude Include="src\specific\loadsave.h">
       <Filter>src\specific</Filter>
     </ClInclude>
@@ -414,6 +402,15 @@
     </ClInclude>
     <ClInclude Include="src\specific\timer.h">
       <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\gameflow_utils.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\inventory_2d.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\inventory_3d.h">
+      <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

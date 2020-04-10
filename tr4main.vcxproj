@@ -58,14 +58,14 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\ini;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\include;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlibd.lib;bass.lib;bass_fx.lib;bassmix.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlibd.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)$(Configuration)\tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
@@ -82,7 +82,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\jzon;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc14-x64.1.2.11.7795\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\ini;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\include;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,11 +90,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;bass.lib;bass_fx.lib;bassmix.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(SolutionDir)Release/tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
+      <Command>xcopy /Y "$(SolutionDir)$(Configuration)\tr4main.dll" "C:\GOG Games\Tomb Raider 4"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -102,7 +102,8 @@
     <ClCompile Include="src\game\debris.cpp" />
     <ClCompile Include="src\game\gameflow.cpp" />
     <ClCompile Include="src\game\input.cpp" />
-    <ClCompile Include="src\game\inventory.cpp" />
+    <ClCompile Include="src\game\inventory_2d.cpp" />
+    <ClCompile Include="src\game\inventory_3d.cpp" />
     <ClCompile Include="src\game\lara\lara.cpp" />
     <ClCompile Include="src\game\lara\lara1gun.cpp" />
     <ClCompile Include="src\game\lara\lara2gun.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="src\specific\text.cpp" />
     <ClCompile Include="src\specific\timer.cpp" />
     <ClCompile Include="src\utils\file_utils.cpp" />
+    <ClCompile Include="src\utils\gameflow_utils.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\utils\utils_render.cpp" />
     <ClCompile Include="src\utils\lara_render.cpp" />
@@ -172,20 +174,9 @@
     <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\gameflow.h" />
     <ClInclude Include="src\game\input.h" />
-    <ClInclude Include="src\game\inventory.h" />
+    <ClInclude Include="src\game\inventory_2d.h" />
+    <ClInclude Include="src\game\inventory_3d.h" />
     <ClInclude Include="src\game\lara\lara.h" />
-    <ClInclude Include="src\extern\bass\bass.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\extern\bass\bassmix.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="src\extern\bass\bass_fx.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="src\game\effect2.h" />
     <ClInclude Include="src\game\people.h" />
     <ClInclude Include="framework.h" />
@@ -233,6 +224,7 @@
     <ClInclude Include="src\specific\text.h" />
     <ClInclude Include="src\specific\timer.h" />
     <ClInclude Include="src\utils\file_utils.h" />
+    <ClInclude Include="src\utils\gameflow_utils.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="src\utils\lara_render.h" />
     <ClInclude Include="src\utils\utils_render.h" />

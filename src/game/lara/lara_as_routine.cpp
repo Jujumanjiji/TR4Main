@@ -18,9 +18,7 @@ void lara_as_walk(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     if (lara.is_moving)
-    {
         return;
-    }
 
     if (CHK_ANY(TrInput, IN_LEFT))
     {

@@ -1,6 +1,5 @@
 #include "framework.h"
 #include "loadsave.h"
-#include "inventory.h"
 #include "gameflow.h"
 #include "input.h"
 #include "output.h"

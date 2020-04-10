@@ -1,5 +1,7 @@
 #pragma once
 
+extern void found_item_with_detector(short object_number);
+
 #ifdef DLL_INJECT
 #define GetSwitchTrigger ((short(__cdecl*)(ITEM_INFO* item, short* item_number, int flags)) 0x00461BD0) // return the number of trigger in the switch pad !
 

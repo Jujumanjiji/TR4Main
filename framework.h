@@ -4,10 +4,12 @@
 #define DLL_INJECT
 #define DLL_NAME "Tomb Raider IV - DLL"
 #define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 #include <windowsx.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 #include <vector>
 #include <iostream>
 #include <ostream>
@@ -37,5 +39,6 @@
 #include "global/types.h"
 #include "global/vars.h"
 #include "global/macro.h"
+#include "utils.h"
 
 using namespace std;

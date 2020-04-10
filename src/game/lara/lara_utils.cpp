@@ -2421,7 +2421,7 @@ void AnimateLara(ITEM_INFO* item)
         command = &commands[anim->command_index];
         for (short i = anim->number_commands; i > 0; i--)
         {
-            switch (*(command++))
+            switch (*command++)
             {
                 case COMMAND_MOVE_ORIGIN:
                     command += 3;

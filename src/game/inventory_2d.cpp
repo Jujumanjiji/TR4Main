@@ -1,5 +1,5 @@
 #include "framework.h"
-#include "inventory.h"
+#include "inventory_2d.h""
 #include "3d_gen.h"
 #include "3d_gen_a.h"
 #include "draw.h"
@@ -12,10 +12,6 @@
 #include "output.h"
 #include "libgpu.h"
 #include "specific.h"
-#include "utils.h"
-
-RING2D* ring_2d[MAX_RING];
-MENU current_options[MAX_MENU];
 
 // TODO: gameflow is ignored !
 // need to decompile DoGameflow() !!
@@ -294,7 +290,9 @@ COMBINELIST combine_table[MAX_COMBINE] =
     { combine_clockwork, INV_CLOCKWORK_BEETLE_COMBO1, INV_CLOCKWORK_BEETLE_COMBO2, INV_CLOCKWORK_BEETLE }
 };
 
+RING2D* ring_2d[MAX_RING];
 AMMOLIST ammo_object_list[MAX_AMMO];
+MENU current_options[MAX_MENU];
 DWORD inventory_light = RGBA_VECTORGET(127, 127, 127);
 float inventory_drawX;
 float inventory_drawY;
@@ -364,14 +362,14 @@ bool use_items;
 bool friggrimmer1;
 bool friggrimmer2;
 
-int show_inventory_2d(void)
+int display_inventory_2d(void)
 {
     short flag;
     int end, val;
 
     old_lara_busy = lara.busy;
     friggrimmer1 = false;
-    if (CHK_ANY(TrInput, IN_SELECT))
+    if (CHK_EXI(TrInput, IN_SELECT))
         friggrimmer1 = true;
 
     ring_2d[RING_INVENTORY] = &GadwPolygonBuffers_RingNormal;
@@ -583,7 +581,7 @@ void do_debounced_input(void)
     go_deselect = false;
 
     /// CHECK FOR LEFT AND RIGHT
-    if (CHK_ANY(TrInput, IN_LEFT))
+    if (CHK_EXI(TrInput, IN_LEFT))
     {
         if (left_repeat >= INVENTORY_INPUT_REPEAT)
             go_left = true;
@@ -599,7 +597,7 @@ void do_debounced_input(void)
         left_repeat = 0;
     }
 
-    if (CHK_ANY(TrInput, IN_RIGHT))
+    if (CHK_EXI(TrInput, IN_RIGHT))
     {
         if (right_repeat >= INVENTORY_INPUT_REPEAT)
             go_right = true;
@@ -616,7 +614,7 @@ void do_debounced_input(void)
     }
 
     /// NOW CHECK FOR UPWARD AND BACKWARD
-    if (CHK_ANY(TrInput, IN_FORWARD))
+    if (CHK_EXI(TrInput, IN_FORWARD))
     {
         if (!up_debounce)
             go_up = true;
@@ -627,7 +625,7 @@ void do_debounced_input(void)
         up_debounce = false;
     }
 
-    if (CHK_ANY(TrInput, IN_BACK))
+    if (CHK_EXI(TrInput, IN_BACK))
     {
         if (!down_debounce)
             go_down = true;
@@ -639,7 +637,7 @@ void do_debounced_input(void)
     }
 
     /// NOW CHECK FOR ACTION/SELECT
-    if (CHK_ANY(TrInput, IN_ACTION) || CHK_ANY(TrInput, IN_SELECT))
+    if (CHK_EXI(TrInput, IN_ACTION) || CHK_EXI(TrInput, IN_SELECT))
     {
         select_debounce = true;
     }
@@ -652,7 +650,7 @@ void do_debounced_input(void)
     }
 
     /// NOW CHECK ESCAPE
-    if (CHK_ANY(TrInput, IN_DESELECT))
+    if (CHK_EXI(TrInput, IN_DESELECT))
     {
         deselect_debounce = true;
     }
@@ -795,7 +793,7 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
         /// DONT NEED COMPASS CHEAT AGAIN !
         if (item->object_number == COMPASS_ITEM)
         {
-            short compass_speed = (short)(compass_needle_angle * 4 * rcossin_tbl[(compass_needle & 63) << 10 >> 3] >> W2V_SHIFT);
+            short compass_speed = (short)(compass_needle_angle * (4 * rcossin_tbl[(item_rotation & 63) << 10 >> 3] >> W2V_SHIFT));
             short compass_angle = (lara_item->pos.y_rot + compass_speed) - 0x8000;
             phd_RotY(compass_angle);
         }
@@ -843,17 +841,17 @@ void construct_combine_object_list(void)
 
     if (CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
     {
-        if (CHK_ANY(lara.revolver_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.revolver_type_carried, CR_PRESENT))
         {
-            if (CHK_ANY(lara.revolver_type_carried, CR_LASERSIGHT))
+            if (CHK_EXI(lara.revolver_type_carried, CR_LASERSIGHT))
                 insert_object_into_list_combine(INV_REVOLVER_LASER);
             else
                 insert_object_into_list_combine(INV_REVOLVER);
         }
 
-        if (CHK_ANY(lara.crossbow_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.crossbow_type_carried, CR_PRESENT))
         {
-            if (CHK_ANY(lara.crossbow_type_carried, CR_LASERSIGHT))
+            if (CHK_EXI(lara.crossbow_type_carried, CR_LASERSIGHT))
                 insert_object_into_list_combine(INV_CROSSBOW_LASER);
             else
                 insert_object_into_list_combine(INV_CROSSBOW);
@@ -926,19 +924,19 @@ void construct_object_list(void)
     if (CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
     {
         /// PISTOLS
-        if (CHK_ANY(lara.pistols_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.pistols_type_carried, CR_PRESENT))
             insert_object_into_list_inventory(INV_PISTOLS);
 
         /// UZI
-        if (CHK_ANY(lara.uzi_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.uzi_type_carried, CR_PRESENT))
             insert_object_into_list_inventory(INV_UZI);
         else if (inv_uzi_ammo_count)
             insert_object_into_list_inventory(INV_UZI_AMMO);
 
         /// REVOLVER
-        if (CHK_ANY(lara.revolver_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.revolver_type_carried, CR_PRESENT))
         {
-            if (CHK_ANY(lara.revolver_type_carried, CR_LASERSIGHT))
+            if (CHK_EXI(lara.revolver_type_carried, CR_LASERSIGHT))
                 insert_object_into_list_inventory(INV_REVOLVER_LASER);
             else
                 insert_object_into_list_inventory(INV_REVOLVER);
@@ -949,10 +947,10 @@ void construct_object_list(void)
         }
 
         /// SHOTGUN
-        if (CHK_ANY(lara.shotgun_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.shotgun_type_carried, CR_PRESENT))
         {
             insert_object_into_list_inventory(INV_SHOTGUN);
-            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO2))
+            if (CHK_EXI(lara.shotgun_type_carried, CR_AMMO2))
                 current_shotgun_ammo_type = AINV_AMMO2;
         }
         else
@@ -964,13 +962,13 @@ void construct_object_list(void)
         }
 
         /// GRENADEGUN
-        if (CHK_ANY(lara.grenadegun_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.grenadegun_type_carried, CR_PRESENT))
         {
             insert_object_into_list_inventory(INV_GRENADEGUN);
 
-            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
+            if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO2))
                 current_grenadegun_ammo_type = AINV_AMMO2;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
+            else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO3))
                 current_grenadegun_ammo_type = AINV_AMMO3;
         }
         else
@@ -984,16 +982,16 @@ void construct_object_list(void)
         }
 
         /// CROSSBOW
-        if (CHK_ANY(lara.crossbow_type_carried, CR_PRESENT))
+        if (CHK_EXI(lara.crossbow_type_carried, CR_PRESENT))
         {
-            if (CHK_ANY(lara.crossbow_type_carried, CR_LASERSIGHT))
+            if (CHK_EXI(lara.crossbow_type_carried, CR_LASERSIGHT))
                 insert_object_into_list_inventory(INV_CROSSBOW_LASER);
             else
                 insert_object_into_list_inventory(INV_CROSSBOW);
 
-            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
+            if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO2))
                 current_crossbow_ammo_type = AINV_AMMO2;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
+            else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO3))
                 current_crossbow_ammo_type = AINV_AMMO3;
         }
         else
@@ -1977,7 +1975,7 @@ void spinback(WORD* yangle)
 
 void update_laras_weapons_status(void)
 {
-    if (CHK_ANY(lara.shotgun_type_carried, CR_PRESENT))
+    if (CHK_EXI(lara.shotgun_type_carried, CR_PRESENT))
     {
         lara.shotgun_type_carried &= ~(CR_AMMOMASK); // delete all the ammo flag
 
@@ -1992,7 +1990,7 @@ void update_laras_weapons_status(void)
         }
     }
 
-    if (CHK_ANY(lara.grenadegun_type_carried, CR_PRESENT))
+    if (CHK_EXI(lara.grenadegun_type_carried, CR_PRESENT))
     {
         lara.grenadegun_type_carried &= ~(CR_AMMOMASK);
 
@@ -2010,7 +2008,7 @@ void update_laras_weapons_status(void)
         }
     }
 
-    if (CHK_ANY(lara.crossbow_type_carried, CR_PRESENT))
+    if (CHK_EXI(lara.crossbow_type_carried, CR_PRESENT))
     {
         lara.crossbow_type_carried &= ~(CR_AMMOMASK);
 
@@ -2208,25 +2206,25 @@ void combine_puzzle_item4(int flag)
 
 void combine_puzzle_item5(int flag)
 {
-    lara.puzzleitemscombo &= ~(INV_COMBO4);
+    lara.puzzleitemscombo &= ~(INV_COMBO5);
     lara.puzzleitems[4] = 1;
 }
 
 void combine_puzzle_item6(int flag)
 {
-    lara.puzzleitemscombo &= ~(INV_COMBO5);
+    lara.puzzleitemscombo &= ~(INV_COMBO6);
     lara.puzzleitems[5] = 1;
 }
 
 void combine_puzzle_item7(int flag)
 {
-    lara.puzzleitemscombo &= ~(INV_COMBO6);
+    lara.puzzleitemscombo &= ~(INV_COMBO7);
     lara.puzzleitems[6] = 1;
 }
 
 void combine_puzzle_item8(int flag)
 {
-    lara.puzzleitemscombo &= ~(INV_COMBO7);
+    lara.puzzleitemscombo &= ~(INV_COMBO8);
     lara.puzzleitems[7] = 1;
 }
 
@@ -2774,99 +2772,6 @@ BOOL have_i_got_object(short object_number)
         return 0;
 }
 
-void found_item_with_detector(short object_number)
-{
-    switch (object_number)
-    {
-        case PUZZLE_ITEM1:
-        case PUZZLE_ITEM2:
-        case PUZZLE_ITEM3:
-        case PUZZLE_ITEM4:
-        case PUZZLE_ITEM5:
-        case PUZZLE_ITEM6:
-        case PUZZLE_ITEM7:
-        case PUZZLE_ITEM8:
-        case PUZZLE_ITEM9:
-        case PUZZLE_ITEM10:
-        case PUZZLE_ITEM11:
-        case PUZZLE_ITEM12:
-            lara.puzzleitems[object_number - PUZZLE_ITEM1]--;
-            break;
-        case PUZZLE_ITEM1_COMBO1:
-        case PUZZLE_ITEM1_COMBO2:
-        case PUZZLE_ITEM2_COMBO1:
-        case PUZZLE_ITEM2_COMBO2:
-        case PUZZLE_ITEM3_COMBO1:
-        case PUZZLE_ITEM3_COMBO2:
-        case PUZZLE_ITEM4_COMBO1:
-        case PUZZLE_ITEM4_COMBO2:
-        case PUZZLE_ITEM5_COMBO1:
-        case PUZZLE_ITEM5_COMBO2:
-        case PUZZLE_ITEM6_COMBO1:
-        case PUZZLE_ITEM6_COMBO2:
-        case PUZZLE_ITEM8_COMBO1:
-        case PUZZLE_ITEM8_COMBO2:
-            lara.puzzleitemscombo &= ~(1 << (object_number + 69));
-            break;
-        case KEY_ITEM1:
-        case KEY_ITEM2:
-        case KEY_ITEM3:
-        case KEY_ITEM4:
-        case KEY_ITEM5:
-        case KEY_ITEM6:
-        case KEY_ITEM7:
-        case KEY_ITEM8:
-        case KEY_ITEM9:
-        case KEY_ITEM10:
-        case KEY_ITEM11:
-        case KEY_ITEM12:
-            lara.keyitems &= ~(1 << (object_number + 53));
-            break;
-        case KEY_ITEM1_COMBO1:
-        case KEY_ITEM1_COMBO2:
-        case KEY_ITEM2_COMBO1:
-        case KEY_ITEM2_COMBO2:
-        case KEY_ITEM3_COMBO1:
-        case KEY_ITEM3_COMBO2:
-        case KEY_ITEM4_COMBO1:
-        case KEY_ITEM4_COMBO2:
-        case KEY_ITEM5_COMBO1:
-        case KEY_ITEM5_COMBO2:
-        case KEY_ITEM6_COMBO1:
-        case KEY_ITEM6_COMBO2:
-        case KEY_ITEM7_COMBO1:
-        case KEY_ITEM7_COMBO2:
-        case KEY_ITEM8_COMBO1:
-        case KEY_ITEM8_COMBO2:
-            lara.keyitemscombo &= ~(1 << (object_number + 41));
-            break;
-        case PICKUP_ITEM1:
-        case PICKUP_ITEM2:
-        case PICKUP_ITEM3:
-        case PICKUP_ITEM4:
-            lara.pickupitems &= ~(1 << (object_number + 25));
-            break;
-        case PICKUP_ITEM1_COMBO1:
-        case PICKUP_ITEM1_COMBO2:
-        case PICKUP_ITEM2_COMBO1:
-        case PICKUP_ITEM2_COMBO2:
-        case PICKUP_ITEM3_COMBO1:
-        case PICKUP_ITEM3_COMBO2:
-        case PICKUP_ITEM4_COMBO1:
-        case PICKUP_ITEM4_COMBO2:
-            lara.pickupitemscombo &= ~(1 << (object_number + 21));
-            break;
-        case QUEST_ITEM1:
-        case QUEST_ITEM2:
-        case QUEST_ITEM3:
-        case QUEST_ITEM4:
-        case QUEST_ITEM5:
-        case QUEST_ITEM6:
-            lara.questitems &= ~(1 << (object_number + 4));
-            break;
-    }
-}
-
 int convert_obj_to_invobj(short object_number)
 {
     for (int i = 0; i < MAX_INVOBJ; i++)
@@ -2975,10 +2880,15 @@ void do_examine_mode(void)
     }
 }
 
+void ChooseInventory(void)
+{
+    display_inventory_2d();
+}
+
 #ifdef DLL_INJECT
 void injector::inject_inventory()
 {
-    this->inject(0x0043B760, show_inventory_2d);
+    this->inject(0x0043B760, ChooseInventory);
     this->inject(0x0043B9B0, construct_inventory_2d);
     this->inject(0x0043BC30, do_debounced_input);
     this->inject(0x0043BD80, DrawThreeDeeObject2D);
@@ -3030,7 +2940,6 @@ void injector::inject_inventory()
     this->inject(0x0043E8A0, use_current_item);
     this->inject(0x0043EB80, picked_up_object);
     this->inject(0x0043EF60, have_i_got_object);
-    this->inject(0x0043F050, found_item_with_detector);
     this->inject(0x0043F150, convert_obj_to_invobj);
     this->inject(0x0043F180, do_compass_mode);
     this->inject(0x0043F1E0, do_examine_mode);

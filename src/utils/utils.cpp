@@ -8,12 +8,15 @@
 #include "effect2.h"
 #include "gameflow.h"
 #include "items.h"
-#include "inventory.h"
+#include "inventory_2d.h"
 #include "lara.h"
 #include "lot.h"
 #include "oldobjects.h"
 #include "sphere.h"
 #include "drawprimitive.h"
+#include "gameflow_utils.h"
+
+#include <dirent.h>
 
 ofstream flog;
 LPCSTR lpWeaponName[12] = {
@@ -39,6 +42,13 @@ bool isFolderExists(LPCSTR folderName)
 {
     struct stat st;
     int ret = stat(folderName, &st);
+    return (ret == 0) && (st.st_mode & S_IFDIR);
+}
+
+bool isFolderExists(std::string folderName)
+{
+    struct stat st;
+    int ret = stat(folderName.c_str(), &st);
     return (ret == 0) && (st.st_mode & S_IFDIR);
 }
 
