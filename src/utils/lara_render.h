@@ -17,23 +17,25 @@ private:
     short* rotationw1;
     short* rotationw2;
     short gun_type;
+    bool cutsceneMode;
 
 public:
+    void enable_cutscene(bool value);
     void assign_pprot(short pprot);
     void assign_matrixptr();
     void create_item();
     void create_object();
-    void create_bone();
+    void create_bone(int* boneIfCutscene);
     void create_frame();
-    void check_hitdirection();
-    void create_rotation();
-    void create_shadow();
+    void check_hitdirection(short* frameCutscene);
+    void create_rotation(short* frameCutscene);
+    void create_shadow(short* frameCutscene);
     void assign_weapon();
 
     void start_world();
     void start_list();
     
-    void mesh_hips();
+    void mesh_hips(short* frameCutscene);
     void mesh_thight_l();
     void mesh_calf_l();
     void mesh_foot_l();

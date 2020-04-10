@@ -236,6 +236,9 @@
     <ClCompile Include="src\game\inventory_3d.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\hair.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -410,6 +413,9 @@
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\inventory_3d.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\hair.h">
       <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>

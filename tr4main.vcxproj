@@ -101,6 +101,7 @@
     <ClCompile Include="src\game\camera.cpp" />
     <ClCompile Include="src\game\debris.cpp" />
     <ClCompile Include="src\game\gameflow.cpp" />
+    <ClCompile Include="src\game\hair.cpp" />
     <ClCompile Include="src\game\input.cpp" />
     <ClCompile Include="src\game\inventory_2d.cpp" />
     <ClCompile Include="src\game\inventory_3d.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\gameflow.h" />
+    <ClInclude Include="src\game\hair.h" />
     <ClInclude Include="src\game\input.h" />
     <ClInclude Include="src\game\inventory_2d.h" />
     <ClInclude Include="src\game\inventory_3d.h" />
