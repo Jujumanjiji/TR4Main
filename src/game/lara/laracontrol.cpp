@@ -322,21 +322,21 @@ static void LaraCheatyBits(void)
 static void Feature_WadeSplash_Exit(ITEM_INFO* item)
 {
     int wh = GetWaterHeight(item->pos.x, item->pos.y, item->pos.z, item->room_number);
-    splash_var.x = item->pos.x;
-    splash_var.y = wh;
-    splash_var.z = item->pos.z;
-    splash_var.inner_rad = 16;
-    splash_var.inner_size = 12;
-    splash_var.inner_radvel = 160;
-    splash_var.inner_yvel = (-(item->fallspeed / 3)) * 72;
-    splash_var.inner_y = 24;
-    splash_var.middle_rad = 24;
-    splash_var.middle_size = 224;
-    splash_var.middle_radvel = (-(item->fallspeed / 3)) * 36;
-    splash_var.middle_yvel = 32;
-    splash_var.middle_y = 32;
-    splash_var.outer_rad = 272;
-    SetupSplash(&splash_var);
+    splash_setup.x = item->pos.x;
+    splash_setup.y = wh;
+    splash_setup.z = item->pos.z;
+    splash_setup.inner_rad = 16;
+    splash_setup.inner_size = 12;
+    splash_setup.inner_radvel = 160;
+    splash_setup.inner_yvel = -(item->fallspeed / 3) * 72;
+    splash_setup.inner_y = 24;
+    splash_setup.middle_rad = 24;
+    splash_setup.middle_size = 224;
+    splash_setup.middle_radvel = -(item->fallspeed / 3) * 36;
+    splash_setup.middle_yvel = 32;
+    splash_setup.middle_y = 32;
+    splash_setup.outer_rad = 272;
+    SetupSplash(&splash_setup);
     splash_count = 16;
 }
 #define WadeSplash_Exit Feature_WadeSplash_Exit
