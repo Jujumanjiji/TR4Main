@@ -34,7 +34,7 @@ void UpdateLaraRoom(ITEM_INFO* item, int height)
 
 BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
 {
-    int* mptr;
+    PHD_MATRIX* mptr;
     int x, y, z, x2, y2, z2;
     short rot_x, rot_y, rot_z;
 
@@ -54,9 +54,9 @@ BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
     y = laraitem->pos.y - item->pos.y;
     z = laraitem->pos.z - item->pos.z;
     mptr = phd_mxptr;
-    x2 = (x * *(mptr + M00) + y * *(mptr + M01) + z * *(mptr + M02)) >> W2V_SHIFT;
-    y2 = (x * *(mptr + M10) + y * *(mptr + M11) + z * *(mptr + M12)) >> W2V_SHIFT;
-    z2 = (x * *(mptr + M20) + y * *(mptr + M21) + z * *(mptr + M22)) >> W2V_SHIFT;
+    x2 = ((mptr->m00 * x) + (mptr->m01 * y) + (mptr->m02 * z)) >> W2V_SHIFT;
+    y2 = ((mptr->m10 * x) + (mptr->m11 * y) + (mptr->m12 * z)) >> W2V_SHIFT;
+    z2 = ((mptr->m20 * x) + (mptr->m21 * y) + (mptr->m22 * z)) >> W2V_SHIFT;
     phd_PopMatrix();
 
     if (x2 < bounds->x_min || x2 > bounds->x_max)
@@ -71,6 +71,7 @@ BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
 
 void AlignLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 {
+    PHD_MATRIX* mptr;
     int x, y, z;
 
     laraitem->pos.x_rot = item->pos.x_rot;
@@ -79,10 +80,10 @@ void AlignLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 
     phd_PushUnitMatrix();
     phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
-    int* mptr = phd_mxptr;
-    x = item->pos.x + ((pos->z * *(mptr + M02) + pos->y * *(mptr + M01) + pos->x * *(mptr + M00)) >> W2V_SHIFT);
-    y = item->pos.y + ((pos->z * *(mptr + M12) + pos->y * *(mptr + M11) + pos->x * *(mptr + M10)) >> W2V_SHIFT);
-    z = item->pos.z + ((pos->z * *(mptr + M22) + pos->y * *(mptr + M21) + pos->x * *(mptr + M20)) >> W2V_SHIFT);
+    mptr = phd_mxptr;
+    x = item->pos.x + ((mptr->m00 * pos->x) + (mptr->m01 * pos->y) + (mptr->m02 * pos->z)) >> W2V_SHIFT;
+    y = item->pos.y + ((mptr->m10 * pos->x) + (mptr->m11 * pos->y) + (mptr->m12 * pos->z)) >> W2V_SHIFT;
+    z = item->pos.z + ((mptr->m20 * pos->x) + (mptr->m21 * pos->y) + (mptr->m22 * pos->z)) >> W2V_SHIFT;
     phd_PopMatrix();
 
     laraitem->pos.x = x;
@@ -92,6 +93,7 @@ void AlignLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 
 BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 {
+    PHD_MATRIX* mptr;
     FLOOR_INFO* floor;
     PHD_3DPOS dest;
     int height;
@@ -99,10 +101,10 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 
     phd_PushUnitMatrix();
     phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
-    int* mptr = phd_mxptr;
-    dest.x = item->pos.x + ((pos->z * *(mptr + M02) + pos->y * *(mptr + M01) + pos->x * *(mptr + M00)) >> W2V_SHIFT);
-    dest.y = item->pos.y + ((pos->z * *(mptr + M12) + pos->y * *(mptr + M11) + pos->x * *(mptr + M10)) >> W2V_SHIFT);
-    dest.z = item->pos.z + ((pos->z * *(mptr + M22) + pos->y * *(mptr + M21) + pos->x * *(mptr + M20)) >> W2V_SHIFT);
+    mptr = phd_mxptr;
+    dest.x = item->pos.x + ((mptr->m00 * pos->x) + (mptr->m01 * pos->y) + (mptr->m02 * pos->z)) >> W2V_SHIFT;
+    dest.y = item->pos.y + ((mptr->m10 * pos->x) + (mptr->m11 * pos->y) + (mptr->m12 * pos->z)) >> W2V_SHIFT;
+    dest.z = item->pos.z + ((mptr->m20 * pos->x) + (mptr->m21 * pos->y) + (mptr->m22 * pos->z)) >> W2V_SHIFT;
     dest.x_rot = item->pos.x_rot;
     dest.y_rot = item->pos.y_rot;
     dest.z_rot = item->pos.z_rot;
@@ -133,8 +135,9 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 
 BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angadd)
 {
+    DWORD matrix_angle;
     int x, y, z, dist;
-    short matrix_angle, angdif;
+    short angdif;
     short angle_src, angle_target;
     short cardinal_point;
 

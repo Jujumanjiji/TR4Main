@@ -3,68 +3,73 @@
 #include "3d_gen.h"
 #include "3d_gen_a.h"
 
-static int* LaraMatrixMesh(int joint)
+static PHD_MATRIX* LaraMatrixMesh(int joint)
 {
     switch (joint)
     {
         default:
         case JHIPS:
-            return lara_matrix_normal.hips;
+            return &lara_matrix_normal.hips;
         case JTHIGH_L:
-            return lara_matrix_normal.thigh_l;
+            return &lara_matrix_normal.thigh_l;
         case JCALF_L:
-            return lara_matrix_normal.calf_l;
+            return &lara_matrix_normal.calf_l;
         case JFOOT_L:
-            return lara_matrix_normal.foot_l;
+            return &lara_matrix_normal.foot_l;
         case JTHIGH_R:
-            return lara_matrix_normal.thigh_r;
+            return &lara_matrix_normal.thigh_r;
         case JCALF_R:
-            return lara_matrix_normal.calf_r;
+            return &lara_matrix_normal.calf_r;
         case JFOOT_R:
-            return lara_matrix_normal.foot_r;
+            return &lara_matrix_normal.foot_r;
         case JTORSO:
-            return lara_matrix_normal.torso;
+            return &lara_matrix_normal.torso;
         case JHEAD:
-            return lara_matrix_normal.head;
+            return &lara_matrix_normal.head;
         case JUARM_R:
-            return lara_matrix_normal.uarm_r;
+            return &lara_matrix_normal.uarm_r;
         case JLARM_R:
-            return lara_matrix_normal.larm_r;
+            return &lara_matrix_normal.larm_r;
         case JHAND_R:
-            return lara_matrix_normal.hand_r;
+            return &lara_matrix_normal.hand_r;
         case JUARM_L:
-            return lara_matrix_normal.uarm_l;
+            return &lara_matrix_normal.uarm_l;
         case JLARM_L:
-            return lara_matrix_normal.larm_l;
+            return &lara_matrix_normal.larm_l;
         case JHAND_L:
-            return lara_matrix_normal.hand_l;
+            return &lara_matrix_normal.hand_l;
     }
 }
 
-static void TransposeMatrix(int* matrix)
+static void TransposeMatrix(PHD_MATRIX* matrix)
 {
-    *(phd_mxptr + M00) = *(matrix + M00);
-    *(phd_mxptr + M01) = *(matrix + M01);
-    *(phd_mxptr + M02) = *(matrix + M02);
-    *(phd_mxptr + M03) = *(matrix + M03);
-    *(phd_mxptr + M10) = *(matrix + M10);
-    *(phd_mxptr + M11) = *(matrix + M11);
-    *(phd_mxptr + M12) = *(matrix + M12);
-    *(phd_mxptr + M13) = *(matrix + M13);
-    *(phd_mxptr + M20) = *(matrix + M20);
-    *(phd_mxptr + M21) = *(matrix + M21);
-    *(phd_mxptr + M22) = *(matrix + M22);
-    *(phd_mxptr + M23) = *(matrix + M23);
+    PHD_MATRIX* mptr;
+    mptr = phd_mxptr;
+    mptr->m00 = matrix->m00;
+    mptr->m01 = matrix->m01;
+    mptr->m02 = matrix->m02;
+    mptr->m03 = matrix->m03;
+    mptr->m10 = matrix->m10;
+    mptr->m11 = matrix->m11;
+    mptr->m12 = matrix->m12;
+    mptr->m13 = matrix->m13;
+    mptr->m20 = matrix->m20;
+    mptr->m21 = matrix->m21;
+    mptr->m22 = matrix->m22;
+    mptr->m23 = matrix->m23;
 }
 
 void GetLaraJointAbsPosition(PHD_VECTOR* pos, int joint)
 {
+    PHD_MATRIX* mptr;
+
     phd_PushMatrix();
     TransposeMatrix(LaraMatrixMesh(joint));
     phd_TranslateRel(pos->x, pos->y, pos->z);
-    pos->x = *(phd_mxptr + M03) >> W2V_SHIFT;
-    pos->y = *(phd_mxptr + M13) >> W2V_SHIFT;
-    pos->z = *(phd_mxptr + M23) >> W2V_SHIFT;
+    mptr = phd_mxptr;
+    pos->x = mptr->m03 >> W2V_SHIFT;
+    pos->y = mptr->m13 >> W2V_SHIFT;
+    pos->z = mptr->m23 >> W2V_SHIFT;
     pos->x += lara_item->pos.x;
     pos->y += lara_item->pos.y;
     pos->z += lara_item->pos.z;

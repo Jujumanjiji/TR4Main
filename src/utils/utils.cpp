@@ -1391,16 +1391,16 @@ void phd_SwapPutPolygons(int frac, int clip, short** mesh)
         phd_PutPolygons(*mesh, clip);
 }
 
-void phd_PutMatrix(int* matrix)
+void phd_PutMatrix(PHD_MATRIX* matrix)
 {
-    memcpy(matrix, phd_mxptr, 48);
+    *matrix = *phd_mxptr;
 }
 
-void phd_PutMatrix_I(int* matrix)
+void phd_PutMatrix_I(PHD_MATRIX* matrix)
 {
     phd_PushMatrix();
     InterpolateMatrix();
-    memcpy(matrix, phd_mxptr, 48);
+    *matrix = *phd_mxptr;
     phd_PopMatrix();
 }
 

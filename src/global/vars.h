@@ -13,9 +13,9 @@
 ///             MATRIX            ///
 ///===============================///
 
-#define phd_mxptr                           VAR_U_(0x007E71D8, int*)
+#define phd_mxptr                           VAR_U_(0x007E71D8, PHD_MATRIX*)
 #define w2v_matrix                          ARRAY_(0x00753CC8, int, [12])
-#define IM_ptr                              VAR_U_(0x007FE124, int*)
+#define IM_ptr                              VAR_U_(0x007FE124, PHD_MATRIX*)
 #define IM_rate                             VAR_U_(0x007FE120, int)
 #define IM_frac                             VAR_U_(0x007FDF54, int)
 

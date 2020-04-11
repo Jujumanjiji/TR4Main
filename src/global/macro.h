@@ -18,6 +18,7 @@
 #define CLIPDOWN(a, b) if (a < b) a = b
 #define CLIPUP(a, b) if (a > b) a = b
 #define XZ_GET_SECTOR(room, xPos, zPos) (room->floor[((zPos - room->z) >> WALL_SHIFT) + ((xPos - room->x) >> WALL_SHIFT) * room->x_size])
+#define memcpy_long(dest, src, size) memcpy(dest, src, size * 4)
 
 #define SIN(x) (4 * rcossin_tbl[(x >> 3) & ANGLE(45)])
 #define COS(x) (4 * rcossin_tbl[((x >> 3) & ANGLE(45)) + 1])

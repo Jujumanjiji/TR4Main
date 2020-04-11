@@ -34,23 +34,39 @@ struct STATS
     BYTE health_used;
 };
 
+struct PHD_MATRIX // size: 48
+{
+    int m00; // 0
+    int m01; // 1
+    int m02; // 2
+    int m03; // 3
+    int m10; // 4
+    int m11; // 5
+    int m12; // 6
+    int m13; // 7
+    int m20; // 8
+    int m21; // 9
+    int m22; // 10
+    int m23; // 11
+};
+
 struct LARA_MATRIX
 {
-    int hips[12];
-    int thigh_l[12];
-    int calf_l[12];
-    int foot_l[12];
-    int thigh_r[12];
-    int calf_r[12];
-    int foot_r[12];
-    int torso[12];
-    int head[12];
-    int uarm_r[12];
-    int larm_r[12];
-    int hand_r[12];
-    int uarm_l[12];
-    int larm_l[12];
-    int hand_l[12];
+    PHD_MATRIX hips;
+    PHD_MATRIX thigh_l;
+    PHD_MATRIX calf_l;
+    PHD_MATRIX foot_l;
+    PHD_MATRIX thigh_r;
+    PHD_MATRIX calf_r;
+    PHD_MATRIX foot_r;
+    PHD_MATRIX torso;
+    PHD_MATRIX head;
+    PHD_MATRIX uarm_r;
+    PHD_MATRIX larm_r;
+    PHD_MATRIX hand_r;
+    PHD_MATRIX uarm_l;
+    PHD_MATRIX larm_l;
+    PHD_MATRIX hand_l;
 };
 
 struct GAMEFLOW
@@ -148,22 +164,6 @@ struct OBJ_ROTATION
     short torso_x;
     short head_y;
     short head_x;
-};
-
-struct PHD_MATRIX
-{
-    int m00;
-    int m01;
-    int m02;
-    int m03;
-    int m10;
-    int m11;
-    int m12;
-    int m13;
-    int m20;
-    int m21;
-    int m22;
-    int m23;
 };
 
 struct GAME_VECTOR

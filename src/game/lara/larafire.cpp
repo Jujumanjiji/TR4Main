@@ -783,6 +783,7 @@ void find_target_point(ITEM_INFO* item, GAME_VECTOR* target)
 //  0 = OUT OF AMMO
 int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[2])
 {
+    PHD_MATRIX* mptr;
     PHD_3DPOS viewpos;
     GAME_VECTOR vsrc, vdest;
     WEAPON_INFO* winfo;
@@ -835,21 +836,22 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
         vdest.y = viewpos.y;
         vdest.z = viewpos.z;
         vdest.room_number = room_number;
+        mptr = phd_mxptr;
 
         if (best < 0)
         {
-            vsrc.x = vdest.x + (SECTOR(20) * phd_mxptr[M20] >> W2V_SHIFT);
-            vsrc.y = vdest.y + (SECTOR(20) * phd_mxptr[M21] >> W2V_SHIFT);
-            vsrc.z = vdest.z + (SECTOR(20) * phd_mxptr[M22] >> W2V_SHIFT);
+            vsrc.x = vdest.x + ((SECTOR(20) * mptr->m20) >> W2V_SHIFT);
+            vsrc.y = vdest.y + ((SECTOR(20) * mptr->m21) >> W2V_SHIFT);
+            vsrc.z = vdest.z + ((SECTOR(20) * mptr->m22) >> W2V_SHIFT);
             GetTargetOnLOS(&vdest, &vsrc, FALSE, TRUE);
             return -1;
         }
         else
         {
             savegame_level.ammo_hits++;
-            vsrc.x = vdest.x + (bestdist * phd_mxptr[M20] >> W2V_SHIFT);
-            vsrc.y = vdest.y + (bestdist * phd_mxptr[M21] >> W2V_SHIFT);
-            vsrc.z = vdest.z + (bestdist * phd_mxptr[M22] >> W2V_SHIFT);
+            vsrc.x = vdest.x + ((bestdist * mptr->m20) >> W2V_SHIFT);
+            vsrc.y = vdest.y + ((bestdist * mptr->m21) >> W2V_SHIFT);
+            vsrc.z = vdest.z + ((bestdist * mptr->m22) >> W2V_SHIFT);
             if (!GetTargetOnLOS(&vdest, &vsrc, FALSE, TRUE))
                 HitTarget(target, &vsrc, winfo->damage, 0);
             return 1;

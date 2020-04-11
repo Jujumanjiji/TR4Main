@@ -76,5 +76,5 @@ extern void phd_SwapRotX(int frac, short x);
 extern void phd_SwapRotZ(int frac, short z);
 extern void phd_SwapRotYXZ(int frac, short y, short x, short z);
 extern void phd_SwapPutPolygons(int frac, int clip, short** mesh);
-extern void phd_PutMatrix(int* matrix);
-extern void phd_PutMatrix_I(int* matrix);
+extern void phd_PutMatrix(PHD_MATRIX* matrix);
+extern void phd_PutMatrix_I(PHD_MATRIX* matrix);
