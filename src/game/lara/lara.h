@@ -57,6 +57,7 @@ enum WEAPON_ANIM
 #define CLIMB_WIDTHL 120
 #define DEATH_SPEED 100
 #define DEATH_ACC 5
+#define LARA_VELOCITY 12
 #define LARA_EXPOSURE_TIME ((30*10)*2) // max exposure time (* precision)
 #define LARA_WADE_EXPOSURE 1   // wade exposure rate
 #define LARA_SWIM_EXPOSURE 2   // swim exposure rate

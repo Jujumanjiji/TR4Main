@@ -4,18 +4,18 @@
 typedef FILE* LPFILE;
 
 typedef char            int8;
-typedef unsigned char	uint8;
-typedef signed char		sint8;
+typedef unsigned char   uint8;
+typedef signed char     sint8;
 typedef short           int16;
-typedef unsigned short	uint16;
-typedef signed short	sint16;
+typedef unsigned short  uint16;
+typedef signed short    sint16;
 typedef int             int32;
-typedef unsigned int	uint32;
-typedef signed int		sint32;
+typedef unsigned int    uint32;
+typedef signed int      sint32;
 /// Cant be 32 since int is set, so i renommed it, but it's not 64, it's 32 !
 typedef long            int64;
-typedef unsigned long	uint64;
-typedef signed long		sint64;
+typedef unsigned long   uint64;
+typedef signed long     sint64;
 
 struct JMP
 {
@@ -53,24 +53,6 @@ struct LARA_MATRIX
     int hand_l[12];
 };
 
-/* // for later !
-struct LEVEL_DATA
-{
-    ///LPFILE fp_level;
-    ///LPCHAR fp_data;
-    int number_meshbase;
-    ///int number_meshes;
-    ///int number_anims;
-    int number_changes;
-    int number_ranges;
-    int number_commands;
-    int number_bones;
-    int number_frames;
-    int number_objects;
-    int number_statics;
-};
-*/
-
 struct GAMEFLOW
 {
     UINT cheat_enabled : 1;        // LOBYTE: 0x1
@@ -97,40 +79,20 @@ struct HANG_STRUCT
     short dest_angle;
 };
 
-struct BOUNDS
-{
-    short minX; /// 0
-    short maxX; /// 2
-    short minY; /// 4
-    short maxY; /// 6
-    short minZ; /// 8
-    short maxZ; /// 10
-};
-
-struct BOUNDS_ABS
-{
-    int minX;
-    int maxX;
-    int minY;
-    int maxY;
-    int minZ;
-    int maxZ;
-};
-
-struct BOUNDS_ORIENT
-{
-    short minOV; // orientation vertical
-    short maxOV; // orientation vertical
-    short minOH; // orientation horizontal
-    short maxOH; // orientation horizontal
-    short minOR; // orientation rotation
-    short maxOR; // orientation rotation
-};
-
 struct BOUNDARY
 {
-    BOUNDS boundXYZ;
-    BOUNDS_ORIENT boundOrient;
+    short x_min;
+    short x_max;
+    short y_min;
+    short y_max;
+    short z_min;
+    short z_max;
+    short xrot_min;
+    short xrot_max;
+    short yrot_min;
+    short yrot_max;
+    short zrot_min;
+    short zrot_max;
 };
 
 struct WEAPON_INFO
