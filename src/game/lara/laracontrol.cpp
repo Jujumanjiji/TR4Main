@@ -271,8 +271,8 @@ static void LaraCheatyBits(void)
             if (lara.water_status != LWS_CHEAT)
             {
                 lara.water_status = LWS_CHEAT;
-                lara_item->current_frame = anims[ANIMATION_LARA_UNDERWATER_SWIM_SOLID].frame_base;
-                lara_item->current_anim = ANIMATION_LARA_UNDERWATER_SWIM_SOLID;
+                lara_item->frame_number = anims[ANIMATION_LARA_UNDERWATER_SWIM_SOLID].frame_base;
+                lara_item->anim_number = ANIMATION_LARA_UNDERWATER_SWIM_SOLID;
                 lara_item->state_current = STATE_LARA_UNDERWATER_FORWARD;
                 lara_item->state_next = STATE_LARA_UNDERWATER_FORWARD;
                 lara_item->gravity_status = FALSE;
@@ -298,8 +298,8 @@ void LaraCheat(ITEM_INFO *item, COLL_INFO *coll)
     if (CHK_ANY(TrInput, IN_WALK) && CHK_NOP(TrInput, IN_LOOK))
     {
         lara.water_status = LWS_ABOVEWATER;
-        item->current_anim = ANIMATION_LARA_STAY_SOLID;
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->anim_number = ANIMATION_LARA_STAY_SOLID;
+        item->frame_number = anims[item->anim_number].frame_base;
         item->pos.x_rot = 0;
         item->pos.z_rot = 0;
         lara.torso_y_rot = 0;
@@ -310,6 +310,63 @@ void LaraCheat(ITEM_INFO *item, COLL_INFO *coll)
         lara.mesh_effects = NULL;
         lara_item->hit_points = cheatHitPoints;
         LaraInitialiseMeshes();
+    }
+}
+
+static void LaraWadeControl(ITEM_INFO* item, int hfw)
+{
+    camera.target_elevation = -ANGLE(22);
+
+    if (hfw < WADE_DEPTH)
+    {
+        lara.water_status = LWS_ABOVEWATER;
+        if (item->state_current == STATE_LARA_WADE_FORWARD)
+            item->state_next = STATE_LARA_RUN_FORWARD;
+    }
+    else if (hfw > SWIM_DEPTH)
+    {
+        lara.water_status = LWS_SURFACE;
+        item->pos.y = item->pos.y + 1 - hfw;
+
+        switch (item->state_current)
+        {
+        case STATE_LARA_WALK_BACK:
+            item->anim_number = ANIMATION_LARA_ONWATER_IDLE_TO_SWIM_BACK;
+            item->frame_number = anims[item->anim_number].frame_base;
+            item->state_current = STATE_LARA_ONWATER_BACK;
+            item->state_next = STATE_LARA_ONWATER_BACK;
+            break;
+        case STATE_LARA_WALK_RIGHT:
+            item->anim_number = ANIMATION_LARA_ONWATER_SWIM_RIGHT;
+            item->frame_number = anims[item->anim_number].frame_base;
+            item->state_current = STATE_LARA_ONWATER_RIGHT;
+            item->state_next = STATE_LARA_ONWATER_RIGHT;
+            break;
+        case STATE_LARA_WALK_LEFT:
+            item->anim_number = ANIMATION_LARA_ONWATER_SWIM_LEFT;
+            item->frame_number = anims[item->anim_number].frame_base;
+            item->state_current = STATE_LARA_ONWATER_LEFT;
+            item->state_next = STATE_LARA_ONWATER_LEFT;
+            break;
+        case STATE_LARA_WALK_FORWARD:
+        default: // need default for some reason...
+            item->anim_number = ANIMATION_LARA_ONWATER_SWIM_FORWARD;
+            item->frame_number = anims[item->anim_number].frame_base;
+            item->state_current = STATE_LARA_ONWATER_FORWARD;
+            item->state_next = STATE_LARA_ONWATER_FORWARD;
+            break;
+        }
+
+        item->gravity_status = FALSE;
+        item->fallspeed = 0;
+        lara.dive_count = 0;
+        lara_item->pos.z_rot = 0;
+        item->pos.x_rot = 0;
+        lara.torso_y_rot = 0;
+        lara.torso_x_rot = 0;
+        lara.head_y_rot = 0;
+        lara.head_x_rot = 0;
+        UpdateLaraRoom(item, 0);
     }
 }
 
@@ -339,7 +396,7 @@ void LaraControl(void)
     if (lara.gun_status == LHS_HANDBUSY
     &&  item->state_current == STATE_LARA_IDLE
     &&  item->state_next == STATE_LARA_IDLE
-    &&  item->current_anim == ANIMATION_LARA_STAY_IDLE
+    &&  item->anim_number == ANIMATION_LARA_STAY_IDLE
     && !item->gravity_status)
     {
         lara.gun_status = LHS_ARMLESS;
@@ -368,18 +425,24 @@ void LaraControl(void)
         switch (lara.water_status)
         {
             case LWS_ABOVEWATER:
-                if (hfw == -NO_HEIGHT || hfw < WADE_DEPTH)
-                    break;
-
-                if (wd > (SWIM_DEPTH - STEP_L))
+                if (hfw != -NO_HEIGHT && hfw >= WADE_DEPTH)
                 {
-                    if (is_water)
+                    if (wd <= (SWIM_DEPTH - STEP_L))
+                    {
+                        if (hfw > WADE_DEPTH)
+                        {
+                            lara.water_status = LWS_WADE;
+                            if (!item->gravity_status)
+                                item->state_next = STATE_LARA_IDLE;
+                        }
+                    }
+                    else if (is_water)
                     {
                         lara.air = LARA_AIR;
                         lara.water_status = LWS_UNDERWATER;
                         item->gravity_status = FALSE;
                         item->pos.y += 100;
-                        
+
                         UpdateLaraRoom(item, 0);
                         StopSoundEffect(SFX_LARA_FALL);
 
@@ -400,8 +463,8 @@ void LaraControl(void)
                         else
                         {
                             item->pos.x_rot = -ANGLE(45);
-                            item->current_anim = ANIMATION_LARA_FREE_FALL_TO_UNDERWATER;
-                            item->current_frame = anims[item->current_anim].frame_base;
+                            item->anim_number = ANIMATION_LARA_FREE_FALL_TO_UNDERWATER;
+                            item->frame_number = anims[item->anim_number].frame_base;
                             item->state_current = STATE_LARA_UNDERWATER_DIVING;
                             item->state_next = STATE_LARA_UNDERWATER_FORWARD;
                             item->fallspeed = (item->fallspeed * 3) / 2;
@@ -413,12 +476,8 @@ void LaraControl(void)
                         lara.head_x_rot = 0;
                         Splash(item);
                     }
-                }
-                else if (hfw > WADE_DEPTH)
-                {
-                    lara.water_status = LWS_WADE;
-                    if (!item->gravity_status)
-                        item->state_next = STATE_LARA_IDLE;
+
+                    LaraWadeControl(item, hfw);
                 }
                 break;
             case LWS_UNDERWATER:
@@ -428,34 +487,34 @@ void LaraControl(void)
                     {
                         lara.water_status = LWS_SURFACE;
                         item->pos.y = item->pos.y + 1 - hfw;
-                        item->pos.x_rot = 0;
-                        item->current_anim = ANIMATION_LARA_UNDERWATER_TO_ONWATER;
-                        item->current_frame = anims[item->current_anim].frame_base;
+                        item->anim_number = ANIMATION_LARA_UNDERWATER_TO_ONWATER;
+                        item->frame_number = anims[item->anim_number].frame_base;
                         item->state_current = STATE_LARA_ONWATER_STOP;
                         item->state_next = STATE_LARA_ONWATER_STOP;
                         item->fallspeed = 0;
 
-                        lara_item->pos.z_rot = 0;
                         lara.dive_count = 11;
+                        item->pos.x_rot = 0;
+                        lara_item->pos.z_rot = 0;
                         lara.torso_y_rot = 0;
                         lara.torso_x_rot = 0;
                         lara.head_y_rot = 0;
                         lara.head_x_rot = 0;
                         UpdateLaraRoom(item, -(LARA_HITE / 2));
-                        SoundEffect(SFX_LARA_BREATH, &item->pos, SFX_ALWAYS);
+                        SoundEffect(SFX_LARA_BREATH, &lara_item->pos, SFX_ALWAYS);
                     }
                     else
                     {
                         lara.water_status = LWS_ABOVEWATER;
-                        item->pos.x_rot = 0;
-                        item->current_anim = ANIMATION_LARA_FREE_FALL_FORWARD;
-                        item->current_frame = anims[item->current_anim].frame_base;
+                        item->anim_number = ANIMATION_LARA_FREE_FALL_FORWARD;
+                        item->frame_number = anims[item->anim_number].frame_base;
                         item->state_current = STATE_LARA_JUMP_FORWARD;
                         item->state_next = STATE_LARA_JUMP_FORWARD;
                         item->speed = item->fallspeed / 4;
                         item->fallspeed = 0;
                         item->gravity_status = TRUE;
 
+                        item->pos.x_rot = 0;
                         lara_item->pos.z_rot = 0;
                         lara.torso_y_rot = 0;
                         lara.torso_x_rot = 0;
@@ -464,14 +523,14 @@ void LaraControl(void)
                     }
                 }
                 break;
-            case LWS_SURFACE: // TODO: need to fix this shit !
+            case LWS_SURFACE:
                 if (!is_water)
                 {
                     if (hfw > WADE_DEPTH)
                     {
                         lara.water_status = LWS_WADE;
-                        item->current_anim = ANIMATION_LARA_STAY_IDLE;
-                        item->current_frame = anims[item->current_anim].frame_base;
+                        item->anim_number = ANIMATION_LARA_STAY_IDLE;
+                        item->frame_number = anims[item->anim_number].frame_base;
                         item->state_current = STATE_LARA_IDLE;
                         item->state_next = STATE_LARA_WADE_FORWARD;
                         AnimateItem(item);
@@ -479,8 +538,8 @@ void LaraControl(void)
                     else
                     {
                         lara.water_status = LWS_ABOVEWATER;
-                        item->current_anim = ANIMATION_LARA_FREE_FALL_FORWARD;
-                        item->current_frame = anims[item->current_anim].frame_base;
+                        item->anim_number = ANIMATION_LARA_FREE_FALL_FORWARD;
+                        item->frame_number = anims[item->anim_number].frame_base;
                         item->state_current = STATE_LARA_JUMP_FORWARD;
                         item->state_next = STATE_LARA_JUMP_FORWARD;
                         item->speed = item->fallspeed / 4;
@@ -497,58 +556,7 @@ void LaraControl(void)
                 }
                 break;
             case LWS_WADE:
-                camera.target_elevation = -ANGLE(22);
-
-                if (hfw < WADE_DEPTH)
-                {
-                    lara.water_status = LWS_ABOVEWATER;
-                    if (item->state_current == STATE_LARA_WADE_FORWARD)
-                        item->state_next = STATE_LARA_RUN_FORWARD;
-                }
-                else if (hfw > SWIM_DEPTH)
-                {
-                    lara.water_status = LWS_SURFACE;
-                    item->pos.y = item->pos.y + 1 - hfw;
-
-                    switch (item->state_current)
-                    {
-                        case STATE_LARA_WALK_BACK:
-                            item->current_anim = ANIMATION_LARA_ONWATER_IDLE_TO_SWIM_BACK;
-                            item->current_frame = anims[item->current_anim].frame_base;
-                            item->state_current = STATE_LARA_ONWATER_BACK;
-                            item->state_next = STATE_LARA_ONWATER_BACK;
-                            break;
-                        case STATE_LARA_WALK_RIGHT:
-                            item->current_anim = ANIMATION_LARA_ONWATER_SWIM_RIGHT;
-                            item->current_frame = anims[item->current_anim].frame_base;
-                            item->state_current = STATE_LARA_ONWATER_RIGHT;
-                            item->state_next = STATE_LARA_ONWATER_RIGHT;
-                            break;
-                        case STATE_LARA_WALK_LEFT:
-                            item->current_anim = ANIMATION_LARA_ONWATER_SWIM_LEFT;
-                            item->current_frame = anims[item->current_anim].frame_base;
-                            item->state_current = STATE_LARA_ONWATER_LEFT;
-                            item->state_next = STATE_LARA_ONWATER_LEFT;
-                            break;
-                        case STATE_LARA_WALK_FORWARD:
-                            item->current_anim = ANIMATION_LARA_ONWATER_SWIM_FORWARD;
-                            item->current_frame = anims[item->current_anim].frame_base;
-                            item->state_current = STATE_LARA_ONWATER_FORWARD;
-                            item->state_next = STATE_LARA_ONWATER_FORWARD;
-                            break;
-                    }
-
-                    item->pos.x_rot = 0;
-                    item->gravity_status = FALSE;
-                    item->fallspeed = 0;
-
-                    lara.dive_count = 0;
-                    lara.torso_y_rot = 0;
-                    lara.torso_x_rot = 0;
-                    lara.head_y_rot = 0;
-                    lara.head_x_rot = 0;
-                    UpdateLaraRoom(item, 0);
-                }
+                LaraWadeControl(item, hfw);
                 break;
         }
     }
@@ -620,8 +628,8 @@ void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll)
     coll->old.y = item->pos.y;
     coll->old.z = item->pos.z;
     coll->old_anim_state = item->state_current;
-    coll->old_anim_number = item->current_anim;
-    coll->old_frame_number = item->current_frame;
+    coll->old_anim_number = item->anim_number;
+    coll->old_frame_number = item->frame_number;
     coll->radius = LARA_RAD;
     coll->trigger = NULL;
     coll->lava_is_pit = FALSE;
@@ -819,8 +827,8 @@ void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll)
 
     if (lara.water_status == LWS_CHEAT)
     {
-        item->current_anim = ANIMATION_LARA_FREE_FALL_LONG;
-        item->current_frame = anims[item->current_anim].frame_base + 5;
+        item->anim_number = ANIMATION_LARA_FREE_FALL_LONG;
+        item->frame_number = anims[item->anim_number].frame_base + 5;
     }
 }
 

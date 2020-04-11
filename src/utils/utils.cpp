@@ -211,16 +211,16 @@ LPCSTR WriteWorldItemAngle(ITEM_INFO* item)
 
 void SetAnimationForItemAS(ITEM_INFO* item, int animation, int state)
 {
-    item->current_anim = animation;
-    item->current_frame = anims[item->current_anim].frame_base;
+    item->anim_number = animation;
+    item->frame_number = anims[item->anim_number].frame_base;
     item->state_current = state;
     item->state_next = state;
 }
 
 void SetAnimationForItemASN(ITEM_INFO* item, int animation, int state, bool needStateNext)
 {
-    item->current_anim = animation;
-    item->current_frame = anims[item->current_anim].frame_base;
+    item->anim_number = animation;
+    item->frame_number = anims[item->anim_number].frame_base;
     item->state_current = state;
     if (needStateNext)
         item->state_next = state;
@@ -228,31 +228,31 @@ void SetAnimationForItemASN(ITEM_INFO* item, int animation, int state, bool need
 
 void SetAnimationForItemASF(ITEM_INFO* item, int animation, int state, int frameNow)
 {
-    item->current_anim = animation;
-    item->current_frame = anims[item->current_anim].frame_base + frameNow;
+    item->anim_number = animation;
+    item->frame_number = anims[item->anim_number].frame_base + frameNow;
     item->state_current = state;
     item->state_next = state;
 }
 
 void SetAnimationForItemASS(ITEM_INFO* item, int animation, int state_current, int state_next)
 {
-    item->current_anim = animation;
-    item->current_frame = anims[item->current_anim].frame_base;
+    item->anim_number = animation;
+    item->frame_number = anims[item->anim_number].frame_base;
     item->state_current = state_current;
     item->state_next = state_next;
 }
 
 void SetAnimationForItemASSF(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow)
 {
-    item->current_anim = animation;
-    item->current_frame = anims[item->current_anim].frame_base + frameNow;
+    item->anim_number = animation;
+    item->frame_number = anims[item->anim_number].frame_base + frameNow;
     item->state_current = state_current;
     item->state_next = state_next;
 }
 
 short GetCurrentFrame(ITEM_INFO* item)
 {
-    return (item->current_frame - anims[item->current_anim].frame_base);
+    return (item->frame_number - anims[item->anim_number].frame_base);
 }
 
 void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue)

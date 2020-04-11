@@ -15,8 +15,8 @@ int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
     int interl;
     int interp, rat;
 
-    frm = item->current_frame;
-    anim = &anims[item->current_anim];
+    frm = item->frame_number;
+    anim = &anims[item->anim_number];
     frame[0] = frame[1] = anim->frame_ptr;
     interl = LOBYTE(anim->interpolation);
     rat = interl;

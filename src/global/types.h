@@ -438,8 +438,8 @@ struct ITEM_INFO
     short state_current;
     short state_next;
     short state_required;
-    short current_anim;
-    short current_frame;
+    short anim_number;
+    short frame_number;
     short room_number;
     short next_item;
     short next_free;

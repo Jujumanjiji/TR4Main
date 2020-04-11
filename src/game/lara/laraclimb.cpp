@@ -27,7 +27,7 @@ void lara_as_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
         item->state_next = STATE_LARA_LADDER_RIGHT;
         lara.move_angle = item->pos.y_rot + 0x4000;
     }
-    else if (CHK_EXI(TrInput, IN_JUMP) && item->current_anim == ANIMATION_LARA_LADDER_IDLE)
+    else if (CHK_EXI(TrInput, IN_JUMP) && item->anim_number == ANIMATION_LARA_LADDER_IDLE)
     {
         item->state_next = STATE_LARA_JUMP_BACK;
         lara.move_angle = item->pos.y_rot - 0x8000;

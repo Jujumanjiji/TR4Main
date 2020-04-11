@@ -31,7 +31,8 @@ void lara_as_walk(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_EXI(TrInput, IN_FORWARD))
     {
-        if (lara.water_status == LWS_WADE)
+        long water_level = -lara.water_surface_dist;
+        if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
         {
             item->state_next = STATE_LARA_WADE_FORWARD;
         }
@@ -96,7 +97,7 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
 
     static bool jump_ok = true;
     short frame = GetCurrentFrame(item);
-    switch (item->current_anim)
+    switch (item->anim_number)
     {
         case ANIMATION_LARA_RUN:
             if (frame == 4)
@@ -119,7 +120,8 @@ void lara_as_run(ITEM_INFO* item, COLL_INFO* coll)
     }
     else if (CHK_EXI(TrInput, IN_FORWARD))
     {
-        if (lara.water_status == LWS_WADE)
+        long water_level = -lara.water_surface_dist;
+        if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
         {
             item->state_next = STATE_LARA_WADE_FORWARD;
         }
@@ -146,8 +148,8 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     /// normal
-    if (item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_RIGHT
-    &&  item->current_anim != ANIMATION_LARA_SPRINT_SLIDE_STAND_LEFT)
+    if (item->anim_number != ANIMATION_LARA_SPRINT_SLIDE_STAND_RIGHT
+    &&  item->anim_number != ANIMATION_LARA_SPRINT_SLIDE_STAND_LEFT)
     {
         StopSoundEffect(SFX_LARA_SLIPPING);
     }
@@ -215,7 +217,8 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     /// wading
-    if (lara.water_status == LWS_WADE)
+    long water_level = -lara.water_surface_dist;
+    if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
     {
         if (CHK_EXI(TrInput, IN_JUMP))
         {
@@ -375,7 +378,8 @@ void lara_as_turnr(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_EXI(TrInput, IN_FORWARD))
     {
-        if (lara.water_status == LWS_WADE)
+        long water_level = -lara.water_surface_dist;
+        if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
         {
             item->state_next = STATE_LARA_WADE_FORWARD;
         }
@@ -416,7 +420,8 @@ void lara_as_turnl(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_EXI(TrInput, IN_FORWARD))
     {
-        if (lara.water_status == LWS_WADE)
+        long water_level = -lara.water_surface_dist;
+        if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
         {
             item->state_next = STATE_LARA_WADE_FORWARD;
         }
@@ -781,7 +786,7 @@ void lara_as_usepuzzle(ITEM_INFO* item, COLL_INFO* coll)
     camera.target_elevation = -ANGLE(25);
     camera.target_distance = WALL_L;
 
-    if (item->current_frame == anims[item->current_anim].frame_end)
+    if (item->frame_number == anims[item->anim_number].frame_end)
     {
         if (item->reserved_1)
             SetAnimationForItemAS(item, item->reserved_1, STATE_LARA_MISC_CONTROL);
@@ -841,7 +846,8 @@ void lara_as_wade(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_EXI(TrInput, IN_FORWARD))
     {
-        if (lara.water_status == LWS_ABOVEWATER)
+        long water_level = -lara.water_surface_dist;
+        if (lara.water_status == LWS_ABOVEWATER && water_level <= WADE_DEPTH)
             item->state_next = STATE_LARA_RUN_FORWARD;
         else
             item->state_next = STATE_LARA_WADE_FORWARD;
@@ -860,7 +866,7 @@ void lara_as_pickupflare(ITEM_INFO* item, COLL_INFO* coll)
     camera.target_angle = ANGLE(130);
     camera.target_elevation = -ANGLE(15);
     camera.target_distance = WALL_L;
-    if (item->current_frame == (anims[item->current_anim].frame_end - 1))
+    if (item->frame_number == (anims[item->anim_number].frame_end - 1))
         lara.gun_status = LHS_ARMLESS;
 }
 
@@ -904,7 +910,7 @@ void lara_as_duck(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_EXI(TrInput, IN_FORWARD) || CHK_EXI(TrInput, IN_BACK) && (CHK_EXI(TrInput, IN_DUCK) || lara.keep_ducked) && lara.gun_status == LHS_ARMLESS && lara.water_status != LWS_WADE)
     {
-        if ((item->current_anim == ANIMATION_LARA_CROUCH_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_PREPARE)
+        if ((item->anim_number == ANIMATION_LARA_CROUCH_IDLE || item->anim_number == ANIMATION_LARA_CROUCH_PREPARE)
         &&   CHK_NOP(TrInput, (IN_FLARE | IN_DRAW))
         &&  (lara.gun_type != LG_FLARE || (lara.flare_age < 900 && lara.flare_age)))
         {
@@ -923,7 +929,8 @@ void lara_as_dash(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (!lara.dash_timer || CHK_NOP(TrInput, IN_SPRINT) || lara.water_status == LWS_WADE)
+    long water_level = -lara.water_surface_dist;
+    if (!lara.dash_timer || CHK_NOP(TrInput, IN_SPRINT) || (lara.water_status == LWS_WADE && water_level > WADE_DEPTH))
     {
         item->state_next = STATE_LARA_RUN_FORWARD;
         return;
@@ -1111,7 +1118,7 @@ void lara_as_all4s(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = TRUE;
 
-    if (item->current_anim == ANIMATION_LARA_CROUCH_TO_CRAWL_BEGIN)
+    if (item->anim_number == ANIMATION_LARA_CROUCH_TO_CRAWL_BEGIN)
         lara.gun_status = LHS_HANDBUSY;
 
     camera.target_elevation = -ANGLE(23);
@@ -1225,7 +1232,8 @@ void lara_as_all4turnr(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_as_crawlb(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (item->hit_points <= 0 || lara.water_status == LWS_WADE)
+    long water_level = -lara.water_surface_dist;
+    if (item->hit_points <= 0 || (lara.water_status == LWS_WADE && water_level > WADE_DEPTH))
     {
         item->state_next = STATE_LARA_CRAWL_IDLE;
         return;
@@ -1260,24 +1268,24 @@ void lara_as_controlled(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = FALSE;
 
-    if (item->current_anim == ANIMATION_LARA_HARP_PLAY && (item->current_frame == anims[ANIMATION_LARA_HARP_PLAY].frame_base + 130))
+    if (item->anim_number == ANIMATION_LARA_HARP_PLAY && (item->frame_number == anims[ANIMATION_LARA_HARP_PLAY].frame_base + 130))
     {
         S_CDPlay(6, FALSE);
     }
 
-    if (item->current_anim == ANIMATION_LARA_DETONATOR_USE)
+    if (item->anim_number == ANIMATION_LARA_DETONATOR_USE)
     {
         short meshIndex;
-        if (item->current_frame == (anims[ANIMATION_LARA_DETONATOR_USE].frame_base + 16))
+        if (item->frame_number == (anims[ANIMATION_LARA_DETONATOR_USE].frame_base + 16))
             meshIndex = objects[MESHSWAP3].mesh_index;
-        else if (item->current_frame == (anims[ANIMATION_LARA_DETONATOR_USE].frame_base + 118))
+        else if (item->frame_number == (anims[ANIMATION_LARA_DETONATOR_USE].frame_base + 118))
             meshIndex = objects[LARA_SKIN].mesh_index;
         lara.mesh.hand_r = meshes[meshIndex + HAND_R * 2];
     }
 
-    if (item->current_frame == (anims[item->current_anim].frame_end - 1))
+    if (item->frame_number == (anims[item->anim_number].frame_end - 1))
     {
-        if (item->current_anim == ANIMATION_LARA_HARP_PLAY)
+        if (item->anim_number == ANIMATION_LARA_HARP_PLAY)
             S_CDPlay(19, FALSE);
         lara.gun_status = LHS_ARMLESS;
         if (force_fixed_camera)
@@ -1371,7 +1379,7 @@ void lara_as_pulley(ITEM_INFO* item, COLL_INFO* coll)
     else
         item->state_next = STATE_LARA_IDLE;
 
-    if (item->current_anim == ANIMATION_LARA_PULLEY_PULL && item->current_frame == (anims[ANIMATION_LARA_PULLEY_PULL].frame_base + 44))
+    if (item->anim_number == ANIMATION_LARA_PULLEY_PULL && item->frame_number == (anims[ANIMATION_LARA_PULLEY_PULL].frame_base + 44))
     {
         if (gen->ocb_bits && !gen->reserved_2)
         {
@@ -1394,7 +1402,7 @@ void lara_as_pulley(ITEM_INFO* item, COLL_INFO* coll)
         }
     }
 
-    if (item->current_anim == ANIMATION_LARA_PULLEY_UNGRAB && item->current_frame == (anims[ANIMATION_LARA_PULLEY_UNGRAB].frame_end - 1))
+    if (item->anim_number == ANIMATION_LARA_PULLEY_UNGRAB && item->frame_number == (anims[ANIMATION_LARA_PULLEY_UNGRAB].frame_end - 1))
         lara.gun_status = LHS_ARMLESS;
 }
 
@@ -1430,28 +1438,28 @@ void lara_as_extcornerl(ITEM_INFO* item, COLL_INFO* coll)
 {
     camera.target_angle = 0x4000;
     camera.target_elevation = -ANGLE(33);
-    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_LEFT_OUTER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_LEFT_OUTER_END);
+    SetCornerAnim(item, coll, camera.target_angle, item->anim_number == ANIMATION_LARA_HANG_AROUND_LEFT_OUTER_END || item->anim_number == ANIMATION_LARA_LADDER_AROUND_LEFT_OUTER_END);
 }
 
 void lara_as_extcornerr(ITEM_INFO* item, COLL_INFO* coll)
 {
     camera.target_angle = -0x4000;
     camera.target_elevation = -ANGLE(33);
-    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_RIGHT_OUTER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_RIGHT_OUTER_END);
+    SetCornerAnim(item, coll, camera.target_angle, item->anim_number == ANIMATION_LARA_HANG_AROUND_RIGHT_OUTER_END || item->anim_number == ANIMATION_LARA_LADDER_AROUND_RIGHT_OUTER_END);
 }
 
 void lara_as_intcornerl(ITEM_INFO* item, COLL_INFO* coll)
 {
     camera.target_angle = -0x4000;
     camera.target_elevation = -ANGLE(33);
-    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_LEFT_INNER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_LEFT_INNER_END);
+    SetCornerAnim(item, coll, camera.target_angle, item->anim_number == ANIMATION_LARA_HANG_AROUND_LEFT_INNER_END || item->anim_number == ANIMATION_LARA_LADDER_AROUND_LEFT_INNER_END);
 }
 
 void lara_as_intcornerr(ITEM_INFO* item, COLL_INFO* coll)
 {
     camera.target_angle = 0x4000;
     camera.target_elevation = -ANGLE(33);
-    SetCornerAnim(item, coll, camera.target_angle, item->current_anim == ANIMATION_LARA_HANG_AROUND_RIGHT_INNER_END || item->current_anim == ANIMATION_LARA_LADDER_AROUND_RIGHT_INNER_END);
+    SetCornerAnim(item, coll, camera.target_angle, item->anim_number == ANIMATION_LARA_HANG_AROUND_RIGHT_INNER_END || item->anim_number == ANIMATION_LARA_LADDER_AROUND_RIGHT_INNER_END);
 }
 
 void lara_as_rope(ITEM_INFO* item, COLL_INFO* coll)
@@ -1473,9 +1481,9 @@ void lara_as_climbrope(ITEM_INFO* item, COLL_INFO* coll)
 
     camera.target_angle = ANGLE(30);
 
-    if (item->current_frame == anims[item->current_anim].frame_end)
+    if (item->frame_number == anims[item->anim_number].frame_end)
     {
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->frame_number = anims[item->anim_number].frame_base;
         lara.rope_segment -= 2;
     }
 
@@ -1511,9 +1519,9 @@ void lara_as_climbroped(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    if (item->current_anim == ANIMATION_LARA_ROPE_DOWN && item->current_frame == anims[ANIMATION_LARA_ROPE_DOWN].frame_end)
+    if (item->anim_number == ANIMATION_LARA_ROPE_DOWN && item->frame_number == anims[ANIMATION_LARA_ROPE_DOWN].frame_end)
     {
-        item->current_frame = anims[ANIMATION_LARA_ROPE_DOWN].frame_base;
+        item->frame_number = anims[ANIMATION_LARA_ROPE_DOWN].frame_base;
         lara.rope_flag = 0;
         lara.rope_segment++;
         lara.rope_offset = 0;

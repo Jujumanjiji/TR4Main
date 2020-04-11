@@ -50,8 +50,8 @@ void draw_shotgun(int weapon_type)
         lara.weapon_item = CreateItem();
         item = &items[lara.weapon_item];
         item->object_number = weapon_object(weapon_type);
-        item->current_anim = (weapon_type == LG_GRENADEGUN) ? (objects[item->object_number].anim_index) : (objects[item->object_number].anim_index + 1);
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->anim_number = (weapon_type == LG_GRENADEGUN) ? (objects[item->object_number].anim_index) : (objects[item->object_number].anim_index + 1);
+        item->frame_number = anims[item->anim_number].frame_base;
         item->state_current = W_DRAW;
         item->state_next = W_DRAW;
         item->status = FITEM_ACTIVE;
@@ -67,14 +67,14 @@ void draw_shotgun(int weapon_type)
 
     if (item->state_current == W_AIM || item->state_current == W_UAIM)
         ready_shotgun(weapon_type);
-    else if ((item->current_frame - anims[item->current_anim].frame_base) == weapons[weapon_type].draw_frame)
+    else if ((item->frame_number - anims[item->anim_number].frame_base) == weapons[weapon_type].draw_frame)
         draw_shotgun_meshes(weapon_type);
     else if (lara.water_status == LWS_UNDERWATER)
         item->state_next = W_UAIM;
 
-    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->current_anim].frame_ptr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->current_frame - anims[item->current_anim].frame_base;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->current_anim;
+    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->anim_number].frame_ptr;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
 }
 
 void undraw_shotgun(int weapon_type)
@@ -103,9 +103,9 @@ void undraw_shotgun(int weapon_type)
         undraw_shotgun_meshes(weapon_type);
     }
 
-    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->current_anim].frame_ptr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->current_frame - anims[item->current_anim].frame_base;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->current_anim;
+    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->anim_number].frame_ptr;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
 }
 
 void shotgun_handler(int weapon_type)
@@ -281,9 +281,9 @@ void animate_shotgun(int weapon_type)
     }
 
     AnimateItem(item);
-    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->current_anim].frame_ptr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->current_frame - anims[item->current_anim].frame_base;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->current_anim;
+    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->anim_number].frame_ptr;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
 }
 
 #ifdef DLL_INJECT

@@ -40,15 +40,15 @@ void lara_col_walk(ITEM_INFO* item, COLL_INFO* coll)
     
     if (LaraDeflectEdge(item, coll))
     {
-        if (item->current_frame >= 29 && item->current_frame <= 47)
+        if (item->frame_number >= 29 && item->frame_number <= 47)
         {
-            item->current_anim = ANIMATION_LARA_END_WALK_LEFT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_END_WALK_LEFT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
-        else if ((item->current_frame >= 22 && item->current_frame <= 28) || (item->current_frame >= 48 && item->current_frame <= 57))
+        else if ((item->frame_number >= 22 && item->frame_number <= 28) || (item->frame_number >= 48 && item->frame_number <= 57))
         {
-            item->current_anim = ANIMATION_LARA_END_WALK_RIGHT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_END_WALK_RIGHT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
         else
         {
@@ -68,15 +68,15 @@ void lara_col_walk(ITEM_INFO* item, COLL_INFO* coll)
         }
         else
         {
-            if (item->current_frame >= 28 && item->current_frame <= 45)
+            if (item->frame_number >= 28 && item->frame_number <= 45)
             {
-                item->current_anim = ANIMATION_LARA_WALK_DOWN_LEFT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALK_DOWN_LEFT;
+                item->frame_number = anims[item->anim_number].frame_base;
             }
             else
             {
-                item->current_anim = ANIMATION_LARA_WALK_DOWN_RIGHT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALK_DOWN_RIGHT;
+                item->frame_number = anims[item->anim_number].frame_base;
             }
         }
     }
@@ -90,15 +90,15 @@ void lara_col_walk(ITEM_INFO* item, COLL_INFO* coll)
         }
         else
         {
-            if (item->current_frame >= 27 && item->current_frame <= 44)
+            if (item->frame_number >= 27 && item->frame_number <= 44)
             {
-                item->current_anim = ANIMATION_LARA_WALK_UP_STEP_LEFT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALK_UP_STEP_LEFT;
+                item->frame_number = anims[item->anim_number].frame_base;
             }
             else
             {
-                item->current_anim = ANIMATION_LARA_WALK_UP_STEP_RIGHT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALK_UP_STEP_RIGHT;
+                item->frame_number = anims[item->anim_number].frame_base;
             }
         }
     }
@@ -128,21 +128,21 @@ void lara_col_run(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->pos.z_rot = 0;
 
-        if (item->current_anim != ANIMATION_LARA_STAY_TO_RUN && TestWall(item, STEP_L, 0, -LARA_SHOULDER_HITE))
+        if (item->anim_number != ANIMATION_LARA_STAY_TO_RUN && TestWall(item, STEP_L, 0, -LARA_SHOULDER_HITE))
         {
             item->state_current = STATE_LARA_SPLAT;
             
-            if (item->current_frame >= 0 && item->current_frame <= 9)
+            if (item->frame_number >= 0 && item->frame_number <= 9)
             {
-                item->current_anim = ANIMATION_LARA_WALL_SMASH_LEFT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALL_SMASH_LEFT;
+                item->frame_number = anims[item->anim_number].frame_base;
                 return;
             }
             
-            if (item->current_frame >= 10 && item->current_frame <= 21)
+            if (item->frame_number >= 10 && item->frame_number <= 21)
             {
-                item->current_anim = ANIMATION_LARA_WALL_SMASH_RIGHT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALL_SMASH_RIGHT;
+                item->frame_number = anims[item->anim_number].frame_base;
                 return;
             }
         }
@@ -159,15 +159,15 @@ void lara_col_run(ITEM_INFO* item, COLL_INFO* coll)
         }
         else
         {
-            if (item->current_frame >= 3 && item->current_frame <= 14)
+            if (item->frame_number >= 3 && item->frame_number <= 14)
             {
-                item->current_anim = ANIMATION_LARA_RUN_UP_STEP_LEFT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_RUN_UP_STEP_LEFT;
+                item->frame_number = anims[item->anim_number].frame_base;
             }
             else
             {
-                item->current_anim = ANIMATION_LARA_RUN_UP_STEP_RIGHT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_RUN_UP_STEP_RIGHT;
+                item->frame_number = anims[item->anim_number].frame_base;
             }
         }
     }
@@ -269,8 +269,8 @@ void lara_col_fastback(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor > 200)
     {
-        item->current_anim = ANIMATION_LARA_FREE_FALL_BACK;
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->anim_number = ANIMATION_LARA_FREE_FALL_BACK;
+        item->frame_number = anims[item->anim_number].frame_base;
         item->state_current = STATE_LARA_FALL_BACKWARD;
         item->state_next = STATE_LARA_FALL_BACKWARD;
         item->fallspeed = 0;
@@ -300,8 +300,8 @@ void lara_col_turn(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor > 100)
     {
-        item->current_anim = ANIMATION_LARA_FREE_FALL_FORWARD;
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->anim_number = ANIMATION_LARA_FREE_FALL_FORWARD;
+        item->frame_number = anims[item->anim_number].frame_base;
         item->state_current = STATE_LARA_JUMP_FORWARD;
         item->state_next = STATE_LARA_JUMP_FORWARD;
         item->fallspeed = 0;
@@ -352,8 +352,8 @@ void lara_col_fastfall(ITEM_INFO* item, COLL_INFO* coll)
         }
         else
         {
-            item->current_anim = ANIMATION_LARA_LANDING_HARD;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_LANDING_HARD;
+            item->frame_number = anims[item->anim_number].frame_base;
             item->state_next = STATE_LARA_IDLE;
             item->state_current = STATE_LARA_IDLE;
         }
@@ -371,7 +371,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
     item->fallspeed = 0;
     item->gravity_status = FALSE;
 
-    if (item->current_anim == ANIMATION_LARA_HANG_IDLE && item->current_frame == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
+    if (item->anim_number == ANIMATION_LARA_HANG_IDLE && item->frame_number == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
     {
         if (CHK_EXI(TrInput, (IN_LEFT | IN_LSTEP)))
         {
@@ -415,7 +415,7 @@ void lara_col_hang(ITEM_INFO* item, COLL_INFO* coll)
     LaraHangTest(item, coll);
 
     // TODO: enable a customize/json to disable the delay to climb up !
-    if (item->current_anim == ANIMATION_LARA_HANG_IDLE && item->current_frame == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
+    if (item->anim_number == ANIMATION_LARA_HANG_IDLE && item->frame_number == anims[ANIMATION_LARA_HANG_IDLE].frame_base + 21)
     {
         if (CHK_EXI(TrInput, IN_FORWARD))
         {
@@ -567,15 +567,15 @@ void lara_col_back(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor > (STEP_L / 2) && coll->mid_floor < STEPUP_HEIGHT)
     {
-        if (item->current_frame >= 964 && item->current_frame <= 993)
+        if (item->frame_number >= 964 && item->frame_number <= 993)
         {
-            item->current_anim = ANIMATION_LARA_WALK_DOWN_BACK_RIGHT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_WALK_DOWN_BACK_RIGHT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
         else
         {
-            item->current_anim = ANIMATION_LARA_WALK_DOWN_BACK_LEFT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_WALK_DOWN_BACK_LEFT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
     }
 
@@ -912,7 +912,7 @@ void lara_col_climbstnc(ITEM_INFO* item, COLL_INFO* coll)
     if (LaraCheckForLetGo(item, coll))
         return;
 
-    if (item->current_anim != ANIMATION_LARA_LADDER_IDLE)
+    if (item->anim_number != ANIMATION_LARA_LADDER_IDLE)
         return;
 
     int result_r, result_l;
@@ -1008,9 +1008,9 @@ void lara_col_climbup(ITEM_INFO* item, COLL_INFO* coll)
     int ledge_r, ledge_l;
     int yshift, frame;
 
-    if (item->current_anim == ANIMATION_LARA_LADDER_UP)
+    if (item->anim_number == ANIMATION_LARA_LADDER_UP)
     {
-        frame = item->current_frame - anims[ANIMATION_LARA_LADDER_UP].frame_base;
+        frame = item->frame_number - anims[ANIMATION_LARA_LADDER_UP].frame_base;
 
         if (frame == 0)
             yshift = 0;
@@ -1084,9 +1084,9 @@ void lara_col_climbdown(ITEM_INFO* item, COLL_INFO* coll)
     int shift_r, shift_l;
     int yshift, frame;
 
-    if (item->current_anim == ANIMATION_LARA_LADDER_DOWN)
+    if (item->anim_number == ANIMATION_LARA_LADDER_DOWN)
     {
-        frame = item->current_frame - anims[ANIMATION_LARA_LADDER_DOWN].frame_base;
+        frame = item->frame_number - anims[ANIMATION_LARA_LADDER_DOWN].frame_base;
 
         if (frame == 0)
             yshift = 0;
@@ -1164,16 +1164,16 @@ void lara_col_wade(ITEM_INFO* item, COLL_INFO* coll)
         {
             item->state_current = STATE_LARA_SPLAT;
 
-            if (item->current_frame >= 0 && item->current_frame <= 9)
+            if (item->frame_number >= 0 && item->frame_number <= 9)
             {
-                item->current_anim = ANIMATION_LARA_WALL_SMASH_LEFT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALL_SMASH_LEFT;
+                item->frame_number = anims[item->anim_number].frame_base;
                 return;
             }
-            if (item->current_frame >= 10 && item->current_frame <= 21)
+            if (item->frame_number >= 10 && item->frame_number <= 21)
             {
-                item->current_anim = ANIMATION_LARA_WALL_SMASH_RIGHT;
-                item->current_frame = anims[item->current_anim].frame_base;
+                item->anim_number = ANIMATION_LARA_WALL_SMASH_RIGHT;
+                item->frame_number = anims[item->anim_number].frame_base;
                 return;
             }
         }
@@ -1183,15 +1183,15 @@ void lara_col_wade(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor >= -STEPUP_HEIGHT && coll->mid_floor < -(STEP_L / 2))
     {
-        if (item->current_frame >= 3 && item->current_frame <= 14)
+        if (item->frame_number >= 3 && item->frame_number <= 14)
         {
-            item->current_anim = ANIMATION_LARA_RUN_UP_STEP_LEFT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_RUN_UP_STEP_LEFT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
         else
         {
-            item->current_anim = ANIMATION_LARA_RUN_UP_STEP_RIGHT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_RUN_UP_STEP_RIGHT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
     }
 
@@ -1240,7 +1240,7 @@ void lara_col_duck(ITEM_INFO* item, COLL_INFO* coll)
     if (coll->mid_floor != -NO_HEIGHT)
         item->pos.y += coll->mid_floor;
 
-    if ((CHK_NOP(TrInput, IN_DUCK) || lara.water_status == LWS_WADE) && !lara.keep_ducked && item->current_anim == ANIMATION_LARA_CROUCH_IDLE)
+    if ((CHK_NOP(TrInput, IN_DUCK) || lara.water_status == LWS_WADE) && !lara.keep_ducked && item->anim_number == ANIMATION_LARA_CROUCH_IDLE)
     {
         item->state_next = STATE_LARA_IDLE;
         return;
@@ -1282,15 +1282,15 @@ void lara_col_dash(ITEM_INFO* item, COLL_INFO* coll)
 
     if (coll->mid_floor >= -STEPUP_HEIGHT && coll->mid_floor < -(STEP_L / 2))
     {
-        if (item->current_frame >= 3 && item->current_frame <= 14)
+        if (item->frame_number >= 3 && item->frame_number <= 14)
         {
-            item->current_anim = ANIMATION_LARA_RUN_UP_STEP_LEFT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_RUN_UP_STEP_LEFT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
         else
         {
-            item->current_anim = ANIMATION_LARA_RUN_UP_STEP_RIGHT;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_RUN_UP_STEP_RIGHT;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
     }
 
@@ -1565,7 +1565,7 @@ void lara_col_all4s(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->state_next = STATE_LARA_CROUCH_IDLE;
     }
-    else if (item->current_anim == ANIMATION_LARA_CRAWL_IDLE || item->current_anim == ANIMATION_LARA_CROUCH_TO_CRAWL_END)
+    else if (item->anim_number == ANIMATION_LARA_CRAWL_IDLE || item->anim_number == ANIMATION_LARA_CROUCH_TO_CRAWL_END)
     {
         if (CHK_EXI(TrInput, IN_FORWARD))
         {
@@ -1649,10 +1649,10 @@ void lara_col_crawl(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->state_current = STATE_LARA_CRAWL_IDLE;
         item->state_next = STATE_LARA_CRAWL_IDLE;
-        if (item->current_anim != ANIMATION_LARA_CRAWL_IDLE)
+        if (item->anim_number != ANIMATION_LARA_CRAWL_IDLE)
         {
-            item->current_anim = ANIMATION_LARA_CRAWL_IDLE;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_CRAWL_IDLE;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
         return;
     }
@@ -1718,10 +1718,10 @@ void lara_col_crawlb(ITEM_INFO* item, COLL_INFO* coll)
     {
         item->state_current = STATE_LARA_CRAWL_IDLE;
         item->state_next = STATE_LARA_CRAWL_IDLE;
-        if (item->current_anim != ANIMATION_LARA_CRAWL_IDLE)
+        if (item->anim_number != ANIMATION_LARA_CRAWL_IDLE)
         {
-            item->current_anim = ANIMATION_LARA_CRAWL_IDLE;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_CRAWL_IDLE;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
         return;
     }
@@ -1750,7 +1750,7 @@ void lara_col_crawl2hang(ITEM_INFO* item, COLL_INFO* coll)
     camera.target_angle = 0;
     camera.target_elevation = -10920;
 
-    if (item->current_anim == ANIMATION_LARA_CRAWL_TO_HANG_END)
+    if (item->anim_number == ANIMATION_LARA_CRAWL_TO_HANG_END)
     {
         lara.move_angle = item->pos.y_rot;
         coll->bad_pos = NO_HEIGHT;
@@ -1808,17 +1808,17 @@ void lara_col_turnswitch(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (coll->old.x != item->pos.x || coll->old.z != item->pos.z)
     {
-        if (item->current_anim == ANIMATION_LARA_ROUND_HANDLE_PUSH_LEFT_CONTINUE)
+        if (item->anim_number == ANIMATION_LARA_ROUND_HANDLE_PUSH_LEFT_CONTINUE)
         {
             item->pos.y_rot -= 0x4000;
-            item->current_anim = ANIMATION_LARA_ROUND_HANDLE_PUSH_LEFT_END;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_ROUND_HANDLE_PUSH_LEFT_END;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
-        else if (item->current_anim == ANIMATION_LARA_ROUND_HANDLE_PUSH_RIGHT_CONTINUE)
+        else if (item->anim_number == ANIMATION_LARA_ROUND_HANDLE_PUSH_RIGHT_CONTINUE)
         {
             item->pos.y_rot += 0x4000;
-            item->current_anim = ANIMATION_LARA_ROUND_HANDLE_PUSH_RIGHT_END;
-            item->current_frame = anims[item->current_anim].frame_base;
+            item->anim_number = ANIMATION_LARA_ROUND_HANDLE_PUSH_RIGHT_END;
+            item->frame_number = anims[item->anim_number].frame_base;
         }
     }
 }
@@ -1834,7 +1834,7 @@ void lara_col_polestat(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = FALSE;
 
-    if (item->current_anim == ANIMATION_LARA_POLE_IDLE)
+    if (item->anim_number == ANIMATION_LARA_POLE_IDLE)
     {
         lara.move_angle = item->pos.y_rot;
         coll->bad_pos = NO_HEIGHT;
@@ -1962,7 +1962,7 @@ void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
     else if (CHK_EXI(TrInput, IN_RIGHT))
         item->pos.y_rot -= STEP_L;
 
-    if (item->current_anim == ANIMATION_LARA_POLE_CLIMB_DOWN_TO_IDLE)
+    if (item->anim_number == ANIMATION_LARA_POLE_CLIMB_DOWN_TO_IDLE)
         item->reserved_3 -= WALL_L;
     else
         item->reserved_3 += STEP_L;
@@ -2059,7 +2059,7 @@ void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
     camera.target_distance = (WALL_L * 2);
     UpdateRopeSwing(item);
 
-    if (item->current_anim == ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD)
+    if (item->anim_number == ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD)
     {
         if (CHK_EXI(TrInput, IN_SPRINT))
         {
@@ -2084,7 +2084,7 @@ void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
                 lara.rope_frame = lara.rope_dframe;
         }
 
-        item->current_frame = (short)(lara.rope_frame >> 8);
+        item->frame_number = (short)(lara.rope_frame >> 8);
 
         if (CHK_NOP(TrInput, IN_SPRINT)
         && (lara.rope_frame >> 8) == (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 32)
@@ -2097,7 +2097,7 @@ void lara_col_ropefwd(ITEM_INFO* item, COLL_INFO* coll)
         if (CHK_EXI(TrInput, IN_JUMP))
             JumpOffRope(item);
     }
-    else if (item->current_frame == (anims[ANIMATION_LARA_ROPE_IDLE_TO_SWING].frame_base + 15))
+    else if (item->frame_number == (anims[ANIMATION_LARA_ROPE_IDLE_TO_SWING].frame_base + 15))
     {
         ApplyVelocityToRope(lara.rope_segment, item->pos.y_rot, STEP_L);
     }

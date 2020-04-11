@@ -528,7 +528,7 @@ void InitialiseNewWeapons(void)
                 draw_flare_meshes();
             break;
         default:
-            lara.l_arm.frame_base = lara.r_arm.frame_base = anims[lara_item->current_anim].frame_ptr;
+            lara.l_arm.frame_base = lara.r_arm.frame_base = anims[lara_item->anim_number].frame_ptr;
             break;
     }
 }
@@ -1069,7 +1069,7 @@ void LaraGun(void)
         }
         else if (CHK_EXI(TrInput, IN_FLARE) && CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
         {
-            if (lara_item->state_current == STATE_LARA_CROUCH_IDLE && lara_item->current_anim != ANIMATION_LARA_CROUCH_IDLE)
+            if (lara_item->state_current == STATE_LARA_CROUCH_IDLE && lara_item->anim_number != ANIMATION_LARA_CROUCH_IDLE)
                 return;
 
             if (lara.gun_type == LG_FLARE)

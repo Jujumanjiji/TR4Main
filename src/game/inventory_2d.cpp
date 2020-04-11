@@ -694,7 +694,7 @@ void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, 
     inventory_drawX = float(x);
     inventory_drawY = float(y + obj->yoff);
     
-    item.current_anim = objects[item.object_number].anim_index;
+    item.anim_number = objects[item.object_number].anim_index;
     item.mesh_bits = obj->meshbits;
     item.shade = -1;
     item.pos.x = 0;
@@ -747,7 +747,7 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
     }
 
     obj = &objects[item->object_number];
-    anim = &anims[item->current_anim];
+    anim = &anims[item->anim_number];
     mesh = &meshes[obj->mesh_index];
     bone = &bones[obj->bone_index];
     mesh_bits = 1;
@@ -2510,7 +2510,7 @@ void use_current_item(void)
     /// BINOCULARS
     if (object_number == BINOCULARS_ITEM)
     {
-        if ((lara_item->state_current == STATE_LARA_IDLE && lara_item->current_anim == ANIMATION_LARA_STAY_IDLE) || (lara.is_ducked && CHK_NOP(TrInput, IN_DUCK)))
+        if ((lara_item->state_current == STATE_LARA_IDLE && lara_item->anim_number == ANIMATION_LARA_STAY_IDLE) || (lara.is_ducked && CHK_NOP(TrInput, IN_DUCK)))
         {
             old_lara_busy = true;
             BinocularRange = 128;

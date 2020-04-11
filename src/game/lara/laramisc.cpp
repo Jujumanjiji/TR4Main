@@ -14,8 +14,8 @@ void InitialiseLaraAnims(ITEM_INFO* item)
         lara.water_status = LWS_UNDERWATER;
         item->state_next = STATE_LARA_UNDERWATER_STOP;
         item->state_current = STATE_LARA_UNDERWATER_STOP;
-        item->current_anim = ANIMATION_LARA_UNDERWATER_IDLE;
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->anim_number = ANIMATION_LARA_UNDERWATER_IDLE;
+        item->frame_number = anims[item->anim_number].frame_base;
         item->fallspeed = 0;
     }
     else
@@ -23,8 +23,8 @@ void InitialiseLaraAnims(ITEM_INFO* item)
         lara.water_status = LWS_ABOVEWATER;
         item->state_next = STATE_LARA_IDLE;
         item->state_current = STATE_LARA_IDLE;
-        item->current_anim = ANIMATION_LARA_STAY_SOLID;
-        item->current_frame = anims[item->current_anim].frame_base;
+        item->anim_number = ANIMATION_LARA_STAY_SOLID;
+        item->frame_number = anims[item->anim_number].frame_base;
     }
 }
 
