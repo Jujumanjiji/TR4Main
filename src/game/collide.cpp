@@ -54,9 +54,9 @@ BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
     y = laraitem->pos.y - item->pos.y;
     z = laraitem->pos.z - item->pos.z;
     mptr = phd_mxptr;
-    x2 = ((x * *(mptr + M00)) + (y * *(mptr + M01)) + (z * *(mptr + M02))) >> W2V_SHIFT;
-    y2 = ((x * *(mptr + M10)) + (y * *(mptr + M11)) + (z * *(mptr + M12))) >> W2V_SHIFT;
-    z2 = ((x * *(mptr + M20)) + (y * *(mptr + M21)) + (z * *(mptr + M22))) >> W2V_SHIFT;
+    x2 = (x * *(mptr + M00) + y * *(mptr + M01) + z * *(mptr + M02)) >> W2V_SHIFT;
+    y2 = (x * *(mptr + M10) + y * *(mptr + M11) + z * *(mptr + M12)) >> W2V_SHIFT;
+    z2 = (x * *(mptr + M20) + y * *(mptr + M21) + z * *(mptr + M22)) >> W2V_SHIFT;
     phd_PopMatrix();
 
     if (x2 < bounds->x_min || x2 > bounds->x_max)
@@ -131,6 +131,109 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
     return FALSE;
 }
 
+BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angadd)
+{
+    int x, y, z, dist;
+    short matrix_angle, angdif;
+    short angle_src, angle_target;
+    short cardinal_point;
+
+    x = dest->x - src->x;
+    y = dest->y - src->y;
+    z = dest->z - src->z;
+    dist = phd_sqrt(SQUARE(x) + SQUARE(y) + SQUARE(z));
+
+    if (velocity < dist)
+    {
+        src->x += velocity * x / dist;
+        src->y += velocity * y / dist;
+        src->z += velocity * z / dist;
+    }
+    else
+    {
+        src->x = dest->x;
+        src->y = dest->y;
+        src->z = dest->z;
+    }
+
+    if (!lara.is_moving)
+    {
+        if (lara.water_status != LWS_UNDERWATER)
+        {
+            matrix_angle = mGetAngle(dest->x, dest->z, src->x, src->z);
+            angle_src = (unsigned short)((matrix_angle + ANGLE(45)) / ANGLE(90));
+            angle_target = (unsigned short)((dest->y_rot + ANGLE(45)) / ANGLE(90));
+            cardinal_point = (angle_src - angle_target) & 3;
+            switch (cardinal_point)
+            {
+            case NORTH:
+                lara_item->anim_number = ANIMATION_LARA_WALK_LEFT;
+                lara_item->frame_number = anims[lara_item->anim_number].frame_base;
+                lara_item->state_current = STATE_LARA_WALK_LEFT;
+                lara_item->state_next = STATE_LARA_WALK_LEFT;
+                break;
+            case EAST:
+                lara_item->anim_number = ANIMATION_LARA_WALK_FORWARD;
+                lara_item->frame_number = anims[lara_item->anim_number].frame_base;
+                lara_item->state_current = STATE_LARA_WALK_FORWARD;
+                lara_item->state_next = STATE_LARA_WALK_FORWARD;
+                break;
+            case SOUTH:
+                lara_item->anim_number = ANIMATION_LARA_WALK_RIGHT;
+                lara_item->frame_number = anims[lara_item->anim_number].frame_base;
+                lara_item->state_current = STATE_LARA_WALK_RIGHT;
+                lara_item->state_next = STATE_LARA_WALK_RIGHT;
+                break;
+            case WEST:
+            default:
+                lara_item->anim_number = ANIMATION_LARA_WALK_BACK;
+                lara_item->frame_number = anims[lara_item->anim_number].frame_base;
+                lara_item->state_current = STATE_LARA_WALK_BACK;
+                lara_item->state_next = STATE_LARA_WALK_BACK;
+                break;
+            }
+        }
+
+        lara.gun_status = LHS_HANDBUSY;
+        lara.is_moving = TRUE;
+        lara.move_count = 0;
+    }
+    
+    // Do x rotation alignement
+    angdif = (dest->x_rot - src->x_rot);
+    if (angdif > angadd)
+        src->x_rot += angadd;
+    else if (angdif < -angadd)
+        src->x_rot -= angadd;
+    else
+        src->x_rot = dest->x_rot;
+
+    // Do y rotation alignement
+    angdif = (dest->y_rot - src->y_rot);
+    if (angdif > angadd)
+        src->y_rot += angadd;
+    else if (angdif < -angadd)
+        src->y_rot -= angadd;
+    else
+        src->y_rot = dest->y_rot;
+
+    // Do z rotation alignement
+    angdif = (dest->z_rot - src->z_rot);
+    if (angdif > angadd)
+        src->z_rot += angadd;
+    else if (angdif < -angadd)
+        src->z_rot -= angadd;
+    else
+        src->z_rot = dest->z_rot;
+
+    return (src->x == dest->x
+         && src->y == dest->y
+         && src->z == dest->z
+         && src->x_rot == dest->x_rot
+         && src->y_rot == dest->y_rot
+         && src->z_rot == dest->z_rot);
+}
+
 #ifdef DLL_INJECT
 void injector::inject_collide()
 {
@@ -139,5 +242,6 @@ void injector::inject_collide()
     this->inject(0x00447F30, TestLaraPosition);
     this->inject(0x00448070, AlignLaraPosition);
     this->inject(0x004483E0, MoveLaraPosition);
+    this->inject(0x00448140, Move3DPosTo3DPos);
 }
 #endif

@@ -256,6 +256,7 @@
 #define DEL_CalcLaraMatrices_Normal ((void(__cdecl*)(short *frame[2], int *bone, short type)) 0x0041DAF0)
 #define DEL_CalcLaraMatrices_Interpolate ((void(__cdecl*)(short *frame1, short *frame2, int frac, int rate, int *bone, short type)) 0x0041E630)
 
+#define Move3DPosTo3DPos ((BOOL(__cdecl*)(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angadd)) 0x00448140)
 #define show_inventory_2d ((int(__cdecl*)(void)) 0x0043B760) // in the end !!
 #define construct_inventory_2d ((void(__cdecl*)(void)) 0x0043B9B0)
 #define do_debounced_input ((void(__cdecl*)(void)) 0x0043BC30)
