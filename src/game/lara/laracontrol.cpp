@@ -12,7 +12,6 @@
 #include "utils.h"
 #include "oldobjects.h"
 
-/// NEED TO FIX THE SURFACE !!
 static short cheat_hit_points = 0;
 static bool cheatEnabled = false;
 static bool haveStuff = false;
@@ -319,6 +318,48 @@ static void LaraCheatyBits(void)
     }
 }
 
+#ifdef FEATURE_WADESPLASH_WHENEXIT
+static void WadeSplash_WhenExit(int x, int y, int z, int power, int count)
+{
+    splash_var.x = x;
+    splash_var.y = y;
+    splash_var.z = z;
+    splash_var.inner_rad = 16;
+    splash_var.inner_size = 12;
+    splash_var.inner_radvel = 160;
+    splash_var.inner_yvel = (-(power / 3)) * 72;
+    splash_var.inner_y = 24;
+    splash_var.middle_rad = 24;
+    splash_var.middle_size = 224;
+    splash_var.middle_radvel = (-(power / 3)) * 36;
+    splash_var.middle_yvel = 32;
+    splash_var.middle_y = 32;
+    splash_var.outer_rad = 272;
+    SetupSplash(&splash_var);
+    splash_count = 16;
+}
+
+static void Feature_WadeSplash_Exit(ITEM_INFO* item)
+{
+    int wh, wd;
+    int x, y, z;
+    short room_number;
+
+    x = item->pos.x;
+    y = item->pos.y;
+    z = item->pos.z;
+    room_number = item->room_number;
+    wh = GetWaterHeight(x, y, z, room_number);
+    wd = GetWaterDepth(x, y, z, room_number);
+
+    WadeSplash_WhenExit(x, wh, z, item->fallspeed, 16);
+}
+
+#define WadeSplash_Exit Feature_WadeSplash_Exit
+#else
+#define WadeSplash_Exit
+#endif
+
 void LaraCheat(ITEM_INFO *item, COLL_INFO *coll)
 {
     lara_item->hit_points = LARA_HITPOINTS;
@@ -515,6 +556,8 @@ void LaraControl(void)
                 {
                     if (wd != -NO_HEIGHT && ABS(hfw) < STEP_L)
                     {
+                        WadeSplash_Exit(item);
+
                         lara.water_status = LWS_SURFACE;
                         item->pos.y = item->pos.y + 1 - hfw;
                         item->anim_number = ANIMATION_LARA_UNDERWATER_TO_ONWATER;

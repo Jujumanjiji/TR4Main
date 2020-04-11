@@ -32,6 +32,7 @@
 #include <dsound.h>
 #include <zlib.h>
 
+#include "features.h"
 #include "global/injector.h"
 #include "global/objects.h"
 #include "global/enums.h"

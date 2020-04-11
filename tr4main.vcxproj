@@ -168,6 +168,7 @@
     <ClCompile Include="src\utils\lara_render.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features.h" />
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\gameflow.h" />
