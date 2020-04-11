@@ -936,6 +936,11 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
     return distance;
 }
 
+void classic_meshes(short objNumber, short meshID, short* new_meshes)
+{
+    meshes[objects[objNumber].mesh_index + meshID * 2] = new_meshes;
+}
+
 short* classic_meshes(short objNumber, short meshID)
 {
     return meshes[objects[objNumber].mesh_index + meshID * 2];
@@ -1252,6 +1257,9 @@ LPCSTR InventoryItemDebugString(short inv_item)
 
 void ResetLaraMeshSkin(void)
 {
+    for (int i = 0; i < MAX_LARA_MESHES; i++)
+        classic_meshes(LARA, i, classic_meshes(LARA_SKIN, i));
+
     short mesh_target = LARA_SKIN;
     lara.mesh.hips = classic_meshes(mesh_target, HIPS);
     lara.mesh.thigh_l = classic_meshes(mesh_target, THIGH_L);
