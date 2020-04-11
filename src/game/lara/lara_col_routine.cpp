@@ -228,7 +228,8 @@ void lara_col_forwardjump(ITEM_INFO* item, COLL_INFO* coll)
         }
         else
         {
-            if (lara.water_status == LWS_WADE)
+            long water_level = -lara.water_surface_dist;
+            if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
             {
                 item->state_next = STATE_LARA_IDLE;
             }
@@ -544,7 +545,8 @@ void lara_col_compress(ITEM_INFO* item, COLL_INFO* coll)
 void lara_col_back(ITEM_INFO* item, COLL_INFO* coll)
 {
     lara.move_angle = item->pos.y_rot - 0x8000;
-    if (lara.water_status == LWS_WADE)
+    long water_level = -lara.water_surface_dist;
+    if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
         coll->bad_pos = NO_HEIGHT;
     else
         coll->bad_pos = STEPUP_HEIGHT;
@@ -603,7 +605,8 @@ void lara_col_step(ITEM_INFO* item, COLL_INFO* coll)
     else
         lara.move_angle = item->pos.y_rot - 0x4000;
     
-    if (lara.water_status == LWS_WADE)
+    long water_level = -lara.water_surface_dist;
+    if (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)
         coll->bad_pos = NO_HEIGHT;
     else
         coll->bad_pos = (STEP_L / 2);
@@ -1240,7 +1243,8 @@ void lara_col_duck(ITEM_INFO* item, COLL_INFO* coll)
     if (coll->mid_floor != -NO_HEIGHT)
         item->pos.y += coll->mid_floor;
 
-    if ((CHK_NOP(TrInput, IN_DUCK) || lara.water_status == LWS_WADE) && !lara.keep_ducked && item->anim_number == ANIMATION_LARA_CROUCH_IDLE)
+    long water_level = -lara.water_surface_dist;
+    if ((CHK_NOP(TrInput, IN_DUCK) || (lara.water_status == LWS_WADE && water_level > WADE_DEPTH)) && !lara.keep_ducked && item->anim_number == ANIMATION_LARA_CROUCH_IDLE)
     {
         item->state_next = STATE_LARA_IDLE;
         return;
@@ -1561,7 +1565,8 @@ void lara_col_all4s(ITEM_INFO* item, COLL_INFO* coll)
     if (coll->mid_floor != -NO_HEIGHT && coll->mid_floor > -STEP_L)
         item->pos.y += coll->mid_floor;
 
-    if ((CHK_NOP(TrInput, IN_DUCK) && !lara.keep_ducked) || (CHK_EXI(TrInput, (IN_FLARE | IN_DRAW))) || lara.water_status == LWS_WADE)
+    long water_level = -lara.water_surface_dist;
+    if ((CHK_NOP(TrInput, IN_DUCK) && !lara.keep_ducked) || (CHK_EXI(TrInput, (IN_FLARE | IN_DRAW))) || (lara.water_status == LWS_WADE && water_level > WADE_DEPTH))
     {
         item->state_next = STATE_LARA_CROUCH_IDLE;
     }

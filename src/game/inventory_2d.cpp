@@ -793,7 +793,7 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
         /// DONT NEED COMPASS CHEAT AGAIN !
         if (item->object_number == COMPASS_ITEM)
         {
-            short compass_speed = (short)(compass_needle_angle * (4 * rcossin_tbl[(item_rotation & 63) << 10 >> 3] >> W2V_SHIFT));
+            short compass_speed = (short)(compass_needle_angle * 4 * rcossin_tbl[(item_rotation & 63) << 10 >> 3] >> W2V_SHIFT);
             short compass_angle = (lara_item->pos.y_rot + compass_speed) - 0x8000;
             phd_RotY(compass_angle);
         }
