@@ -8,36 +8,36 @@ static int* LaraMatrixMesh(int joint)
     switch (joint)
     {
         default:
-        case HIPS:
+        case JHIPS:
             return lara_matrix_normal.hips;
-        case THIGH_L:
+        case JTHIGH_L:
             return lara_matrix_normal.thigh_l;
-        case CALF_L:
+        case JCALF_L:
             return lara_matrix_normal.calf_l;
-        case FOOT_L:
+        case JFOOT_L:
             return lara_matrix_normal.foot_l;
-        case THIGH_R:
+        case JTHIGH_R:
             return lara_matrix_normal.thigh_r;
-        case CALF_R:
+        case JCALF_R:
             return lara_matrix_normal.calf_r;
-        case FOOT_R:
+        case JFOOT_R:
             return lara_matrix_normal.foot_r;
-        case TORSO:
+        case JTORSO:
             return lara_matrix_normal.torso;
-        case UARM_R:
-            return lara_matrix_normal.uarm_r;
-        case LARM_R:
-            return lara_matrix_normal.larm_r;
-        case HAND_R:
-            return lara_matrix_normal.hand_r;
-        case UARM_L:
-            return lara_matrix_normal.uarm_l;
-        case LARM_L:
-            return lara_matrix_normal.larm_l;
-        case HAND_L:
-            return lara_matrix_normal.hand_l;
-        case HEAD:
+        case JHEAD:
             return lara_matrix_normal.head;
+        case JUARM_R:
+            return lara_matrix_normal.uarm_r;
+        case JLARM_R:
+            return lara_matrix_normal.larm_r;
+        case JHAND_R:
+            return lara_matrix_normal.hand_r;
+        case JUARM_L:
+            return lara_matrix_normal.uarm_l;
+        case JLARM_L:
+            return lara_matrix_normal.larm_l;
+        case JHAND_L:
+            return lara_matrix_normal.hand_l;
     }
 }
 
@@ -57,7 +57,7 @@ static void TransposeMatrix(int* matrix)
     *(phd_mxptr + M23) = *(matrix + M23);
 }
 
-void GetLaraHandAbsPosition(PHD_VECTOR* pos, int joint)
+void GetLaraJointAbsPosition(PHD_VECTOR* pos, int joint)
 {
     phd_PushMatrix();
     TransposeMatrix(LaraMatrixMesh(joint));
@@ -74,6 +74,6 @@ void GetLaraHandAbsPosition(PHD_VECTOR* pos, int joint)
 #ifdef DLL_INJECT
 void injector::inject_sphere()
 {
-    this->inject(0x0041D9A0, GetLaraHandAbsPosition);
+    this->inject(0x0041D9A0, GetLaraJointAbsPosition);
 }
 #endif

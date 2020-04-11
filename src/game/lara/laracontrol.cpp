@@ -13,7 +13,9 @@
 #include "oldobjects.h"
 
 /// NEED TO FIX THE SURFACE !!
-static short cheat_hit_points;
+static short cheat_hit_points = 0;
+static bool cheatEnabled = false;
+static bool haveStuff = false;
 
 void(*lara_control_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
     lara_as_walk,
@@ -285,8 +287,6 @@ static void LaraCheatyBits(void)
 
     if (gameflow.cheat_enabled)
     {
-        static bool haveStuff = false;
-
         if (CHK_EXI(TrInput, IN_LOOK) && !haveStuff)
         {
             LaraCheatGetStuff();
@@ -294,9 +294,10 @@ static void LaraCheatyBits(void)
             haveStuff = true;
         }
 
-        if (CHK_EXI(TrInput, IN_SPRINT))
+        if (CHK_EXI(TrInput, IN_SPRINT) && !cheatEnabled)
         {
-            lara_item->pos.y -= GRAVITY;
+            cheatEnabled = true;
+            lara_item->pos.y -= STEP_L;
             if (lara.water_status != LWS_CHEAT)
             {
                 lara.water_status = LWS_CHEAT;
@@ -305,7 +306,6 @@ static void LaraCheatyBits(void)
                 lara_item->state_current = STATE_LARA_UNDERWATER_FORWARD;
                 lara_item->state_next = STATE_LARA_UNDERWATER_FORWARD;
                 lara_item->gravity_status = FALSE;
-                lara_item->pos.x_rot = ANGLE(30);
                 lara_item->fallspeed = 30;
                 lara.air = LARA_AIR;
                 lara.death_count = 0;
@@ -326,6 +326,7 @@ void LaraCheat(ITEM_INFO *item, COLL_INFO *coll)
 
     if (CHK_EXI(TrInput, IN_WALK) && CHK_NOP(TrInput, IN_LOOK))
     {
+        cheatEnabled = false;
         lara.water_status = LWS_ABOVEWATER;
         item->anim_number = ANIMATION_LARA_STAY_SOLID;
         item->frame_number = anims[item->anim_number].frame_base;

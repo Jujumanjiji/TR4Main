@@ -157,14 +157,14 @@ void shotgun_handler(int weapon_type)
                 pos.x = SHOTGUN_GUNPOS_X;
                 pos.y = SHOTGUN_GUNPOS_Y;
                 pos.z = SHOTGUN_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+                GetLaraJointAbsPosition(&pos, JHAND_R);
                 TriggerDynamicSwap(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
                 break;
             case LG_REVOLVER:
                 pos.x = REVOLVER_GUNPOS_X;
                 pos.y = REVOLVER_GUNPOS_Y;
                 pos.z = REVOLVER_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+                GetLaraJointAbsPosition(&pos, JHAND_R);
                 TriggerDynamicSwap(pos.x, pos.y, pos.z, 12, (GetRandomControl() & 0x3F) - 64, (GetRandomControl() & 0x1F) + 128, (GetRandomControl() & 0x3F));
                 break;
         }
@@ -199,7 +199,7 @@ void animate_shotgun(int weapon_type)
                 break;
         }
 
-        GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+        GetLaraJointAbsPosition(&pos, JHAND_R);
         if (lara_item->mesh_bits)
             TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
     }

@@ -273,14 +273,14 @@ void fire_shotgun(void)
         pos.x = SHOTGUN_GUNPOS_X;
         pos.y = SHOTGUN_GUNPOS_Y; // min
         pos.z = SHOTGUN_GUNPOS_Z;
-        GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+        GetLaraJointAbsPosition(&pos, JHAND_R);
         x = pos.x;
         y = pos.y;
         z = pos.z;
         pos.x = SHOTGUN_GUNPOS_X;
         pos.y = SHOTGUN_GUNPOS_Y + SHOTGUN_GUNPOS_SMOKEDIST_MAX; // max
         pos.z = SHOTGUN_GUNPOS_Z;
-        GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+        GetLaraJointAbsPosition(&pos, JHAND_R);
 
         SmokeCountL = 32;
         SmokeWeapon = LG_SHOTGUN;
@@ -324,7 +324,7 @@ void fire_grenade(void)
             pos.x = 0;
             pos.y = 276;
             pos.z = 80;
-            GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+            GetLaraJointAbsPosition(&pos, JHAND_R);
             x = pos.x;
             y = pos.y;
             z = pos.z;
@@ -347,7 +347,7 @@ void fire_grenade(void)
             pos.x = 0;
             pos.y = 1204;
             pos.z = 80;
-            GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+            GetLaraJointAbsPosition(&pos, JHAND_R);
 
             SmokeCountL = 32;
             SmokeWeapon = LG_GRENADEGUN;
@@ -425,7 +425,7 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                 pos.x = 0;
                 pos.y = 228;
                 pos.z = 32;
-                GetLaraHandAbsPosition(&pos, GUN_HAND_RIGHT);
+                GetLaraJointAbsPosition(&pos, JHAND_R);
                 item->room_number = lara_item->room_number;
                 floor = GetFloor(pos.x, pos.y, pos.z, &item->room_number);
                 height = GetHeight(floor, pos.x, pos.y, pos.z);
@@ -595,7 +595,7 @@ void LaraTargetInfo(WEAPON_INFO* winfo)
     src.x = 0;
     src.y = 0;
     src.z = 0;
-    GetLaraHandAbsPosition((PHD_VECTOR*)&src, GUN_HAND_RIGHT);
+    GetLaraJointAbsPosition((PHD_VECTOR*)&src, JHAND_R);
     src.room_number = lara_item->room_number;
 
     find_target_point(item, &target);

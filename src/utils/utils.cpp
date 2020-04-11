@@ -446,13 +446,13 @@ PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
                 pos.x = PISTOLS_GUNPOS_X;
                 pos.y = PISTOLS_GUNPOS_Y;
                 pos.z = PISTOLS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_L);
+                GetLaraJointAbsPosition(&pos, JHAND_L);
                 break;
             case LG_UZIS:
                 pos.x = UZIS_GUNPOS_X;
                 pos.y = UZIS_GUNPOS_Y;
                 pos.z = UZIS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_L);
+                GetLaraJointAbsPosition(&pos, JHAND_L);
                 break;
         }
     }
@@ -464,13 +464,13 @@ PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
                 pos.x = -PISTOLS_GUNPOS_X;
                 pos.y = PISTOLS_GUNPOS_Y;
                 pos.z = PISTOLS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_R);
+                GetLaraJointAbsPosition(&pos, JHAND_R);
                 break;
             case LG_UZIS:
                 pos.x = -UZIS_GUNPOS_X;
                 pos.y = UZIS_GUNPOS_Y;
                 pos.z = UZIS_GUNPOS_Z;
-                GetLaraHandAbsPosition(&pos, HAND_R);
+                GetLaraJointAbsPosition(&pos, JHAND_R);
                 break;
         }
     }
@@ -503,7 +503,7 @@ void set_gun_smoke_left(int weapon_type)
                 break;
         }
 
-        GetLaraHandAbsPosition(&pos, HAND_L);
+        GetLaraJointAbsPosition(&pos, JHAND_L);
         TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
     }
 }
@@ -538,7 +538,7 @@ void set_gun_smoke_right(int weapon_type)
                 break;
         }
 
-        GetLaraHandAbsPosition(&pos, HAND_R);
+        GetLaraJointAbsPosition(&pos, JHAND_R);
         TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountR);
     }
 }

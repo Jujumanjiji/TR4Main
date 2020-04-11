@@ -32,8 +32,6 @@ enum WEAPON_ANIM
     if (var < -maxValue) var = -maxValue
 
 
-#define GUN_HAND_RIGHT 11
-#define GUN_HAND_LEFT 13
 #define INFINITE_AMMO -1
 
 #define LARA_AIR ((30 * 30) * 2)

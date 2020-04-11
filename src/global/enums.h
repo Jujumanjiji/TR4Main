@@ -408,6 +408,18 @@ enum LARA_MESHES
     MAX_LARA_MESHES
 };
 
+enum LARA_JOINTS
+{
+    JHIPS,
+    JTHIGH_L, JCALF_L, JFOOT_L,
+    JTHIGH_R, JCALF_R, JFOOT_R,
+    JTORSO,
+    JHEAD,
+    JUARM_R, JLARM_R, JHAND_R,
+    JUARM_L, JLARM_L, JHAND_L,
+    MAX_LARA_JOINTS
+};
+
 enum height_types
 {
     WALL,
