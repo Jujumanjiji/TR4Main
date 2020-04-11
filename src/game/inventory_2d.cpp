@@ -1,5 +1,5 @@
 #include "framework.h"
-#include "inventory_2d.h""
+#include "inventory_2d.h"
 #include "3d_gen.h"
 #include "3d_gen_a.h"
 #include "draw.h"
@@ -1082,7 +1082,7 @@ void construct_object_list(void)
     if (lara.examine3)
         insert_object_into_list_inventory(INV_EXAMINE3);
 
-    if (gameflow->load_save_enabled)
+    if (gameflow.load_save_enabled)
     {
         insert_object_into_list_inventory(INV_MEMCARD_LOAD);
         insert_object_into_list_inventory(INV_MEMCARD_SAVE);

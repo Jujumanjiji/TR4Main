@@ -1,6 +1,6 @@
 #pragma once
 
-#define gameflow                            VAR_U_(0x007FD278, GAMEFLOW*)
+#define gameflow                            VAR_U_(0x007FD278, GAMEFLOW)
 #define gfCurrentLevel                      VAR_U_(0x007FD290, BYTE)
 #define gfLegend                            VAR_U_(0x007FD2E8, BYTE)
 #define gfLevelComplete                     VAR_U_(0x007FD2B0, char)

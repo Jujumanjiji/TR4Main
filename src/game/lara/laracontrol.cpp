@@ -13,7 +13,7 @@
 #include "oldobjects.h"
 
 /// NEED TO FIX THE SURFACE !!
-static short cheatHitPoints;
+static short cheat_hit_points;
 
 void(*lara_control_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
     lara_as_walk,
@@ -261,30 +261,59 @@ void(*lara_camera_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* col
 
 };
 
+static void LaraCheatGetStuff(void)
+{
+    lara.flare_count = INFINITE_AMMO;
+    lara.small_medipack_count = INFINITE_AMMO;
+    lara.large_medipack_count = INFINITE_AMMO;
+    if (objects[CROWBAR_ITEM].loaded)
+        lara.crowbar = TRUE;
+    lara.lasersight = TRUE;
+    lara.uzi_type_carried = (CR_PRESENT | CR_AMMO1);
+    lara.shotgun_type_carried = (CR_PRESENT | CR_AMMO1);
+    lara.revolver_type_carried = (CR_PRESENT | CR_AMMO1);
+    lara.uzi_ammo_count = INFINITE_AMMO;
+    lara.revolver_ammo_count = INFINITE_AMMO;
+    lara.shotgun_ammo1_count = INFINITE_AMMO;
+}
+
 static void LaraCheatyBits(void)
 {
-    if (gameflow->cheat_enabled)
+#ifdef DEBUG_CHEAT
+    gameflow.cheat_enabled = TRUE;
+#endif
+
+    if (gameflow.cheat_enabled)
     {
-        if (CHK_EXI(TrInput, IN_CHEAT))
+        static bool haveStuff = false;
+
+        if (CHK_EXI(TrInput, IN_LOOK) && !haveStuff)
         {
-            lara_item->pos.y -= 128;
+            LaraCheatGetStuff();
+            lara_item->hit_points = LARA_HITPOINTS;
+            haveStuff = true;
+        }
+
+        if (CHK_EXI(TrInput, IN_SPRINT))
+        {
+            lara_item->pos.y -= GRAVITY;
             if (lara.water_status != LWS_CHEAT)
             {
                 lara.water_status = LWS_CHEAT;
-                lara_item->frame_number = anims[ANIMATION_LARA_UNDERWATER_SWIM_SOLID].frame_base;
                 lara_item->anim_number = ANIMATION_LARA_UNDERWATER_SWIM_SOLID;
+                lara_item->frame_number = anims[lara_item->anim_number].frame_base;
                 lara_item->state_current = STATE_LARA_UNDERWATER_FORWARD;
                 lara_item->state_next = STATE_LARA_UNDERWATER_FORWARD;
                 lara_item->gravity_status = FALSE;
-                lara_item->pos.x_rot = 5460;
+                lara_item->pos.x_rot = ANGLE(30);
                 lara_item->fallspeed = 30;
-                lara.air = 1800;
+                lara.air = LARA_AIR;
                 lara.death_count = 0;
                 lara.torso_y_rot = 0;
                 lara.torso_x_rot = 0;
                 lara.head_y_rot = 0;
                 lara.head_x_rot = 0;
-                cheatHitPoints = lara_item->hit_points;
+                cheat_hit_points = lara_item->hit_points;
             }
         }
     }
@@ -292,10 +321,10 @@ static void LaraCheatyBits(void)
 
 void LaraCheat(ITEM_INFO *item, COLL_INFO *coll)
 {
-    lara_item->hit_points = 1000;
+    lara_item->hit_points = LARA_HITPOINTS;
     LaraUnderWater(item, coll);
 
-    if (CHK_ANY(TrInput, IN_WALK) && CHK_NOP(TrInput, IN_LOOK))
+    if (CHK_EXI(TrInput, IN_WALK) && CHK_NOP(TrInput, IN_LOOK))
     {
         lara.water_status = LWS_ABOVEWATER;
         item->anim_number = ANIMATION_LARA_STAY_SOLID;
@@ -308,7 +337,7 @@ void LaraCheat(ITEM_INFO *item, COLL_INFO *coll)
         lara.head_x_rot = 0;
         lara.gun_status = 0;
         lara.mesh_effects = NULL;
-        lara_item->hit_points = cheatHitPoints;
+        lara_item->hit_points = cheat_hit_points;
         LaraInitialiseMeshes();
     }
 }
@@ -558,6 +587,10 @@ void LaraControl(void)
             case LWS_WADE:
                 LaraWadeControl(item, hfw);
                 break;
+            case LWS_CHEAT:
+                if (gameflow.cheat_enabled)
+                    LaraCheat(item, lara_coll);
+                break;
         }
     }
 
@@ -609,9 +642,12 @@ void LaraControl(void)
 
             LaraSurface(item, lara_coll);
             break;
+#ifdef DEBUG_CHEAT // speed up the flycheat (2x with this)
         case LWS_CHEAT:
-            LaraCheat(item, lara_coll);
+            if (gameflow.cheat_enabled)
+                LaraCheat(item, lara_coll);
             break;
+#endif
     }
 
     savegame_level.distance += phd_sqrt(
@@ -818,18 +854,13 @@ void LaraUnderWater(ITEM_INFO* item, COLL_INFO* coll)
     item->pos.x += (((SIN(item->pos.y_rot) * item->fallspeed) >> (W2V_SHIFT + 2)) * COS(item->pos.x_rot)) >> W2V_SHIFT;
     item->pos.z += (((COS(item->pos.y_rot) * item->fallspeed) >> (W2V_SHIFT + 2)) * COS(item->pos.x_rot)) >> W2V_SHIFT;
 
-    LaraBaddieCollision(item, coll);
+    if (lara.water_status != LWS_CHEAT)
+        LaraBaddieCollision(item, coll);
     if (lara.skidoo == NO_ITEM)
         lara_collision_routines[item->state_current](item, coll);
     UpdateLaraRoom(item, 0);
     LaraGun();
     TestTriggers(coll->trigger, FALSE, NULL);
-
-    if (lara.water_status == LWS_CHEAT)
-    {
-        item->anim_number = ANIMATION_LARA_FREE_FALL_LONG;
-        item->frame_number = anims[item->anim_number].frame_base + 5;
-    }
 }
 
 // sink mode

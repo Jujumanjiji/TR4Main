@@ -1463,17 +1463,17 @@ BOOL LaraTestWaterClimbOut(ITEM_INFO* item, COLL_INFO* coll)
     if (hdif < -128)
     {
         item->anim_number = ANIMATION_LARA_CLIMB_OUT_OF_WATER;
-        item->frame_number = anims[ANIMATION_LARA_CLIMB_OUT_OF_WATER].frame_base;
+        item->frame_number = anims[item->anim_number].frame_base;
     }
     else if (hdif < 128)
     {
         item->anim_number = ANIMATION_LARA_ONWATER_TO_LAND_LOW;
-        item->frame_number = anims[ANIMATION_LARA_ONWATER_TO_LAND_LOW].frame_base;
+        item->frame_number = anims[item->anim_number].frame_base;
     }
     else
     {
         item->anim_number = ANIMATION_LARA_ONWATER_TO_WADE;
-        item->frame_number = anims[ANIMATION_LARA_ONWATER_TO_WADE].frame_base;
+        item->frame_number = anims[item->anim_number].frame_base;
     }
 
     lara.gun_status = LHS_HANDBUSY;

@@ -30,7 +30,6 @@ void InitialiseLaraAnims(ITEM_INFO* item)
 
 void LaraInitialiseMeshes(void)
 {
-    // TODO: need to fix this shit !
     ResetLaraMeshSkin();
 
     // NOTE: normally you have the weapon if the gun_type is set to these weapon...
