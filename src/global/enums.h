@@ -127,7 +127,8 @@ enum SHIFT_FLAG
 {
     PITCH_SHIFT = 4,
     WALL_SHIFT = 10,
-    W2V_SHIFT = 14
+    W2V_SHIFT = 14,
+    PACKED_SHIFT = 14
 };
 
 enum EXPLODING_Flags

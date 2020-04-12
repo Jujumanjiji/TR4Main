@@ -1,6 +1,27 @@
 #pragma once
 
+enum GAR_TYPES
+{
+    GAR_YXZPACK,
+    GAR_X,
+    GAR_Y,
+    GAR_Z
+};
+
 extern int GetFrames(ITEM_INFO* item, short* frame[], int* rate);
+extern void InitInterpolate(int frac, int rate);
+extern void phd_PopMatrix_I(void);
+extern void phd_PushMatrix_I(void);
+extern void phd_RotY_I(short ang);
+extern void phd_RotX_I(short ang);
+extern void phd_RotZ_I(short ang);
+extern void phd_TranslateRel_I(int x, int y, int z);
+extern void phd_TranslateRel_ID(int x1, int y1, int z1, int x2, int y2, int z2);
+extern void phd_RotYXZ_I(short y, short x, short z);
+extern void gar_RotYXZsuperpack_I(short** pprot1, short** pprot2, int skip);
+extern void gar_RotYXZsuperpack(short** pprot, int skip);
+extern void phd_PutPolygons_I(short* ptr, int clip = -1); // -1 = no clipping
+extern void InterpolateMatrix(void);
 extern void InterpolateArmMatrix(void);
 
 #ifdef DLL_INJECT
@@ -16,22 +37,8 @@ extern void InterpolateArmMatrix(void);
 #define DrawAnimatingItem ((void(__cdecl*)(ITEM_INFO* item)) 0x0044FF60)
 #define DrawLara ((void(__cdecl*)(ITEM_INFO* item, BOOL lightDisabled)) 0x0041D140)
 #define DrawLara_Mirror ((void(__cdecl*)(void)) 0x00455800)
-#define InitInterpolate ((void(__cdecl*)(int frac, int rate)) 0x00450520)
-#define phd_PopMatrix_I ((void(__cdecl*)(void)) 0x00450560)
-#define phd_PushMatrix_I ((void(__cdecl*)(void)) 0x00450590)
-#define phd_RotY_I ((void(__cdecl*)(short ang)) 0x004505C0)
-#define phd_RotX_I ((void(__cdecl*)(short ang)) 0x004505F0)
-#define phd_RotZ_I ((void(__cdecl*)(short ang)) 0x00450620)
-#define phd_TranslateRel_I ((void(__cdecl*)(int x, int y, int z)) 0x00450650)
-#define phd_TranslateRel_ID ((void(__cdecl*)(int x1, int y1, int z1, int x2, int y2, int z2)) 0x00450690)
-#define phd_RotYXZ_I ((void(__cdecl*)(short y, short x, short z)) 0x004506E0)
-#define gar_RotYXZsuperpack_I ((void(__cdecl*)(short **pprot1, short **pprot2, int skip)) 0x00450720)
-#define gar_RotYXZsuperpack ((void(__cdecl*)(short **pprot, int skip)) 0x00450760)
-#define phd_PutPolygons_I ((void(__cdecl*)(short* ptr, int clip)) 0x00450810)
-#define InterpolateMatrix ((void(__cdecl*)(void)) 0x00450840)
 #define CalculateObjectLighting ((void(__cdecl*)(ITEM_INFO* item, short* frame)) 0x00450BB0)
 #define CalculateObjectLightingLara ((void(__cdecl*)(void)) 0x00450CB0)
-///#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[], int *rate)) 0x00450DC0)
 #define GetBoundsAccurate ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450E60)
 #define GetBestFrame ((short*(__cdecl*)(ITEM_INFO* item)) 0x00450EE0)
 #endif

@@ -18,6 +18,7 @@
 #define IM_ptr                              VAR_U_(0x007FE124, PHD_MATRIX*)
 #define IM_rate                             VAR_U_(0x007FE120, int)
 #define IM_frac                             VAR_U_(0x007FDF54, int)
+#define IM_stack                            ARRAY_(0x007FD320, PHD_MATRIX, [64])
 
 ///===============================///
 ///             OTHER             ///
