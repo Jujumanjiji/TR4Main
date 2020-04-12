@@ -165,7 +165,7 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
         if (lara.water_status != LWS_UNDERWATER)
         {
             matrix_angle = mGetAngle(dest->x, dest->z, src->x, src->z);
-            angle_src = (WORD)((WORD(matrix_angle) + ANGLE(45)) / ANGLE(90));
+            angle_src = (WORD)((short(matrix_angle) + ANGLE(45)) / ANGLE(90));
             angle_target = (WORD)((dest->y_rot + ANGLE(45)) / ANGLE(90));
             cardinal_point = (angle_src - angle_target) & 3;
             switch (cardinal_point)

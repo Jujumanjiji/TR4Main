@@ -325,7 +325,7 @@ void CalculateObjectLighting(ITEM_INFO* item, short* frame)
         item->light_data[5480] = y;
         item->light_data[5484] = z;
 
-        //sub_478570(item); // POSITION UDPATER ?
+        //sub_478570(item); // POSITION UPDATER ?
         //sub_478750(item);
     }
 }
@@ -360,6 +360,43 @@ int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
     return interp;
 }
 
+static short interpolate_bounds[6];
+short* GetBoundsAccurate(ITEM_INFO* item)
+{
+    short* bounds;
+    int frac, rate;
+    short *frmptr[2];
+
+    frac = GetFrames(item, frmptr, &rate);
+    if (frac == 0)
+    {
+        return frmptr[0];
+    }
+    else
+    {
+        bounds = interpolate_bounds;
+       
+        for (int i = 0; i < 6; i++, bounds++, frmptr[0]++, frmptr[1]++)
+            *(bounds) = *(frmptr[0]) + ((*(frmptr[1]) - *(frmptr[0])) * frac) / rate;
+
+        return interpolate_bounds;
+    }
+}
+
+short* GetBestFrame(ITEM_INFO* item)
+{
+    int frac, rate;
+    short *frmptr[2];
+
+    frac = GetFrames(item, frmptr, &rate);
+    if (frac <= (rate >> 1))
+        return frmptr[0];
+    else
+        return frmptr[1];
+}
+
+
+
 #ifdef DLL_INJECT
 void injector::inject_draw()
 {
@@ -391,7 +428,7 @@ void injector::inject_draw()
     //this->inject(0x00450BB0, CalculateObjectLighting);
     //this->inject(0x00450CB0, CalculateObjectLightingLara);
     this->inject(0x00450DC0, GetFrames);
-    //this->inject(0x00450E60, GetBoundsAccurate);
-    //this->inject(0x00450EE0, GetBestFrame);
+    this->inject(0x00450E60, GetBoundsAccurate);
+    this->inject(0x00450EE0, GetBestFrame);
 }
 #endif
