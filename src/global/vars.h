@@ -7,7 +7,7 @@
 
 
 /// official app address
-#define App                                VAR_U_(0x00753980, WINAPP)
+#define App                                 VAR_U_(0x00753980, WINAPP)
 
 ///===============================///
 ///             MATRIX            ///

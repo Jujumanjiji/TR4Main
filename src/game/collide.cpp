@@ -81,9 +81,9 @@ void AlignLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
     phd_PushUnitMatrix();
     phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
     mptr = phd_mxptr;
-    x = item->pos.x + ((mptr->m00 * pos->x) + (mptr->m01 * pos->y) + (mptr->m02 * pos->z)) >> W2V_SHIFT;
-    y = item->pos.y + ((mptr->m10 * pos->x) + (mptr->m11 * pos->y) + (mptr->m12 * pos->z)) >> W2V_SHIFT;
-    z = item->pos.z + ((mptr->m20 * pos->x) + (mptr->m21 * pos->y) + (mptr->m22 * pos->z)) >> W2V_SHIFT;
+    x = item->pos.x + ((mptr->m00 * pos->x) + (mptr->m01 * pos->y) + (mptr->m02 * pos->z) >> W2V_SHIFT);
+    y = item->pos.y + ((mptr->m10 * pos->x) + (mptr->m11 * pos->y) + (mptr->m12 * pos->z) >> W2V_SHIFT);
+    z = item->pos.z + ((mptr->m20 * pos->x) + (mptr->m21 * pos->y) + (mptr->m22 * pos->z) >> W2V_SHIFT);
     phd_PopMatrix();
 
     laraitem->pos.x = x;
@@ -99,15 +99,16 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
     int height;
     short room_number;
 
-    phd_PushUnitMatrix();
-    phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
-    mptr = phd_mxptr;
-    dest.x = item->pos.x + ((mptr->m00 * pos->x) + (mptr->m01 * pos->y) + (mptr->m02 * pos->z)) >> W2V_SHIFT;
-    dest.y = item->pos.y + ((mptr->m10 * pos->x) + (mptr->m11 * pos->y) + (mptr->m12 * pos->z)) >> W2V_SHIFT;
-    dest.z = item->pos.z + ((mptr->m20 * pos->x) + (mptr->m21 * pos->y) + (mptr->m22 * pos->z)) >> W2V_SHIFT;
     dest.x_rot = item->pos.x_rot;
     dest.y_rot = item->pos.y_rot;
     dest.z_rot = item->pos.z_rot;
+
+    phd_PushUnitMatrix();
+    phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+    mptr = phd_mxptr;
+    dest.x = item->pos.x + ((mptr->m00 * pos->x) + (mptr->m01 * pos->y) + (mptr->m02 * pos->z) >> W2V_SHIFT);
+    dest.y = item->pos.y + ((mptr->m10 * pos->x) + (mptr->m11 * pos->y) + (mptr->m12 * pos->z) >> W2V_SHIFT);
+    dest.z = item->pos.z + ((mptr->m20 * pos->x) + (mptr->m21 * pos->y) + (mptr->m22 * pos->z) >> W2V_SHIFT);
     phd_PopMatrix();
 
     if (item->object_number != FLARE_ITEM && item->object_number != BURNING_TORCH_ITEM && item->object_number != CLOCKWORK_BEETLE)
@@ -148,9 +149,9 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
 
     if (velocity < dist)
     {
-        src->x += velocity * x / dist;
-        src->y += velocity * y / dist;
-        src->z += velocity * z / dist;
+        src->x += (velocity * x) / dist;
+        src->y += (velocity * y) / dist;
+        src->z += (velocity * z) / dist;
     }
     else
     {
@@ -164,8 +165,8 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
         if (lara.water_status != LWS_UNDERWATER)
         {
             matrix_angle = mGetAngle(dest->x, dest->z, src->x, src->z);
-            angle_src = (unsigned short)((matrix_angle + ANGLE(45)) / ANGLE(90));
-            angle_target = (unsigned short)((dest->y_rot + ANGLE(45)) / ANGLE(90));
+            angle_src = (WORD)((WORD(matrix_angle) + ANGLE(45)) / ANGLE(90));
+            angle_target = (WORD)((dest->y_rot + ANGLE(45)) / ANGLE(90));
             cardinal_point = (angle_src - angle_target) & 3;
             switch (cardinal_point)
             {

@@ -394,8 +394,8 @@ struct ROOM_INFO
 struct ITEM_INFO
 {
     long floor;
-    DWORD touch_bits;
-    DWORD mesh_bits;
+    int touch_bits;
+    int mesh_bits;
     short object_number;
     short state_current;
     short state_next;
@@ -423,6 +423,8 @@ struct ITEM_INFO
     LPVOID data;
     PHD_3DPOS pos;
     ITEM_LIGHT il;
+    BYTE light_data[5496];
+    /*
     PCLIGHT lights_1[21];
     PCLIGHT lights_2[21];
     DWORD num_lights_1;
@@ -432,6 +434,7 @@ struct ITEM_INFO
     PHD_VECTOR ambient_light_pos;
     PCLIGHT* ptr_lights_1;
     PCLIGHT* ptr_lights_2;
+    */
     unsigned int active : 1;            // LOBYTE: 0x1
     unsigned int status : 2;            // LOBYTE: 0x4
     unsigned int gravity_status : 1;    // LOBYTE: 0x8
@@ -443,7 +446,7 @@ struct ITEM_INFO
     unsigned int ai_bits : 5;
     unsigned int really_active : 1;
     unsigned int in_draw_room : 1;
-    DWORD meshswap_meshbits;
+    int meshswap_meshbits;
     short drawRoom;
     short TOSSPAD;
 };
@@ -666,7 +669,7 @@ struct FX_INFO
     short next_active;
     short speed;
     short fallspeed;
-    short current_frame;
+    short frame_number;
     short counter;
     short shade;
     short flag1;

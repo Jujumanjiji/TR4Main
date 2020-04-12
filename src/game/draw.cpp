@@ -2,37 +2,28 @@
 #include "draw.h"
 #include "3d_gen.h"
 #include "3d_gen_a.h"
+#include "delstuff.h"
+#include "deltapak.h"
+#include "health.h"
 #include "output.h"
 #include "specific.h"
 #include "utils.h"
 
-int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
+int DrawPhaseGame(void)
 {
-    ANIM_STRUCT *anim;
-    int frm;
-    int first = 0, second = 0;
-    int frame_size;
-    int interl;
-    int interp, rat;
-
-    frm = item->frame_number;
-    anim = &anims[item->anim_number];
-    frame[0] = frame[1] = anim->frame_ptr;
-    interl = LOBYTE(anim->interpolation);
-    rat = interl;
-    *rate = interl;
-    frame_size = anim->interpolation >> 8;
-    frm -= anim->frame_base;
-    first = frm / rat;
-    interp = frm % rat;
-    frame[0] += first * frame_size;                 // Get Frame pointers
-    frame[1] = frame[0] + frame_size;               // and store away
-    if (interp == 0)
-        return 0;
-    second = first * rat + rat;
-    if (second > anim->frame_end)                   // Clamp KeyFrame to End if need be
-        *rate = anim->frame_end - (second - rat);
-    return interp;
+    CalcLaraMatrices(0);
+    phd_PushUnitMatrix();
+    CalcLaraMatrices(1);
+    phd_PopMatrix();
+    if (GnPlayingCutseq)
+        frigup_lara();
+    SetLaraUnderwaterNodes();
+    DrawRooms(camera.pos.room_number);
+    DrawGameInfo(1);
+    S_OutputPolyList();
+    camera.number_frames = S_DumpScreen();
+    S_AnimateTextures(camera.number_frames);
+    return camera.number_frames;
 }
 
 void InitInterpolate(int frac, int rate)
@@ -41,6 +32,31 @@ void InitInterpolate(int frac, int rate)
     IM_frac = frac;
     IM_ptr = IM_stack;
     memcpy(IM_stack, phd_mxptr, sizeof(PHD_MATRIX));
+}
+
+void DrawEffect(short fx_number)
+{
+    PHD_MATRIX* mptr;
+    FX_INFO* fx;
+    OBJECT_INFO* obj;
+
+    fx = &effects[fx_number];
+    obj = &objects[fx->object_number];
+    if (obj->loaded && obj->draw_routine)
+    {
+        phd_PushMatrix();
+        phd_TranslateAbs(fx->pos.x, fx->pos.y, fx->pos.z);
+        mptr = phd_mxptr;
+        if (mptr->m23 > phd_znear && mptr->m23 < phd_zfar)
+        {
+            phd_RotYXZ(fx->pos.y_rot, fx->pos.x_rot, fx->pos.z_rot);
+            if (obj->nmeshes > 0)
+                phd_PutPolygons(meshes[obj->mesh_index], NO_CLIP);
+            else
+                phd_PutPolygons(meshes[fx->frame_number], NO_CLIP);
+        }
+        phd_PopMatrix();
+    }
 }
 
 void phd_PopMatrix_I(void)
@@ -276,16 +292,84 @@ void InterpolateArmMatrix(void)
     }
 }
 
+/*
+#define current_item_light VAR_U_(0x005B74B0, ITEM_INFO*)
+#define sub_478570 ((void(__cdecl*)(ITEM_INFO* item)) 0x00478570)
+#define sub_478750 ((void(__cdecl*)(ITEM_INFO* item)) 0x00478750)
+
+void CalculateObjectLighting(ITEM_INFO* item, short* frame)
+{
+    PHD_MATRIX* mptr;
+    int x, y, z;
+
+    if (item->shade >= 0)
+    {
+        S_CalculateStaticMeshLight(item->pos.x, item->pos.y, item->pos.z, item->shade & 0x7FFF, &rooms[item->room_number]);
+    }
+    else
+    {
+        phd_PushUnitMatrix();
+        mptr = phd_mxptr;
+        mptr->m03 = 0;
+        mptr->m13 = 0;
+        mptr->m23 = 0;
+        phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+        phd_TranslateRel((frame[0] + frame[1]) >> 1, (frame[2] + frame[3]) >> 1, (frame[4] + frame[5]) >> 1);
+        x = item->pos.x + (mptr->m03 >> W2V_SHIFT);
+        y = item->pos.y + (mptr->m13 >> W2V_SHIFT);
+        z = item->pos.z + (mptr->m23 >> W2V_SHIFT);
+        phd_PopMatrix();
+        
+        current_item_light = item;
+        item->light_data[5476] = x;
+        item->light_data[5480] = y;
+        item->light_data[5484] = z;
+
+        //sub_478570(item); // POSITION UDPATER ?
+        //sub_478750(item);
+    }
+}
+*/
+
+int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
+{
+    ANIM_STRUCT *anim;
+    int frm;
+    int first = 0, second = 0;
+    int frame_size;
+    int interl;
+    int interp, rat;
+
+    frm = item->frame_number;
+    anim = &anims[item->anim_number];
+    frame[0] = frame[1] = anim->frame_ptr;
+    interl = LOBYTE(anim->interpolation);
+    rat = interl;
+    *rate = interl;
+    frame_size = anim->interpolation >> 8;
+    frm -= anim->frame_base;
+    first = frm / rat;
+    interp = frm % rat;
+    frame[0] += first * frame_size;                 // Get Frame pointers
+    frame[1] = frame[0] + frame_size;               // and store away
+    if (interp == 0)
+        return 0;
+    second = first * rat + rat;
+    if (second > anim->frame_end)                   // Clamp KeyFrame to End if need be
+        *rate = anim->frame_end - (second - rat);
+    return interp;
+}
+
 #ifdef DLL_INJECT
 void injector::inject_draw()
 {
-    //this->inject(0x0044EBA0, DrawPhaseGame);
+    this->inject(0x0044EBA0, DrawPhaseGame);
     //this->inject(0x0044EC10, DrawRooms);
     //this->inject(0x0044F2D0, PrintRooms);
     //this->inject(0x0044F330, PrintObjects);
     //this->inject(0x0044F5D0, GetRoomBounds);
     //this->inject(0x0044F790, SetRoomBounds);
-    //this->inject(0x0044FB10, DrawEffect);
+    this->inject(0x0044FB10, DrawEffect);
     //this->inject(0x0044FC00, DrawMovingItem);
     //this->inject(0x0044FF60, DrawAnimatingItem);
     //this->inject(0x0041D140, DrawLara);

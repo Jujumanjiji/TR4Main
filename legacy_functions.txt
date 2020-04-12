@@ -1,4 +1,6 @@
-#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[], int *rate)) 0x00450DC0)
+
+
+#define DrawPhaseGame ((int(__cdecl*)(void)) 0x0044EBA0)
 #define InitInterpolate ((void(__cdecl*)(int frac, int rate)) 0x00450520)
 #define phd_PopMatrix_I ((void(__cdecl*)(void)) 0x00450560)
 #define phd_PushMatrix_I ((void(__cdecl*)(void)) 0x00450590)
@@ -13,6 +15,7 @@
 #define InterpolateMatrix ((void(__cdecl*)(void)) 0x00450840)
 #define InterpolateArmMatrix ((void(__cdecl*)(void)) 0x00450AB0)
 #define phd_PutPolygons_I ((void(__cdecl*)(short* ptr, int clip)) 0x00450810)
+#define GetFrames ((int(__cdecl*)(ITEM_INFO* item, short *frame[], int *rate)) 0x00450DC0)
 
 #define InitialiseObjects    ((void(__cdecl*)(void)) 0x0045C0D0)
 #define BaddyObjects         ((void(__cdecl*)(void)) 0x0045C1E0)
