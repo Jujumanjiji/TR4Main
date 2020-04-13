@@ -716,9 +716,9 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
 {
     ANIM_STRUCT* anim;
     OBJECT_INFO* obj;
+    BONE_STRUCT* bone;
     short* rotation;
     short** mesh;
-    int* bone;
     int mesh_bits;
 
     phd_PushMatrix();
@@ -749,7 +749,7 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
     obj = &objects[item->object_number];
     anim = &anims[item->anim_number];
     mesh = &meshes[obj->mesh_index];
-    bone = &bones[obj->bone_index];
+    bone = (BONE_STRUCT*)&bones[obj->bone_index];
     mesh_bits = 1;
 
     if (!shade_flags)
@@ -776,17 +776,18 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
         }
     }
 
-    for (int i = obj->nmeshes - 1; i > 0; i--)
+    for (int i = obj->nmeshes - 1; i > 0; bone++, i--)
     {
         mesh += 2;
         mesh_bits *= 2;
 
-        if (bone[BT_FLAG] & BT_POP)
+        DWORD flags = bone->flags;
+        if (flags & BT_POP)
             phd_PopMatrix();
-        if (bone[BT_FLAG] & BT_PUSH)
+        if (flags & BT_PUSH)
             phd_PushMatrix();
 
-        phd_TranslateRel(bone[BT_X], bone[BT_Y], bone[BT_Z]);
+        phd_TranslateRel(bone->x, bone->y, bone->z);
         gar_RotYXZsuperpack(&rotation, 0);
 
         /// DELETED COMPASS CHEAT !!!
@@ -816,8 +817,6 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
                 item_color = item_backup;
             }
         }
-
-        bone += 4;
     }
 
     phd_PopMatrix();

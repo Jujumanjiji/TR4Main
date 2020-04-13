@@ -2,6 +2,7 @@
 #include "draw.h"
 #include "3d_gen.h"
 #include "3d_gen_a.h"
+#include "control.h"
 #include "delstuff.h"
 #include "deltapak.h"
 #include "health.h"
@@ -57,6 +58,173 @@ void DrawEffect(short fx_number)
         }
         phd_PopMatrix();
     }
+}
+
+void DrawAnimatingItem(ITEM_INFO* item)
+{
+    OBJECT_INFO* obj;
+    BONE_STRUCT* bone;
+    DWORD flags;
+    int frac, rate, clip;
+    int mesh_bits;
+    short** mesh;
+    short* frmptr[2];
+    short* pprot1, *pprot2;
+    short* extra_rotation;
+
+    frac = GetFrames(item, frmptr, &rate);
+    obj = &objects[item->object_number];
+    if (obj->shadow_size)
+        S_PrintShadow(obj->shadow_size, frmptr[0], item);
+    phd_PushMatrix(); // world
+    phd_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
+    phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+
+    // get the mip instead !
+    if (obj->loaded && obj->object_mip && (phd_mxptr->m23 >> 16) > obj->object_mip)
+        obj++;
+
+    if (item->object_number < ENEMY_JEEP || item->object_number > SETHA_MIP)
+    {
+        DrawMovingItem(item, frmptr[0]);
+    }
+    else
+    {
+        phd_left = 0;
+        phd_right = phd_winwidth;
+        phd_top = 0;
+        phd_bottom = phd_winheight;
+    }
+
+    clip = S_GetObjectBounds(frmptr[0]);
+    if (clip) // clipped ?
+    {
+        CalculateObjectLighting(item, frmptr[0]);
+        extra_rotation = (short*)item->data;
+        if (!extra_rotation)
+            extra_rotation = dummy_rotation;
+        bone = (BONE_STRUCT*)&bones[obj->bone_index];
+        mesh = &meshes[obj->mesh_index];
+        mesh_bits = 1;
+
+        if (frac)
+        {
+            // INTERPOLATE
+            InitInterpolate(frac, rate);
+            phd_TranslateRel_ID((int)*(frmptr[0] + 6), (int)*(frmptr[0] + 7), (int)*(frmptr[0] + 8), (int)*(frmptr[1] + 6), (int)*(frmptr[1] + 7), (int)*(frmptr[1] + 8));
+            pprot1 = frmptr[0] + 9;
+            pprot2 = frmptr[1] + 9;
+            gar_RotYXZsuperpack_I(&pprot1, &pprot2, 0);
+
+            if (mesh_bits & item->mesh_bits)
+                phd_PutPolygons_I(mesh[1], clip);
+            else
+                phd_PutPolygons_I(mesh[0], clip);
+
+            mesh += 2;
+            for (int i = 0; i < (obj->nmeshes - 1); i++, mesh += 2)
+            {
+                flags = bone->flags;
+                if (flags & BT_POP)
+                    phd_PopMatrix_I();
+                if (flags & BT_PUSH)
+                    phd_PushMatrix_I();
+
+                phd_TranslateRel_I(bone->x, bone->y, bone->z);
+                gar_RotYXZsuperpack_I(&pprot1, &pprot2, 0);
+
+                if (flags & ROT_ALL)
+                {
+                    if (flags & ROT_Y)
+                        phd_RotY_I(*(extra_rotation++));
+                    if (flags & ROT_X)
+                        phd_RotX_I(*(extra_rotation++));
+                    if (flags & ROT_Z)
+                        phd_RotZ_I(*(extra_rotation++));
+                }
+
+                mesh_bits <<= 1;
+                if (mesh_bits & item->mesh_bits)
+                    phd_PutPolygons_I(mesh[1], clip);
+                else
+                    phd_PutPolygons_I(mesh[0], clip);
+
+                if (item->fired_weapon && i == (EnemyOffset[obj->bit_offset].mesh - 1))
+                {
+                    BITE_INFO* offset = &EnemyOffset[obj->bit_offset];
+                    phd_PushMatrix_I();
+                    phd_TranslateRel_I(offset->x, offset->y, offset->z);
+                    phd_RotYXZ_I(0, -16380, (GetRandomControl() << 14) + (GetRandomControl() >> 2) - 4096);
+                    InterpolateMatrix();
+                    phd_PutPolygons(meshes[objects[GUN_FLASH].mesh_index], clip);
+                    phd_PopMatrix_I();
+                    item->fired_weapon--;
+                }
+
+                bone++;
+            }
+        }
+        else
+        {
+            // NORMAL
+            phd_TranslateRel((int)*(frmptr[0] + 6), (int)*(frmptr[0] + 7), (int)*(frmptr[0] + 8));
+            pprot1 = frmptr[0] + 9;
+            gar_RotYXZsuperpack(&pprot1, 0);
+
+            if (mesh_bits & item->mesh_bits)
+                phd_PutPolygons(mesh[1], clip);
+            else
+                phd_PutPolygons(mesh[0], clip);
+
+            mesh += 2;
+            for (int i = 0; i < (obj->nmeshes - 1); i++, mesh += 2)
+            {
+                flags = bone->flags;
+                if (flags & BT_POP)
+                    phd_PopMatrix();
+                if (flags & BT_PUSH)
+                    phd_PushMatrix();
+
+                phd_TranslateRel(bone->x, bone->y, bone->z);
+                gar_RotYXZsuperpack(&pprot1, 0);
+
+                if (flags & ROT_ALL)
+                {
+                    if (flags & ROT_Y)
+                        phd_RotY(*(extra_rotation++));
+                    if (flags & ROT_X)
+                        phd_RotX(*(extra_rotation++));
+                    if (flags & ROT_Z)
+                        phd_RotZ(*(extra_rotation++));
+                }
+                
+                mesh_bits <<= 1;
+                if (mesh_bits & item->mesh_bits)
+                    phd_PutPolygons(mesh[1], clip);
+                else
+                    phd_PutPolygons(mesh[0], clip);
+
+                if (item->fired_weapon && i == (EnemyOffset[obj->bit_offset].mesh - 1))
+                {
+                    BITE_INFO* offset = &EnemyOffset[obj->bit_offset];
+                    phd_PushMatrix();
+                    phd_TranslateRel(offset->x, offset->y, offset->z);
+                    phd_RotX(-16380);
+                    phd_PutPolygons(meshes[objects[GUN_FLASH].mesh_index], clip);
+                    phd_PopMatrix();
+                    item->fired_weapon--;
+                }
+
+                bone++;
+            }
+        }
+    }
+
+    phd_left = 0;
+    phd_top = 0;
+    phd_right = phd_winwidth;
+    phd_bottom = phd_winheight;
+    phd_PopMatrix(); // !world
 }
 
 void phd_PopMatrix_I(void)
@@ -145,7 +313,6 @@ void gar_RotYXZsuperpack_I(short** pprot1, short** pprot2, int skip)
 void gar_RotYXZsuperpack(short** pprot, int skip)
 {
     uint16 *prot;
-    uint16 rot;
     uint8 flag;
 
     while (skip)
@@ -408,7 +575,7 @@ void injector::inject_draw()
     //this->inject(0x0044F790, SetRoomBounds);
     this->inject(0x0044FB10, DrawEffect);
     //this->inject(0x0044FC00, DrawMovingItem);
-    //this->inject(0x0044FF60, DrawAnimatingItem);
+    this->inject(0x0044FF60, DrawAnimatingItem);
     //this->inject(0x0041D140, DrawLara);
     //this->inject(0x00455800, DrawLara_Mirror);
     this->inject(0x00450520, InitInterpolate);

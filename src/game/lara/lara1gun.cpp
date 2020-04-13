@@ -103,7 +103,7 @@ void undraw_shotgun(int weapon_type)
         undraw_shotgun_meshes(weapon_type);
     }
 
-    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->anim_number].frame_ptr;
+    lara.l_arm.frame_base   = lara.r_arm.frame_base   = anims[item->anim_number].frame_ptr;
     lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
     lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
 }

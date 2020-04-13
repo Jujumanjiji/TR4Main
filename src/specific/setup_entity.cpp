@@ -43,9 +43,10 @@ void SetupEntity::motor_bike()
         obj->save_flags = true;
         obj->save_hitpoints = true;
         obj->save_position = true;
-        bones[obj->bone_index + 4] |= ROT_X;
-        bones[obj->bone_index + 12] |= ROT_X;
-        bones[obj->bone_index + 28] |= ROT_X;
+        init_bone();
+        bone[obj->bone_index + 4].flags  |= ROT_X;
+        bone[obj->bone_index + 12].flags |= ROT_X;
+        bone[obj->bone_index + 28].flags |= ROT_X;
     }
 }
 
@@ -62,10 +63,11 @@ void SetupEntity::jeep()
         obj->save_flags = true;
         obj->save_hitpoints = true;
         obj->save_position = true;
-        bones[obj->bone_index + 32] |= ROT_X;
-        bones[obj->bone_index + 36] |= ROT_X;
-        bones[obj->bone_index + 44] |= ROT_X;
-        bones[obj->bone_index + 48] |= ROT_X;
+        init_bone();
+        bone[obj->bone_index + 32].flags |= ROT_X;
+        bone[obj->bone_index + 36].flags |= ROT_X;
+        bone[obj->bone_index + 44].flags |= ROT_X;
+        bone[obj->bone_index + 48].flags |= ROT_X;
     }
 }
 
@@ -116,8 +118,9 @@ void SetupEntity::von_croy()
         obj->object_mip = 5120;
         obj->explodable_meshbits = 0x200000;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 24] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 80] |= ROT_Y | ROT_X;
+        init_bone();
+        bone[obj->bone_index + 24].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 80].flags |= ROT_Y | ROT_X;
         meshes[obj->mesh_index + 15] = meshes[objects[MESHSWAP1].mesh_index + 14];
         meshes[obj->mesh_index + 31] = meshes[objects[MESHSWAP1].mesh_index + 30];
         meshes[obj->mesh_index + 37] = meshes[objects[MESHSWAP1].mesh_index + 36];
@@ -152,8 +155,9 @@ void SetupEntity::guide()
         obj->save_mesh = true;
         obj->save_position = true;
         obj->hit_effect = HIT_SMOKE;
-        bones[obj->bone_index + 24] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 80] |= ROT_Y | ROT_X;
+        init_bone();
+        bone[obj->bone_index + 24].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 80].flags |= ROT_Y | ROT_X;
         meshes[obj->mesh_index + 31] = meshes[objects[MESHSWAP2].mesh_index + 30];
         meshes[obj->mesh_index + 37] = meshes[objects[MESHSWAP2].mesh_index + 36];
         meshes[obj->mesh_index + 43] = meshes[objects[MESHSWAP2].mesh_index + 42];
@@ -190,8 +194,9 @@ void SetupEntity::baddy_1()
         obj->save_position = true;
         obj->using_drawanimating_item = false;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 7 * 4]  |= ROT_Y | ROT_X; // TORSO
-        bones[obj->bone_index + 22 * 4] |= ROT_Y | ROT_X; // HEAD
+        init_bone();
+        bone[obj->bone_index + 7 * 4].flags |= ROT_Y | ROT_X; // TORSO
+        bone[obj->bone_index + 22 * 4].flags |= ROT_Y | ROT_X; // HEAD
 
         if (objects[BADDY_2].loaded)
             obj->anim_index = objects[BADDY_2].anim_index;
@@ -218,8 +223,9 @@ void SetupEntity::baddy_2()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 7 * 4]  |= ROT_Y | ROT_X; // TORSO
-        bones[obj->bone_index + 22 * 4] |= ROT_Y | ROT_X; // HEAD
+        init_bone();
+        bone[obj->bone_index + 7 * 4].flags |= ROT_Y | ROT_X; // TORSO
+        bone[obj->bone_index + 22 * 4].flags |= ROT_Y | ROT_X; // HEAD
     }
 
     obj = &objects[BADDY_2_MIP];
@@ -292,8 +298,9 @@ void SetupEntity::mummy()
         obj->save_position = true;
         obj->hit_effect = HIT_SMOKE;
         obj->undead = true;
-        bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 72] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 28].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 72].flags |= ROT_Y;
     }
 }
 
@@ -316,8 +323,9 @@ void SetupEntity::knight_templar()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->undead = true;
-        bones[obj->bone_index + 24] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 56] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 24].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 56].flags |= ROT_Y;
     }
 }
 
@@ -432,10 +440,11 @@ void SetupEntity::hammerhead()
         obj->save_position = true;
         obj->water_creature = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 0] |= ROT_Y;
-        bones[obj->bone_index + 4] |= ROT_Y;
-        bones[obj->bone_index + 8] |= ROT_Y;
-        bones[obj->bone_index + 36] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Y;
+        bone[obj->bone_index + 4].flags |= ROT_Y;
+        bone[obj->bone_index + 8].flags |= ROT_Y;
+        bone[obj->bone_index + 36].flags |= ROT_Y;
     }
 }
 
@@ -459,10 +468,11 @@ void SetupEntity::crocodile()
         obj->save_position = true;
         obj->water_creature = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 0] |= ROT_Y;
-        bones[obj->bone_index + 28] |= ROT_Y;
-        bones[obj->bone_index + 36] |= ROT_Y;
-        bones[obj->bone_index + 40] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Y;
+        bone[obj->bone_index + 28].flags |= ROT_Y;
+        bone[obj->bone_index + 36].flags |= ROT_Y;
+        bone[obj->bone_index + 40].flags |= ROT_Y;
     }
 }
 
@@ -486,8 +496,9 @@ void SetupEntity::demigod1()
         obj->save_position = true;
         //obj->non_lot = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 32] |= ROT_ALL;
-        bones[obj->bone_index + 80] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 32].flags |= ROT_ALL;
+        bone[obj->bone_index + 80].flags |= ROT_Y;
     }
 }
 
@@ -511,8 +522,9 @@ void SetupEntity::demigod2()
         obj->save_position = true;
         //obj->non_lot = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 32] |= ROT_ALL;
-        bones[obj->bone_index + 80] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 32].flags |= ROT_ALL;
+        bone[obj->bone_index + 80].flags |= ROT_Y;
     }
 }
 
@@ -536,8 +548,9 @@ void SetupEntity::demigod3()
         obj->save_position = true;
         //obj->non_lot = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 32] |= ROT_ALL;
-        bones[obj->bone_index + 80] |= ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 32].flags |= ROT_ALL;
+        bone[obj->bone_index + 80].flags |= ROT_Y;
     }
 }
 
@@ -560,8 +573,9 @@ void SetupEntity::mutant()
         obj->save_position = true;
         obj->undead = true;
         obj->hit_effect = HIT_SMOKE;
-        bones[obj->bone_index + 24] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
+        init_bone();
+        bone[obj->bone_index + 24].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 28].flags |= ROT_Y | ROT_X;
     }
 }
 
@@ -585,8 +599,9 @@ void SetupEntity::troops()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 0] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 28].flags |= ROT_Y | ROT_X;
     }
 }
 
@@ -610,8 +625,9 @@ void SetupEntity::sas()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 0] |= ROT_Y | ROT_X;
-        bones[obj->bone_index + 28] |= ROT_Y | ROT_X;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Y | ROT_X;
+        bone[obj->bone_index + 28].flags |= ROT_Y | ROT_X;
     }
 }
 
@@ -655,8 +671,9 @@ void SetupEntity::wild_boar()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 48] |= ROT_Z | ROT_Y;
-        bones[obj->bone_index + 52] |= ROT_Z | ROT_Y;
+        init_bone();
+        bone[obj->bone_index + 48].flags |= ROT_Z | ROT_Y;
+        bone[obj->bone_index + 52].flags |= ROT_Z | ROT_Y;
     }
 }
 
@@ -679,8 +696,9 @@ void SetupEntity::dog()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 0] |= ROT_Y;
-        bones[obj->bone_index + 8] |= ROT_Y | ROT_X;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Y;
+        bone[obj->bone_index + 8].flags |= ROT_Y | ROT_X;
     }
 }
 
@@ -703,7 +721,7 @@ void SetupEntity::ahmet()
         obj->save_hitpoints = true;
         obj->save_position = true;
         obj->hit_effect = HIT_BLOOD;
-        bones[obj->bone_index + 36] |= ROT_Y;
+        bone[obj->bone_index + 36].flags |= ROT_Y;
     }
 }
 
@@ -811,10 +829,11 @@ void SetupEntity::enemy_jeep()
             obj->save_mesh = true;
             obj->save_position = true;
             obj->hit_effect = HIT_FRAGMENT;
-            bones[obj->bone_index + 32] |= ROT_X;
-            bones[obj->bone_index + 36] |= ROT_X;
-            bones[obj->bone_index + 44] |= ROT_X;
-            bones[obj->bone_index + 48] |= ROT_X;
+            init_bone();
+            bone[obj->bone_index + 32].flags |= ROT_X;
+            bone[obj->bone_index + 36].flags |= ROT_X;
+            bone[obj->bone_index + 44].flags |= ROT_X;
+            bone[obj->bone_index + 48].flags |= ROT_X;
         }
     }
 }
@@ -883,10 +902,11 @@ void SetupEntity::sentry_gun()
         obj->save_position = true;
         obj->undead = true; // only killable by grenadegun or crossbow
         obj->hit_effect = HIT_FRAGMENT;
-        bones[obj->bone_index + 0] |= ROT_Y;
-        bones[obj->bone_index + 4] |= ROT_X;
-        bones[obj->bone_index + 8] |= ROT_Z;
-        bones[obj->bone_index + 12] |= ROT_Z;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Y;
+        bone[obj->bone_index + 4].flags |= ROT_X;
+        bone[obj->bone_index + 8].flags |= ROT_Z;
+        bone[obj->bone_index + 12].flags |= ROT_Z;
     }
 }
 
@@ -1009,10 +1029,11 @@ void SetupEntity::wheel_of_fortune()
         obj->hit_points = 1;
         obj->save_anim = true;
         obj->save_flags = true;
-        bones[obj->bone_index + 0] |= ROT_Z;
-        bones[obj->bone_index + 4] |= ROT_Z;
-        bones[obj->bone_index + 8] |= ROT_Z;
-        bones[obj->bone_index + 12] |= ROT_Z;
+        init_bone();
+        bone[obj->bone_index + 0].flags |= ROT_Z;
+        bone[obj->bone_index + 4].flags |= ROT_Z;
+        bone[obj->bone_index + 8].flags |= ROT_Z;
+        bone[obj->bone_index + 12].flags |= ROT_Z;
     }
 }
 
@@ -1097,4 +1118,9 @@ void SetupEntity::fish()
         obj->draw_routine = NULL;
         obj->save_flags = true;
     }
+}
+
+void SetupEntity::init_bone()
+{
+    bone = (BONE_STRUCT*)&bones[obj->bone_index];
 }

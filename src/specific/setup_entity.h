@@ -56,7 +56,9 @@ public:
 
 private:
     OBJECT_INFO* obj;
-    OBJECT_INFO* objJzon;
+    BONE_STRUCT* bone;
+
+    void init_bone();
 };
 
 extern SetupEntity setup_entity;

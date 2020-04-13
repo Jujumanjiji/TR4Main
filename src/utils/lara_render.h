@@ -7,7 +7,7 @@ private:
     ITEM_INFO* item;
     OBJECT_INFO* obj;
     LARA_MATRIX* mptr;
-    int* bone;
+    BONE_STRUCT* bone;
     int frac;
     int rate;
     short* frmptr[2];
@@ -25,7 +25,7 @@ public:
     void assign_matrixptr();
     void create_item();
     void create_object();
-    void create_bone(int* boneIfCutscene);
+    void create_bone(BONE_STRUCT* boneIfCutscene);
     void create_frame();
     void check_hitdirection(short* frameCutscene);
     void create_rotation(short* frameCutscene);

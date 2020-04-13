@@ -39,7 +39,7 @@ void CalcLaraMatrices(short pprot)
     lara_render.end_world();
 }
 
-void CalcLaraMatrices_Cutscene(short *frame, int *bone, short pprot)
+void CalcLaraMatrices_Cutscene(short *frame, BONE_STRUCT *bone, short pprot)
 {
     // lara render (mesh + weapon) (normal and interpolate)
     lara_render.enable_cutscene(true);
@@ -76,7 +76,7 @@ void CalcLaraMatrices_Cutscene(short *frame, int *bone, short pprot)
     lara_render.end_world();
 }
 
-void DEL_CalcLaraMatrices_Interpolate(short *frame1, short *frame2, int frac, int rate, int *bone, short pprot)
+void DEL_CalcLaraMatrices_Interpolate(short *frame1, short *frame2, int frac, int rate, BONE_STRUCT *bone, short pprot)
 {
     // not used anymore since CalcLaraMatrices() contains all the render !
 }

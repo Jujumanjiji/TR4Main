@@ -31,7 +31,7 @@
 #define MESH(object, x) (object->mesh_index + x * 2)
 
 #define ABS(x) (((x)<0) ? (-(x)):(x))
-#define MESH_TO_BONE(x) (x - 1)
+#define MTB(x) (x - 1) // mesh to bone
 
 #define CustABS(A, B)\
 {\

@@ -11,7 +11,7 @@ void frigup_lara(void)
     lara_item->pos.x = GLOBAL_cutpos[1];
     lara_item->pos.y = GLOBAL_cutpos[2];
     lara_item->pos.z = GLOBAL_cutpos[3];
-    int* bone = &bones[objects[lara_item->object_number].bone_index];
+    BONE_STRUCT* bone = (BONE_STRUCT*)&bones[objects[lara_item->object_number].bone_index];
 
     UpdateAnimFrame(actor_pnodes, 16, actor_frame);
     CalcLaraMatrices_Cutscene(actor_frame, bone, 0);

@@ -11,7 +11,7 @@ enum GAR_TYPES
 extern int DrawPhaseGame(void);
 extern void InitInterpolate(int frac, int rate);
 extern void DrawEffect(short fx_number);
-
+extern void DrawAnimatingItem(ITEM_INFO* item);
 extern void phd_PopMatrix_I(void);
 extern void phd_PushMatrix_I(void);
 extern void phd_RotY_I(short ang);
@@ -37,9 +37,7 @@ extern short* GetBestFrame(ITEM_INFO* item);
 #define PrintObjects ((void(__cdecl*)(short roomNumber)) 0x0044F330)
 #define GetRoomBounds ((void(__cdecl*)(void)) 0x0044F5D0)
 #define SetRoomBounds ((void(__cdecl*)(short *point, short roomNumber, ROOM_INFO* parent)) 0x0044F790)
-///#define DrawEffect ((void(__cdecl*)(short fxNumber)) 0x0044FB10)
 #define DrawMovingItem ((void(__cdecl*)(ITEM_INFO* item, short *frame)) 0x0044FC00)
-#define DrawAnimatingItem ((void(__cdecl*)(ITEM_INFO* item)) 0x0044FF60)
 #define DrawLara ((void(__cdecl*)(ITEM_INFO* item, BOOL lightDisabled)) 0x0041D140)
 #define DrawLara_Mirror ((void(__cdecl*)(void)) 0x00455800)
 #define CalculateObjectLighting ((void(__cdecl*)(ITEM_INFO* item, short* frame)) 0x00450BB0)

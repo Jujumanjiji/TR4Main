@@ -34,6 +34,14 @@ struct STATS
     BYTE health_used;
 };
 
+struct BONE_STRUCT
+{
+    DWORD flags;
+    int x;
+    int y;
+    int z;
+};
+
 struct PHD_MATRIX // size: 48
 {
     int m00; // 0
@@ -394,8 +402,8 @@ struct ROOM_INFO
 struct ITEM_INFO
 {
     long floor;
-    int touch_bits;
-    int mesh_bits;
+    DWORD touch_bits;
+    DWORD mesh_bits;
     short object_number;
     short state_current;
     short state_next;
@@ -446,7 +454,7 @@ struct ITEM_INFO
     unsigned int ai_bits : 5;
     unsigned int really_active : 1;
     unsigned int in_draw_room : 1;
-    int meshswap_meshbits;
+    DWORD meshswap_meshbits;
     short drawRoom;
     short TOSSPAD;
 };
