@@ -78,6 +78,8 @@
 #define ZSoff2                              VAR_U_(0x00753CB0, int)
 #define cam_pos                             VAR_U_(0x007E71B0, PHD_VECTOR)
 #define cam_rot                             VAR_U_(0x007E71C0, PHD_VECTOR)
+#define atanBase                            ARRAY_(0x004B4680, int, [8])
+#define atanTable                           ARRAY_(0x004B46A0, short, [2050])
 #define rcossin_tbl                         ARRAY_(0x004B56A4, short, [8192])
 #define CurrentRoom                         VAR_U_(0x007FDF6C, int)
 #define invnframes                          VAR_U_(0x007FE734, int)

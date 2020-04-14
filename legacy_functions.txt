@@ -11,7 +11,7 @@
 #define phd_RotYXZ ((void(__cdecl*)(short y, short x, short z)) 0x00490820)
 #define phd_GetVectorAngles ((void(__cdecl*)(int x, int y, int z, short* dest)) 0x00490A90)
 #define ScaleCurrentMatrix ((void(__cdecl*)(PHD_VECTOR* scale)) 0x0048FB60)
-#define SetupZNearFar ((void(__cdecl*)(int nNear, int nFar)) 0x0048FA90)
+#define SetupZ ((void(__cdecl*)(int nNear, int nFar)) 0x0048FA90)
 #define phd_InitWindow ((void(__cdecl*)(int x, int y, int width, int height, int nearz, int farz, short view_angle)) 0x0048FC10)
 #define SetupDXMatrixTransformState ((void(__cdecl*)(void)) 0x00490CF0)
 #define SetD3DViewMatrix ((void(__cdecl*)(void)) 0x00490B30)

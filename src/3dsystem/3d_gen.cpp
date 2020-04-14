@@ -10,9 +10,9 @@ void AlterFOV(short newFov)
     f_oneopersp = one / f_persp;
     f_perspoznear = f_persp / f_znear;
     f_opersp = f_persp;
-    f_zspersp = 2048.0f / f_opersp;
+    f_zspersp = Z_ONE  / f_opersp;
     f_oneoznear = f_opersp / f_zsnear;
-    LfAspectCorrection = 1.3333334f / (float(phd_winwidth) / float(phd_winheight));
+    LfAspectCorrection = W2V_ASPECT_CORRECTION / (float(phd_winwidth) / float(phd_winheight));
 }
 
 void phd_GenerateW2V(PHD_3DPOS* viewpos)
@@ -67,6 +67,68 @@ void phd_LookAt(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, shor
     cam_pos.z = zsrc;
     phd_GenerateW2V(&viewpos);
     SetupDXMatrixTransformState();
+}
+
+int phd_atan(int x, int y)
+{
+    if (x == 0 && y == 0)
+        return 0;
+
+    int result = 0;
+    int swapBuf;
+    char flags = 0;
+
+    if (x < 0)
+    {
+        flags |= 4;
+        x = -x;
+    }
+
+    if (y < 0)
+    {
+        flags |= 2;
+        y = -y;
+    }
+
+    if (y > x)
+    {
+        flags |= 1;
+        SWAP(x, y, swapBuf);
+    }
+
+    for (; (short)y != y; x >>= 1)
+        result >>= 1;
+
+    if (x == 0)
+        x = 1;
+
+    result = atanBase[flags] + atanTable[(y << 11) / x];
+    return abs(result);
+}
+
+int phd_sqrt(int x)
+{
+    int result;
+    int base = 0x40000000;
+    int based_result;
+
+    result = 0;
+    for (; base != 0; base >>= 2)
+    {
+        for (; base != 0; base >>= 2)
+        {
+            based_result = base + result;
+            result >>= 1;
+
+            if (based_result > x)
+                break;
+
+            x -= based_result;
+            result |= base;
+        }
+    }
+
+    return result;
 }
 
 BOOL phd_TranslateRel(int x, int y, int z)
@@ -222,10 +284,10 @@ void ScaleCurrentMatrix(PHD_VECTOR* scale)
 
 static void SetupZRange(void)
 {
-    float fb = f_zsfar * f_zsnear * 0.99000001 / (f_zsnear - f_zsfar);
-    f_a = 0.0049999999 - fb / f_zsnear;
+    float fb = (f_zsfar * f_zsnear * ZRANGE) / (f_zsnear - f_zsfar);
+    f_a = MINZR - fb / f_zsnear;
     f_b = -fb;
-    f_boo = -fb / 2048.0f;
+    f_boo = -fb / Z_ONE;
 }
 
 static void SetupZNear(int nNear)
@@ -242,10 +304,10 @@ static void SetupZFar(int nFar)
     phd_zfar = nFar;
     f_zfar = float(phd_zfar);
     f_zsfar = float(phd_zfar >> W2V_SHIFT);
-    f_oneozfar = 2048.0f / f_zsnear;
+    f_oneozfar = Z_ONE / f_zsnear;
 }
 
-void SetupZNearFar(int nNear, int nFar)
+void SetupZ(int nNear, int nFar)
 {
     SetupZNear(nNear);
     SetupZFar(nFar);
@@ -262,8 +324,8 @@ void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, sh
     phd_winheight = height;
     phd_centerx = width / 2;
     phd_centery = height / 2;
-    phd_znear = nearz << W2V_SHIFT;
-    phd_zfar = farz << W2V_SHIFT;
+    phd_znear = (nearz << W2V_SHIFT);
+    phd_zfar = (farz << W2V_SHIFT);
     f_centerx = float(phd_centerx);
     f_centery = float(phd_centery);
     f_winxmin = float(phd_winxmin);
@@ -272,7 +334,7 @@ void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, sh
     f_winymax = float(phd_winymax + 1);
 
     AlterFOV(ANGLE(view_angle));
-    SetupZNearFar(phd_znear, phd_zfar);
+    SetupZ(phd_znear, phd_zfar);
     
     phd_right = phd_winxmax;
     phd_bottom = phd_winymax;
@@ -362,9 +424,9 @@ void injector::inject_3d_gen()
     this->inject(0x00490820, phd_RotYXZ);
     this->inject(0x00490A90, phd_GetVectorAngles);
     //this->inject(0x0047DA60, phd_PutPolygons); // corrupted in IDAPro
-    //this->inject(0x00490210, phd_atan);
-    //this->inject(0x00490280, phd_sqrt);
-    this->inject(0x0048FA90, SetupZNearFar);
+    this->inject(0x00490210, phd_atan);
+    this->inject(0x00490280, phd_sqrt);
+    this->inject(0x0048FA90, SetupZ);
     this->inject(0x0048FB60, ScaleCurrentMatrix);
     this->inject(0x0048FC10, phd_InitWindow);
     //this->inject(0x0048FD40, mGetAngle);
