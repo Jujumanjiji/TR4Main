@@ -2,10 +2,6 @@
 #include "3d_gen.h"
 #include "w2v_setup.h"
 
-static D3DMATRIX dx_mxworld;
-static D3DMATRIX dx_mxprojection;
-static D3DMATRIX dx_mxw2v;
-
 void SetupDXMatrixTransformState(void)
 {
     SetupDXMatrix(&dx_mxworld);
@@ -14,6 +10,25 @@ void SetupDXMatrixTransformState(void)
 
     DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, &dx_mxworld));
     DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_PROJECTION, &dx_mxprojection));
+}
+
+void SetD3DViewMatrix(void)
+{
+    PHD_MATRIX* mptr = phd_mxptr;
+    SetupDXMatrix(&dx_mxview);
+    dx_mxview._11 = float(mptr->m00) * W2V_D3DVALUE;
+    dx_mxview._21 = float(mptr->m01) * W2V_D3DVALUE;
+    dx_mxview._31 = float(mptr->m02) * W2V_D3DVALUE;
+    dx_mxview._12 = float(mptr->m10) * W2V_D3DVALUE;
+    dx_mxview._22 = float(mptr->m11) * W2V_D3DVALUE;
+    dx_mxview._32 = float(mptr->m12) * W2V_D3DVALUE;
+    dx_mxview._13 = float(mptr->m20) * W2V_D3DVALUE;
+    dx_mxview._23 = float(mptr->m21) * W2V_D3DVALUE;
+    dx_mxview._33 = float(mptr->m22) * W2V_D3DVALUE;
+    dx_mxview._41 = float(mptr->m03 >> W2V_SHIFT);
+    dx_mxview._42 = float(mptr->m13 >> W2V_SHIFT);
+    dx_mxview._43 = float(mptr->m23 >> W2V_SHIFT);
+    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_VIEW, &dx_mxview));
 }
 
 void SetupDXMatrix(D3DMATRIX *mptr)
@@ -36,7 +51,6 @@ void SetupDXMatrix(D3DMATRIX *mptr)
     mptr->_44 = 1.0f;
 }
 
-#define W2V_D3DVALUE 0.000061035156f
 void SetupDXW2V(D3DMATRIX* dest, PHD_MATRIX* pptr)
 {
     SetupDXMatrix(dest);
@@ -261,10 +275,10 @@ void injector::inject_3d_gen()
     //this->inject(0x00490210, phd_atan);
     //this->inject(0x00490280, phd_sqrt);
     //this->inject(0x0048FA90, SetZNearAndFar);
-    //this->inject(0x0048FB60, ShiftMatrixBasedPos);
     //this->inject(0x0048FC10, phd_InitWindow);
     //this->inject(0x0048FD40, mGetAngle);
     this->inject(0x00490CF0, SetupDXMatrixTransformState);
+    this->inject(0x00490B30, SetD3DViewMatrix);
     this->inject(0x00490DD0, SetupDXMatrix);
     this->inject(0x00490C30, SetupDXW2V);
 }
