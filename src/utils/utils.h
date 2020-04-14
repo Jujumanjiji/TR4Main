@@ -59,12 +59,15 @@ extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short a
 extern LPCSTR InventoryItemDebugString(short inv_item);
 extern void ResetLaraMeshSkin(void);
 
+extern bool DX_TRY(HRESULT errorThrow);
+
 extern DWORD RGBA_VECTORGET(CVECTOR color);
 extern DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b);
 extern DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b, BYTE a);
 extern CVECTOR DWORD_TO_RGBA(DWORD color);
 
 /// new:
+extern void InterpolateArm();
 extern void phd_SwapPushMatrix(int frac);
 extern void phd_SwapPopMatrix(int frac);
 extern void phd_SwapTranslateRel(int frac, short* frame1, short* frame2);

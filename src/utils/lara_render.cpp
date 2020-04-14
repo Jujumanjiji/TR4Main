@@ -157,7 +157,7 @@ void LARA_RENDER::start_world()
         shift_matrix.z = -0x4000;
         shift_matrix.y = -0x4000;
         shift_matrix.x = -0x4000;
-        ShiftMatrixBasedPos(&shift_matrix);
+        ScaleCurrentMatrix(&shift_matrix);
     }
 }
 
@@ -532,15 +532,7 @@ void LARA_RENDER::mesh_2gun()
             /// RIGHT_ARM
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
-            phd_mxptr->m00 = phd_mxptr[-2].m00;
-            phd_mxptr->m01 = phd_mxptr[-2].m01;
-            phd_mxptr->m02 = phd_mxptr[-2].m02;
-            phd_mxptr->m10 = phd_mxptr[-2].m10;
-            phd_mxptr->m11 = phd_mxptr[-2].m11;
-            phd_mxptr->m12 = phd_mxptr[-2].m12;
-            phd_mxptr->m20 = phd_mxptr[-2].m20;
-            phd_mxptr->m21 = phd_mxptr[-2].m21;
-            phd_mxptr->m22 = phd_mxptr[-2].m22;
+            InterpolateArm();
             phd_RotYXZ(lara.r_arm.y_rot, lara.r_arm.x_rot, lara.r_arm.z_rot);
             rotation1 = lara.r_arm.frame_base + (lara.r_arm.frame_number - anims[lara.r_arm.anim_number].frame_base) * (anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
@@ -556,15 +548,7 @@ void LARA_RENDER::mesh_2gun()
             /// LEFT_ARM
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
-            phd_mxptr->m00 = phd_mxptr[-2].m00;
-            phd_mxptr->m01 = phd_mxptr[-2].m01;
-            phd_mxptr->m02 = phd_mxptr[-2].m02;
-            phd_mxptr->m10 = phd_mxptr[-2].m10;
-            phd_mxptr->m11 = phd_mxptr[-2].m11;
-            phd_mxptr->m12 = phd_mxptr[-2].m12;
-            phd_mxptr->m20 = phd_mxptr[-2].m20;
-            phd_mxptr->m21 = phd_mxptr[-2].m21;
-            phd_mxptr->m22 = phd_mxptr[-2].m22;
+            InterpolateArm();
             phd_RotYXZ(lara.l_arm.y_rot, lara.l_arm.x_rot, lara.l_arm.z_rot);
             rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - anims[lara.l_arm.anim_number].frame_base) * (anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 11);
@@ -623,15 +607,7 @@ void LARA_RENDER::mesh_revolver()
             /// RIGHT_ARM
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
-            phd_mxptr->m00 = phd_mxptr[-2].m00;
-            phd_mxptr->m01 = phd_mxptr[-2].m01;
-            phd_mxptr->m02 = phd_mxptr[-2].m02;
-            phd_mxptr->m10 = phd_mxptr[-2].m10;
-            phd_mxptr->m11 = phd_mxptr[-2].m11;
-            phd_mxptr->m12 = phd_mxptr[-2].m12;
-            phd_mxptr->m20 = phd_mxptr[-2].m20;
-            phd_mxptr->m21 = phd_mxptr[-2].m21;
-            phd_mxptr->m22 = phd_mxptr[-2].m22;
+            InterpolateArm();
             phd_RotYXZ(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
             rotation1 = lara.r_arm.frame_base + (lara.r_arm.frame_number - anims[lara.r_arm.anim_number].frame_base) * (anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
@@ -647,15 +623,7 @@ void LARA_RENDER::mesh_revolver()
             /// LEFT_ARM
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
-            phd_mxptr->m00 = phd_mxptr[-2].m00;
-            phd_mxptr->m01 = phd_mxptr[-2].m01;
-            phd_mxptr->m02 = phd_mxptr[-2].m02;
-            phd_mxptr->m10 = phd_mxptr[-2].m10;
-            phd_mxptr->m11 = phd_mxptr[-2].m11;
-            phd_mxptr->m12 = phd_mxptr[-2].m12;
-            phd_mxptr->m20 = phd_mxptr[-2].m20;
-            phd_mxptr->m21 = phd_mxptr[-2].m21;
-            phd_mxptr->m22 = phd_mxptr[-2].m22;
+            InterpolateArm();
             phd_RotYXZ(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
             rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - anims[lara.l_arm.anim_number].frame_base) * (anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 11);

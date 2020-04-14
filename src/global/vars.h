@@ -4,7 +4,7 @@
 #define VAR_U_(address, type)            (*(type*)(address))                // uninitialized variable
 #define VAR_I_(address, type, value)    (*(type*)(address))                // initialized variable (value is just for info)
 #define ARRAY_(address, type, length)    (*(type(*)length)(address))        // array (can be multidimensional)
-
+#define DirectXErrorText ((LPCSTR(__cdecl*)(HRESULT id)) 0x00490FF0)
 
 /// official app address
 #define App                                 VAR_U_(0x00753980, WINAPP)
@@ -14,7 +14,8 @@
 ///===============================///
 
 #define phd_mxptr                           VAR_U_(0x007E71D8, PHD_MATRIX*)
-#define w2v_matrix                          ARRAY_(0x00753CC8, int, [12])
+#define w2v_matrix                          VAR_U_(0x00753CC8, PHD_MATRIX)
+#define matrix_stack                        ARRAY_(0x00753D04, PHD_MATRIX, [20])
 #define IM_ptr                              VAR_U_(0x007FE124, PHD_MATRIX*)
 #define IM_rate                             VAR_U_(0x007FE120, int)
 #define IM_frac                             VAR_U_(0x007FDF54, int)
@@ -43,6 +44,15 @@
 #define phd_centery                         VAR_U_(0x00753C50, int)
 #define phd_winwidth                        VAR_U_(0x00753CF8, int)
 #define phd_winheight                       VAR_U_(0x00753C48, int)
+#define LfAspectCorrection                  VAR_U_(0x007540C4, float)
+#define XSoff1                              VAR_U_(0x00753C6C, int)
+#define XSoff2                              VAR_U_(0x00753C68, int)
+#define YSoff1                              VAR_U_(0x00753C7C, int)
+#define YSoff2                              VAR_U_(0x00753C80, int)
+#define ZSoff1                              VAR_U_(0x00753CAC, int)
+#define ZSoff2                              VAR_U_(0x00753CB0, int)
+#define cam_pos                             VAR_U_(0x007E71B0, PHD_VECTOR)
+#define cam_rot                             VAR_U_(0x007E71C0, PHD_VECTOR)
 #define rcossin_tbl                         ARRAY_(0x004B56A4, short, [8192])
 #define CurrentRoom                         VAR_U_(0x007FDF6C, int)
 #define invnframes                          VAR_U_(0x007FE734, int)

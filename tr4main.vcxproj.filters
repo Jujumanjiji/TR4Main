@@ -230,6 +230,9 @@
     <ClCompile Include="src\game\hair.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\3dsystem\w2v_setup.cpp">
+      <Filter>src\3dsystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -411,6 +414,9 @@
     </ClInclude>
     <ClInclude Include="features.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\3dsystem\w2v_setup.h">
+      <Filter>src\3dsystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -98,6 +98,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\3dsystem\w2v_setup.cpp" />
     <ClCompile Include="src\game\camera.cpp" />
     <ClCompile Include="src\game\debris.cpp" />
     <ClCompile Include="src\game\gameflow.cpp" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features.h" />
+    <ClInclude Include="src\3dsystem\w2v_setup.h" />
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\gameflow.h" />

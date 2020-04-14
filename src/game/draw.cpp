@@ -445,15 +445,7 @@ void InterpolateArmMatrix(void)
     // NOTE: the old way not work with PHD_MATRIX struct...
     // -24 is replaced by [-2] with PHD_MATRIX :)
     mptr = phd_mxptr;
-    mptr->m00 = mptr[-2].m00;
-    mptr->m01 = mptr[-2].m01;
-    mptr->m02 = mptr[-2].m02;
-    mptr->m10 = mptr[-2].m10;
-    mptr->m11 = mptr[-2].m11;
-    mptr->m12 = mptr[-2].m12;
-    mptr->m20 = mptr[-2].m20;
-    mptr->m21 = mptr[-2].m21;
-    mptr->m22 = mptr[-2].m22;
+    InterpolateArm();
 
     if (rate == 2 || (frac == 2 && rate == 4))                                           // If interpolating Odd Frames
     {                                                                                    // then do simple case

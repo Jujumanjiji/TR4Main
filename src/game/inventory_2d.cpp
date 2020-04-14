@@ -735,13 +735,13 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
                 examine_shift.x = 0x1C00;
                 examine_shift.y = 0x1200;
                 examine_shift.z = 0x1000;
-                ShiftMatrixBasedPos(&examine_shift);
+                ScaleCurrentMatrix(&examine_shift);
                 break;
             case EXAMINE2:
                 examine_shift.x = 0x1680;
                 examine_shift.y = 0x1400;
                 examine_shift.z = 0x1000;
-                ShiftMatrixBasedPos(&examine_shift);
+                ScaleCurrentMatrix(&examine_shift);
                 break;
         }
     }

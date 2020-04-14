@@ -1278,6 +1278,19 @@ void ResetLaraMeshSkin(void)
     lara.mesh.head = classic_meshes(mesh_target, HEAD);
 }
 
+bool DX_TRY(HRESULT errorThrow)
+{
+    if (SUCCEEDED(errorThrow))
+    {
+        return true;
+    }
+    else if (FAILED(errorThrow))
+    {
+        S_LogValue("%s", DirectXErrorText(errorThrow));
+        return false;
+    }
+}
+
 CVECTOR DWORD_TO_RGBA(DWORD color)
 {
     CVECTOR result;
@@ -1301,6 +1314,19 @@ DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b)
 DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b, BYTE a)
 {
     return (((((a << 8) + r) << 8) + g) << 8) + b;
+}
+
+void InterpolateArm()
+{
+    phd_mxptr->m00 = phd_mxptr[-2].m00;
+    phd_mxptr->m01 = phd_mxptr[-2].m01;
+    phd_mxptr->m02 = phd_mxptr[-2].m02;
+    phd_mxptr->m10 = phd_mxptr[-2].m10;
+    phd_mxptr->m11 = phd_mxptr[-2].m11;
+    phd_mxptr->m12 = phd_mxptr[-2].m12;
+    phd_mxptr->m20 = phd_mxptr[-2].m20;
+    phd_mxptr->m21 = phd_mxptr[-2].m21;
+    phd_mxptr->m22 = phd_mxptr[-2].m22;
 }
 
 void phd_SwapPushMatrix(int frac)
