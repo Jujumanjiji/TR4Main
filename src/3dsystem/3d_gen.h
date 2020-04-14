@@ -28,6 +28,7 @@ extern void phd_GetVectorAngles(int x, int y, int z, short* dest);
 extern void ScaleCurrentMatrix(PHD_VECTOR* scale);
 extern void SetupZ(int nNear, int nFar);
 extern void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, short view_angle);
+extern long mGetAngle(long srcX, long srcZ, long targetX, long targetZ);
 extern void SetupDXMatrixTransformState(void);
 extern void SetD3DViewMatrix(void);
 extern void InitD3DMatrix(D3DMATRIX *mptr);
@@ -36,7 +37,4 @@ extern void SetupDXW2V(D3DMATRIX* dest, PHD_MATRIX* pptr);
 #ifdef DLL_INJECT
 #define phd_PutPolygons ((void(__cdecl*)(short* ptr, int clip)) 0x0047DA60)
 #define phd_PutPolygons_inv ((void(__cdecl*)(short* ptr, float x, float y, DWORD rgba)) 0x0047E8B0)
-//#define phd_atan ((int(__cdecl*)(int x, int y)) 0x00490210)
-//#define phd_sqrt ((int(__cdecl*)(int x)) 0x00490280)
-#define mGetAngle ((DWORD(__cdecl*)(DWORD srcX, DWORD srcZ, DWORD targetX, DWORD targetZ)) 0x0048FD40)
 #endif

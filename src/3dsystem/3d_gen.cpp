@@ -343,6 +343,53 @@ void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, sh
     phd_mxptr = matrix_stack;
 }
 
+long mGetAngle(long srcX, long srcZ, long targetX, long targetZ)
+{
+    long angleX;
+    long angleZ;
+    long swapBuf;
+    long result;
+    char flags;
+
+    result = 0;
+    angleX = targetX - srcX;
+    angleZ = targetZ - srcZ;
+
+    if (targetX != srcX || targetZ != srcZ)
+    {
+        flags = 0;
+        if (angleX < 0)
+        {
+            flags |= 4;
+            angleX = srcX - targetX;
+        }
+
+        if (angleZ < 0)
+        {
+            flags |= 2;
+            angleZ = srcZ - targetZ;
+        }
+
+        if (angleZ > angleX)
+        {
+            flags |= 1;
+            SWAP(angleX, angleZ, swapBuf);
+        }
+
+        for (; (short)angleZ != angleZ; angleX >>= 1)
+            angleZ >>= 1;
+
+        if (angleX == 0)
+            angleX = 1;
+        result = atanBase[flags] + atanTable[(angleZ << 11) / angleX];
+    }
+
+    if (result == 0)
+        return 0;
+
+    return abs(result) & 0xFFFF;
+}
+
 void SetupDXMatrixTransformState(void)
 {
     InitD3DMatrix(&dx_mxworld);
@@ -429,7 +476,7 @@ void injector::inject_3d_gen()
     this->inject(0x0048FA90, SetupZ);
     this->inject(0x0048FB60, ScaleCurrentMatrix);
     this->inject(0x0048FC10, phd_InitWindow);
-    //this->inject(0x0048FD40, mGetAngle);
+    this->inject(0x0048FD40, mGetAngle);
     this->inject(0x00490CF0, SetupDXMatrixTransformState);
     this->inject(0x00490B30, SetD3DViewMatrix);
     this->inject(0x00490DD0, InitD3DMatrix);
