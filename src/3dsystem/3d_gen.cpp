@@ -2,70 +2,17 @@
 #include "3d_gen.h"
 #include "w2v_setup.h"
 
-void SetupDXMatrixTransformState(void)
+void AlterFOV(short newFov)
 {
-    SetupDXMatrix(&dx_mxworld);
-    SetupDXMatrix(&dx_mxprojection);
-    dx_mxprojection._22 = -1.0;
-
-    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, &dx_mxworld));
-    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_PROJECTION, &dx_mxprojection));
-}
-
-void SetD3DViewMatrix(void)
-{
-    PHD_MATRIX* mptr = phd_mxptr;
-    SetupDXMatrix(&dx_mxview);
-    dx_mxview._11 = float(mptr->m00) * W2V_D3DVALUE;
-    dx_mxview._21 = float(mptr->m01) * W2V_D3DVALUE;
-    dx_mxview._31 = float(mptr->m02) * W2V_D3DVALUE;
-    dx_mxview._12 = float(mptr->m10) * W2V_D3DVALUE;
-    dx_mxview._22 = float(mptr->m11) * W2V_D3DVALUE;
-    dx_mxview._32 = float(mptr->m12) * W2V_D3DVALUE;
-    dx_mxview._13 = float(mptr->m20) * W2V_D3DVALUE;
-    dx_mxview._23 = float(mptr->m21) * W2V_D3DVALUE;
-    dx_mxview._33 = float(mptr->m22) * W2V_D3DVALUE;
-    dx_mxview._41 = float(mptr->m03 >> W2V_SHIFT);
-    dx_mxview._42 = float(mptr->m13 >> W2V_SHIFT);
-    dx_mxview._43 = float(mptr->m23 >> W2V_SHIFT);
-    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_VIEW, &dx_mxview));
-}
-
-void SetupDXMatrix(D3DMATRIX *mptr)
-{
-    mptr->_11 = 1.0f;
-    mptr->_12 = 0.0f;
-    mptr->_13 = 0.0f;
-    mptr->_14 = 0.0f;
-    mptr->_21 = 0.0f;
-    mptr->_22 = 1.0f;
-    mptr->_23 = 0.0f;
-    mptr->_24 = 0.0f;
-    mptr->_31 = 0.0f;
-    mptr->_32 = 0.0f;
-    mptr->_33 = 1.0f;
-    mptr->_34 = 0.0f;
-    mptr->_41 = 0.0f;
-    mptr->_42 = 0.0f;
-    mptr->_43 = 0.0f;
-    mptr->_44 = 1.0f;
-}
-
-void SetupDXW2V(D3DMATRIX* dest, PHD_MATRIX* pptr)
-{
-    SetupDXMatrix(dest);
-    dest->_11 = float(pptr->m00) * W2V_D3DVALUE;
-    dest->_21 = float(pptr->m01) * W2V_D3DVALUE;
-    dest->_31 = float(pptr->m02) * W2V_D3DVALUE;
-    dest->_12 = float(pptr->m10) * W2V_D3DVALUE;
-    dest->_22 = float(pptr->m11) * W2V_D3DVALUE;
-    dest->_32 = float(pptr->m12) * W2V_D3DVALUE;
-    dest->_13 = float(pptr->m20) * W2V_D3DVALUE;
-    dest->_23 = float(pptr->m21) * W2V_D3DVALUE;
-    dest->_33 = float(pptr->m22) * W2V_D3DVALUE;
-    dest->_41 = float(pptr->m03 >> W2V_SHIFT);
-    dest->_42 = float(pptr->m13 >> W2V_SHIFT);
-    dest->_43 = float(pptr->m23 >> W2V_SHIFT);
+    CurrentFOV = newFov;
+    phd_persp = phd_winwidth / 2 * COS(newFov / 2) / SIN(newFov / 2);
+    f_persp = float(phd_persp);
+    f_oneopersp = one / f_persp;
+    f_perspoznear = f_persp / f_znear;
+    f_opersp = f_persp;
+    f_zspersp = 2048.0f / f_opersp;
+    f_oneoznear = f_opersp / f_zsnear;
+    LfAspectCorrection = 1.3333334f / (float(phd_winwidth) / float(phd_winheight));
 }
 
 void phd_GenerateW2V(PHD_3DPOS* viewpos)
@@ -257,10 +204,153 @@ void phd_GetVectorAngles(int x, int y, int z, short* dest)
     *(dest + 1) = pitch;
 }
 
+void ScaleCurrentMatrix(PHD_VECTOR* scale)
+{
+    PHD_MATRIX* mptr = phd_mxptr;
+    mptr->m00 = mptr->m00 * scale->x >> W2V_SHIFT;
+    mptr->m01 = mptr->m01 * scale->y >> W2V_SHIFT;
+    mptr->m02 = mptr->m02 * scale->z >> W2V_SHIFT;
+
+    mptr->m10 = scale->x * mptr->m10 >> W2V_SHIFT;
+    mptr->m11 = mptr->m11 * scale->y >> W2V_SHIFT;
+    mptr->m12 = mptr->m12 * scale->z >> W2V_SHIFT;
+    
+    mptr->m20 = scale->x * mptr->m20 >> W2V_SHIFT;
+    mptr->m21 = scale->y * mptr->m21 >> W2V_SHIFT;
+    mptr->m22 = scale->z * mptr->m22 >> W2V_SHIFT;
+}
+
+static void SetupZRange(void)
+{
+    float fb = f_zsfar * f_zsnear * 0.99000001 / (f_zsnear - f_zsfar);
+    f_a = 0.0049999999 - fb / f_zsnear;
+    f_b = -fb;
+    f_boo = -fb / 2048.0f;
+}
+
+static void SetupZNear(int nNear)
+{
+    phd_znear = nNear;
+    f_znear = float(phd_znear);
+    f_zsnear = float(phd_znear >> W2V_SHIFT);
+    f_oneoznear = f_opersp / f_zsnear;
+    f_perspoznear = f_persp / f_znear;
+}
+
+static void SetupZFar(int nFar)
+{
+    phd_zfar = nFar;
+    f_zfar = float(phd_zfar);
+    f_zsfar = float(phd_zfar >> W2V_SHIFT);
+    f_oneozfar = 2048.0f / f_zsnear;
+}
+
+void SetupZNearFar(int nNear, int nFar)
+{
+    SetupZNear(nNear);
+    SetupZFar(nFar);
+    SetupZRange();
+}
+
+void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, short view_angle)
+{
+    phd_winxmin = x;
+    phd_winymin = y;
+    phd_winxmax = width - 1;
+    phd_winymax = height - 1;
+    phd_winwidth = width;
+    phd_winheight = height;
+    phd_centerx = width / 2;
+    phd_centery = height / 2;
+    phd_znear = nearz << W2V_SHIFT;
+    phd_zfar = farz << W2V_SHIFT;
+    f_centerx = float(phd_centerx);
+    f_centery = float(phd_centery);
+    f_winxmin = float(phd_winxmin);
+    f_winymin = float(phd_winymin);
+    f_winxmax = float(phd_winxmax + 1);
+    f_winymax = float(phd_winymax + 1);
+
+    AlterFOV(ANGLE(view_angle));
+    SetupZNearFar(phd_znear, phd_zfar);
+    
+    phd_right = phd_winxmax;
+    phd_bottom = phd_winymax;
+    phd_top = y;
+    phd_left = x;
+    phd_mxptr = matrix_stack;
+}
+
+void SetupDXMatrixTransformState(void)
+{
+    InitD3DMatrix(&dx_mxworld);
+    InitD3DMatrix(&dx_mxprojection);
+    dx_mxprojection._22 = -1.0;
+
+    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, &dx_mxworld));
+    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_PROJECTION, &dx_mxprojection));
+}
+
+void SetD3DViewMatrix(void)
+{
+    PHD_MATRIX* mptr = phd_mxptr;
+    InitD3DMatrix(&dx_mxview);
+    dx_mxview._11 = float(mptr->m00) * W2V_D3DVALUE;
+    dx_mxview._21 = float(mptr->m01) * W2V_D3DVALUE;
+    dx_mxview._31 = float(mptr->m02) * W2V_D3DVALUE;
+    dx_mxview._12 = float(mptr->m10) * W2V_D3DVALUE;
+    dx_mxview._22 = float(mptr->m11) * W2V_D3DVALUE;
+    dx_mxview._32 = float(mptr->m12) * W2V_D3DVALUE;
+    dx_mxview._13 = float(mptr->m20) * W2V_D3DVALUE;
+    dx_mxview._23 = float(mptr->m21) * W2V_D3DVALUE;
+    dx_mxview._33 = float(mptr->m22) * W2V_D3DVALUE;
+    dx_mxview._41 = float(mptr->m03 >> W2V_SHIFT);
+    dx_mxview._42 = float(mptr->m13 >> W2V_SHIFT);
+    dx_mxview._43 = float(mptr->m23 >> W2V_SHIFT);
+    DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_VIEW, &dx_mxview));
+}
+
+void InitD3DMatrix(D3DMATRIX *mptr)
+{
+    mptr->_11 = 1.0f;
+    mptr->_12 = 0.0f;
+    mptr->_13 = 0.0f;
+    mptr->_14 = 0.0f;
+    mptr->_21 = 0.0f;
+    mptr->_22 = 1.0f;
+    mptr->_23 = 0.0f;
+    mptr->_24 = 0.0f;
+    mptr->_31 = 0.0f;
+    mptr->_32 = 0.0f;
+    mptr->_33 = 1.0f;
+    mptr->_34 = 0.0f;
+    mptr->_41 = 0.0f;
+    mptr->_42 = 0.0f;
+    mptr->_43 = 0.0f;
+    mptr->_44 = 1.0f;
+}
+
+void SetupDXW2V(D3DMATRIX* dest, PHD_MATRIX* pptr)
+{
+    InitD3DMatrix(dest);
+    dest->_11 = float(pptr->m00) * W2V_D3DVALUE;
+    dest->_21 = float(pptr->m01) * W2V_D3DVALUE;
+    dest->_31 = float(pptr->m02) * W2V_D3DVALUE;
+    dest->_12 = float(pptr->m10) * W2V_D3DVALUE;
+    dest->_22 = float(pptr->m11) * W2V_D3DVALUE;
+    dest->_32 = float(pptr->m12) * W2V_D3DVALUE;
+    dest->_13 = float(pptr->m20) * W2V_D3DVALUE;
+    dest->_23 = float(pptr->m21) * W2V_D3DVALUE;
+    dest->_33 = float(pptr->m22) * W2V_D3DVALUE;
+    dest->_41 = float(pptr->m03 >> W2V_SHIFT);
+    dest->_42 = float(pptr->m13 >> W2V_SHIFT);
+    dest->_43 = float(pptr->m23 >> W2V_SHIFT);
+}
+
 #ifdef DLL_INJECT
 void injector::inject_3d_gen()
 {
-    //this->inject(0x0048F9D0, AlterFOV);
+    this->inject(0x0048F9D0, AlterFOV);
     this->inject(0x0048FDC0, phd_GenerateW2V);
     this->inject(0x00490110, phd_LookAt);
     this->inject(0x00490350, phd_TranslateRel);
@@ -274,12 +364,13 @@ void injector::inject_3d_gen()
     //this->inject(0x0047DA60, phd_PutPolygons); // corrupted in IDAPro
     //this->inject(0x00490210, phd_atan);
     //this->inject(0x00490280, phd_sqrt);
-    //this->inject(0x0048FA90, SetZNearAndFar);
-    //this->inject(0x0048FC10, phd_InitWindow);
+    this->inject(0x0048FA90, SetupZNearFar);
+    this->inject(0x0048FB60, ScaleCurrentMatrix);
+    this->inject(0x0048FC10, phd_InitWindow);
     //this->inject(0x0048FD40, mGetAngle);
     this->inject(0x00490CF0, SetupDXMatrixTransformState);
     this->inject(0x00490B30, SetD3DViewMatrix);
-    this->inject(0x00490DD0, SetupDXMatrix);
+    this->inject(0x00490DD0, InitD3DMatrix);
     this->inject(0x00490C30, SetupDXW2V);
 }
 #endif

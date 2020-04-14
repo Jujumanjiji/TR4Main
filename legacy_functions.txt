@@ -1,4 +1,5 @@
 // 3D_GEN.CPP
+#define AlterFOV ((void(__cdecl*)(short fov)) 0x0048F9D0)
 #define phd_GenerateW2V ((void(__cdecl*)(PHD_3DPOS* viewpos)) 0x0048FDC0)
 #define phd_LookAt ((void(__cdecl*)(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, short roll)) 0x00490110)
 #define phd_TranslateRel ((void(__cdecl*)(int x, int y, int z)) 0x00490350)
@@ -9,9 +10,12 @@
 #define phd_RotYXZpack ((void(__cdecl*)(int ang)) 0x00490610)
 #define phd_RotYXZ ((void(__cdecl*)(short y, short x, short z)) 0x00490820)
 #define phd_GetVectorAngles ((void(__cdecl*)(int x, int y, int z, short* dest)) 0x00490A90)
+#define ScaleCurrentMatrix ((void(__cdecl*)(PHD_VECTOR* scale)) 0x0048FB60)
+#define SetupZNearFar ((void(__cdecl*)(int nNear, int nFar)) 0x0048FA90)
+#define phd_InitWindow ((void(__cdecl*)(int x, int y, int width, int height, int nearz, int farz, short view_angle)) 0x0048FC10)
 #define SetupDXMatrixTransformState ((void(__cdecl*)(void)) 0x00490CF0)
 #define SetD3DViewMatrix ((void(__cdecl*)(void)) 0x00490B30)
-#define SetupDXMatrix ((void(__cdecl*)(D3DMATRIX* mptr)) 0x00490DD0)
+#define InitD3DMatrix ((void(__cdecl*)(D3DMATRIX* mptr)) 0x00490DD0)
 #define SetupDXW2V ((void(__cdecl*)(D3DMATRIX* dest, PHD_MATRIX* pptr)) 0x00490C30)
 
 // DRAW.CPP

@@ -1289,6 +1289,10 @@ bool DX_TRY(HRESULT errorThrow)
         S_LogValue("%s", DirectXErrorText(errorThrow));
         return false;
     }
+    else
+    {
+        return false;
+    }
 }
 
 CVECTOR DWORD_TO_RGBA(DWORD color)
