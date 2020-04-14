@@ -1078,9 +1078,10 @@ void LaraGun(void)
             {
                 lara.gun_status = LHS_UNDRAW;
             }
-            else if (lara.flare_count != -1)
+            else if (lara.flare_count != 0 || lara.flare_count == INFINITE_AMMO)
             {
-                lara.flare_count--;
+                if (lara.flare_count != INFINITE_AMMO)
+                    lara.flare_count--;
                 lara.gun_request_type = LG_FLARE;
             }
         }

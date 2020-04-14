@@ -66,7 +66,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
     BONE_STRUCT* bone;
     DWORD flags;
     int frac, rate, clip;
-    int mesh_bits;
+    int meshBN, meshBI;
     short** mesh;
     short* frmptr[2];
     short* pprot1, *pprot2;
@@ -80,8 +80,9 @@ void DrawAnimatingItem(ITEM_INFO* item)
     phd_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
     phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
 
-    // get the mip instead !
-    if (obj->loaded && obj->object_mip && (phd_mxptr->m23 >> 16) > obj->object_mip)
+    // get the mip instead if the object is far away of lara !
+    // check if the current object have a MIP object in the wad before changing to mip
+    if (obj->mip_distance && objects[item->object_number + 1].loaded && (phd_mxptr->m23 >> 16) > obj->mip_distance)
         obj++;
 
     if (item->object_number < ENEMY_JEEP || item->object_number > SETHA_MIP)
@@ -105,7 +106,8 @@ void DrawAnimatingItem(ITEM_INFO* item)
             extra_rotation = dummy_rotation;
         bone = (BONE_STRUCT*)&bones[obj->bone_index];
         mesh = &meshes[obj->mesh_index];
-        mesh_bits = 1;
+        meshBN = 1;
+        meshBI = 1;
 
         if (frac)
         {
@@ -116,13 +118,16 @@ void DrawAnimatingItem(ITEM_INFO* item)
             pprot2 = frmptr[1] + 9;
             gar_RotYXZsuperpack_I(&pprot1, &pprot2, 0);
 
-            if (mesh_bits & item->mesh_bits)
-                phd_PutPolygons_I(mesh[1], clip);
-            else
-                phd_PutPolygons_I(mesh[0], clip);
-
+            if (item->mesh_bits & 1)
+            {
+                if (item->meshswap_meshbits & 1)
+                    phd_PutPolygons_I(mesh[1], clip);
+                else
+                    phd_PutPolygons_I(mesh[0], clip);
+            }
+            
             mesh += 2;
-            for (int i = 0; i < (obj->nmeshes - 1); i++, mesh += 2)
+            for (int i = 0; i < (obj->nmeshes - 1); i++)
             {
                 flags = bone->flags;
                 if (flags & BT_POP)
@@ -143,11 +148,14 @@ void DrawAnimatingItem(ITEM_INFO* item)
                         phd_RotZ_I(*(extra_rotation++));
                 }
 
-                mesh_bits <<= 1;
-                if (mesh_bits & item->mesh_bits)
-                    phd_PutPolygons_I(mesh[1], clip);
-                else
-                    phd_PutPolygons_I(mesh[0], clip);
+                meshBI <<= 1;
+                if (item->mesh_bits & meshBI)
+                {
+                    if (item->meshswap_meshbits & 1)
+                        phd_PutPolygons_I(mesh[1], clip);
+                    else
+                        phd_PutPolygons_I(mesh[0], clip);
+                }
 
                 if (item->fired_weapon && i == (EnemyOffset[obj->bit_offset].mesh - 1))
                 {
@@ -162,6 +170,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
                 }
 
                 bone++;
+                mesh += 2;
             }
         }
         else
@@ -171,13 +180,16 @@ void DrawAnimatingItem(ITEM_INFO* item)
             pprot1 = frmptr[0] + 9;
             gar_RotYXZsuperpack(&pprot1, 0);
 
-            if (mesh_bits & item->mesh_bits)
-                phd_PutPolygons(mesh[1], clip);
-            else
-                phd_PutPolygons(mesh[0], clip);
+            if (item->mesh_bits & 1) // BODY
+            {
+                if (item->meshswap_meshbits & 1)
+                    phd_PutPolygons(mesh[1], clip);
+                else
+                    phd_PutPolygons(mesh[0], clip);
+            }
 
             mesh += 2;
-            for (int i = 0; i < (obj->nmeshes - 1); i++, mesh += 2)
+            for (int i = 0; i < (obj->nmeshes - 1); i++)
             {
                 flags = bone->flags;
                 if (flags & BT_POP)
@@ -198,11 +210,14 @@ void DrawAnimatingItem(ITEM_INFO* item)
                         phd_RotZ(*(extra_rotation++));
                 }
                 
-                mesh_bits <<= 1;
-                if (mesh_bits & item->mesh_bits)
-                    phd_PutPolygons(mesh[1], clip);
-                else
-                    phd_PutPolygons(mesh[0], clip);
+                meshBN <<= 1;
+                if (item->mesh_bits & meshBN)
+                {
+                    if (item->meshswap_meshbits & 1)
+                        phd_PutPolygons(mesh[1], clip);
+                    else
+                        phd_PutPolygons(mesh[0], clip);
+                }
 
                 if (item->fired_weapon && i == (EnemyOffset[obj->bit_offset].mesh - 1))
                 {
@@ -216,6 +231,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
                 }
 
                 bone++;
+                mesh += 2;
             }
         }
     }

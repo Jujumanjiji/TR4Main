@@ -83,7 +83,7 @@ void SetupEntity::skeleton()
         obj->shadow_size = 128;
         obj->pivot_length = 50;
         obj->radius = 128;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -115,7 +115,7 @@ void SetupEntity::von_croy()
         obj->save_flags = true;
         obj->save_hitpoints = true;
         obj->save_position = true;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->explodable_meshbits = 0x200000;
         obj->hit_effect = HIT_BLOOD;
         init_bone();
@@ -147,7 +147,7 @@ void SetupEntity::guide()
         obj->hit_points = initHealth(GUIDE);
         obj->pivot_length = 0;
         obj->radius = 128;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -186,7 +186,7 @@ void SetupEntity::baddy_1()
         obj->hit_points = initHealth(BADDY_1);
         obj->pivot_length = 50;
         obj->radius = 102;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -216,7 +216,7 @@ void SetupEntity::baddy_2()
         obj->hit_points = initHealth(BADDY_2);
         obj->pivot_length = 50;
         obj->radius = 102;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -248,7 +248,7 @@ void SetupEntity::scorpion()
         obj->hit_points = initHealth(SCORPION);
         obj->pivot_length = 50;
         obj->radius = 512;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -290,7 +290,7 @@ void SetupEntity::mummy()
         obj->shadow_size = 128;
         obj->hit_points = initHealth(MUMMY);
         obj->radius = 170;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -316,7 +316,7 @@ void SetupEntity::knight_templar()
         obj->hit_points = initHealth(KNIGHTS_TEMPLAR);
         obj->pivot_length = 0;
         obj->radius = 128;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -341,7 +341,7 @@ void SetupEntity::sphinx()
         obj->hit_points = initHealth(SPHINX);
         obj->pivot_length = 500;
         obj->radius = 512;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->hit_effect = HIT_FRAGMENT;
         obj->intelligent = true;
         obj->save_anim = true;
@@ -370,7 +370,7 @@ void SetupEntity::setha()
         obj->save_hitpoints = true;
         obj->save_mesh = true;
         obj->save_position = true;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
     }
 }
 
@@ -408,7 +408,7 @@ void SetupEntity::horseman()
         obj->hit_points = initHealth(HORSEMAN);
         obj->pivot_length = 50;
         obj->radius = 409;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -432,7 +432,7 @@ void SetupEntity::hammerhead()
         obj->hit_points = initHealth(HAMMERHEAD);
         obj->pivot_length = 300;
         obj->radius = 341;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -460,7 +460,7 @@ void SetupEntity::crocodile()
         obj->hit_points = initHealth(CROCODILE);
         obj->pivot_length = 300;
         obj->radius = 402;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -488,7 +488,7 @@ void SetupEntity::demigod1()
         obj->hit_points = initHealth(DEMIGOD1);
         obj->pivot_length = 0;
         obj->radius = 341;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -514,7 +514,7 @@ void SetupEntity::demigod2()
         obj->hit_points = initHealth(DEMIGOD2);
         obj->pivot_length = 50;
         obj->radius = 341;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -540,7 +540,7 @@ void SetupEntity::demigod3()
         obj->hit_points = initHealth(DEMIGOD3);
         obj->pivot_length = 50;
         obj->radius = 341;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -592,7 +592,7 @@ void SetupEntity::troops()
         obj->hit_points = initHealth(TROOPS);
         obj->pivot_length = 50;
         obj->radius = 102;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -618,7 +618,7 @@ void SetupEntity::sas()
         obj->hit_points = initHealth(SAS);
         obj->pivot_length = 50;
         obj->radius = 102;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -643,7 +643,7 @@ void SetupEntity::harpy()
         obj->hit_points = initHealth(HARPY);
         obj->pivot_length = 50;
         obj->radius = 409;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -689,7 +689,7 @@ void SetupEntity::dog()
         obj->hit_points = initHealth(DOG);
         obj->pivot_length = 300;
         obj->radius = 341;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -714,7 +714,7 @@ void SetupEntity::ahmet()
         obj->hit_points = initHealth(AHMET);
         obj->pivot_length = 300;
         obj->radius = 341;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -871,7 +871,7 @@ void SetupEntity::big_beetle()
         obj->hit_points = initHealth(BIG_BEETLE);
         obj->pivot_length = 50;
         obj->radius = 204;
-        obj->object_mip = 5120;
+        obj->mip_distance = 5120;
         obj->intelligent = true;
         obj->save_anim = true;
         obj->save_flags = true;
@@ -961,7 +961,7 @@ void SetupEntity::jean_yves()
         obj->save_anim = true;
         obj->save_flags = true;
         obj->save_position = true;
-        obj->object_mip = 10240;
+        obj->mip_distance = 10240;
     }
 }
 

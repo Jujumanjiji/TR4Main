@@ -522,7 +522,7 @@ struct OBJECT_INFO
     LPCEILING ceiling;
     LPDRAW draw_routine;
     LPCOLLISION collision;
-    short object_mip;
+    short mip_distance;         // if mip distance is set (more than 0) then if lara is far away, the object will be changed to the _MIP obj after the current one (objects.h).
     short anim_index;
     short hit_points;
     short pivot_length;
