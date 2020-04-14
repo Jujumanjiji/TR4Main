@@ -97,7 +97,7 @@ int phd_atan(int x, int y)
     }
 
     for (; (short)y != y; x >>= 1)
-        result >>= 1;
+        y >>= 1;
 
     if (x == 0)
         x = 1;
