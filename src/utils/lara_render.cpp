@@ -64,32 +64,19 @@ void LARA_RENDER::check_hitdirection(short* frameCutscene)
             short spaz;
             switch (lara.hit_direction)
             {
-            case NORTH:
-                if (lara.is_ducked)
-                    spaz = ANIMATION_LARA_CROUCH_SMASH_BACKWARD;
-                else
-                    spaz = ANIMATION_LARA_AH_FORWARD;
-                break;
-            case SOUTH:
-                if (lara.is_ducked)
-                    spaz = ANIMATION_LARA_CROUCH_SMASH_FORWARD;
-                else
-                    spaz = ANIMATION_LARA_AH_BACKWARD;
-                break;
-            case EAST:
-                if (lara.is_ducked)
-                    spaz = ANIMATION_LARA_CROUCH_SMASH_RIGHT;
-                else
-                    spaz = ANIMATION_LARA_AH_LEFT;
-                break;
-            case WEST:
-                if (lara.is_ducked)
-                    spaz = ANIMATION_LARA_CROUCH_SMASH_LEFT;
-                else
-                    spaz = ANIMATION_LARA_AH_RIGHT;
-                break;
+                case NORTH:
+                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_BACKWARD : ANIMATION_LARA_AH_FORWARD;
+                    break;
+                case SOUTH:
+                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_FORWARD : ANIMATION_LARA_AH_BACKWARD;
+                    break;
+                case EAST:
+                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_RIGHT : ANIMATION_LARA_AH_LEFT;
+                    break;
+                case WEST:
+                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_LEFT : ANIMATION_LARA_AH_RIGHT;
+                    break;
             }
-
             frame = &anims[spaz].frame_ptr[lara.hit_frame * (anims[spaz].interpolation >> 8)];
         }
         else

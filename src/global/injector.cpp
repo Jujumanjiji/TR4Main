@@ -51,6 +51,7 @@ void injector::inject_game()
     inject_draw();
     inject_effect2();
     inject_effects();
+    inject_hair();
     inject_health();
     inject_inventory();
     inject_items();

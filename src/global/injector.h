@@ -23,6 +23,7 @@ private:
     void inject_draw();
     void inject_effect2();
     void inject_effects();
+    void inject_hair();
     void inject_health();
     void inject_inventory();
     void inject_items();

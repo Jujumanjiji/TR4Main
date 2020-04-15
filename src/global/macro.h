@@ -10,7 +10,7 @@
 #define SQUARE(x) ((x)*(x))
 #define CLAMP(x, a, b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
 #define SIGN(x) ((0 < (x)) - ((x) < 0))
-#define SWAP(a,b,c)			{(c)=(a); (a)=(b); (b)=(c);}
+#define SWAP(a,b,c) { (c)=(a); (a)=(b); (b)=(c); }
 #define CLAMPADD(x, a, b) ((x)<(a)?((x)+(a)):((x)>(b)?((x)-(b)):0))
 #define ENLARGEDOWN(a, b) if (a < b) b = a
 #define ENLARGEUP(a, b) if (a > b) b = a

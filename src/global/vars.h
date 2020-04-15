@@ -173,6 +173,11 @@
 #define thread_started                      VAR_U_(0x00533B10, int)
 #define GameTimer                           VAR_U_(0x007FD258, int)
 #define SetDebounce                         VAR_U_(0x007FE160, int)
+#define wind                                VAR_I_(0x004BF33C, int, 0)
+#define wind_x                              VAR_U_(0x00804E60, int)
+#define wind_z                              VAR_U_(0x00804E64, int)
+#define wind_angle                          VAR_I_(0x004AD7F4, int, 0x800)
+#define dwind_angle                         VAR_I_(0x004AD7F8, int, 0x800)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

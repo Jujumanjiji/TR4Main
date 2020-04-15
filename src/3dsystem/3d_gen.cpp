@@ -471,6 +471,7 @@ void injector::inject_3d_gen()
     this->inject(0x00490820, phd_RotYXZ);
     this->inject(0x00490A90, phd_GetVectorAngles);
     //this->inject(0x0047DA60, phd_PutPolygons); // corrupted in IDAPro
+    //this->inject(0x0047E8B0, phd_PutPolygons_inv);
     this->inject(0x00490210, phd_atan);
     this->inject(0x00490280, phd_sqrt);
     this->inject(0x0048FA90, SetupZ);

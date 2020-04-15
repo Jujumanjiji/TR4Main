@@ -169,7 +169,6 @@ WEAPON_INFO weapons[LG_MAX_HOLD] = {
     },
 };
 
-
 // work nice :D
 void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv)
 {

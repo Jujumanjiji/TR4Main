@@ -1286,7 +1286,7 @@ bool DX_TRY(HRESULT errorThrow)
     }
     else if (FAILED(errorThrow))
     {
-        S_LogValue("%s", DirectXErrorText(errorThrow));
+        S_LogValue("ERROR: %s", DirectXErrorText(errorThrow));
         return false;
     }
     else
