@@ -1286,7 +1286,7 @@ bool DX_TRY(HRESULT errorThrow)
     }
     else if (FAILED(errorThrow))
     {
-        S_LogValue("ERROR: %s", DirectXErrorText(errorThrow));
+        S_LogValue("ERROR: %s", DXErrorText(errorThrow));
         return false;
     }
     else
@@ -1301,13 +1301,13 @@ CVECTOR DWORD_TO_RGBA(DWORD color)
     result.r = color & MAXBYTE; color >>= 8;
     result.g = color & MAXBYTE; color >>= 8;
     result.b = color & MAXBYTE; color >>= 8;
-    result.a = color & MAXBYTE;
+    result.cd = color & MAXBYTE;
     return result;
 }
 
 DWORD RGBA_VECTORGET(CVECTOR color)
 {
-    return (((((color.a << 8) + color.r) << 8) + color.g) << 8) + color.b;
+    return (((((color.cd << 8) + color.r) << 8) + color.g) << 8) + color.b;
 }
 
 DWORD RGBA_VECTORGET(BYTE r, BYTE g, BYTE b)

@@ -79,20 +79,20 @@ struct LARA_MATRIX
 
 struct GAMEFLOW
 {
-    UINT cheat_enabled : 1;        // LOBYTE: 0x1
-    UINT load_save_enabled : 1;    // LOBYTE: 0x2
-    UINT title_enabled : 1;        // LOBYTE: 0x4
-    UINT play_any_level : 1;       // LOBYTE: 0x8
-    UINT languages : 3;            // LOBYTE: 0x10
-    UINT demo_disc : 1;            // LOBYTE: 0x20
-    UINT unused : 24;              // LOBYTE: 0x40 HIBYTE: 0x1
-    UINT input_timeout;
-    BYTE security_tag;
-    BYTE number_level;
-    BYTE number_filename;
-    BYTE pad;
-    WORD filename_length;
-    WORD script_length;
+    uint32 cheat_enabled : 1;        // LOBYTE: 0x1
+    uint32 load_save_enabled : 1;    // LOBYTE: 0x2
+    uint32 title_enabled : 1;        // LOBYTE: 0x4
+    uint32 play_any_level : 1;       // LOBYTE: 0x8
+    uint32 languages : 3;            // LOBYTE: 0x10
+    uint32 demo_disc : 1;            // LOBYTE: 0x20
+    uint32 unused : 24;              // LOBYTE: 0x40 HIBYTE: 0x1
+    uint32 input_timeout;
+    uint8 security_tag;
+    uint8 number_level;
+    uint8 number_filename;
+    uint8 pad;
+    uint16 filename_length;
+    uint16 script_length;
 };
 
 struct HANG_STRUCT
@@ -226,14 +226,14 @@ struct CVECTOR
     BYTE r;
     BYTE g;
     BYTE b;
-    BYTE a;
+    BYTE cd;
 
     CVECTOR()
     {
         this->r = 0;
         this->g = 0;
         this->b = 0;
-        this->a = 0;
+        this->cd = 0;
     }
 
     CVECTOR(BYTE r, BYTE g, BYTE b)
@@ -241,7 +241,7 @@ struct CVECTOR
         this->r = r;
         this->g = g;
         this->b = b;
-        this->a = 0;
+        this->cd = 0;
     }
 
     CVECTOR(BYTE r, BYTE g, BYTE b, BYTE a)
@@ -249,7 +249,7 @@ struct CVECTOR
         this->r = r;
         this->g = g;
         this->b = b;
-        this->a = a;
+        this->cd = a;
     }
 };
 
@@ -651,21 +651,21 @@ struct LOCATION
 
 struct LARA_MESH
 {
-    short *hips;
-    short *thigh_l;
-    short *calf_l;
-    short *foot_l;
-    short *thigh_r;
-    short *calf_r;
-    short *foot_r;
-    short *torso;
-    short *uarm_r;
-    short *larm_r;
-    short *hand_r;
-    short *uarm_l;
-    short *larm_l;
-    short *hand_l;
-    short *head;
+    sint16 *hips;
+    sint16 *thigh_l;
+    sint16 *calf_l;
+    sint16 *foot_l;
+    sint16 *thigh_r;
+    sint16 *calf_r;
+    sint16 *foot_r;
+    sint16 *torso;
+    sint16 *uarm_r;
+    sint16 *larm_r;
+    sint16 *hand_r;
+    sint16 *uarm_l;
+    sint16 *larm_l;
+    sint16 *hand_l;
+    sint16 *head;
 };
 
 struct FX_INFO
@@ -716,6 +716,12 @@ struct GUNFLASH_STRUCT
 {
     PHD_MATRIX matrix;
     short on;
+};
+
+struct HAIR_STRUCT
+{
+    PHD_3DPOS pos;
+    PHD_VECTOR vel;
 };
 
 struct DYNAMIC
@@ -1435,10 +1441,10 @@ struct PICKUP_STRUCT
 
 struct SPHERE
 {
-    int x;
-    int y;
-    int z;
-    int r;
+    sint32 x;
+    sint32 y;
+    sint32 z;
+    sint32 r;
 };
 
 struct SHATTER_ITEM

@@ -2,7 +2,7 @@
 #include "traps.h"
 
 #ifdef DLL_INJECT
-void injector::inject_traps()
+void injector::f_game::inject_traps()
 {
 
 }

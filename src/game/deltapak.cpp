@@ -29,8 +29,8 @@ void frigup_lara(void)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_deltapak()
+void injector::f_game::inject_deltapak()
 {
-    this->inject(0x0046B140, frigup_lara);
+    inject(0x0046B140, frigup_lara);
 }
 #endif

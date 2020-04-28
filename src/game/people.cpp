@@ -2,7 +2,7 @@
 #include "people.h"
 
 #ifdef DLL_INJECT
-void injector::inject_people()
+void injector::f_game::inject_people()
 {
 
 }

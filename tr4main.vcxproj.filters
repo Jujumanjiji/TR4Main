@@ -233,6 +233,15 @@
     <ClCompile Include="src\3dsystem\w2v_setup.cpp">
       <Filter>src\3dsystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\specific\fmvs.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\directx.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\specific\interface.cpp">
+      <Filter>src\specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -417,6 +426,15 @@
     </ClInclude>
     <ClInclude Include="src\3dsystem\w2v_setup.h">
       <Filter>src\3dsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\fmvs.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\directx.h">
+      <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\specific\interface.h">
+      <Filter>src\specific</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

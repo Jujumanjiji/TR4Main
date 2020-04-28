@@ -410,16 +410,16 @@ void animate_pistols(int weapon_type)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_lara2gun()
+void injector::f_game::inject_lara2gun()
 {
-    this->inject(0x0042B7C0, set_arm_info);
-    this->inject(0x0042BB20, draw_pistol_meshes);
-    this->inject(0x0042BB70, undraw_pistols_left);
-    this->inject(0x0042BBB0, undraw_pistols_right);
-    this->inject(0x0042B720, draw_pistols);
-    this->inject(0x0042B840, undraw_pistols);
-    this->inject(0x0042BAB0, ready_pistols);
-    this->inject(0x0042BBF0, pistol_handler);
-    this->inject(0x0042BE40, animate_pistols);
+    inject(0x0042B7C0, set_arm_info);
+    inject(0x0042BB20, draw_pistol_meshes);
+    inject(0x0042BB70, undraw_pistols_left);
+    inject(0x0042BBB0, undraw_pistols_right);
+    inject(0x0042B720, draw_pistols);
+    inject(0x0042B840, undraw_pistols);
+    inject(0x0042BAB0, ready_pistols);
+    inject(0x0042BBF0, pistol_handler);
+    inject(0x0042BE40, animate_pistols);
 }
 #endif

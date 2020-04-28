@@ -1,6 +1,9 @@
 #pragma once
 
 #ifdef DLL_INJECT
+#define CurrentAtmosphere           VAR_U_(0x007FE21C, unsigned char)
+#define IsAtmospherePlaying         VAR_U_(0x007FE2E4, char) // bool
+
 #define SayNo ((void(__cdecl*)(void)) 0x0045FAD0)
 #define CDPlay ((void(__cdecl*)(int index, int mode)) 0x0046E180)
 #define S_CDPlay ((void(__cdecl*)(int index, int mode)) 0x0046D610)

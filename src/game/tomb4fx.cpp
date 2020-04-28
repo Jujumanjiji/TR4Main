@@ -2,7 +2,7 @@
 #include "tomb4fx.h"
 
 #ifdef DLL_INJECT
-void injector::inject_tomb4fx()
+void injector::f_game::inject_tomb4fx()
 {
 
 }

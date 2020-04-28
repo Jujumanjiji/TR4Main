@@ -457,30 +457,30 @@ void SetupDXW2V(D3DMATRIX* dest, PHD_MATRIX* pptr)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_3d_gen()
+void injector::f_3dsystem::inject_3d_gen()
 {
-    this->inject(0x0048F9D0, AlterFOV);
-    this->inject(0x0048FDC0, phd_GenerateW2V);
-    this->inject(0x00490110, phd_LookAt);
-    this->inject(0x00490350, phd_TranslateRel);
-    this->inject(0x00490A10, phd_TranslateAbs);
-    this->inject(0x00490400, phd_RotX);
-    this->inject(0x004904B0, phd_RotY);
-    this->inject(0x00490560, phd_RotZ);
-    this->inject(0x00490610, phd_RotYXZpack);
-    this->inject(0x00490820, phd_RotYXZ);
-    this->inject(0x00490A90, phd_GetVectorAngles);
-    //this->inject(0x0047DA60, phd_PutPolygons); // corrupted in IDAPro
-    //this->inject(0x0047E8B0, phd_PutPolygons_inv);
-    this->inject(0x00490210, phd_atan);
-    this->inject(0x00490280, phd_sqrt);
-    this->inject(0x0048FA90, SetupZ);
-    this->inject(0x0048FB60, ScaleCurrentMatrix);
-    this->inject(0x0048FC10, phd_InitWindow);
-    this->inject(0x0048FD40, mGetAngle);
-    this->inject(0x00490CF0, SetupDXMatrixTransformState);
-    this->inject(0x00490B30, SetD3DViewMatrix);
-    this->inject(0x00490DD0, InitD3DMatrix);
-    this->inject(0x00490C30, SetupDXW2V);
+    inject(0x0048F9D0, AlterFOV);
+    inject(0x0048FDC0, phd_GenerateW2V);
+    inject(0x00490110, phd_LookAt);
+    inject(0x00490350, phd_TranslateRel);
+    inject(0x00490A10, phd_TranslateAbs);
+    inject(0x00490400, phd_RotX);
+    inject(0x004904B0, phd_RotY);
+    inject(0x00490560, phd_RotZ);
+    inject(0x00490610, phd_RotYXZpack);
+    inject(0x00490820, phd_RotYXZ);
+    inject(0x00490A90, phd_GetVectorAngles);
+    //inject(0x0047DA60, phd_PutPolygons);
+    //inject(0x0047E8B0, phd_PutPolygons_inv);
+    inject(0x00490210, phd_atan);
+    inject(0x00490280, phd_sqrt);
+    inject(0x0048FA90, SetupZ);
+    inject(0x0048FB60, ScaleCurrentMatrix);
+    inject(0x0048FC10, phd_InitWindow);
+    inject(0x0048FD40, mGetAngle);
+    inject(0x00490CF0, SetupDXMatrixTransformState);
+    inject(0x00490B30, SetD3DViewMatrix);
+    inject(0x00490DD0, InitD3DMatrix);
+    inject(0x00490C30, SetupDXW2V);
 }
 #endif

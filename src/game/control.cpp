@@ -2,7 +2,7 @@
 #include "control.h"
 
 #ifdef DLL_INJECT
-void injector::inject_control()
+void injector::f_game::inject_control()
 {
 
 }

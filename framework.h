@@ -1,6 +1,8 @@
 #pragma once
 #pragma warning(disable: 4554)
 
+#define DLL_EXPORT __declspec(dllexport)
+#define NOT_INJECT 0x00000000
 #define DLL_INJECT
 #define DLL_NAME "Tomb Raider IV - DLL"
 #define WIN32_LEAN_AND_MEAN
@@ -30,7 +32,7 @@
 #include <dinput.h>
 #include <mmreg.h>
 #include <dsound.h>
-#include <zlib.h>
+//#include <zlib.h>
 
 #include "features.h"
 #include "global/injector.h"

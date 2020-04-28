@@ -85,7 +85,7 @@ using namespace std;
 
 #define SFX_ALWAYS 2
 #define DONT_TARGET (-16384)
-#define NO_ROOM 255
+#define NO_ROOM 0xFF
 #define NO_HEIGHT (32512)
 #define WALL_L 1024
 #define STEP_L 256

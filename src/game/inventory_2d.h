@@ -9,7 +9,8 @@ constexpr INV_TYPE INVENTORY_TYPE = INV_3D;
 
 enum INVENTORY_ITEM_ID
 {
-    INV_UZI,
+    INV_START_ITEM = 0,
+    INV_UZI = 0,
     INV_PISTOLS,
     INV_SHOTGUN,
     INV_REVOLVER,
@@ -306,31 +307,6 @@ struct INV_OPTION
 #define INV_COMBO7 12288
 #define INV_COMBO8 49152
 
-extern void combine_revolver(int flag);
-extern void combine_crossbow(int flag);
-extern void combine_puzzle_item1(int flag);
-extern void combine_puzzle_item2(int flag);
-extern void combine_puzzle_item3(int flag);
-extern void combine_puzzle_item4(int flag);
-extern void combine_puzzle_item5(int flag);
-extern void combine_puzzle_item6(int flag);
-extern void combine_puzzle_item7(int flag);
-extern void combine_puzzle_item8(int flag);
-extern void combine_key_item1(int flag);
-extern void combine_key_item2(int flag);
-extern void combine_key_item3(int flag);
-extern void combine_key_item4(int flag);
-extern void combine_key_item5(int flag);
-extern void combine_key_item6(int flag);
-extern void combine_key_item7(int flag);
-extern void combine_key_item8(int flag);
-extern void combine_pickup_item1(int flag);
-extern void combine_pickup_item2(int flag);
-extern void combine_pickup_item3(int flag);
-extern void combine_pickup_item4(int flag);
-extern void combine_clockwork(int flag);
-extern void combine_waterskin(int flag);
-
 extern RING2D* ring_2d[MAX_RING];
 ///extern INVOBJ inventry_objects_list[MAX_INVOBJ];
 extern MENU current_options[MAX_MENU];
@@ -472,3 +448,4 @@ extern BOOL have_i_got_object(short object_number);
 extern int convert_obj_to_invobj(short object_number);
 extern void do_compass_mode(void);
 extern void do_examine_mode(void);
+extern void load_inventory_gameflow(BYTE* data, int item_first, int item_last, int space);

@@ -35,10 +35,10 @@ void phd_PopMatrix(void)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_3d_gen_a()
+void injector::f_3dsystem::inject_3d_gen_a()
 {
-    this->inject(0x004902B0, phd_PushMatrix);
-    this->inject(0x00490310, phd_PushUnitMatrix);
-    this->inject(NULL,       phd_PopMatrix); // original are define !
+    inject(0x004902B0, phd_PushMatrix);
+    inject(0x00490310, phd_PushUnitMatrix);
+    inject(NOT_INJECT, phd_PopMatrix); // original are define !
 }
 #endif

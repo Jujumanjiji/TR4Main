@@ -19,5 +19,7 @@
 #define GetCeiling ((int(__cdecl*)(FLOOR_INFO* floor, int x, int y, int z)) 0x0044B690)
 #define GetWaterDepth ((int(__cdecl*)(int x, int y, int z, short roomNumber)) 0x00432BF0)
 #define TestTriggers ((void(__cdecl*)(short* data, BOOL heavy, int unknown)) 0x0044AB50)
+#define ResetHUB ((void(__cdecl*)(BOOL saveLara)) 0x0045A100)
+#define ControlPhase ((int(__cdecl*)(int nframe, BOOL demo_mode)) 0x00449410)
 #define UpdateLightning ((void(__cdecl*)(void)) 0x00451180)
 #endif

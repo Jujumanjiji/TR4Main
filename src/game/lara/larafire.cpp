@@ -1263,24 +1263,24 @@ void LaraGun(void)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_larafire()
+void injector::f_game::inject_larafire()
 {
-    this->inject(0x0042EA70, weapon_object);
-    this->inject(0x0042EAC0, weapon_meshes);
-    this->inject(0x00429260, fire_shotgun);
-    this->inject(0x00429480, fire_grenade);
-    this->inject(0x0042A270, fire_crossbow);
-    this->inject(0x0044D820, FireCrossbowBoltFromLaserSight);
-    this->inject(0x0042DDF0, InitialiseNewWeapons);
-    this->inject(0x0042F480, GetCurrentAmmo);
-    this->inject(0x0042DF30, LaraTargetInfo);
-    this->inject(0x0042E0D0, LaraGetNewTarget);
-    this->inject(0x0042E560, AimWeapon);
-    this->inject(0x0042E4A0, find_target_point);
-    this->inject(0x0042E630, FireWeapon);
-    this->inject(0x0044D890, GetTargetOnLOS);
-    this->inject(0x0042E920, HitTarget);
-    this->inject(0x0042D840, LaraGun);
+    inject(0x0042EA70, weapon_object);
+    inject(0x0042EAC0, weapon_meshes);
+    inject(0x00429260, fire_shotgun);
+    inject(0x00429480, fire_grenade);
+    inject(0x0042A270, fire_crossbow);
+    inject(0x0044D820, FireCrossbowBoltFromLaserSight);
+    inject(0x0042DDF0, InitialiseNewWeapons);
+    inject(0x0042F480, GetCurrentAmmo);
+    inject(0x0042DF30, LaraTargetInfo);
+    inject(0x0042E0D0, LaraGetNewTarget);
+    inject(0x0042E560, AimWeapon);
+    inject(0x0042E4A0, find_target_point);
+    inject(0x0042E630, FireWeapon);
+    inject(0x0044D890, GetTargetOnLOS);
+    inject(0x0042E920, HitTarget);
+    inject(0x0042D840, LaraGun);
 
 }
 #endif

@@ -2,7 +2,7 @@
 #include "debug.h"
 
 #ifdef DLL_INJECT
-void injector::inject_debug()
+void injector::f_game::inject_debug()
 {
 
 }

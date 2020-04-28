@@ -2,7 +2,7 @@
 #include "items.h"
 
 #ifdef DLL_INJECT
-void injector::inject_items()
+void injector::f_game::inject_items()
 {
 
 }

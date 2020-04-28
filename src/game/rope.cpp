@@ -2,7 +2,7 @@
 #include "rope.h"
 
 #ifdef DLL_INJECT
-void injector::inject_rope()
+void injector::f_game::inject_rope()
 {
 
 }

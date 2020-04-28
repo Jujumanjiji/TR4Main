@@ -2,7 +2,7 @@
 #include "puzzle.h"
 
 #ifdef DLL_INJECT
-void injector::inject_puzzle()
+void injector::f_game::inject_puzzle()
 {
 
 }

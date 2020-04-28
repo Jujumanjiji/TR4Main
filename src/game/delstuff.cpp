@@ -82,10 +82,10 @@ void DEL_CalcLaraMatrices_Interpolate(short *frame1, short *frame2, int frac, in
 }
 
 #ifdef DLL_INJECT
-void injector::inject_delstuff()
+void injector::f_game::inject_delstuff()
 {
-    this->inject(0x0041D010, CalcLaraMatrices);
-    this->inject(0x0041DAF0, CalcLaraMatrices_Cutscene);
-    this->inject(0x0041E630, DEL_CalcLaraMatrices_Interpolate);
+    inject(0x0041D010, CalcLaraMatrices);
+    inject(0x0041DAF0, CalcLaraMatrices_Cutscene);
+    inject(0x0041E630, DEL_CalcLaraMatrices_Interpolate);
 }
 #endif

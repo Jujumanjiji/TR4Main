@@ -2,7 +2,7 @@
 #include "lara.h"
 
 #ifdef DLL_INJECT
-void injector::inject_laraflare()
+void injector::f_game::inject_laraflare()
 {
 
 }

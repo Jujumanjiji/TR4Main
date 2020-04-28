@@ -239,13 +239,13 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
 }
 
 #ifdef DLL_INJECT
-void injector::inject_collide()
+void injector::f_game::inject_collide()
 {
-    this->inject(0x00446F70, ShiftItem);
-    this->inject(0x00446FB0, UpdateLaraRoom);
-    this->inject(0x00447F30, TestLaraPosition);
-    this->inject(0x00448070, AlignLaraPosition);
-    this->inject(0x004483E0, MoveLaraPosition);
-    this->inject(0x00448140, Move3DPosTo3DPos);
+    inject(0x00446F70, ShiftItem);
+    inject(0x00446FB0, UpdateLaraRoom);
+    inject(0x00447F30, TestLaraPosition);
+    inject(0x00448070, AlignLaraPosition);
+    inject(0x004483E0, MoveLaraPosition);
+    inject(0x00448140, Move3DPosTo3DPos);
 }
 #endif

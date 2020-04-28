@@ -2,7 +2,7 @@
 #include "door.h"
 
 #ifdef DLL_INJECT
-void injector::inject_door()
+void injector::f_game::inject_door()
 {
 
 }

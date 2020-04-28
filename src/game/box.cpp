@@ -18,39 +18,41 @@
 #define GUNFIRE_ALERT_RADIUS 8000
 
 #ifdef DLL_INJECT
-void injector::inject_box()
+void injector::f_game::inject_box()
 {
     /*
-    this->inject(0x0043FB30, InitialiseCreature);
-    this->inject(0x0043FB70, CreatureActive);
-    this->inject(0x0043FBE0, CreatureAIInfo);
-    this->inject(0x0043FF70, UpdateLOT);
-    this->inject(0x0043FFF0, SearchLOT);
-    this->inject(0x004401F0, TargetBox);
-    this->inject(0x00440290, EscapeBox);
-    this->inject(0x00440340, ValidBox);
-    this->inject(0x004403E0, GetCreatureMood);
-    this->inject(0x00440620, CreatureMood);
-    this->inject(0x00440940, StalkBox);
-    //this->inject(0x00440A40, CalculateTarget);   // the most difficult
-    this->inject(0x00440E90, CreatureCreature);
-    this->inject(0x00440FD0, BadFloor);
-    this->inject(0x00441080, CreatureDie);
-    //this->inject(0x00441230, CreatureAnimation); // the most difficult
-    this->inject(0x00441C60, CreatureTurn);
-    this->inject(0x00441EE0, CreatureTilt);
-    this->inject(0x00441F20, CreatureJoint);
-    this->inject(0x00441F80, CreatureFloat);
-    this->inject(0x00442080, CreatureUnderwater);
-    this->inject(0x00442110, CreatureEffect);
-    this->inject(0x00442170, CreatureEffectAlternate);
-    this->inject(0x004421D0, CreatureVault);
-    this->inject(0x00442380, CreatureKill);
-    this->inject(0x00442550, AlertAllGuards);
-    this->inject(0x004425D0, AlertNearbyGuards);
-    this->inject(0x00442670, AIGuard);
-    this->inject(0x00442720, GetAITarget);
-    this->inject(0x00442A60, FindAITargetObject);
-    this->inject(0x00442C40, SameZone);*/
+    inject(0x0043FB30, InitialiseCreature);
+    inject(0x0043FB70, CreatureActive);
+    inject(0x0043FBE0, CreatureAIInfo);
+    inject(0x0043FF70, UpdateLOT);
+    inject(0x0043FFF0, SearchLOT);
+    inject(0x004401F0, TargetBox);
+    inject(0x00440290, EscapeBox);
+    inject(0x00440340, ValidBox);
+    inject(0x004403E0, GetCreatureMood);
+    inject(0x00440620, CreatureMood);
+    inject(0x00440940, StalkBox);
+    //inject(0x00440A40, CalculateTarget);   // the most difficult
+    inject(0x00440E90, CreatureCreature);
+    inject(0x00440FD0, BadFloor);
+    inject(0x00441080, CreatureDie);
+    //inject(0x00441230, CreatureAnimation); // the most difficult
+    inject(0x00441C60, CreatureTurn);
+    inject(0x00441EE0, CreatureTilt);
+    inject(0x00441F20, CreatureJoint);
+    inject(0x00441F80, CreatureFloat);
+    inject(0x00442080, CreatureUnderwater);
+    inject(0x00442110, CreatureEffect);
+    inject(0x00442170, CreatureEffectAlternate);
+    inject(0x004421D0, CreatureVault);
+    inject(0x00442380, CreatureKill);
+    inject(0x00442550, AlertAllGuards);
+    inject(0x004425D0, AlertNearbyGuards);
+    inject(0x00442670, AIGuard);
+    inject(0x00442720, GetAITarget);
+    inject(0x00442A60, FindAITargetObject);
+    inject(0x00442C40, SameZone);
+    */
 }
+
 #endif

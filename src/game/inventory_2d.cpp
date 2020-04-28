@@ -1081,7 +1081,7 @@ void construct_object_list(void)
     if (lara.examine3)
         insert_object_into_list_inventory(INV_EXAMINE3);
 
-    if (gameflow.load_save_enabled)
+    if (gameflow->load_save_enabled)
     {
         insert_object_into_list_inventory(INV_MEMCARD_LOAD);
         insert_object_into_list_inventory(INV_MEMCARD_SAVE);
@@ -2879,68 +2879,86 @@ void do_examine_mode(void)
     }
 }
 
+void load_inventory_gameflow(BYTE* data, int item_first, int item_last, int space)
+{
+    if (data[0] >= item_first && data[0] <= item_last)
+    {
+        short inv_item = data[0] - space;
+        if (inv_item >= INV_START_ITEM && inv_item <= MAX_INVOBJ)
+        {
+            inventry_objects_list[inv_item].name  = data[0];
+            inventry_objects_list[inv_item].yoff  = data[1];
+            inventry_objects_list[inv_item].scale = data[2];
+            inventry_objects_list[inv_item].yrot  = data[3];
+            inventry_objects_list[inv_item].xrot  = data[4];
+            inventry_objects_list[inv_item].zrot  = data[5];
+            inventry_objects_list[inv_item].flags = data[6];
+        }
+    }
+}
+
 void ChooseInventory(void)
 {
     display_inventory_2d();
 }
 
 #ifdef DLL_INJECT
-void injector::inject_inventory()
+void injector::f_game::inject_inventory()
 {
-    this->inject(0x0043B760, ChooseInventory);
-    this->inject(0x0043B9B0, construct_inventory_2d);
-    this->inject(0x0043BC30, do_debounced_input);
-    this->inject(0x0043BD80, DrawThreeDeeObject2D);
-    this->inject(0x0043BF10, DrawInventoryItem);
-    this->inject(0x0043C400, go_and_load_game);
-    this->inject(0x0043C410, go_and_save_game);
-    this->inject(0x0043C420, construct_combine_object_list);
-    this->inject(0x0043C5A0, insert_object_into_list_combine);
-    this->inject(0x0043C610, construct_object_list);
-    this->inject(0x0043CA90, insert_object_into_list_inventory);
-    this->inject(0x0043CAE0, draw_current_object_list);
-    this->inject(0x0043D450, handle_object_changeover);
-    this->inject(0x0043D470, handle_inventry_menu);
-    this->inject(0x0043DE30, fade_ammo_selector);
-    this->inject(0x0043DED0, draw_ammo_selector);
-    this->inject(0x0043E140, spinback);
-    this->inject(0x0043E1B0, update_laras_weapons_status);
-    this->inject(0x0043E250, is_item_currently_combinable);
-    this->inject(0x0043E2F0, have_i_got_item);
-    this->inject(0x0043E320, do_these_objects_combine);
-    this->inject(0x0043E360, combine_these_two_objects);
-    this->inject(0x0043E3D0, seperate_object);
-    this->inject(0x0043E420, combine_revolver);
-    this->inject(0x0043E480, combine_crossbow);
-    this->inject(0x0043E4E0, combine_puzzle_item1);
-    this->inject(0x0043E500, combine_puzzle_item2);
-    this->inject(0x0043E520, combine_puzzle_item3);
-    this->inject(0x0043E540, combine_puzzle_item4);
-    this->inject(0x0043E560, combine_puzzle_item5);
-    this->inject(0x0043E580, combine_puzzle_item6);
-    this->inject(0x0043E5A0, combine_puzzle_item7);
-    this->inject(0x0043E5C0, combine_puzzle_item8);
-    this->inject(0x0043E5E0, combine_key_item1);
-    this->inject(0x0043E600, combine_key_item2);
-    this->inject(0x0043E620, combine_key_item3);
-    this->inject(0x0043E640, combine_key_item4);
-    this->inject(0x0043E660, combine_key_item5);
-    this->inject(0x0043E680, combine_key_item6);
-    this->inject(0x0043E6A0, combine_key_item7);
-    this->inject(0x0043E6C0, combine_key_item8);
-    this->inject(0x0043E6E0, combine_pickup_item1);
-    this->inject(0x0043E700, combine_pickup_item2);
-    this->inject(0x0043E720, combine_pickup_item3);
-    this->inject(0x0043E740, combine_pickup_item4);
-    this->inject(0x0043E760, combine_clockwork);
-    this->inject(0x0043E770, combine_waterskin);
-    this->inject(0x0043E830, setup_objectlist_startposition_invitem);
-    this->inject(0x0043E860, setup_objectlist_startposition_objnumber);
-    this->inject(0x0043E8A0, use_current_item);
-    this->inject(0x0043EB80, picked_up_object);
-    this->inject(0x0043EF60, have_i_got_object);
-    this->inject(0x0043F150, convert_obj_to_invobj);
-    this->inject(0x0043F180, do_compass_mode);
-    this->inject(0x0043F1E0, do_examine_mode);
+    inject(0x0043B760, ChooseInventory);
+    inject(0x0043B9B0, construct_inventory_2d);
+    inject(0x0043BC30, do_debounced_input);
+    inject(0x0043BD80, DrawThreeDeeObject2D);
+    inject(0x0043BF10, DrawInventoryItem);
+    inject(0x0043C400, go_and_load_game);
+    inject(0x0043C410, go_and_save_game);
+    inject(0x0043C420, construct_combine_object_list);
+    inject(0x0043C5A0, insert_object_into_list_combine);
+    inject(0x0043C610, construct_object_list);
+    inject(0x0043CA90, insert_object_into_list_inventory);
+    inject(0x0043CAE0, draw_current_object_list);
+    inject(0x0043D450, handle_object_changeover);
+    inject(0x0043D470, handle_inventry_menu);
+    inject(0x0043DE30, fade_ammo_selector);
+    inject(0x0043DED0, draw_ammo_selector);
+    inject(0x0043E140, spinback);
+    inject(0x0043E1B0, update_laras_weapons_status);
+    inject(0x0043E250, is_item_currently_combinable);
+    inject(0x0043E2F0, have_i_got_item);
+    inject(0x0043E320, do_these_objects_combine);
+    inject(0x0043E360, combine_these_two_objects);
+    inject(0x0043E3D0, seperate_object);
+    inject(0x0043E420, combine_revolver);
+    inject(0x0043E480, combine_crossbow);
+    inject(0x0043E4E0, combine_puzzle_item1);
+    inject(0x0043E500, combine_puzzle_item2);
+    inject(0x0043E520, combine_puzzle_item3);
+    inject(0x0043E540, combine_puzzle_item4);
+    inject(0x0043E560, combine_puzzle_item5);
+    inject(0x0043E580, combine_puzzle_item6);
+    inject(0x0043E5A0, combine_puzzle_item7);
+    inject(0x0043E5C0, combine_puzzle_item8);
+    inject(0x0043E5E0, combine_key_item1);
+    inject(0x0043E600, combine_key_item2);
+    inject(0x0043E620, combine_key_item3);
+    inject(0x0043E640, combine_key_item4);
+    inject(0x0043E660, combine_key_item5);
+    inject(0x0043E680, combine_key_item6);
+    inject(0x0043E6A0, combine_key_item7);
+    inject(0x0043E6C0, combine_key_item8);
+    inject(0x0043E6E0, combine_pickup_item1);
+    inject(0x0043E700, combine_pickup_item2);
+    inject(0x0043E720, combine_pickup_item3);
+    inject(0x0043E740, combine_pickup_item4);
+    inject(0x0043E760, combine_clockwork);
+    inject(0x0043E770, combine_waterskin);
+    inject(0x0043E830, setup_objectlist_startposition_invitem);
+    inject(0x0043E860, setup_objectlist_startposition_objnumber);
+    inject(0x0043E8A0, use_current_item);
+    inject(0x0043EB80, picked_up_object);
+    inject(0x0043EF60, have_i_got_object);
+    inject(0x0043F150, convert_obj_to_invobj);
+    inject(0x0043F180, do_compass_mode);
+    inject(0x0043F1E0, do_examine_mode);
 }
 #endif

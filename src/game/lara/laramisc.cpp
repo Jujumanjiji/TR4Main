@@ -58,10 +58,10 @@ void LaraInitialiseMeshes(void)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_laramisc()
+void injector::f_game::inject_laramisc()
 {
-    this->inject(0x00430EB0, InitialiseLaraLoad);
-    this->inject(0x00430EE0, InitialiseLaraAnims);
-    this->inject(0x00430140, LaraInitialiseMeshes);
+    inject(0x00430EB0, InitialiseLaraLoad);
+    inject(0x00430EE0, InitialiseLaraAnims);
+    inject(0x00430140, LaraInitialiseMeshes);
 }
 #endif

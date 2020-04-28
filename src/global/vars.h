@@ -1,10 +1,10 @@
 #pragma once
 #ifdef DLL_INJECT
 
-#define VAR_U_(address, type)            (*(type*)(address))                // uninitialized variable
-#define VAR_I_(address, type, value)    (*(type*)(address))                // initialized variable (value is just for info)
-#define ARRAY_(address, type, length)    (*(type(*)length)(address))        // array (can be multidimensional)
-#define DirectXErrorText ((LPCSTR(__cdecl*)(HRESULT id)) 0x00490FF0)
+#define VAR_U_(address, type)               (*(type*)(address))                // uninitialized variable
+#define VAR_I_(address, type, value)        (*(type*)(address))                // initialized variable (value is just for info)
+#define ARRAY_(address, type, length)       (*(type(*)length)(address))        // array (can be multidimensional)
+#define DXErrorText                         ((LPCSTR(__cdecl*)(HRESULT id)) 0x00490FF0)
 
 /// official app address
 #define App                                 VAR_U_(0x00753980, WINAPP)
@@ -96,6 +96,7 @@
 #define AIObjects                           VAR_U_(0x007FD204, AIOBJECT*)
 #define GnPlayingCutseq                     VAR_I_(0x004BFC80, int, 0)
 #define bDisableLaraControl                 VAR_I_(0x004BF6F0, int, 0)
+#define title_controls_locked_out           VAR_U_(0x007FD268, bool)
 #define camera_number_frames                VAR_U_(0x007FE854, int)
 #define outside                             VAR_U_(0x007FD300, int)
 #define outside_top                         VAR_U_(0x007FE150, int)
@@ -170,14 +171,30 @@
 #define lara_shadow_bbox                    VAR_U_(0x0080E710, short*)
 #define vertex_buffer                       VAR_U_(0x00753910, LPDIRECT3DVERTEXBUFFER)
 #define font_height                         VAR_U_(0x007F5050, int)
-#define thread_started                      VAR_U_(0x00533B10, int)
+#define thread_started                      VAR_U_(0x00533B10, BOOL)
 #define GameTimer                           VAR_U_(0x007FD258, int)
 #define SetDebounce                         VAR_U_(0x007FE160, int)
-#define wind                                VAR_I_(0x004BF33C, int, 0)
 #define wind_x                              VAR_U_(0x00804E60, int)
 #define wind_z                              VAR_U_(0x00804E64, int)
-#define wind_angle                          VAR_I_(0x004AD7F4, int, 0x800)
-#define dwind_angle                         VAR_I_(0x004AD7F8, int, 0x800)
+#define number_fogbulbs                     VAR_U_(0x0052A348, int)
+#define number_meshes                       VAR_U_(0x00533A50, int)
+#define number_rooms                        VAR_U_(0x00533A5C, short)
+#define number_anims                        VAR_U_(0x00533A60, int)
+#define number_roomlight                    VAR_U_(0x00536F04, int)
+#define savegame_current_level              VAR_U_(0x007F7850, unsigned char)
+#define savegame_found                      ARRAY_(0x007F781E, BYTE, [10])
+#define SGcount                             VAR_I_(0x004BF6D8, int, 0)
+#define SGpoint                             VAR_I_(0x004BF6D4, char*, nullptr)
+#define MGSaveGamePtr                       VAR_U_(0x007F7889, char*)
+#define FadeType                            VAR_U_(0x00672E60, int)
+#define FadeStart                           VAR_U_(0x00672E58, int)
+#define FadeSpeed                           VAR_U_(0x00670E48, int)
+#define FadeTime                            VAR_U_(0x00670E4C, int)
+#define FadeEnd                             VAR_U_(0x00670E50, int)
+#define num_fmvs                            VAR_I_(0x004BF65D, char, 0)
+#define fmv_to_play                         ARRAY_(0x004BF660, char, [2])
+#define nframes                             VAR_I_(0x004AF454, int, 1)
+#define framecount                          VAR_I_(0x004BF420, int, 0)
 
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])

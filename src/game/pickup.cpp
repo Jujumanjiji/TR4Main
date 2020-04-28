@@ -2,7 +2,7 @@
 #include "pickup.h"
 
 #ifdef DLL_INJECT
-void injector::inject_pickup()
+void injector::f_game::inject_pickup()
 {
 
 }

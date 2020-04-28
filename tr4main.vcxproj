@@ -58,7 +58,9 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\ini;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\include;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,6 +127,8 @@
     <ClCompile Include="framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessSuppressLineNumbers>
     </ClCompile>
     <ClCompile Include="src\3dsystem\3d_gen.cpp" />
     <ClCompile Include="src\3dsystem\3d_gen_a.cpp" />
@@ -148,8 +152,10 @@
     <ClCompile Include="src\game\switchs.cpp" />
     <ClCompile Include="src\game\tomb4fx.cpp" />
     <ClCompile Include="src\game\traps.cpp" />
+    <ClCompile Include="src\specific\directx.cpp" />
     <ClCompile Include="src\specific\drawprimitive.cpp" />
     <ClCompile Include="src\specific\file.cpp" />
+    <ClCompile Include="src\specific\fmvs.cpp" />
     <ClCompile Include="src\specific\init.cpp" />
     <ClCompile Include="src\specific\libgpu.cpp" />
     <ClCompile Include="src\specific\loadsave.cpp" />
@@ -162,6 +168,7 @@
     <ClCompile Include="src\specific\specific.cpp" />
     <ClCompile Include="src\specific\text.cpp" />
     <ClCompile Include="src\specific\timer.cpp" />
+    <ClCompile Include="src\specific\interface.cpp" />
     <ClCompile Include="src\utils\file_utils.cpp" />
     <ClCompile Include="src\utils\gameflow_utils.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
@@ -205,8 +212,10 @@
     <ClInclude Include="src\game\switchs.h" />
     <ClInclude Include="src\game\tomb4fx.h" />
     <ClInclude Include="src\game\traps.h" />
+    <ClInclude Include="src\specific\directx.h" />
     <ClInclude Include="src\specific\drawprimitive.h" />
     <ClInclude Include="src\specific\file.h" />
+    <ClInclude Include="src\specific\fmvs.h" />
     <ClInclude Include="src\specific\init.h" />
     <ClInclude Include="src\specific\libgpu.h" />
     <ClInclude Include="src\specific\loadsave.h" />
@@ -225,6 +234,7 @@
     <ClInclude Include="src\specific\specific.h" />
     <ClInclude Include="src\specific\text.h" />
     <ClInclude Include="src\specific\timer.h" />
+    <ClInclude Include="src\specific\interface.h" />
     <ClInclude Include="src\utils\file_utils.h" />
     <ClInclude Include="src\utils\gameflow_utils.h" />
     <ClInclude Include="src\utils\utils.h" />

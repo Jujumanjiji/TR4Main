@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "oldobjects.h"
 
+/*
 void InitialiseObjects(void)
 {
     OBJECT_INFO* obj;
@@ -282,7 +283,7 @@ void GetAIPickups(void)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_setup()
+void injector::f_specific::inject_setup()
 {
     this->inject(0x0045C0D0, InitialiseObjects);
     this->inject(0x0045C1E0, BaddyObjects);
@@ -292,3 +293,4 @@ void injector::inject_setup()
     this->inject(0x0045EC50, GetAIPickups);
 }
 #endif
+*/

@@ -77,8 +77,8 @@ void GetLaraJointAbsPosition(PHD_VECTOR* pos, int joint)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_sphere()
+void injector::f_game::inject_sphere()
 {
-    this->inject(0x0041D9A0, GetLaraJointAbsPosition);
+    inject(0x0041D9A0, GetLaraJointAbsPosition);
 }
 #endif

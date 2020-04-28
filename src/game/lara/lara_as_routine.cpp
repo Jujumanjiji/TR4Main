@@ -155,9 +155,7 @@ void lara_as_stop(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     if (UseSpecialItem(item))
-    {
         return;
-    }
 
     if (CHK_EXI(TrInput, IN_ROLL) && lara.water_status != LWS_WADE)
     {

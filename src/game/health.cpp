@@ -2,7 +2,7 @@
 #include "health.h"
 
 #ifdef DLL_INJECT
-void injector::inject_health()
+void injector::f_game::inject_health()
 {
 
 }

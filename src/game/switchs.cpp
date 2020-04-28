@@ -95,8 +95,8 @@ void found_item_with_detector(short object_number)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_switchs()
+void injector::f_game::inject_switchs()
 {
-    this->inject(0x0043F050, found_item_with_detector);
+    inject(0x0043F050, found_item_with_detector);
 }
 #endif

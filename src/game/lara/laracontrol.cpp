@@ -16,7 +16,7 @@ static short cheat_hit_points = 0;
 static bool cheatEnabled = false;
 static bool haveStuff = false;
 
-void(*lara_control_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
+void(*lara_control_routines[NUM_LARA_STATES_TR4 + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
     lara_as_walk,
     lara_as_run,
     lara_as_stop,
@@ -137,7 +137,7 @@ void(*lara_control_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* co
     lara_as_controlled,
     NULL
 };
-void(*lara_collision_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
+void(*lara_collision_routines[NUM_LARA_STATES_TR4 + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
     lara_col_walk,
     lara_col_run,
     lara_col_stop,
@@ -258,7 +258,7 @@ void(*lara_collision_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* 
     dummy_func,
     NULL
 };
-void(*lara_camera_routines[NUM_LARA_STATES + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
+void(*lara_camera_routines[NUM_LARA_STATES_TR4 + 1])(ITEM_INFO* item, COLL_INFO* coll) = {
 
 };
 
@@ -280,11 +280,7 @@ static void LaraCheatGetStuff(void)
 
 static void LaraCheatyBits(void)
 {
-#ifdef DEBUG_CHEAT
-    gameflow.cheat_enabled = TRUE;
-#endif
-
-    if (gameflow.cheat_enabled)
+    if (gameflow->cheat_enabled)
     {
         if (CHK_EXI(TrInput, IN_LOOK) && !haveStuff)
         {
@@ -616,7 +612,7 @@ void LaraControl(void)
                 LaraWadeControl(item, hfw);
                 break;
             case LWS_CHEAT:
-                if (gameflow.cheat_enabled)
+                if (gameflow->cheat_enabled)
                     LaraCheat(item, lara_coll);
                 break;
         }
@@ -672,7 +668,7 @@ void LaraControl(void)
             break;
 #ifdef DEBUG_CHEAT // speed up the flycheat (2x with this)
         case LWS_CHEAT:
-            if (gameflow.cheat_enabled)
+            if (gameflow->cheat_enabled)
                 LaraCheat(item, lara_coll);
             break;
 #endif

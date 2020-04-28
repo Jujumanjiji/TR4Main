@@ -35,8 +35,8 @@ void Splash(ITEM_INFO* item)
 }
 
 #ifdef DLL_INJECT
-void injector::inject_effects()
+void injector::f_game::inject_effects()
 {
-    this->inject(0x004372A0, Splash);
+    inject(0x004372A0, Splash);
 }
 #endif

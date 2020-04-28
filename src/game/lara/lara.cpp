@@ -3,13 +3,13 @@
 #include "lara.h"
 
 #ifdef DLL_INJECT
-void injector::inject_lara()
+void injector::f_game::inject_lara()
 {
     /// LARA ROUTINES:
-    this->inject(0x00430250, LaraControl);
-    this->inject(0x00420B10, LaraAboveWater);
-    this->inject(0x00431AA0, LaraSurface);
-    this->inject(0x004323A0, LaraUnderWater);
-    this->inject(0x00432DA0, LaraWaterCurrent);
+    inject(0x00430250, LaraControl);
+    inject(0x00420B10, LaraAboveWater);
+    inject(0x00431AA0, LaraSurface);
+    inject(0x004323A0, LaraUnderWater);
+    inject(0x00432DA0, LaraWaterCurrent);
 }
 #endif
