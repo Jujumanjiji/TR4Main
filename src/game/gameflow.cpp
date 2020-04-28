@@ -288,9 +288,7 @@ void DoTitle(unsigned char name, unsigned char audio)
 
     game_gui.initialise_gui(); // TODO: move to DoGameflow() !
     GLOBAL_invitemlastchosen = NO_ITEM;
-#ifndef FEATURE_OLD_TITLE
-    InitSpotCamSequences();
-#endif
+    InitSpotCamSequences(); // need to be initialised anyway...
     title_controls_locked_out = false;
     InitialiseFXArray(TRUE);
     InitialiseLOT(TRUE);

@@ -43,9 +43,6 @@ enum MENU_FLAGS
     TK_DEL = 4
 };
 
-typedef void(*do_draw)(void);
-typedef int(*do_input)(void);
-
 struct button_array
 {
     int x;
@@ -80,8 +77,6 @@ struct gui_menu
     int32 default_x;
     int32 default_y;
     button_struct button[MAX_PAGE]; // contains all button !
-    do_draw draw;
-    do_input input;
 };
 
 class GAME_GUI
@@ -99,22 +94,25 @@ private:
     char* replace_newgame(bool is_anylevel);
     void init_current_button(void);
     
-    /// select level:
-    void draw_sprite_up();
-    void draw_sprite_down();
-    void update_draw(do_draw draw);
-    int update_input(do_input input);
+    /// title mode:
+    int update_title_input(gui_menu* tgui);
+
+    /// select level mode:
+    int update_select_level_input(gui_menu* tgui);
+    void draw_sprite_up(void);
+    void draw_sprite_down(void);
 public:
     MENU_ID get_current_gui() const;
     int get_page(int button_id);
     gui_menu* get_gui(MENU_ID current_gui);
-    void set_current_gui(MENU_ID id);
-    void set_previous_gui();
-    void play_move_sound();
+    void set_current_gui(MENU_ID now, MENU_ID old);
+    void set_previous_gui(void);
+    void play_move_sound(void);
+    void play_select_sound(void);
 
-    int do_menu();
-    int do_title_menu();
-    int do_select_level_menu();
+    int do_menu(void);
+    int do_title_menu(void);
+    int do_select_level_menu(void);
     
     void initialise_gui(void);
     void free_gui(void);

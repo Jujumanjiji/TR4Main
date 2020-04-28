@@ -14,24 +14,6 @@ static int TitleSequence = TS_IDLE;
 static int TitleStatus = 0;
 GAME_GUI game_gui;
 
-static int manage_title_screen(void)
-{
-    return 0; // continue like normal
-}
-
-static int manage_select_level(void)
-{
-    return 0; // continue like normal
-}
-
-static char* IsNewGameOrSelectLevel(void)
-{
-    if (gameflow->play_any_level)
-        return &gfStringWad[gfStringOffsetReal[STR_SELECT_LEVEL]];
-    else
-        return &gfStringWad[gfStringOffsetReal[STR_TITLE_NEW_GAME]];
-}
-
 int GAME_GUI::multiply_pos(int from, int to)
 {
     return from + (to * font_height);
@@ -78,10 +60,10 @@ int GAME_GUI::get_page(int current)
     return 0;
 }
 
-int update_title_input(void)
+int GAME_GUI::update_title_input(gui_menu* tgui)
 {
-    gui_menu* tgui = game_gui.get_gui(game_gui.get_current_gui());
-    button_struct* tbutton = &tgui->button[game_gui.get_page(tgui->current)];
+    button_struct* tbutton;
+    button_array* ptr;
 
     if (CHK_EXI(TitleDBInput, IN_MOVE_UP))
     {
@@ -90,15 +72,20 @@ int update_title_input(void)
             tgui->old = tgui->current;
             tgui->next = tgui->current - 1;
 
-            if (tbutton->arrays[tgui->next].is_red && !tbutton->arrays[tgui->next].is_locked)
+            tbutton = &tgui->button[tgui->current_page];
+            ptr = &tbutton->arrays[tgui->next];
+            if (ptr->is_enabled)
             {
-                game_gui.play_move_sound();
-                tgui->current -= 2;
-            }
-            else if (!tbutton->arrays[tgui->next].is_red && !tbutton->arrays[tgui->next].is_locked)
-            {
-                game_gui.play_move_sound();
-                tgui->current--;
+                if (ptr->is_red && !ptr->is_locked)
+                {
+                    play_move_sound();
+                    tgui->current -= 2;
+                }
+                else if (!ptr->is_red && !ptr->is_locked)
+                {
+                    play_move_sound();
+                    tgui->current--;
+                }
             }
         }
     }
@@ -110,15 +97,20 @@ int update_title_input(void)
             tgui->old = tgui->current;
             tgui->next = tgui->current + 1;
 
-            if (tbutton->arrays[tgui->next].is_red && !tbutton->arrays[tgui->next].is_locked)
+            tbutton = &tgui->button[tgui->current_page];
+            ptr = &tbutton->arrays[tgui->next];
+            if (ptr->is_enabled)
             {
-                game_gui.play_move_sound();
-                tgui->current += 2;
-            }
-            else if (!tbutton->arrays[tgui->next].is_red && !tbutton->arrays[tgui->next].is_locked)
-            {
-                game_gui.play_move_sound();
-                tgui->current++;
+                if (ptr->is_red && !ptr->is_locked)
+                {
+                    play_move_sound();
+                    tgui->current += 2;
+                }
+                else if (!ptr->is_red && !ptr->is_locked)
+                {
+                    play_move_sound();
+                    tgui->current++;
+                }
             }
         }
     }
@@ -126,46 +118,46 @@ int update_title_input(void)
     if (CHK_EXI(TitleDBInput, IN_SELECT))
     {
         SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
+
         switch (tgui->current)
         {
-        case 0: // NEW GAME / SELECT LEVEL
-            if (gameflow->play_any_level)
-            {
-                TitleSequence = TS_SELECT_LEVEL;
-            }
-            else
-            {
-                gfLevelStart = 1;
-                return 3; // start game
-            }
-            break;
-        case 1: // LOAD GAME
-            FoundLoadSaveCount();
-            TitleSequence = TS_LOAD;
-            break;
-        case 2: // OPTIONS
-            TitleSequence = TS_OPTION;
-            break;
-        case 3: // EXIT GAME
-            return 4; // exit the game !
+            case 0: // NEW GAME / SELECT LEVEL
+                if (gameflow->play_any_level)
+                {
+                    TitleSequence = TS_SELECT_LEVEL;
+                }
+                else
+                {
+                    gfLevelStart = 1;
+                    return 3; // start game
+                }
+                break;
+            case 1: // LOAD GAME
+                FoundLoadSaveCount();
+                TitleSequence = TS_LOAD;
+                break;
+            case 2: // OPTIONS
+                TitleSequence = TS_OPTION;
+                break;
+            case 3: // EXIT GAME
+                return 4; // exit the game !
         }
     }
     else
-    if (CHK_EXI(TitleDBInput, IN_DESELECT))
+    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_back != gui_front)
     {
         TitleSequence = TS_IDLE;
-        game_gui.set_previous_gui();
         S_SoundStopAllSamples();
-        SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
+        play_select_sound();
+        set_previous_gui();
     }
 
     return 0; // loop
 }
 
-int update_select_level_input(void)
+int GAME_GUI::update_select_level_input(gui_menu* tgui)
 {
     int32 to_ignore = NO_BUTTON;
-    gui_menu* tgui = game_gui.get_gui(game_gui.get_current_gui());
     button_struct* tbutton;
     button_array* ptr;
 
@@ -180,8 +172,9 @@ int update_select_level_input(void)
                 tgui->current_page--;
                 if (tgui->next == tgui->next_ignore)
                 {
-                    game_gui.play_move_sound();
+                    play_move_sound();
                     tgui->current -= 2;
+                    return 0; // ignore the code after (not needed !)
                 }
             }
 
@@ -191,12 +184,12 @@ int update_select_level_input(void)
             {
                 if (ptr->is_red && !ptr->is_locked)         // not locked and red ? then miss 1 button
                 {
-                    game_gui.play_move_sound();
+                    play_move_sound();
                     tgui->current -= 2;
                 }
                 else if (!ptr->is_red && !ptr->is_locked)   // not locked and not red ? then next button !
                 {
-                    game_gui.play_move_sound();
+                    play_move_sound();
                     tgui->current--;
                 }
             }
@@ -209,13 +202,14 @@ int update_select_level_input(void)
         {
             tgui->old = tgui->current;
             tgui->next = tgui->current + 1;
-            if ((tgui->bnext != NO_BUTTON && tgui->next <= tgui->bprevious) || (tgui->next_ignore != NO_BUTTON && tgui->next == tgui->next_ignore))
+            if ((tgui->bnext != NO_BUTTON && tgui->next >= tgui->bnext) || (tgui->next_ignore != NO_BUTTON && tgui->next == tgui->next_ignore))
             {
                 tgui->current_page++;
                 if (tgui->next == tgui->next_ignore)
                 {
-                    game_gui.play_move_sound();
+                    play_move_sound();
                     tgui->current += 2;
+                    return 0; // ignore the code after (not needed !)
                 }
             }
 
@@ -225,12 +219,12 @@ int update_select_level_input(void)
             {
                 if (ptr->is_red && !ptr->is_locked)         // not locked and red ? then miss 1 button
                 {
-                    game_gui.play_move_sound();
+                    play_move_sound();
                     tgui->current += 2;
                 }
                 else if (!ptr->is_red && !ptr->is_locked)   // not locked and not red ? then next button !
                 {
-                    game_gui.play_move_sound();
+                    play_move_sound();
                     tgui->current++;
                 }
             }
@@ -239,17 +233,17 @@ int update_select_level_input(void)
 
     if (CHK_EXI(TitleDBInput, IN_SELECT))
     {
-        SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
+        play_select_sound();
         gfLevelStart = tgui->current;
         return 3;
     }
     else
-    if (CHK_EXI(TitleDBInput, IN_DESELECT))
+    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_back != gui_front)
     {
         TitleSequence = TS_IDLE;
-        game_gui.set_previous_gui();
         S_SoundStopAllSamples();
-        SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
+        play_select_sound();
+        set_previous_gui();
     }
 
     return 0; // loop
@@ -258,7 +252,7 @@ int update_select_level_input(void)
 int GAME_GUI::do_title_menu()
 {
     draw_title_logo();
-    set_current_gui(M_TITLE);
+    set_current_gui(M_TITLE, M_TITLE);
     init_current_button();
     gui_menu* tgui = &gui[gui_front];
     tgui->default_x = phd_centerx;
@@ -273,13 +267,13 @@ int GAME_GUI::do_title_menu()
     tgui->bprevious = NO_BUTTON;
     tgui->bnext = NO_BUTTON;
 
-    return update_input(update_title_input);
+    return update_title_input(tgui);
 }
 
 int GAME_GUI::do_select_level_menu()
 {
     draw_title_of_menu(M_SELECT_LEVEL);
-    set_current_gui(M_SELECT_LEVEL);
+    set_current_gui(M_SELECT_LEVEL, M_TITLE);
     init_current_button();
     gui_menu* tgui = &gui[gui_front];
     tgui->default_x = phd_centerx;
@@ -374,7 +368,7 @@ int GAME_GUI::do_select_level_menu()
         draw_sprite_up();
     }
 
-    return update_input(update_select_level_input);
+    return update_select_level_input(tgui);
 }
 
 int GAME_GUI::do_menu()
@@ -428,20 +422,6 @@ void GAME_GUI::draw_sprite_down()
     PrintString(phd_winxmax - 64, multiply_pos(phd_winymin, 10), TF_ORANGE, &CharacterMenu[0], FF_NONE);
 }
 
-void GAME_GUI::update_draw(do_draw draw)
-{
-    if (draw != nullptr)
-        draw();
-}
-
-int GAME_GUI::update_input(do_input input)
-{
-    if (input != nullptr)
-        return input();
-    else
-        return NULL;
-}
-
 MENU_ID GAME_GUI::get_current_gui() const
 {
     return gui_front;
@@ -452,10 +432,10 @@ gui_menu* GAME_GUI::get_gui(MENU_ID current_gui)
     return &gui[current_gui];
 }
 
-void GAME_GUI::set_current_gui(MENU_ID id)
+void GAME_GUI::set_current_gui(MENU_ID now, MENU_ID old)
 {
-    gui_back = gui_front;
-    gui_front = id;
+    gui_back = old;
+    gui_front = now;
 }
 
 void GAME_GUI::set_previous_gui()
@@ -466,6 +446,11 @@ void GAME_GUI::set_previous_gui()
 void GAME_GUI::play_move_sound()
 {
     SoundEffect(SFX_MENU_CHOOSE, nullptr, SFX_ALWAYS);
+}
+
+void GAME_GUI::play_select_sound(void)
+{
+    SoundEffect(SFX_MENU_SELECT, nullptr, SFX_ALWAYS);
 }
 
 void GAME_GUI::draw_button(int id, int x, int y, char* str, unsigned short ff_flags, bool is_red, bool is_locked)
@@ -536,8 +521,6 @@ void GAME_GUI::initialise_gui(void)
         tgui->bprevious = 0;
         tgui->bnext = 0;
         tgui->current_page = 0;
-        tgui->draw = NULL;
-        tgui->input = NULL;
 
         int j, k;
         for (j = 0, k = 0; j < MAX_BUTTON, k < MAX_PAGE; j++, k++)
