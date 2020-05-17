@@ -1,11 +1,11 @@
 #pragma once
 
-enum INV_TYPE
+enum class INV_TYPE
 {
     INV_2D,
     INV_3D
 };
-constexpr INV_TYPE INVENTORY_TYPE = INV_3D;
+constexpr INV_TYPE INVENTORY_TYPE = INV_TYPE::INV_3D;
 
 enum INVENTORY_ITEM_ID
 {
@@ -396,7 +396,7 @@ extern bool friggrimmer2;
 extern int display_inventory_2d(void);
 extern void construct_inventory_2d(void);
 extern void do_debounced_input(void);
-extern void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay);
+extern void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, COLORREF color, int overlay);
 extern void DrawInventoryItem(ITEM_INFO *item, int shade, int overlay, BOOL shade_flags);
 extern int go_and_load_game(void);
 extern int go_and_save_game(void);

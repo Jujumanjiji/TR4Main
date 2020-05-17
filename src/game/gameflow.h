@@ -3,9 +3,11 @@
 #define MAX_LEVEL 255
 #define CUTSCENE_TITLE 1
 
+/*
 extern void DoBootScreen(uint32 language_id);
 extern void DoLevel(unsigned char name, unsigned char audio);
 extern void DoTitle(unsigned char name, unsigned char audio);
+*/
 
 #ifdef DLL_INJECT
 #define gameflow                            VAR_U_(0x007FD278, GAMEFLOW*)
@@ -51,7 +53,7 @@ extern void DoTitle(unsigned char name, unsigned char audio);
 #define bCreditDone                         VAR_U_(0x007FE114, bool)
 
 #define DoGameflow ((void(__cdecl*)(void)) 0x00451770)
-///#define DoBootScreen ((void(__cdecl*)(int language_id)) 0x004808E0)
-///#define DoLevel ((void(__cdecl*)(unsigned char name, unsigned char audio)) 0x00452710)
-///#define DoTitle ((void(__cdecl*)(unsigned char name, unsigned char audio)) 0x00451E30)
+#define DoBootScreen ((void(__cdecl*)(int language_id)) 0x004808E0)
+#define DoLevel ((void(__cdecl*)(unsigned char name, unsigned char audio)) 0x00452710)
+#define DoTitle ((void(__cdecl*)(unsigned char name, unsigned char audio)) 0x00451E30)
 #endif

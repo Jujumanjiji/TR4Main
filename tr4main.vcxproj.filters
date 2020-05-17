@@ -200,9 +200,6 @@
     <ClCompile Include="src\utils\lara_render.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\specific\loadsave.cpp">
-      <Filter>src\specific</Filter>
-    </ClCompile>
     <ClCompile Include="src\specific\text.cpp">
       <Filter>src\specific</Filter>
     </ClCompile>
@@ -241,6 +238,12 @@
     </ClCompile>
     <ClCompile Include="src\specific\interface.cpp">
       <Filter>src\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\savegame.cpp">
+      <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\vehicle\motorbike.cpp">
+      <Filter>src\game\vehicles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,9 +364,6 @@
     <ClInclude Include="src\game\effect2.h">
       <Filter>src\game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\oldobjects.h">
-      <Filter>src\game\entity</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\sound.h">
       <Filter>src\game</Filter>
     </ClInclude>
@@ -390,9 +390,6 @@
     </ClInclude>
     <ClInclude Include="src\utils\lara_render.h">
       <Filter>src\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\specific\loadsave.h">
-      <Filter>src\specific</Filter>
     </ClInclude>
     <ClInclude Include="src\specific\text.h">
       <Filter>src\specific</Filter>
@@ -435,6 +432,12 @@
     </ClInclude>
     <ClInclude Include="src\specific\interface.h">
       <Filter>src\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\savegame.h">
+      <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\oldobjects.h">
+      <Filter>src\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

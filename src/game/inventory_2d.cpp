@@ -7,7 +7,7 @@
 #include "lara.h"
 #include "input.h"
 #include "sound.h"
-#include "loadsave.h"
+#include "savegame.h"
 #include "text.h"
 #include "output.h"
 #include "libgpu.h"
@@ -293,7 +293,7 @@ COMBINELIST combine_table[MAX_COMBINE] =
 RING2D* ring_2d[MAX_RING];
 AMMOLIST ammo_object_list[MAX_AMMO];
 MENU current_options[MAX_MENU];
-DWORD inventory_light = RGBA_VECTORGET(127, 127, 127);
+DWORD inventory_light = RGB(127, 127, 127);
 float inventory_drawX;
 float inventory_drawY;
 int inventory_xpos = 0;
@@ -663,7 +663,7 @@ void do_debounced_input(void)
     }
 }
 
-void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, int bright, int overlay)
+void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, int zrot, COLORREF color, int overlay)
 {
     ITEM_INFO item;
     INVOBJ* obj = &inventry_objects_list[num];
@@ -675,16 +675,16 @@ void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, 
 
     phd_LookAt(NULL, WALL_L, NULL, NULL, NULL, NULL, NULL);
 
-    if (bright)
+    if (color != 0)
     {
-        if (bright == 1)
-            inventory_light = RGBA_VECTORGET(CVECTOR(0x2F, 0x2F, 0x2F));
+        if (color == 1)
+            inventory_light = RGB(47, 47, 47);
         else
-            inventory_light = RGBA_VECTORGET(CVECTOR(bright, bright, bright));
+            inventory_light = RGB(color, color, color);
     }
     else
     {
-        inventory_light = RGBA_VECTORGET(CVECTOR(0x7F, 0x7F, 0x7F));
+        inventory_light = RGB(127, 127, 127);
     }
 
     SetD3DViewMatrix();
@@ -701,9 +701,9 @@ void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, 
     item.pos.y = 0;
     item.pos.z = 0;
     item.room_number = 0;
-    item.il.room_ambient.r = 0x7F;
-    item.il.room_ambient.g = 0x7F;
-    item.il.room_ambient.b = 0x7F;
+    item.il.room_ambient.r = 127;
+    item.il.room_ambient.g = 127;
+    item.il.room_ambient.b = 127;
 
     DrawInventoryItem(&item, shade, overlay, (obj->flags & 8) != 0);
     phd_PopMatrix();

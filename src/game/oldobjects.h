@@ -1,11 +1,44 @@
 #pragma once
 
 /// vehicles
-#define InitialiseMotorBike INITIALISE(0x00464610)
-#define MotorBikeControl ((int(__cdecl*)(short itemNumber)) 0x00464C70)
-#define MotorBikeCollision COLLISION(0x00464680)
-#define MotorBikeEffect DRAW(0x00464C20)
-#define DrawMotorBikeSmoke DRAW(0x00464A30)
+extern void InitialiseMotorBike(short item_number);
+extern void MotorBikeCollision(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll);
+extern void DrawMotorBikeEffect(ITEM_INFO* item);
+
+#ifdef DLL_INJECT
+#define SpotLightEnabled VAR_U_(0x00536F10, int)
+#define SpotLightSource VAR_U_(0x00536EF8, PHD_VECTOR)
+#define SpotLightTarget VAR_U_(0x005358D0, PHD_VECTOR)
+#define SpotLightRotation VAR_U_(0x00536EEC, int)
+#define SpotLightRandom VAR_U_(0x00536EE8, int)
+#define DrawMotorBikeSpeedoMeter ((void(__cdecl*)(int screenX, int screenY, int motorBikeSpeed, int angleMin, int angleMax, int speedMax)) 0x0048C6C0)
+#define CreateSpotLight ((void(__cdecl*)(PHD_VECTOR* start, PHD_VECTOR* target, short angle, int rnd)) 0x00445890)
+#define ExhaustStart VAR_U_(0x004BFC25, char)
+#define NoGetOff VAR_U_(0x004BFC24, char)
+
+#define GetCollisionAnim ((int(__cdecl*)(ITEM_INFO* item, PHD_VECTOR* moved)) 0x00468AE0)
+#define DoShift ((int(_cdecl*)(ITEM_INFO *item, PHD_VECTOR *pos, PHD_VECTOR *old)) 0x00468B80)
+
+///#define InitialiseMotorBike INITIALISE(0x00464610)
+///#define MotorBikeCollision COLLISION(0x00464680)
+///#define DrawMotorbikeLight DRAW(0x00464850)
+///#define GetOnMotorBike ((BOOL(__cdecl*)(short item_number)) 0x004648F0)
+///#define DrawMotorBikeSmoke DRAW(0x00464A30)
+///#define DrawMotorBikeEffect DRAW(0x00464C20)
+///#define MotorBikeControl ((int(__cdecl*)(void)) 0x00464C70)
+///#define TriggerMotorbikeExhaustSmoke ((void(__cdecl*)(int x, int y, int z, short angle, short speed, BOOL moving)) 0x00465220)
+///#define MotorBikeExplode ((void(__cdecl*)(ITEM_INFO* item)) 0x004653D0)
+///#define MotorBikeCheckGetOff ((int(__cdecl*)(void)) 0x004654A0)
+///#define TestMotorbikeHeight ((int(__cdecl*)(ITEM_INFO *item, int dz, int dx, PHD_VECTOR *pos)) 0x00465660)
+///#define DoMotorBikeDynamics ((int(__cdecl*)(int height, int speed, int *y, int flags)) 0x00465770)
+///#define MotorBikeDynamics ((int(__cdecl*)(ITEM_INFO *item)) 0x004657E0)
+#define MotorBikeStaticCollision ((void(__cdecl*)(int x, int y, int z, short room_number, int distance)) 0x00465F80)
+#define MotorBikeBaddieCollision ((void(__cdecl*)(ITEM_INFO *item)) 0x00466290)
+///#define AnimateMotorbike ((void(__cdecl*)(ITEM_INFO *item, int collide, BOOL dead)) 0x004664B0)
+///#define MotorbikeCanGetOff ((BOOL(__cdecl*)(void)) 0x004668E0)
+///#define MotorbikeUserControl ((int(__cdecl*)(ITEM_INFO *item, int height, int *pitch)) 0x00466AB0)
+///#define SetLaraOnMotorBike ((void(__cdecl*)(ITEM_INFO *item, ITEM_INFO *laraitem)) 0x00466E90)
+
 #define InitialiseJeep INITIALISE(0x00466F40)
 #define JeepCollision COLLISION(0x00466FA0)
 #define DrawJeepEffect DRAW(0x00467330)
@@ -204,3 +237,4 @@
 #define ClockworkBeetleControl CONTROL(0x00445AD0)
 #define GodHeadControl CONTROL(0x0040FCF0)
 #define DrawGodHead DRAW(0x0040FDD0)
+#endif

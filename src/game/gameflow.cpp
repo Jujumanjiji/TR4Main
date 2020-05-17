@@ -13,12 +13,13 @@
 #include "interface.h"
 #include "libgpu.h"
 #include "lot.h"
-#include "loadsave.h"
+#include "savegame.h"
 #include "sound.h"
 #include "specific.h"
 #include "text.h"
 #include "tomb4fx.h"
 
+/*
 #define FMV_COPYRIGHT_INTRO 0
 #define FMV_GAME_INTRO 1
 #define PIX_ENGLISH "pix\\title_load\\english.bmp"
@@ -68,12 +69,10 @@ void DoBootScreen(uint32 language_id)
     }
 }
 
-/*
 void DoGameflow(void)
 {
     
 }
-*/
 
 void DoLevel(unsigned char name, unsigned char audio)
 {
@@ -133,7 +132,7 @@ void DoLevel(unsigned char name, unsigned char audio)
     dScreenFade = 255;
     ScreenFade = 255;
 
-    if (gfCutsceneID == 0 || CutSceneTriggered & (1 << gfCutsceneID))
+    if ((gfCutsceneID == 0) || (CutSceneTriggered & (1 << gfCutsceneID)))
     {
         cutseq_num = 0;
         gfCutsceneID = 0;
@@ -367,13 +366,14 @@ void DoTitle(unsigned char name, unsigned char audio)
         PrepareCutscene();
     TrInput = IN_NONE;
 }
+*/
 
 #ifdef DLL_INJECT
 void injector::f_game::inject_gameflow()
 {
-    inject(0x004808E0, DoBootScreen);
+    //inject(0x004808E0, DoBootScreen);
     ///inject(0x00451770, DoGameflow);
-    inject(0x00452710, DoLevel);
-    inject(0x00451E30, DoTitle);
+    //inject(0x00452710, DoLevel);
+    //inject(0x00451E30, DoTitle);
 }
 #endif

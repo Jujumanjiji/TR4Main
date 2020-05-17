@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef DLL_INJECT
+#define MyReadFile ((size_t(__cdecl*)(void* data, size_t size, size_t count, FILE* file)) 0x004A0831)
 #define S_LoadLevelFile ((BOOL(__cdecl*)(char *filename)) 0x004768C0)
 #define FreeLevel ((void(__cdecl*)(void)) 0x00476790)
 

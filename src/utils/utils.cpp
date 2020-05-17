@@ -436,7 +436,7 @@ void SetGunFlash_Right(int weapon_type)
 
 PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
 {
-    PHD_VECTOR pos;
+    PHD_VECTOR pos = { 0, 0, 0 };
     
     if (!right)
     {

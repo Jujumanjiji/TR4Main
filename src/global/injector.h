@@ -46,16 +46,20 @@ private:
         void inject_pickup();
         void inject_puzzle();
         void inject_rope();
+        void inject_savegame();
         void inject_sound();
         void inject_sphere();
         void inject_switchs();
         void inject_tomb4fx();
         void inject_traps();
+
+        /// vehicles
+        void inject_motorbike();
     };
 
     struct f_specific
     {
-        // LATER
+        void inject_setup();
     };
 
     f_3dsystem _3dsystem;

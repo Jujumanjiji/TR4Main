@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "interface.h"
 #include "gameflow.h"
-#include "loadsave.h"
+#include "savegame.h"
 #include "sound.h"
 #include "specific.h"
 #include "text.h"
@@ -21,7 +21,7 @@ int GAME_GUI::multiply_pos(int from, int to)
 
 int GAME_GUI::font_flags(int id)
 {
-    gui_menu* tgui = &gui[gui_front];
+    gui_menu* tgui = &gui[gui_current];
     button_struct* tbutton = &tgui->button[get_page(id)];
     button_array* ptr = &tbutton->arrays[id];
 
@@ -42,9 +42,21 @@ void GAME_GUI::draw_title_of_menu(MENU_ID id)
         case M_SELECT_LEVEL:
             name = &gfStringWad[gfStringOffsetReal[STR_SELECT_LEVEL]];
             break;
+        case M_LOAD_TITLE:
+        case M_LOAD:
+            name = &gfStringWad[gfStringOffsetReal[STR_SELECT_GAME_TO_LOAD]];
+            break;
+        case M_SAVE:
+            name = &gfStringWad[gfStringOffsetReal[STR_SELECT_GAME_TO_SAVE]];
+            break;
     }
 
     PrintString(phd_centerx, phd_winymin + font_height, TF_ORANGE, name, FF_CENTER); // title of the current menu !
+}
+
+void GAME_GUI::draw_time(int hour, int minute, int second)
+{
+    
 }
 
 int GAME_GUI::get_page(int current)
@@ -133,25 +145,25 @@ int GAME_GUI::update_title_input(gui_menu* tgui)
                 }
                 break;
             case 1: // LOAD GAME
-                FoundLoadSaveCount();
-                TitleSequence = TS_LOAD;
+                //FoundSaveGameInfo();
+                TitleSequence = TS_IDLE;
                 break;
             case 2: // OPTIONS
-                TitleSequence = TS_OPTION;
+                TitleSequence = TS_IDLE;
                 break;
             case 3: // EXIT GAME
                 return 4; // exit the game !
         }
     }
     else
-    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_back != gui_front)
+    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_old != gui_current)
     {
         TitleSequence = TS_IDLE;
         S_SoundStopAllSamples();
         play_select_sound();
         set_previous_gui();
     }
-
+    
     return 0; // loop
 }
 
@@ -238,7 +250,7 @@ int GAME_GUI::update_select_level_input(gui_menu* tgui)
         return 3;
     }
     else
-    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_back != gui_front)
+    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_old != gui_current)
     {
         TitleSequence = TS_IDLE;
         S_SoundStopAllSamples();
@@ -249,12 +261,41 @@ int GAME_GUI::update_select_level_input(gui_menu* tgui)
     return 0; // loop
 }
 
+int GAME_GUI::update_load_from_title_input(gui_menu* tgui)
+{
+    if (CHK_EXI(TitleDBInput, IN_MOVE_UP))
+    {
+
+    }
+    else
+    if (CHK_EXI(TitleDBInput, IN_MOVE_DOWN))
+    {
+
+    }
+
+
+    if (CHK_EXI(TitleDBInput, IN_SELECT))
+    {
+        play_select_sound();
+    }
+    else
+    if (CHK_EXI(TitleDBInput, IN_DESELECT) && gui_old != gui_current)
+    {
+        TitleSequence = TS_IDLE;
+        S_SoundStopAllSamples();
+        play_select_sound();
+        set_previous_gui();
+    }
+
+    return NO_LOAD;
+}
+
 int GAME_GUI::do_title_menu()
 {
     draw_title_logo();
     set_current_gui(M_TITLE, M_TITLE);
     init_current_button();
-    gui_menu* tgui = &gui[gui_front];
+    gui_menu* tgui = &gui[gui_current];
     tgui->default_x = phd_centerx;
     tgui->default_y = phd_winymax - (4 * font_height);
     draw_button(0, tgui->default_x, multiply_pos(tgui->default_y, 0), replace_newgame(is_anylevel()),  FF_CENTER);
@@ -275,7 +316,7 @@ int GAME_GUI::do_select_level_menu()
     draw_title_of_menu(M_SELECT_LEVEL);
     set_current_gui(M_SELECT_LEVEL, M_TITLE);
     init_current_button();
-    gui_menu* tgui = &gui[gui_front];
+    gui_menu* tgui = &gui[gui_current];
     tgui->default_x = phd_centerx;
 
     /// PAGE 0
@@ -371,9 +412,25 @@ int GAME_GUI::do_select_level_menu()
     return update_select_level_input(tgui);
 }
 
+// TODO: for later !
+int GAME_GUI::do_load_menu(void)
+{
+    draw_title_of_menu(M_LOAD_TITLE);
+    set_current_gui(M_LOAD_TITLE, M_TITLE);
+    init_current_button();
+    gui_menu* tgui = &gui[gui_current];
+    tgui->default_x = phd_centerx;
+    tgui->default_y = int(phd_winwidth * 0.0015625);
+    
+
+    return update_load_from_title_input(tgui);
+}
+
 int GAME_GUI::do_menu()
 {
-    int status;
+    int status = 0;
+    int id = -1;
+    
     switch (TitleSequence)
     {
     case TS_IDLE:
@@ -383,10 +440,12 @@ int GAME_GUI::do_menu()
         status = game_gui.do_select_level_menu();
         break;
     case TS_LOAD:  // TODO: recreate load menu !
-        status = 0;
+        TitleSequence = TS_IDLE;
+        S_LogValue("TS_LOAD: not implemented !");       // check update_title_input() for selection !
         break;
     case TS_OPTION:// TODO: recreate option menu !
-        status = 0;
+        TitleSequence = TS_IDLE;
+        S_LogValue("TS_OPTION: not implemented !");     // check update_title_input() for selection !
         break;
     }
 
@@ -424,7 +483,7 @@ void GAME_GUI::draw_sprite_down()
 
 MENU_ID GAME_GUI::get_current_gui() const
 {
-    return gui_front;
+    return gui_current;
 }
 
 gui_menu* GAME_GUI::get_gui(MENU_ID current_gui)
@@ -434,13 +493,15 @@ gui_menu* GAME_GUI::get_gui(MENU_ID current_gui)
 
 void GAME_GUI::set_current_gui(MENU_ID now, MENU_ID old)
 {
-    gui_back = old;
-    gui_front = now;
+    gui_old = old;
+    gui_current = now;
 }
 
+// for safe purpose, i dont want to have some problem with it later !
+// switch to old gui
 void GAME_GUI::set_previous_gui()
 {
-    gui_front = gui_back;
+    gui_current = gui_old;
 }
 
 void GAME_GUI::play_move_sound()
@@ -455,7 +516,7 @@ void GAME_GUI::play_select_sound(void)
 
 void GAME_GUI::draw_button(int id, int x, int y, char* str, unsigned short ff_flags, bool is_red, bool is_locked)
 {
-    gui_menu* tgui = &gui[gui_front];
+    gui_menu* tgui = &gui[gui_current];
     button_struct* button = &tgui->button[get_page(id)];
     button_array* ptr = &button->arrays[id];
 
@@ -489,7 +550,7 @@ char* GAME_GUI::replace_newgame(bool is_anylevel)
 
 void GAME_GUI::init_current_button(void)
 {
-    gui_menu* tgui = &gui[gui_front];
+    gui_menu* tgui = &gui[gui_current];
     if (!tgui->is_initial)
     {
         tgui->current = tgui->initial;
@@ -499,8 +560,8 @@ void GAME_GUI::init_current_button(void)
 
 void GAME_GUI::initialise_gui(void)
 {
-    gui_front = M_TITLE;
-    gui_back = M_TITLE;
+    gui_current = M_TITLE;
+    gui_old = M_TITLE;
     
     for (int i = 0; i < MAX_GUI; i++)
     {

@@ -412,7 +412,7 @@ struct ITEM_INFO
     short frame_number;
     short room_number;
     short next_item;
-    short next_free;
+    short next_active;
     short speed;
     short fallspeed;
     short hit_points;
@@ -449,7 +449,7 @@ struct ITEM_INFO
     unsigned int hit_status : 1;        // LOBYTE: 0x10
     unsigned int collidable : 1;        // LOBYTE: 0x20
     unsigned int looked_at : 1;         // LOBYTE: 0x40
-    unsigned int dynamic_light : 1;
+    unsigned int dynamic_light : 1;     
     unsigned int poisoned : 1;
     unsigned int ai_bits : 5;
     unsigned int really_active : 1;
@@ -1431,6 +1431,17 @@ struct WINAPP
     BYTE playFmv;
     DWORD originalBPP;
     BOOL autoTarget;
+};
+
+struct SAVEGAME_COUNT // size: 88
+{
+    short days;
+    short seconds;
+    short minutes;
+    short hours;
+    int save_count;
+    char levelName[75];
+    bool present;
 };
 
 struct PICKUP_STRUCT

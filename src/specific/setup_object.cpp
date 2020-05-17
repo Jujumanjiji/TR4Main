@@ -10,7 +10,6 @@
 #include "oldobjects.h"
 
 SetupObject setup_object;
-
 void SetupObject::camera_target()
 {
     obj = &objects[CAMERA_TARGET];
@@ -86,7 +85,6 @@ void SetupObject::switchs()
         obj->save_anim = true;
         obj->save_flags = true;
         obj->explodable_meshbits = 1;
-        //obj->unknown = TRUE;
     }
 
     obj = &objects[SWITCH_TYPE8];

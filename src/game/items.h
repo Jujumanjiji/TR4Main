@@ -1,6 +1,12 @@
 #pragma once
 
 #ifdef DLL_INJECT
+#define next_item_active            VAR_U_(0x007FD20A, short)
+#define next_item_free              VAR_U_(0x007FD208, short)
+#define InItemControlLoop           VAR_I_(0x004BF3F5, unsigned char, 0)
+#define ItemNewRooms                ARRAY_(0x007FE3A0, short, [512])
+#define ItemNewRoomsNo              VAR_I_(0x004BF3F6, short, 0)
+
 #define InitialiseItemArray ((void(__cdecl*)(short itemNumber)) 0x00454140)
 #define KillItem ((void(__cdecl*)(short itemNumber)) 0x004541B0)
 #define CreateItem ((short(__cdecl*)(void)) 0x00454360)

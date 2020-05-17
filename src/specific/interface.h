@@ -3,6 +3,7 @@
 #define MAX_BUTTON 10
 #define MAX_PAGE 6
 #define NO_BUTTON -1
+#define NO_LOAD -1
 #define NO_LEVEL (char*)"-- No Level --"
 
 #define memalloc(src, t, s) src = (t*)malloc(sizeof(t) * s);
@@ -20,6 +21,7 @@ enum MENU_ID
 {
     M_TITLE,
     M_SELECT_LEVEL,
+    M_LOAD_TITLE,
     M_LOAD,
     M_SAVE,
     M_OPTION,
@@ -82,8 +84,8 @@ struct gui_menu
 class GAME_GUI
 {
 private:
-    MENU_ID gui_front; // current
-    MENU_ID gui_back;  // old
+    MENU_ID gui_current; // current
+    MENU_ID gui_old;  // old
     gui_menu gui[MAX_GUI];
 
     int multiply_pos(int from, int to);
@@ -101,6 +103,10 @@ private:
     int update_select_level_input(gui_menu* tgui);
     void draw_sprite_up(void);
     void draw_sprite_down(void);
+
+    /// load mode:
+    int update_load_from_title_input(gui_menu* tgui);
+    void draw_time(int hour, int minute, int second);
 public:
     MENU_ID get_current_gui() const;
     int get_page(int button_id);
@@ -113,6 +119,7 @@ public:
     int do_menu(void);
     int do_title_menu(void);
     int do_select_level_menu(void);
+    int do_load_menu(void); // title version
     
     void initialise_gui(void);
     void free_gui(void);

@@ -15,19 +15,19 @@
     <ProjectGuid>{48D3B7D2-7E74-48AB-8EBA-0B20F6A02CDD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>tr4main</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
@@ -84,7 +84,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\ini;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\include;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\TokyoSU\Documents\DXF\include;$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\extern\ini;$(SolutionDir)src\extern\bass;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\include;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -92,7 +92,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\TokyoSU\Documents\DXF\lib;$(SolutionDir)packages\zlib-msvc-x86.1.2.11.8900\build\native\lib_release</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;dxguid.lib;ddraw.lib;d3d9.lib;dinput8.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -147,18 +147,19 @@
     <ClCompile Include="src\game\pickup.cpp" />
     <ClCompile Include="src\game\puzzle.cpp" />
     <ClCompile Include="src\game\rope.cpp" />
+    <ClCompile Include="src\game\savegame.cpp" />
     <ClCompile Include="src\game\sound.cpp" />
     <ClCompile Include="src\game\sphere.cpp" />
     <ClCompile Include="src\game\switchs.cpp" />
     <ClCompile Include="src\game\tomb4fx.cpp" />
     <ClCompile Include="src\game\traps.cpp" />
+    <ClCompile Include="src\game\vehicle\motorbike.cpp" />
     <ClCompile Include="src\specific\directx.cpp" />
     <ClCompile Include="src\specific\drawprimitive.cpp" />
     <ClCompile Include="src\specific\file.cpp" />
     <ClCompile Include="src\specific\fmvs.cpp" />
     <ClCompile Include="src\specific\init.cpp" />
     <ClCompile Include="src\specific\libgpu.cpp" />
-    <ClCompile Include="src\specific\loadsave.cpp" />
     <ClCompile Include="src\specific\output.cpp" />
     <ClCompile Include="src\specific\setup_object.cpp" />
     <ClCompile Include="src\specific\setup_trap.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="src\game\pickup.h" />
     <ClInclude Include="src\game\puzzle.h" />
     <ClInclude Include="src\game\rope.h" />
+    <ClInclude Include="src\game\savegame.h" />
     <ClInclude Include="src\game\sound.h" />
     <ClInclude Include="src\game\sphere.h" />
     <ClInclude Include="src\game\switchs.h" />
@@ -218,7 +220,6 @@
     <ClInclude Include="src\specific\fmvs.h" />
     <ClInclude Include="src\specific\init.h" />
     <ClInclude Include="src\specific\libgpu.h" />
-    <ClInclude Include="src\specific\loadsave.h" />
     <ClInclude Include="src\specific\output.h" />
     <ClInclude Include="src\specific\setup_object.h" />
     <ClInclude Include="src\specific\setup_trap.h" />

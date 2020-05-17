@@ -38,7 +38,7 @@ void SetupEntity::motor_bike()
         obj->initialise = InitialiseMotorBike;
         obj->control = NULL;
         obj->collision = MotorBikeCollision;
-        obj->draw_routine_extra = MotorBikeEffect;
+        obj->draw_routine_extra = DrawMotorBikeEffect;
         obj->save_anim = true;
         obj->save_flags = true;
         obj->save_hitpoints = true;
@@ -1124,3 +1124,4 @@ void SetupEntity::init_bone()
 {
     bone = (BONE_STRUCT*)&bones[obj->bone_index];
 }
+

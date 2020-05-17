@@ -710,7 +710,7 @@ void LaraAboveWater(ITEM_INFO* item, COLL_INFO* coll)
         switch (item->object_number)
         {
             case MOTORBIKE:
-                if (MotorBikeControl(lara.skidoo))
+                if (MotorBikeControl())
                     return;
                 break;
             case JEEP:

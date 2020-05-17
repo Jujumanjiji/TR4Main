@@ -7,7 +7,6 @@
 #include "oldobjects.h"
 
 SetupTrap setup_trap;
-
 void SetupTrap::floor_4blade()
 {
     obj = &objects[FLOOR_4BLADE];
