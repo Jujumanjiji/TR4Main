@@ -1877,7 +1877,7 @@ void lara_col_polestat(ITEM_INFO* item, COLL_INFO* coll)
             else if (CHK_EXI(TrInput, IN_BACK) && coll->mid_floor > 0)
             {
                 item->goalAnimState = STATE_LARA_POLE_DOWN;
-                item->item_flags[2] = 0;
+                item->itemFlags[2] = 0;
             }
 
             if (CHK_EXI(TrInput, IN_JUMP))
@@ -1958,7 +1958,7 @@ void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
         height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
         item->pos.yPos = height;
         item->floor = height;
-        item->item_flags[2] = 0;
+        item->itemFlags[2] = 0;
         item->goalAnimState = STATE_LARA_POLE_IDLE;
     }
 
@@ -1968,22 +1968,22 @@ void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
         item->pos.yRot -= STEP_L;
 
     if (item->animNumber == ANIMATION_LARA_POLE_CLIMB_DOWN_TO_IDLE)
-        item->item_flags[2] -= WALL_L;
+        item->itemFlags[2] -= WALL_L;
     else
-        item->item_flags[2] += STEP_L;
+        item->itemFlags[2] += STEP_L;
 
     SoundEffect(SFX_LARA_POLE_LOOP, &item->pos, NULL);
 
-    if (item->item_flags[2] <= 0x4000)
+    if (item->itemFlags[2] <= 0x4000)
     {
-        if (item->item_flags[2] < 0)
-            item->item_flags[2] = 0;
-        item->pos.yPos += (item->item_flags[2] >> 8);
+        if (item->itemFlags[2] < 0)
+            item->itemFlags[2] = 0;
+        item->pos.yPos += (item->itemFlags[2] >> 8);
     }
     else
     {
-        item->item_flags[2] = 0x4000;
-        item->pos.yPos += (item->item_flags[2] >> 8);
+        item->itemFlags[2] = 0x4000;
+        item->pos.yPos += (item->itemFlags[2] >> 8);
     }
 }
 

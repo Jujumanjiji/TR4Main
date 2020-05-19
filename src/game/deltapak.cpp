@@ -11,7 +11,7 @@ void frigup_lara(void)
     LaraItem->pos.xPos = GLOBAL_cutpos[1];
     LaraItem->pos.yPos = GLOBAL_cutpos[2];
     LaraItem->pos.zPos = GLOBAL_cutpos[3];
-    BONE_STRUCT* bone = (BONE_STRUCT*)&bones[Objects[LaraItem->objectNumber].boneIndex];
+    BONE_STRUCT* bone = (BONE_STRUCT*)&Bones[Objects[LaraItem->objectNumber].boneIndex];
 
     UpdateAnimFrame(actor_pnodes, 16, actor_frame);
     CalcLaraMatrices_Cutscene(actor_frame, bone, 0);

@@ -79,13 +79,13 @@ void InitialiseAhmet(short item_number)
     item = &Items[item_number];
 
     InitialiseCreature(item_number);
-    item->animNumber = Objects[AHMET].animIndex;
+    item->animNumber = Objects[item->objectNumber].animIndex;
     item->frameNumber = Anims[item->animNumber].frameBase;
     item->goalAnimState = AHMET_IDLE;
     item->currentAnimState = AHMET_IDLE;
-    item->item_flags[0] = item->pos.xPos >> (WALL_SHIFT);
-    item->item_flags[1] = item->pos.yPos >> (WALL_SHIFT - 2);
-    item->item_flags[2] = item->pos.zPos >> (WALL_SHIFT);
+    item->itemFlags[0] = item->pos.xPos >> (WALL_SHIFT);
+    item->itemFlags[1] = item->pos.yPos >> (WALL_SHIFT - 2);
+    item->itemFlags[2] = item->pos.zPos >> (WALL_SHIFT);
 }
 
 void AhmetControl(short item_number)
@@ -99,9 +99,9 @@ void AhmetControl(short item_number)
         return;
 
     item = &Items[item_number];
-    if (item->triggerBits == 1)
+    if (item->triggerFlags == 1)
     {
-        item->triggerBits = 0;
+        item->triggerFlags = 0;
         return;
     }
 
@@ -182,7 +182,7 @@ void AhmetControl(short item_number)
                 item->goalAnimState = AHMET_WALK;
                 head_y = 0;
             }
-            else if (ahmet->mood == MOOD_ATTACK && ahmet->mood != MOOD_ESCAPE)
+            else if (ahmet->mood == ATTACK_MOOD && ahmet->mood != ESCAPE_MOOD)
             {
                 if (info.bite && info.distance < AHMET_STAND_DUALATK_RANGE)
                 {
@@ -231,7 +231,7 @@ void AhmetControl(short item_number)
             {
                 item->goalAnimState = AHMET_IDLE;
             }
-            else if (ahmet->mood == MOOD_ESCAPE || info.distance > AHMET_RUN_RANGE || !info.ahead || (info.enemy_facing > -AHMET_ENEMY_ANGLE || info.enemy_facing < AHMET_ENEMY_ANGLE))
+            else if (ahmet->mood == ESCAPE_MOOD || info.distance > AHMET_RUN_RANGE || !info.ahead || (info.enemyFacing > -AHMET_ENEMY_ANGLE || info.enemyFacing < AHMET_ENEMY_ANGLE))
             {
                 item->goalAnimState = AHMET_RUN;
             }
@@ -240,9 +240,9 @@ void AhmetControl(short item_number)
             ahmet->maximumTurn = AHMET_RUN_ANGLE;
             ahmet->flags = 0;
 
-            if (item->aiBits & GUARD || (ahmet->mood == MOOD_BORED || ahmet->mood == MOOD_ESCAPE) && (lara.target == item && info.ahead) || (info.bite && info.distance < AHMET_IDLE_RANGE))
+            if (item->aiBits & GUARD || (ahmet->mood == BORED_MOOD || ahmet->mood == ESCAPE_MOOD) && (lara.target == item && info.ahead) || (info.bite && info.distance < AHMET_IDLE_RANGE))
                 item->goalAnimState = AHMET_IDLE;
-            else if (info.ahead && info.distance < AHMET_RUN_RANGE && (info.enemy_facing < -AHMET_ENEMY_ANGLE || info.enemy_facing > AHMET_ENEMY_ANGLE))
+            else if (info.ahead && info.distance < AHMET_RUN_RANGE && (info.enemyFacing < -AHMET_ENEMY_ANGLE || info.enemyFacing > AHMET_ENEMY_ANGLE))
                 item->goalAnimState = AHMET_WALK;
             break;
         case AHMET_STAND_DUALATK:
@@ -264,14 +264,14 @@ void AhmetControl(short item_number)
             {
                 LaraItem->hitStatus = TRUE;
                 LaraItem->hitPoints -= AHMET_HAND_DAMAGE;
-                CreatureEffectAlternate(item, &ahmetBiteLeft, 10, -1, DoBloodSplat);
+                CreatureEffect2(item, &ahmetBiteLeft, 10, -1, DoBloodSplat);
                 ahmet->flags |= 1;
             }
             else if (!(ahmet->flags & 2) && item->frameNumber > (Anims[item->animNumber].frameBase + 32) && (item->touchBits & AHMET_RIGHT_TOUCH))
             {
                 LaraItem->hitStatus = TRUE;
                 LaraItem->hitPoints -= AHMET_HAND_DAMAGE;
-                CreatureEffectAlternate(item, &ahmetBiteRight, 10, -1, DoBloodSplat);
+                CreatureEffect2(item, &ahmetBiteRight, 10, -1, DoBloodSplat);
                 ahmet->flags |= 2;
             }
             break;
@@ -300,7 +300,7 @@ void AhmetControl(short item_number)
                     {
                         LaraItem->hitStatus = TRUE;
                         LaraItem->hitPoints -= AHMET_JAW_DAMAGE;
-                        CreatureEffectAlternate(item, &ahmetBiteJaw, 10, -1, DoBloodSplat);
+                        CreatureEffect2(item, &ahmetBiteJaw, 10, -1, DoBloodSplat);
                         ahmet->flags |= 1;
                     }
                 }
@@ -329,14 +329,14 @@ void AhmetControl(short item_number)
                 {
                     LaraItem->hitStatus = TRUE;
                     LaraItem->hitPoints -= AHMET_HAND_DAMAGE;
-                    CreatureEffectAlternate(item, &ahmetBiteLeft, 10, -1, DoBloodSplat);
+                    CreatureEffect2(item, &ahmetBiteLeft, 10, -1, DoBloodSplat);
                     ahmet->flags |= 1;
                 }
                 else if (!(ahmet->flags & 2) && item->frameNumber > (Anims[item->animNumber].frameBase + 22) && (item->touchBits & AHMET_RIGHT_TOUCH))
                 {
                     LaraItem->hitStatus = TRUE;
                     LaraItem->hitPoints -= AHMET_HAND_DAMAGE;
-                    CreatureEffectAlternate(item, &ahmetBiteRight, 10, -1, DoBloodSplat);
+                    CreatureEffect2(item, &ahmetBiteRight, 10, -1, DoBloodSplat);
                     ahmet->flags |= 2;
                 }
             }

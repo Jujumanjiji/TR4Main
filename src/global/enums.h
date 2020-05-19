@@ -152,9 +152,9 @@ enum ZONE_TYPE
 
 enum MOOD_TYPE
 {
-    MOOD_BORED,
-    MOOD_ATTACK,
-    MOOD_ESCAPE,
+    BORED_MOOD,
+    ATTACK_MOOD,
+    ESCAPE_MOOD,
     STALK_MOOD
 };
 

@@ -57,7 +57,7 @@ extern BOOL SameZone(CREATURE_INFO *creature, ITEM_INFO *target_item);
 #define CreatureFloat ((void(__cdecl*)(short itemNumber)) 0x00441F80)
 #define CreatureUnderwater ((void(__cdecl*)(ITEM_INFO* item, int depth)) 0x00442080)
 #define CreatureEffect ((short(__cdecl*)(ITEM_INFO* item, BITE_INFO* bite, short(*generate)(int x, int y, int z, short speed, short y_rot, short roomNumber))) 0x00442110)
-#define CreatureEffectAlternate ((short(__cdecl*)(ITEM_INFO* item, BITE_INFO* bite, short speed, short yrot, short(*generate)(int x, int y, int z, short speed, short y_rot, short roomNumber))) 0x00442170)
+#define CreatureEffect2 ((short(__cdecl*)(ITEM_INFO* item, BITE_INFO* bite, short speed, short yrot, short(*generate)(int x, int y, int z, short speed, short y_rot, short roomNumber))) 0x00442170)
 #define CreatureVault ((int(__cdecl*)(short itemNumber, short angle, int vault, int shift)) 0x004421D0)
 #define CreatureKill ((void(__cdecl*)(ITEM_INFO* item, short kill_anim, short kill_state, short kill_lara_state)) 0x00442380)
 #define AlertAllGuards ((void(__cdecl*)(short itemNumber)) 0x00442550)

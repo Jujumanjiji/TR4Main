@@ -272,7 +272,7 @@ void GetAIPickups(void)
                     obj->object_number <= AI_X2)
                 {
                     item->aiBits = (((1 << obj->object_number) + 114) & 0x1F) << 9;
-                    item->item_flags[3] = obj->trigger_flags;
+                    item->itemFlags[3] = obj->trigger_flags;
                     if (obj->object_number != AI_GUARD)
                         obj->room_number = NO_ROOM;
                 }

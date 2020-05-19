@@ -786,8 +786,8 @@ void lara_as_usepuzzle(ITEM_INFO* item, COLL_INFO* coll)
 
     if (item->frameNumber == Anims[item->animNumber].frameEnd)
     {
-        if (item->item_flags[0])
-            SetAnimationForItemAS(item, item->item_flags[0], STATE_LARA_MISC_CONTROL);
+        if (item->itemFlags[0])
+            SetAnimationForItemAS(item, item->itemFlags[0], STATE_LARA_MISC_CONTROL);
     }
 }
 
@@ -1372,30 +1372,30 @@ void lara_as_pulley(ITEM_INFO* item, COLL_INFO* coll)
     coll->enable_spaz = FALSE;
     coll->enable_baddie_push = FALSE;
 
-    if (CHK_EXI(TrInput, IN_ACTION) && gen->triggerBits)
+    if (CHK_EXI(TrInput, IN_ACTION) && gen->triggerFlags)
         item->goalAnimState = STATE_LARA_PULLEY;
     else
         item->goalAnimState = STATE_LARA_IDLE;
 
     if (item->animNumber == ANIMATION_LARA_PULLEY_PULL && item->frameNumber == (Anims[ANIMATION_LARA_PULLEY_PULL].frameBase + 44))
     {
-        if (gen->triggerBits && !gen->item_flags[1])
+        if (gen->triggerFlags && !gen->itemFlags[1])
         {
-            gen->triggerBits--;
+            gen->triggerFlags--;
 
-            if (gen->triggerBits && gen->item_flags[2])
+            if (gen->triggerFlags && gen->itemFlags[2])
             {
-                gen->item_flags[2] = 0;
+                gen->itemFlags[2] = 0;
                 gen->status = FITEM_DEACTIVATED;
             }
             else
             {
                 gen->status = FITEM_DEACTIVATED;
-                gen->item_flags[2] = 1;
-                if (gen->item_flags[3] >= 0)
-                    gen->triggerBits = abs(gen->item_flags[3]);
+                gen->itemFlags[2] = 1;
+                if (gen->itemFlags[3] >= 0)
+                    gen->triggerFlags = abs(gen->itemFlags[3]);
                 else
-                    gen->item_flags[0] = 1;
+                    gen->itemFlags[0] = 1;
             }
         }
     }

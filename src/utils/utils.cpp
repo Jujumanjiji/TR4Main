@@ -816,7 +816,7 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
 
         // check if the targeted item is less distant than lara...
         // now the entity will attack lara than pickup all item in the level. (maybe he will pickup the item if the distance is too long)
-        if (!creature->hurtByLara && !src->triggerBits) // check if the entity as no ocb (stop crash (but the baddy will not pickup a item at 100%))
+        if (!creature->hurtByLara && !src->triggerFlags) // check if the entity as no ocb (stop crash (but the baddy will not pickup a item at 100%))
         {
             if ((target->objectNumber == primaryID || target->objectNumber == secondID) && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
             {
@@ -843,7 +843,7 @@ OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
     {
         // check if the entity are in a correct room and not dead already.
         // check if the ocb is not the same as the current src to not get the wrong ocb.
-        if (item->triggerBits != target->triggerBits && target->objectNumber == slotID && target->triggerBits == ocb && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+        if (item->triggerFlags != target->triggerFlags && target->objectNumber == slotID && target->triggerFlags == ocb && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
         {
             entity.item_number = i;
             entity.target = target;
@@ -903,10 +903,10 @@ bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb)
 
 void Spawner(ITEM_INFO* item)
 {
-    short real_ocb = item->triggerBits;
+    short real_ocb = item->triggerFlags;
 
     // delete the other ocb
-    if (item->triggerBits & (1 | 2 | 3 | 4))
+    if (item->triggerFlags & (1 | 2 | 3 | 4))
         real_ocb &= ~(1 | 2 | 3 | 4);
 
     for (int i = 1000; i < MAX_SPAWNER_ENTITY; i += 1000) // you can have 50 entity max with it !

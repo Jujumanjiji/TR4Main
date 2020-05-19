@@ -741,7 +741,7 @@ int LaraClimbLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll)
         item->pos.yRot -= 0x4000;
         lara.move_angle = item->pos.yRot;
         result = LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift);
-        item->item_flags[3] = result;
+        item->itemFlags[3] = result;
     }
     
     if (!result)
@@ -783,8 +783,8 @@ int LaraClimbLeftCornerTest(ITEM_INFO* item, COLL_INFO* coll)
             lara.corner_z = z;
             item->pos.yRot += 0x4000;
             lara.move_angle = item->pos.yRot;
-            item->item_flags[3] = LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift);
-            result = item->item_flags[3] != 0;
+            item->itemFlags[3] = LaraTestClimbPos(item, coll->radius, -(coll->radius + CLIMB_WIDTHL), -CLIMB_HITE, CLIMB_HITE, &shift);
+            result = item->itemFlags[3] != 0;
         }
     }
     else

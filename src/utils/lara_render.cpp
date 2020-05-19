@@ -40,7 +40,7 @@ void LARA_RENDER::create_bone(BONE_STRUCT* boneIfCutscene)
     if (cutsceneMode)
         bone = boneIfCutscene;
     else
-        bone = (BONE_STRUCT*)&bones[obj->boneIndex];
+        bone = (BONE_STRUCT*)&Bones[obj->boneIndex];
 }
 
 void LARA_RENDER::create_frame()

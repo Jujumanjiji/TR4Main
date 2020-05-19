@@ -104,7 +104,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
         extra_rotation = (short*)item->data;
         if (!extra_rotation)
             extra_rotation = dummy_rotation;
-        bone = (BONE_STRUCT*)&bones[obj->boneIndex];
+        bone = (BONE_STRUCT*)&Bones[obj->boneIndex];
         mesh = &meshes[obj->meshIndex];
         meshBN = 1;
         meshBI = 1;

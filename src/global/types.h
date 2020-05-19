@@ -420,11 +420,11 @@ struct ITEM_INFO
     short timer;
     short flags;                       // For oneshot and code switches (i.e. NOT flags)
     short shade;
-    short triggerBits;
+    short triggerFlags;
     short carriedItem;
     short afterDeath;
     WORD firedWeapon;
-    short item_flags[4];
+    short itemFlags[4];
     LPVOID data;
     PHD_3DPOS pos;
     ITEM_LIGHT il;
@@ -1009,14 +1009,14 @@ struct BOX_INFO
 
 struct AI_INFO
 {
-    short zone_number; // NUMBER
-    short enemy_zone; // NUMBER
+    short zoneNumber;
+    short enemyZone;
     int distance;
     int ahead;
     int bite;
     short angle;
-    short x_angle;
-    short enemy_facing;
+    short xAngle;
+    short enemyFacing;
 };
 
 struct LOT_INFO

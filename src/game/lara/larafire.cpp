@@ -380,11 +380,11 @@ void fire_grenade(void)
                 weapon_ammo.decrease(LG_GRENADEGUN, 1);
 
             if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO1))
-                item->item_flags[0] = 1; // normal
+                item->itemFlags[0] = 1; // normal
             else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO2))
-                item->item_flags[0] = 2; // super
+                item->itemFlags[0] = 2; // super
             else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO3))
-                item->item_flags[0] = 3; // flash
+                item->itemFlags[0] = 3; // flash
             savegame_level.ammo_used++;
         }
     }
@@ -462,11 +462,11 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                 weapon_ammo.decrease(LG_CROSSBOW, 1);
 
             if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO1))
-                item->item_flags[0] = 1; // normal
+                item->itemFlags[0] = 1; // normal
             else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO2))
-                item->item_flags[0] = 2; // poison
+                item->itemFlags[0] = 2; // poison
             else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO3))
-                item->item_flags[0] = 3; // explosive
+                item->itemFlags[0] = 3; // explosive
             SoundEffect(SFX_LARA_CROSSBOW, &LaraItem->pos, 0);
             savegame_level.ammo_used++;
         }

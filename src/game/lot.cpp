@@ -118,7 +118,7 @@ void InitialiseSlot(short itemNumber, int slots)
 
     // Default settings for creature
     creature->itemNumber = itemNumber;
-    creature->mood = MOOD_BORED;
+    creature->mood = BORED_MOOD;
     creature->jointRotation[0] = 0;
     creature->jointRotation[1] = 0;
     creature->jointRotation[2] = 0;
