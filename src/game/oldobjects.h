@@ -1,25 +1,13 @@
 #pragma once
 
-/// vehicles
-extern void InitialiseMotorBike(short item_number);
-extern void MotorBikeCollision(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll);
-extern int MotorBikeControl(void);
-extern void DrawMotorBikeEffect(ITEM_INFO* item);
+#include "ahmet.h"
+
+
+
+
+#include "motorbike.h"
 
 #ifdef DLL_INJECT
-#define SpotLightEnabled VAR_U_(0x00536F10, int)
-#define SpotLightSource VAR_U_(0x00536EF8, PHD_VECTOR)
-#define SpotLightTarget VAR_U_(0x005358D0, PHD_VECTOR)
-#define SpotLightRotation VAR_U_(0x00536EEC, int)
-#define SpotLightRandom VAR_U_(0x00536EE8, int)
-#define DrawMotorBikeSpeedoMeter ((void(__cdecl*)(int screenX, int screenY, int motorBikeSpeed, int angleMin, int angleMax, int speedMax)) 0x0048C6C0)
-#define CreateSpotLight ((void(__cdecl*)(PHD_VECTOR* start, PHD_VECTOR* target, short angle, int rnd)) 0x00445890)
-#define ExhaustStart VAR_U_(0x004BFC25, char)
-#define NoGetOff VAR_U_(0x004BFC24, char)
-
-#define GetCollisionAnim ((int(__cdecl*)(ITEM_INFO* item, PHD_VECTOR* moved)) 0x00468AE0)
-#define DoShift ((int(_cdecl*)(ITEM_INFO *item, PHD_VECTOR *pos, PHD_VECTOR *old)) 0x00468B80)
-
 ///#define InitialiseMotorBike INITIALISE(0x00464610)
 ///#define MotorBikeCollision COLLISION(0x00464680)
 ///#define DrawMotorbikeLight DRAW(0x00464850)
@@ -33,8 +21,6 @@ extern void DrawMotorBikeEffect(ITEM_INFO* item);
 ///#define TestMotorbikeHeight ((int(__cdecl*)(ITEM_INFO *item, int dz, int dx, PHD_VECTOR *pos)) 0x00465660)
 ///#define DoMotorBikeDynamics ((int(__cdecl*)(int height, int speed, int *y, int flags)) 0x00465770)
 ///#define MotorBikeDynamics ((int(__cdecl*)(ITEM_INFO *item)) 0x004657E0)
-#define MotorBikeStaticCollision ((void(__cdecl*)(int x, int y, int z, short room_number, int distance)) 0x00465F80)
-#define MotorBikeBaddieCollision ((void(__cdecl*)(ITEM_INFO *item)) 0x00466290)
 ///#define AnimateMotorbike ((void(__cdecl*)(ITEM_INFO *item, int collide, BOOL dead)) 0x004664B0)
 ///#define MotorbikeCanGetOff ((BOOL(__cdecl*)(void)) 0x004668E0)
 ///#define MotorbikeUserControl ((int(__cdecl*)(ITEM_INFO *item, int height, int *pitch)) 0x00466AB0)
@@ -89,8 +75,6 @@ extern void DrawMotorBikeEffect(ITEM_INFO* item);
 #define WildBoarControl CONTROL(0x0041BF60)
 #define InitialiseDog INITIALISE(0x00405820)
 #define DogControl CONTROL(0x004058B0)
-#define InitialiseAhmet INITIALISE(0x00401000)
-#define AhmetControl CONTROL(0x00401080)
 #define InitialiseBaboon INITIALISE(0x00401DB0)
 #define BaboonControl CONTROL(0x00401E50)
 #define InitialiseEnemyJeepTrain INITIALISE(0x004644B0)

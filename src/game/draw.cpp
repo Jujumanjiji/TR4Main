@@ -42,17 +42,17 @@ void DrawEffect(short fx_number)
     OBJECT_INFO* obj;
 
     fx = &effects[fx_number];
-    obj = &objects[fx->object_number];
-    if (obj->loaded && obj->draw_routine)
+    obj = &Objects[fx->object_number];
+    if (obj->loaded && obj->drawRoutine)
     {
         phd_PushMatrix();
-        phd_TranslateAbs(fx->pos.x, fx->pos.y, fx->pos.z);
+        phd_TranslateAbs(fx->pos.xPos, fx->pos.yPos, fx->pos.zPos);
         mptr = phd_mxptr;
         if (mptr->m23 > phd_znear && mptr->m23 < phd_zfar)
         {
-            phd_RotYXZ(fx->pos.y_rot, fx->pos.x_rot, fx->pos.z_rot);
-            if (obj->nmeshes > 0)
-                phd_PutPolygons(meshes[obj->mesh_index], NO_CLIP);
+            phd_RotYXZ(fx->pos.yRot, fx->pos.xRot, fx->pos.zRot);
+            if (obj->nMeshes > 0)
+                phd_PutPolygons(meshes[obj->meshIndex], NO_CLIP);
             else
                 phd_PutPolygons(meshes[fx->frame_number], NO_CLIP);
         }
@@ -73,19 +73,19 @@ void DrawAnimatingItem(ITEM_INFO* item)
     short* extra_rotation;
 
     frac = GetFrames(item, frmptr, &rate);
-    obj = &objects[item->object_number];
-    if (obj->shadow_size)
-        S_PrintShadow(obj->shadow_size, frmptr[0], item);
+    obj = &Objects[item->objectNumber];
+    if (obj->shadowSize)
+        S_PrintShadow(obj->shadowSize, frmptr[0], item);
     phd_PushMatrix(); // world
-    phd_TranslateAbs(item->pos.x, item->pos.y, item->pos.z);
-    phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+    phd_TranslateAbs(item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    phd_RotYXZ(item->pos.yRot, item->pos.xRot, item->pos.zRot);
 
     // get the mip instead if the object is far away of lara !
     // check if the current object have a MIP object in the wad before changing to mip
-    if (obj->mip_distance && objects[item->object_number + 1].loaded && (phd_mxptr->m23 >> 16) > obj->mip_distance)
+    if (obj->mipDistance && Objects[item->objectNumber + 1].loaded && (phd_mxptr->m23 >> 16) > obj->mipDistance)
         obj++;
 
-    if (item->object_number < ENEMY_JEEP || item->object_number > SETHA_MIP)
+    if (item->objectNumber < ENEMY_JEEP || item->objectNumber > SETHA_MIP)
     {
         DrawMovingItem(item, frmptr[0]);
     }
@@ -104,8 +104,8 @@ void DrawAnimatingItem(ITEM_INFO* item)
         extra_rotation = (short*)item->data;
         if (!extra_rotation)
             extra_rotation = dummy_rotation;
-        bone = (BONE_STRUCT*)&bones[obj->bone_index];
-        mesh = &meshes[obj->mesh_index];
+        bone = (BONE_STRUCT*)&bones[obj->boneIndex];
+        mesh = &meshes[obj->meshIndex];
         meshBN = 1;
         meshBI = 1;
 
@@ -118,16 +118,16 @@ void DrawAnimatingItem(ITEM_INFO* item)
             pprot2 = frmptr[1] + 9;
             gar_RotYXZsuperpack_I(&pprot1, &pprot2, 0);
 
-            if (item->mesh_bits & 1)
+            if (item->meshBits & 1)
             {
-                if (item->meshswap_meshbits & 1)
+                if (item->meshswapMeshbits & 1)
                     phd_PutPolygons_I(mesh[1], clip);
                 else
                     phd_PutPolygons_I(mesh[0], clip);
             }
             
             mesh += 2;
-            for (int i = 0; i < (obj->nmeshes - 1); i++)
+            for (int i = 0; i < (obj->nMeshes - 1); i++)
             {
                 flags = bone->flags;
                 if (flags & BT_POP)
@@ -149,24 +149,24 @@ void DrawAnimatingItem(ITEM_INFO* item)
                 }
 
                 meshBI <<= 1;
-                if (item->mesh_bits & meshBI)
+                if (item->meshBits & meshBI)
                 {
-                    if (item->meshswap_meshbits & 1)
+                    if (item->meshswapMeshbits & 1)
                         phd_PutPolygons_I(mesh[1], clip);
                     else
                         phd_PutPolygons_I(mesh[0], clip);
                 }
 
-                if (item->fired_weapon && i == (EnemyOffset[obj->bit_offset].mesh - 1))
+                if (item->firedWeapon && i == (EnemyOffset[obj->bitOffset].mesh - 1))
                 {
-                    BITE_INFO* offset = &EnemyOffset[obj->bit_offset];
+                    BITE_INFO* offset = &EnemyOffset[obj->bitOffset];
                     phd_PushMatrix_I();
                     phd_TranslateRel_I(offset->x, offset->y, offset->z);
                     phd_RotYXZ_I(0, -16380, (GetRandomControl() << 14) + (GetRandomControl() >> 2) - 4096);
                     InterpolateMatrix();
-                    phd_PutPolygons(meshes[objects[GUN_FLASH].mesh_index], clip);
+                    phd_PutPolygons(meshes[Objects[GUN_FLASH].meshIndex], clip);
                     phd_PopMatrix_I();
-                    item->fired_weapon--;
+                    item->firedWeapon--;
                 }
 
                 bone++;
@@ -180,16 +180,16 @@ void DrawAnimatingItem(ITEM_INFO* item)
             pprot1 = frmptr[0] + 9;
             gar_RotYXZsuperpack(&pprot1, 0);
 
-            if (item->mesh_bits & 1) // BODY
+            if (item->meshBits & 1) // BODY
             {
-                if (item->meshswap_meshbits & 1)
+                if (item->meshswapMeshbits & 1)
                     phd_PutPolygons(mesh[1], clip);
                 else
                     phd_PutPolygons(mesh[0], clip);
             }
 
             mesh += 2;
-            for (int i = 0; i < (obj->nmeshes - 1); i++)
+            for (int i = 0; i < (obj->nMeshes - 1); i++)
             {
                 flags = bone->flags;
                 if (flags & BT_POP)
@@ -211,23 +211,23 @@ void DrawAnimatingItem(ITEM_INFO* item)
                 }
                 
                 meshBN <<= 1;
-                if (item->mesh_bits & meshBN)
+                if (item->meshBits & meshBN)
                 {
-                    if (item->meshswap_meshbits & 1)
+                    if (item->meshswapMeshbits & 1)
                         phd_PutPolygons(mesh[1], clip);
                     else
                         phd_PutPolygons(mesh[0], clip);
                 }
 
-                if (item->fired_weapon && i == (EnemyOffset[obj->bit_offset].mesh - 1))
+                if (item->firedWeapon && i == (EnemyOffset[obj->bitOffset].mesh - 1))
                 {
-                    BITE_INFO* offset = &EnemyOffset[obj->bit_offset];
+                    BITE_INFO* offset = &EnemyOffset[obj->bitOffset];
                     phd_PushMatrix();
                     phd_TranslateRel(offset->x, offset->y, offset->z);
                     phd_RotX(-16380);
-                    phd_PutPolygons(meshes[objects[GUN_FLASH].mesh_index], clip);
+                    phd_PutPolygons(meshes[Objects[GUN_FLASH].meshIndex], clip);
                     phd_PopMatrix();
-                    item->fired_weapon--;
+                    item->firedWeapon--;
                 }
 
                 bone++;
@@ -515,14 +515,14 @@ int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
     int interl;
     int interp, rat;
 
-    frm = item->frame_number;
-    anim = &anims[item->anim_number];
-    frame[0] = frame[1] = anim->frame_ptr;
+    frm = item->frameNumber;
+    anim = &Anims[item->animNumber];
+    frame[0] = frame[1] = anim->framePtr;
     interl = LOBYTE(anim->interpolation);
     rat = interl;
     *rate = interl;
     frame_size = anim->interpolation >> 8;
-    frm -= anim->frame_base;
+    frm -= anim->frameBase;
     first = frm / rat;
     interp = frm % rat;
     frame[0] += first * frame_size;                 // Get Frame pointers
@@ -530,8 +530,8 @@ int GetFrames(ITEM_INFO* item, short* frame[], int* rate)
     if (interp == 0)
         return 0;
     second = first * rat + rat;
-    if (second > anim->frame_end)                   // Clamp KeyFrame to End if need be
-        *rate = anim->frame_end - (second - rat);
+    if (second > anim->frameEnd)                   // Clamp KeyFrame to End if need be
+        *rate = anim->frameEnd - (second - rat);
     return interp;
 }
 

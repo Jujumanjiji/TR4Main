@@ -9,229 +9,229 @@
 SetupTrap setup_trap;
 void SetupTrap::floor_4blade()
 {
-    obj = &objects[FLOOR_4BLADE];
+    obj = &Objects[FLOOR_4BLADE];
     if (obj->loaded)
     {
         obj->control = FourBladeControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::roof_4blade()
 {
-    obj = &objects[ROOF_4BLADE];
+    obj = &Objects[ROOF_4BLADE];
     if (obj->loaded)
     {
         obj->control = FourBladeControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::bird_blade()
 {
-    obj = &objects[BIRD_BLADE];
+    obj = &Objects[BIRD_BLADE];
     if (obj->loaded)
     {
         obj->control = BirdBladeControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::seth_blade()
 {
-    obj = &objects[SETH_BLADE];
+    obj = &Objects[SETH_BLADE];
     if (obj->loaded)
     {
         obj->initialise = InitialiseSethBlade;
         obj->control = SethBladeControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::chain()
 {
-    obj = &objects[CHAIN];
+    obj = &Objects[CHAIN];
     if (obj->loaded)
     {
         obj->control = ChainControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::plough()
 {
-    obj = &objects[PLOUGH];
+    obj = &Objects[PLOUGH];
     if (obj->loaded)
     {
         obj->control = PloughControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::spikeball()
 {
-    obj = &objects[SPIKEBALL];
+    obj = &Objects[SPIKEBALL];
     if (obj->loaded)
     {
         obj->control = SpikeBallControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::hammer()
 {
-    obj = &objects[HAMMER];
+    obj = &Objects[HAMMER];
     if (obj->loaded)
     {
         obj->control = HammerControl;
         obj->collision = TrapCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::catwalk_blade()
 {
-    obj = &objects[CATWALK_BLADE];
+    obj = &Objects[CATWALK_BLADE];
     if (obj->loaded)
     {
         obj->control = CatwalkBladeControl;
         obj->collision = MovBlockCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::moving_blade()
 {
-    obj = &objects[MOVING_BLADE];
+    obj = &Objects[MOVING_BLADE];
     if (obj->loaded)
     {
         obj->control = MovingBladeControl;
         obj->collision = MovBlockCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::plinth_blade()
 {
-    obj = &objects[PLINTH_BLADE];
+    obj = &Objects[PLINTH_BLADE];
     if (obj->loaded)
     {
         obj->control = PlinthBladeControl;
         obj->collision = MovBlockCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::cog()
 {
-    obj = &objects[COG];
+    obj = &Objects[COG];
     if (obj->loaded)
     {
         obj->control = PuzzleControl;
         obj->collision = CogCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::stargate()
 {
-    obj = &objects[STARGATE];
+    obj = &Objects[STARGATE];
     if (obj->loaded)
     {
         obj->control = StargateControl;
         obj->collision = StargateCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::rollingball()
 {
-    obj = &objects[ROLLINGBALL];
+    obj = &Objects[ROLLINGBALL];
     if (obj->loaded)
     {
         obj->control = RollingBallControl;
         obj->collision = RollingBallCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::burning_floor()
 {
-    obj = &objects[BURNING_FLOOR];
+    obj = &Objects[BURNING_FLOOR];
     if (obj->loaded)
     {
         obj->initialise = InitialiseBurningFloor;
         obj->control = BurningFloorControl;
         obj->collision = BurningFloorCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::twoblock_platform()
 {
-    obj = &objects[TWOBLOCK_PLATFORM];
+    obj = &Objects[TWOBLOCK_PLATFORM];
     if (obj->loaded)
     {
         obj->initialise = InitialiseTwoBlockPlatform;
         obj->control = TwoBlockPlatformControl;
         obj->floor = TwoBlockPlatformFloor;
         obj->ceiling = TwoBlockPlatformCeiling;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::kill_all_triggers()
 {
-    obj = &objects[KILL_ALL_TRIGGERS];
+    obj = &Objects[KILL_ALL_TRIGGERS];
     if (obj->loaded)
     {
         obj->control = KillAllTriggerControl;
-        obj->draw_routine = NULL;
-        obj->hit_points = 0;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->hitPoints = 0;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::death_slide()
 {
-    obj = &objects[DEATH_SLIDE];
+    obj = &Objects[DEATH_SLIDE];
     if (obj->loaded)
     {
         obj->initialise = InitialiseDeathSlide;
         obj->control = DeathSlideControl;
         obj->collision = DeathSlideCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::falling_block()
 {
-    obj = &objects[FALLING_BLOCK];
+    obj = &Objects[FALLING_BLOCK];
     if (obj->loaded)
     {
         obj->initialise = InitialiseShatter;
@@ -239,12 +239,12 @@ void SetupTrap::falling_block()
         obj->collision = FallingBlockCollision;
         obj->floor = FallingBlockFloor;
         obj->ceiling = FallingBlockCeiling;
-        obj->save_anim = true;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 
-    obj = &objects[FALLING_BLOCK2];
+    obj = &Objects[FALLING_BLOCK2];
     if (obj->loaded)
     {
         obj->initialise = InitialiseShatter;
@@ -252,28 +252,28 @@ void SetupTrap::falling_block()
         obj->collision = FallingBlockCollision;
         obj->floor = FallingBlockFloor;
         obj->ceiling = FallingBlockCeiling;
-        obj->save_anim = true;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::falling_ceiling()
 {
-    obj = &objects[FALLING_CEILING];
+    obj = &Objects[FALLING_CEILING];
     if (obj->loaded)
     {
         obj->control = FallingCeilingControl;
         obj->collision = FallingCeilingCollision;
-        obj->save_anim = true;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::smashable_bike_floor()
 {
-    obj = &objects[SMASHABLE_BIKE_FLOOR];
+    obj = &Objects[SMASHABLE_BIKE_FLOOR];
     if (obj->loaded)
     {
         obj->initialise = InitialiseShatter;
@@ -281,236 +281,236 @@ void SetupTrap::smashable_bike_floor()
         obj->collision = ObjectCollision;
         obj->floor = TwoBlockPlatformFloor;
         obj->ceiling = TwoBlockPlatformCeiling;
-        obj->save_anim = true;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::smashable_bike_wall()
 {
-    obj = &objects[SMASHABLE_BIKE_WALL];
+    obj = &Objects[SMASHABLE_BIKE_WALL];
     if (obj->loaded)
     {
         obj->initialise = InitialiseShatter;
         obj->control = SmashableBikeWallControl;
         obj->collision = ObjectCollision;
-        obj->save_flags = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::pushable_object()
 {
-    obj = &objects[PUSHABLE_OBJECT1];
+    obj = &Objects[PUSHABLE_OBJECT1];
     if (obj->loaded)
     {
         obj->initialise = InitialisePushableBlock;
         obj->control = PushableBlockControl;
         obj->collision = PushableBlockCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 
-    obj = &objects[PUSHABLE_OBJECT2];
+    obj = &Objects[PUSHABLE_OBJECT2];
     if (obj->loaded)
     {
         obj->initialise = InitialisePushableBlock;
         obj->control = PushableBlockControl;
         obj->collision = PushableBlockCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 
-    obj = &objects[PUSHABLE_OBJECT3];
+    obj = &Objects[PUSHABLE_OBJECT3];
     if (obj->loaded)
     {
         obj->initialise = InitialisePushableBlock;
         obj->control = PushableBlockControl;
         obj->collision = PushableBlockCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 
-    obj = &objects[PUSHABLE_OBJECT4];
+    obj = &Objects[PUSHABLE_OBJECT4];
     if (obj->loaded)
     {
         obj->initialise = InitialisePushableBlock;
         obj->control = PushableBlockControl;
         obj->collision = PushableBlockCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 
-    obj = &objects[PUSHABLE_OBJECT5];
+    obj = &Objects[PUSHABLE_OBJECT5];
     if (obj->loaded)
     {
         obj->initialise = InitialisePushableBlock;
         obj->control = PushableBlockControl;
         obj->collision = PushableBlockCollision;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::darts()
 {
-    obj = &objects[DARTS];
+    obj = &Objects[DARTS];
     if (obj->loaded)
     {
         obj->control = DartControl;
-        obj->draw_routine = DrawDart;
+        obj->drawRoutine = DrawDart;
         obj->collision = ObjectCollision;
-        obj->shadow_size = 128;
+        obj->shadowSize = 128;
     }
 }
 
 void SetupTrap::planet_effect()
 {
-    obj = &objects[PLANET_EFFECT];
+    obj = &Objects[PLANET_EFFECT];
     if (obj->loaded)
     {
         obj->initialise = InitialisePlanetEffect;
         obj->control = PlanetEffectControl;
-        obj->draw_routine = DrawPlanetEffect;
-        obj->save_flags = true;
+        obj->drawRoutine = DrawPlanetEffect;
+        obj->saveFlags = true;
         obj->unknown = 1; // ???
     }
 }
 
 void SetupTrap::flame()
 {
-    obj = &objects[FLAME];
+    obj = &Objects[FLAME];
     if (obj->loaded)
     {
         obj->control = FlameControl;
-        obj->draw_routine = NULL;
-        obj->using_drawanimating_item = false;
+        obj->drawRoutine = NULL;
+        obj->usingDrawAnimatingItem = false;
     }
 }
 
 void SetupTrap::sas_drag_bloke()
 {
-    obj = &objects[SAS_DRAG_BLOKE];
+    obj = &Objects[SAS_DRAG_BLOKE];
     if (obj->loaded)
     {
         obj->collision = SasDragBlokeCollision;
         obj->control = PuzzleControl;
-        obj->save_anim = true;
-        obj->save_flags = true;
-        obj->save_position = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->savePosition = true;
     }
 }
 
 void SetupTrap::dart_emitter()
 {
-    obj = &objects[DART_EMITTER];
+    obj = &Objects[DART_EMITTER];
     if (obj->loaded)
     {
         obj->control = DartEmitterControl;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::homing_dart_emitter()
 {
-    obj = &objects[HOMING_DART_EMITTER];
+    obj = &Objects[HOMING_DART_EMITTER];
     if (obj->loaded)
     {
         obj->control = DartEmitterControl;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::flame_emitter()
 {
-    obj = &objects[FLAME_EMITTER];
+    obj = &Objects[FLAME_EMITTER];
     if (obj->loaded)
     {
         obj->initialise = InitialiseFlameEmitter;
         obj->control = FlameEmitterControl;
         obj->collision = FlameCollision;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 
-    obj = &objects[FLAME_EMITTER2];
+    obj = &Objects[FLAME_EMITTER2];
     if (obj->loaded)
     {
         obj->initialise = InitialiseFlameEmitter2;
         obj->control = FlameEmitter2Control;
         obj->collision = FlameCollision;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 
-    obj = &objects[FLAME_EMITTER3];
+    obj = &Objects[FLAME_EMITTER3];
     if (obj->loaded)
     {
         obj->initialise = InitialiseFlameEmitter3;
         obj->control = FlameEmitter3Control;
         obj->collision = FlameCollision;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::sprinkler()
 {
-    obj = &objects[SPRINKLER];
+    obj = &Objects[SPRINKLER];
     if (obj->loaded)
     {
         obj->control = SprinklerControl;
         obj->collision = FlameCollision;
-        obj->save_flags = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::rope()
 {
-    obj = &objects[ROPE];
+    obj = &Objects[ROPE];
     if (obj->loaded)
     {
         obj->initialise = InitialiseRope;
         obj->control = RopeControl;
         obj->collision = RopeCollision;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::polerope()
 {
-    obj = &objects[POLEROPE];
+    obj = &Objects[POLEROPE];
     if (obj->loaded)
     {
         obj->collision = PoleRopeCollision;
-        obj->save_flags = true;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::trigger_triggerer()
 {
-    obj = &objects[TRIGGER_TRIGGERER];
+    obj = &Objects[TRIGGER_TRIGGERER];
     if (obj->loaded)
     {
         obj->initialise = TriggerTriggerer;
         obj->control = TriggerTriggerer;
-        obj->draw_routine = NULL;
-        obj->save_flags = true;
+        obj->drawRoutine = NULL;
+        obj->saveFlags = true;
     }
 }
 
 void SetupTrap::mine()
 {
-    obj = &objects[MINE];
+    obj = &Objects[MINE];
     if (obj->loaded)
     {
         obj->initialise = InitialiseMine;
         obj->control = MineControl;
         obj->collision = MineCollision;
-        obj->save_mesh = true;
-        obj->using_drawanimating_item = true;
+        obj->saveMesh = true;
+        obj->usingDrawAnimatingItem = true;
     }
 }

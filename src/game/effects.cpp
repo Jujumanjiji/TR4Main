@@ -8,10 +8,10 @@ void Splash(ITEM_INFO* item)
     int wh;
     short room_number;
 
-    x = item->pos.x;
-    y = item->pos.y;
-    z = item->pos.z;
-    room_number = item->room_number;
+    x = item->pos.xPos;
+    y = item->pos.yPos;
+    z = item->pos.zPos;
+    room_number = item->roomNumber;
     GetFloor(x, y, z, &room_number);
     if (RWATER(room_number))
     {

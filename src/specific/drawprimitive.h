@@ -26,4 +26,5 @@
 #define DrawShockwaves ((void(__cdecl*)(void)) 0x0048CAA0)
 #define DrawLightning ((void(__cdecl*)(void)) 0x0040E630)
 #define DrawLaserSightSprite ((void(__cdecl*)(void)) 0x00489950)
+#define DrawMotorBikeSpeedoMeter ((void(__cdecl*)(int screenX, int screenY, int motorBikeSpeed, int angleMin, int angleMax, int speedMax)) 0x0048C6C0)
 #endif

@@ -194,12 +194,12 @@ struct OBJECT_VECTOR
 
 struct PHD_3DPOS
 {
-    int x;
-    int y;
-    int z;
-    short x_rot;
-    short y_rot;
-    short z_rot;
+    int xPos;
+    int yPos;
+    int zPos;
+    short xRot;
+    short yRot;
+    short zRot;
 };
 
 struct PHD_VECTOR
@@ -402,59 +402,45 @@ struct ROOM_INFO
 struct ITEM_INFO
 {
     long floor;
-    DWORD touch_bits;
-    DWORD mesh_bits;
-    short object_number;
-    short state_current;
-    short state_next;
-    short state_required;
-    short anim_number;
-    short frame_number;
-    short room_number;
-    short next_item;
-    short next_active;
+    DWORD touchBits;
+    DWORD meshBits;
+    short objectNumber;
+    short currentAnimState;
+    short goalAnimState;
+    short requiredAnimState;
+    short animNumber;
+    short frameNumber;
+    short roomNumber;
+    short nextItem;
+    short nextActive;
     short speed;
     short fallspeed;
-    short hit_points;
-    WORD box_number;
+    short hitPoints;
+    WORD boxNumber;
     short timer;
     short flags;                       // For oneshot and code switches (i.e. NOT flags)
     short shade;
-    short ocb_bits;                      // trigger_bits
-    short carried_item;
-    short after_death;
-    WORD fired_weapon;
-    short reserved_1;
-    short reserved_2;
-    short reserved_3;
-    short reserved_4;
+    short triggerBits;
+    short carriedItem;
+    short afterDeath;
+    WORD firedWeapon;
+    short item_flags[4];
     LPVOID data;
     PHD_3DPOS pos;
     ITEM_LIGHT il;
-    BYTE light_data[5496];
-    /*
-    PCLIGHT lights_1[21];
-    PCLIGHT lights_2[21];
-    DWORD num_lights_1;
-    DWORD num_lights_2;
-    DWORD light_room_num;
-    DWORD unknown;
-    PHD_VECTOR ambient_light_pos;
-    PCLIGHT* ptr_lights_1;
-    PCLIGHT* ptr_lights_2;
-    */
+    BYTE legacyLightData[5496];
     unsigned int active : 1;            // LOBYTE: 0x1
     unsigned int status : 2;            // LOBYTE: 0x4
-    unsigned int gravity_status : 1;    // LOBYTE: 0x8
-    unsigned int hit_status : 1;        // LOBYTE: 0x10
+    unsigned int gravityStatus : 1;     // LOBYTE: 0x8
+    unsigned int hitStatus : 1;         // LOBYTE: 0x10
     unsigned int collidable : 1;        // LOBYTE: 0x20
-    unsigned int looked_at : 1;         // LOBYTE: 0x40
-    unsigned int dynamic_light : 1;     
+    unsigned int lookedAt : 1;         // LOBYTE: 0x40
+    unsigned int dynamicLight : 1;     
     unsigned int poisoned : 1;
-    unsigned int ai_bits : 5;
-    unsigned int really_active : 1;
-    unsigned int in_draw_room : 1;
-    DWORD meshswap_meshbits;
+    unsigned int aiBits : 5;
+    unsigned int reallyActive : 1;
+    unsigned int InDrawRoom : 1;
+    DWORD meshswapMeshbits;
     short drawRoom;
     short TOSSPAD;
 };
@@ -512,48 +498,48 @@ typedef void(*LPDRAWEXTRA)(ITEM_INFO* item);
 
 struct OBJECT_INFO
 {
-    short nmeshes;
-    short mesh_index;
-    int bone_index;
-    short* frame_base;
+    short nMeshes;
+    short meshIndex;
+    int boneIndex;
+    short* frameBase;
     LPINITIALISE initialise;
     LPCONTROL control;
     LPFLOOR floor;
     LPCEILING ceiling;
-    LPDRAW draw_routine;
+    LPDRAW drawRoutine;
     LPCOLLISION collision;
-    short mip_distance;         // if mip distance is set (more than 0) then if lara is far away, the object will be changed to the _MIP obj after the current one (objects.h).
-    short anim_index;
-    short hit_points;
-    short pivot_length;
+    short mipDistance;         // if mip distance is set (more than 0) then if lara is far away, the object will be changed to the _MIP obj after the current one (objects.h).
+    short animIndex;
+    short hitPoints;
+    short pivotLength;
     short radius;
-    short shadow_size;
-    WORD bit_offset;
+    short shadowSize;
+    WORD bitOffset;
     WORD loaded : 1;
     WORD intelligent : 1;
-    WORD non_lot : 1;
-    WORD save_position : 1;
-    WORD save_hitpoints : 1;
-    WORD save_flags : 1;
-    WORD save_anim : 1;
-    WORD semi_transparent : 1;
-    WORD water_creature : 1;
-    WORD using_drawanimating_item : 1;
-    WORD hit_effect : 2;
+    WORD nonLot : 1;
+    WORD savePosition : 1;
+    WORD saveHitpoints : 1;
+    WORD saveFlags : 1;
+    WORD saveAnim : 1;
+    WORD semiTransparent : 1;
+    WORD waterCreature : 1;
+    WORD usingDrawAnimatingItem : 1;
+    WORD hitEffect : 2;
     WORD undead : 1;
-    WORD save_mesh : 1;
+    WORD saveMesh : 1;
     WORD unknown : 2;
-    LPDRAWEXTRA draw_routine_extra;
-    int explodable_meshbits;
+    LPDRAWEXTRA drawRoutineExtra;
+    int explodableMeshBits;
     int pad;
 };
 
 struct RANGE_STRUCT
 {
-    short start_frame;
-    short end_frame;
-    short link_anim_num;
-    short link_frame_num;
+    short startFrame;
+    short endFrame;
+    short linkAnimNum;
+    short linkFrameNum;
 };
 
 struct CHANGE_STRUCT
@@ -565,21 +551,21 @@ struct CHANGE_STRUCT
 
 struct ANIM_STRUCT
 {
-    short* frame_ptr;
+    short* framePtr;
     short interpolation;
-    short state_current;
-    int yspeed;     // velocity
-    int yfallspeed; // acceleration
-    int xspeed;
-    int xfallspeed;
-    short frame_base;
-    short frame_end;
-    short jump_anim_num;
-    short jump_frame_num;
-    short number_changes;
-    short change_index;
-    short number_commands;
-    short command_index;
+    short currentStateAnim;
+    int ySpeed;     // velocity
+    int yFallspeed; // acceleration
+    int xSpeed;
+    int xFallspeed;
+    short frameBase;
+    short frameEnd;
+    short jumpAnimNum;
+    short jumpFrameNum;
+    short numberChanges;
+    short changeIndex;
+    short numberCommands;
+    short commandIndex;
 };
 
 struct STATIC_INFO
@@ -1057,22 +1043,22 @@ struct LOT_INFO
 
 struct CREATURE_INFO
 {
-    short joint_rotation[4];
-    short maximum_turn;
+    short jointRotation[4];
+    short maximumTurn;
     short flags;
     unsigned short alerted : 1;
-    unsigned short head_left : 1;
-    unsigned short head_right : 1;
-    unsigned short reached_goal : 1;
-    unsigned short hurt_by_lara : 1;
+    unsigned short headLeft : 1;
+    unsigned short headRight : 1;
+    unsigned short reachedGoal : 1;
+    unsigned short hurtByLara : 1;
     unsigned short patrol2 : 1;
-    unsigned short jump_ahead : 1;
-    unsigned short monkey_ahead : 1;
+    unsigned short jumpAhead : 1;
+    unsigned short monkeyAhead : 1;
     MOOD_TYPE mood;
     ITEM_INFO *enemy;
-    ITEM_INFO ai_target;
+    ITEM_INFO aiTarget;
     short pad;
-    short item_number;
+    short itemNumber;
     PHD_VECTOR target;
     LOT_INFO LOT;
 };

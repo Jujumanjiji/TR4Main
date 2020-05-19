@@ -21,7 +21,7 @@ void undraw_shotgun_meshes(int weapon_type)
 
 void ready_shotgun(int weapon_type)
 {
-    short *frame = objects[weapon_object(weapon_type)].frame_base;
+    short *frame = Objects[weapon_object(weapon_type)].frameBase;
     lara.gun_status = LHS_READY;
     lara.target = NULL;
 
@@ -48,42 +48,42 @@ void draw_shotgun(int weapon_type)
     if (lara.weapon_item == NO_ITEM)
     {
         lara.weapon_item = CreateItem();
-        item = &items[lara.weapon_item];
-        item->object_number = weapon_object(weapon_type);
-        item->anim_number = (weapon_type == LG_GRENADEGUN) ? (objects[item->object_number].anim_index) : (objects[item->object_number].anim_index + 1);
-        item->frame_number = anims[item->anim_number].frame_base;
-        item->state_current = W_DRAW;
-        item->state_next = W_DRAW;
+        item = &Items[lara.weapon_item];
+        item->objectNumber = weapon_object(weapon_type);
+        item->animNumber = (weapon_type == LG_GRENADEGUN) ? (Objects[item->objectNumber].animIndex) : (Objects[item->objectNumber].animIndex + 1);
+        item->frameNumber = Anims[item->animNumber].frameBase;
+        item->currentAnimState = W_DRAW;
+        item->goalAnimState = W_DRAW;
         item->status = FITEM_ACTIVE;
-        item->room_number = NO_ROOM;
-        lara.l_arm.frame_base = lara.r_arm.frame_base = objects[item->object_number].frame_base;
+        item->roomNumber = NO_ROOM;
+        lara.l_arm.frame_base = lara.r_arm.frame_base = Objects[item->objectNumber].frameBase;
     }
     else
     {
-        item = &items[lara.weapon_item];
+        item = &Items[lara.weapon_item];
     }
 
     AnimateItem(item);
 
-    if (item->state_current == W_AIM || item->state_current == W_UAIM)
+    if (item->currentAnimState == W_AIM || item->currentAnimState == W_UAIM)
         ready_shotgun(weapon_type);
-    else if ((item->frame_number - anims[item->anim_number].frame_base) == weapons[weapon_type].draw_frame)
+    else if ((item->frameNumber - Anims[item->animNumber].frameBase) == weapons[weapon_type].draw_frame)
         draw_shotgun_meshes(weapon_type);
     else if (lara.water_status == LWS_UNDERWATER)
-        item->state_next = W_UAIM;
+        item->goalAnimState = W_UAIM;
 
-    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->anim_number].frame_ptr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
+    lara.l_arm.frame_base = lara.r_arm.frame_base = Anims[item->animNumber].framePtr;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frameNumber - Anims[item->animNumber].frameBase;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->animNumber;
 }
 
 void undraw_shotgun(int weapon_type)
 {
-    ITEM_INFO* item = &items[lara.weapon_item];
+    ITEM_INFO* item = &Items[lara.weapon_item];
     if (lara.water_status == LWS_SURFACE)
-        item->state_next = W_SURF_UNDRAW;
+        item->goalAnimState = W_SURF_UNDRAW;
     else
-        item->state_next = W_UNDRAW;
+        item->goalAnimState = W_UNDRAW;
 
     AnimateItem(item);
 
@@ -98,14 +98,14 @@ void undraw_shotgun(int weapon_type)
         lara.r_arm.frame_number = 0;
         lara.l_arm.frame_number = 0;
     }
-    else if (item->state_current == W_UNDRAW && GetCurrentFrame(item) == 21)
+    else if (item->currentAnimState == W_UNDRAW && GetCurrentFrame(item) == 21)
     {
         undraw_shotgun_meshes(weapon_type);
     }
 
-    lara.l_arm.frame_base   = lara.r_arm.frame_base   = anims[item->anim_number].frame_ptr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
+    lara.l_arm.frame_base   = lara.r_arm.frame_base   = Anims[item->animNumber].framePtr;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frameNumber - Anims[item->animNumber].frameBase;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->animNumber;
 }
 
 void shotgun_handler(int weapon_type)
@@ -173,7 +173,7 @@ void shotgun_handler(int weapon_type)
 
 void animate_shotgun(int weapon_type)
 {
-    ITEM_INFO* item = &items[lara.weapon_item];
+    ITEM_INFO* item = &Items[lara.weapon_item];
     PHD_VECTOR pos;
     static BOOL m16_fired = FALSE, harpoon_reload = FALSE;
     short frame;
@@ -200,32 +200,32 @@ void animate_shotgun(int weapon_type)
         }
 
         GetLaraJointAbsPosition(&pos, JHAND_R);
-        if (lara_item->mesh_bits)
+        if (LaraItem->meshBits)
             TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
     }
 
     frame = GetCurrentFrame(item);
-    switch (item->state_current)
+    switch (item->currentAnimState)
     {
         case W_AIM:
             m16_fired = FALSE;
 
             if (harpoon_reload)
             {
-                item->state_next = W_RELOAD;
+                item->goalAnimState = W_RELOAD;
                 harpoon_reload = FALSE;
             }
             else if (lara.water_status == LWS_UNDERWATER)
-                item->state_next = W_UAIM;
+                item->goalAnimState = W_UAIM;
             else if ((CHK_EXI(TrInput, IN_ACTION) && !lara.target) || lara.l_arm.lock)
-                item->state_next = W_RECOIL;
+                item->goalAnimState = W_RECOIL;
             else
-                item->state_next = W_UNAIM;
+                item->goalAnimState = W_UNAIM;
             break;
         case W_RECOIL:
             if (frame == 0)
             {
-                item->state_next = W_UNAIM;
+                item->goalAnimState = W_UNAIM;
 
                 if (lara.water_status != LWS_UNDERWATER && !harpoon_reload)
                 {
@@ -245,28 +245,28 @@ void animate_shotgun(int weapon_type)
                                 break;
                         }
 
-                        item->state_next = W_RECOIL;
+                        item->goalAnimState = W_RECOIL;
                     }
                     else if (lara.l_arm.lock)
                     {
-                        item->state_next = W_AIM;
+                        item->goalAnimState = W_AIM;
                     }
                 }
 
-                if (item->state_next != W_RECOIL && m16_fired)
+                if (item->goalAnimState != W_RECOIL && m16_fired)
                 {
-                    SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x5000000);
+                    SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x5000000);
                     m16_fired = FALSE;
                 }
             }
             else if (m16_fired)
             {
-                SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x5000000);
-                SoundEffect(SFX_HECKLER_KOCH_FIRE, &lara_item->pos, 0);
+                SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x5000000);
+                SoundEffect(SFX_HECKLER_KOCH_FIRE, &LaraItem->pos, 0);
             }
             else if (weapon_type == LG_SHOTGUN && CHK_NOP(TrInput, IN_ACTION) && !lara.l_arm.lock)
             {
-                item->state_next = W_UNAIM;
+                item->goalAnimState = W_UNAIM;
             }
 
             if (frame == 12 && weapon_type == LG_SHOTGUN)
@@ -281,9 +281,9 @@ void animate_shotgun(int weapon_type)
     }
 
     AnimateItem(item);
-    lara.l_arm.frame_base = lara.r_arm.frame_base = anims[item->anim_number].frame_ptr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->anim_number;
+    lara.l_arm.frame_base = lara.r_arm.frame_base = Anims[item->animNumber].framePtr;
+    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frameNumber - Anims[item->animNumber].frameBase;
+    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->animNumber;
 }
 
 #ifdef DLL_INJECT

@@ -193,7 +193,7 @@ void S_Log(LPCSTR LT_flags, LPCSTR content, bool isEntered, ...)
 
 LPCSTR WriteWorldItemAngle(ITEM_INFO* item)
 {
-    SHORT angle = (USHORT)(item->pos.y_rot + 0x2000) / 0x4000;
+    SHORT angle = (USHORT)(item->pos.yRot + 0x2000) / 0x4000;
     switch (angle)
     {
         case NORTH:
@@ -211,53 +211,53 @@ LPCSTR WriteWorldItemAngle(ITEM_INFO* item)
 
 void SetAnimationForItemAS(ITEM_INFO* item, int animation, int state)
 {
-    item->anim_number = animation;
-    item->frame_number = anims[item->anim_number].frame_base;
-    item->state_current = state;
-    item->state_next = state;
+    item->animNumber = animation;
+    item->frameNumber = Anims[item->animNumber].frameBase;
+    item->currentAnimState = state;
+    item->goalAnimState = state;
 }
 
 void SetAnimationForItemASN(ITEM_INFO* item, int animation, int state, bool needStateNext)
 {
-    item->anim_number = animation;
-    item->frame_number = anims[item->anim_number].frame_base;
-    item->state_current = state;
+    item->animNumber = animation;
+    item->frameNumber = Anims[item->animNumber].frameBase;
+    item->currentAnimState = state;
     if (needStateNext)
-        item->state_next = state;
+        item->goalAnimState = state;
 }
 
 void SetAnimationForItemASF(ITEM_INFO* item, int animation, int state, int frameNow)
 {
-    item->anim_number = animation;
-    item->frame_number = anims[item->anim_number].frame_base + frameNow;
-    item->state_current = state;
-    item->state_next = state;
+    item->animNumber = animation;
+    item->frameNumber = Anims[item->animNumber].frameBase + frameNow;
+    item->currentAnimState = state;
+    item->goalAnimState = state;
 }
 
 void SetAnimationForItemASS(ITEM_INFO* item, int animation, int state_current, int state_next)
 {
-    item->anim_number = animation;
-    item->frame_number = anims[item->anim_number].frame_base;
-    item->state_current = state_current;
-    item->state_next = state_next;
+    item->animNumber = animation;
+    item->frameNumber = Anims[item->animNumber].frameBase;
+    item->currentAnimState = state_current;
+    item->goalAnimState = state_next;
 }
 
 void SetAnimationForItemASSF(ITEM_INFO* item, int animation, int state_current, int state_next, int frameNow)
 {
-    item->anim_number = animation;
-    item->frame_number = anims[item->anim_number].frame_base + frameNow;
-    item->state_current = state_current;
-    item->state_next = state_next;
+    item->animNumber = animation;
+    item->frameNumber = Anims[item->animNumber].frameBase + frameNow;
+    item->currentAnimState = state_current;
+    item->goalAnimState = state_next;
 }
 
 short GetCurrentFrame(ITEM_INFO* item)
 {
-    return (item->frame_number - anims[item->anim_number].frame_base);
+    return (item->frameNumber - Anims[item->animNumber].frameBase);
 }
 
 void TriggerDynamicSwap(int x, int y, int z, int intensity, BYTE red, BYTE green, BYTE blue)
 {
-    if (CHK_ANY(gfLevelFlags, SLEV_MIRROR) && lara_item->room_number == short(gfMirrorRoom))
+    if (CHK_ANY(gfLevelFlags, SLEV_MIRROR) && LaraItem->roomNumber == short(gfMirrorRoom))
         TriggerDynamic_Mirror(x, y, z, intensity, red, green, blue);
     else
         TriggerDynamic(x, y, z, intensity, red, green, blue);
@@ -325,7 +325,7 @@ void SpawnPickup(ITEM_INFO *item)
     pos.z = 0;
 
     // custom item position based on the JointPos else ItemPos
-    switch (item->object_number)
+    switch (item->objectNumber)
     {
         case BADDY_1: 
         case BADDY_2:
@@ -333,33 +333,33 @@ void SpawnPickup(ITEM_INFO *item)
             break;
 
         default:
-            pos.x = item->pos.x;
-            pos.y = item->pos.y;
-            pos.z = item->pos.z;
+            pos.x = item->pos.xPos;
+            pos.y = item->pos.yPos;
+            pos.z = item->pos.zPos;
             break;
     }
 
-    pickup_number = item->carried_item;
+    pickup_number = item->carriedItem;
     do
     {
         if (pickup_number == NO_ITEM)
             break;
 
-        pickup = &items[pickup_number];
-        floor = GetFloor(pos.x, pos.y, pos.z, &item->room_number);
+        pickup = &Items[pickup_number];
+        floor = GetFloor(pos.x, pos.y, pos.z, &item->roomNumber);
 
-        pickup->pos.x = pos.x;
-        pickup->pos.z = pos.z;
-        pickup->pos.y = GetHeight(floor, pickup->pos.x, item->pos.y, pickup->pos.z);
-        pickup->pos.y -= GetBoundsAccurate(pickup)[3]; // maxY
+        pickup->pos.xPos = pos.x;
+        pickup->pos.zPos = pos.z;
+        pickup->pos.yPos = GetHeight(floor, pickup->pos.xPos, item->pos.yPos, pickup->pos.zPos);
+        pickup->pos.yPos -= GetBoundsAccurate(pickup)[3]; // maxY
         
-        if (pickup->object_number == BIGMEDI_ITEM) // bigmedi item is not oriented correctly.
-            pickup->pos.y_rot = item->pos.y_rot + 0x8000;
+        if (pickup->objectNumber == BIGMEDI_ITEM) // bigmedi item is not oriented correctly.
+            pickup->pos.yRot = item->pos.yRot + 0x8000;
         else
-            pickup->pos.y_rot = item->pos.y_rot;
+            pickup->pos.yRot = item->pos.yRot;
 
-        ItemNewRoom(pickup_number, item->room_number);
-        pickup_number = pickup->carried_item;
+        ItemNewRoom(pickup_number, item->roomNumber);
+        pickup_number = pickup->carriedItem;
     }
     while (pickup_number != NO_ITEM);
 }
@@ -480,7 +480,7 @@ PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
 
 void set_gun_smoke_left(int weapon_type)
 {
-    if (lara_item->mesh_bits && SmokeCountL)
+    if (LaraItem->meshBits && SmokeCountL)
     {
         PHD_VECTOR pos;
 
@@ -510,7 +510,7 @@ void set_gun_smoke_left(int weapon_type)
 
 void set_gun_smoke_right(int weapon_type)
 {
-    if (lara_item->mesh_bits && SmokeCountR)
+    if (LaraItem->meshBits && SmokeCountR)
     {
         PHD_VECTOR pos;
 
@@ -555,13 +555,13 @@ ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature
     cinfo = baddie_slots;
     for (i = 0; i < NUM_SLOTS; i++, cinfo++)
     {
-        if (cinfo->item_number != NO_ITEM && cinfo->item_number != itemNumber)
+        if (cinfo->itemNumber != NO_ITEM && cinfo->itemNumber != itemNumber)
         {
-            target = &items[cinfo->item_number];
-            if (target->status == FITEM_ACTIVE && target->object_number == objectToTarget)
+            target = &Items[cinfo->itemNumber];
+            if (target->status == FITEM_ACTIVE && target->objectNumber == objectToTarget)
             {
-                x = target->pos.x - src->pos.x;
-                z = target->pos.z - src->pos.z;
+                x = target->pos.xPos - src->pos.xPos;
+                z = target->pos.zPos - src->pos.zPos;
                 dist = SQUARE(x) + SQUARE(z);
                 if (dist < bestdist)
                 {
@@ -574,7 +574,7 @@ ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature
 
     // target is not found ?
     // so select lara !
-    target = lara_item;
+    target = LaraItem;
     return target;
 }
 
@@ -662,7 +662,7 @@ short initHealth(short objNumber)
 
 void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite)
 {
-    if (item->fired_weapon)
+    if (item->firedWeapon)
     {
         PHD_VECTOR pos;
         pos.x = bite->x;
@@ -684,35 +684,35 @@ ENTITY_JUMP CheckMegaJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
     int cos, sin;
     short roomNumber;
 
-    x = item->pos.x;
-    y = item->pos.y;
-    z = item->pos.z;
-    sin = 942 * SIN(item->pos.y_rot) >> W2V_SHIFT;
-    cos = 942 * COS(item->pos.y_rot) >> W2V_SHIFT;
+    x = item->pos.xPos;
+    y = item->pos.yPos;
+    z = item->pos.zPos;
+    sin = 942 * SIN(item->pos.yRot) >> W2V_SHIFT;
+    cos = 942 * COS(item->pos.yRot) >> W2V_SHIFT;
 
     x += sin;
     z += cos;
 
-    roomNumber = item->room_number;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height1 = GetHeight(floor, x, y, z);
 
     x += sin;
     z += cos;
 
-    roomNumber = item->room_number;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height2 = GetHeight(floor, x, y, z);
 
     x += sin;
     z += cos;
 
-    roomNumber = item->room_number;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height3 = GetHeight(floor, x, y, z);
 
     jump.can_jump_1click = true;
-    if (creature->enemy && item->box_number == creature->enemy->box_number
+    if (creature->enemy && item->boxNumber == creature->enemy->boxNumber
     ||  y >= height1 - STEP_L
     ||  y >= height2 + STEP_L
     ||  y <= height2 - STEP_L)
@@ -722,7 +722,7 @@ ENTITY_JUMP CheckMegaJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
     }
 
     jump.can_jump_2click = true;
-    if (creature->enemy && item->box_number == creature->enemy->box_number
+    if (creature->enemy && item->boxNumber == creature->enemy->boxNumber
     ||  y >= height1 - STEPUP_HEIGHT
     ||  y >= height - STEPUP_HEIGHT
     ||  y >= height3 + STEP_L
@@ -743,22 +743,22 @@ bool CheckRollPossibility(ITEM_INFO* item)
     short roomNumber;
 
     // first height
-    sin = ((942 * SIN(item->pos.y_rot - 8192)) >> W2V_SHIFT);
-    cos = ((942 * COS(item->pos.y_rot - 8192)) >> W2V_SHIFT);
-    x = item->pos.x + sin;
-    y = item->pos.y;
-    z = item->pos.z + cos;
-    roomNumber = item->room_number;
+    sin = ((942 * SIN(item->pos.yRot - 8192)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.yRot - 8192)) >> W2V_SHIFT);
+    x = item->pos.xPos + sin;
+    y = item->pos.yPos;
+    z = item->pos.zPos + cos;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height = GetHeight(floor, x, y, z);
 
     // second height
-    sin = ((942 * SIN(item->pos.y_rot - 14336)) >> W2V_SHIFT);
-    cos = ((942 * COS(item->pos.y_rot - 14336)) >> W2V_SHIFT);
-    x = item->pos.x + sin;
-    y = item->pos.y;
-    z = item->pos.z + cos;
-    roomNumber = item->room_number;
+    sin = ((942 * SIN(item->pos.yRot - 14336)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.yRot - 14336)) >> W2V_SHIFT);
+    x = item->pos.xPos + sin;
+    y = item->pos.yPos;
+    z = item->pos.zPos + cos;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height2 = GetHeight(floor, x, y, z) - y;
 
@@ -777,22 +777,22 @@ bool CheckJumpPossibility(ITEM_INFO* item)
     short roomNumber;
 
     // first height
-    sin = ((942 * SIN(item->pos.y_rot + 8192)) >> W2V_SHIFT);
-    cos = ((942 * COS(item->pos.y_rot + 8192)) >> W2V_SHIFT);
-    x = item->pos.x + sin;
-    y = item->pos.y;
-    z = item->pos.z + cos;
-    roomNumber = item->room_number;
+    sin = ((942 * SIN(item->pos.yRot + 8192)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.yRot + 8192)) >> W2V_SHIFT);
+    x = item->pos.xPos + sin;
+    y = item->pos.yPos;
+    z = item->pos.zPos + cos;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height = GetHeight(floor, x, y, z);
 
     // second height
-    sin = ((942 * SIN(item->pos.y_rot + 14336)) >> W2V_SHIFT);
-    cos = ((942 * COS(item->pos.y_rot + 14336)) >> W2V_SHIFT);
-    x = item->pos.x + sin;
-    y = item->pos.y;
-    z = item->pos.z + cos;
-    roomNumber = item->room_number;
+    sin = ((942 * SIN(item->pos.yRot + 14336)) >> W2V_SHIFT);
+    cos = ((942 * COS(item->pos.yRot + 14336)) >> W2V_SHIFT);
+    x = item->pos.xPos + sin;
+    y = item->pos.yPos;
+    z = item->pos.zPos + cos;
+    roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
     height2 = GetHeight(floor, x, y, z) - y;
 
@@ -808,7 +808,7 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
     OBJECT_FOUND obj;
     int i;
 
-    target = &items[0];
+    target = &Items[0];
     for (i = 0; i < level_items; i++, target++)
     {
         if (target == nullptr)
@@ -816,9 +816,9 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
 
         // check if the targeted item is less distant than lara...
         // now the entity will attack lara than pickup all item in the level. (maybe he will pickup the item if the distance is too long)
-        if (!creature->hurt_by_lara && !src->ocb_bits) // check if the entity as no ocb (stop crash (but the baddy will not pickup a item at 100%))
+        if (!creature->hurtByLara && !src->triggerBits) // check if the entity as no ocb (stop crash (but the baddy will not pickup a item at 100%))
         {
-            if ((target->object_number == primaryID || target->object_number == secondID) && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+            if ((target->objectNumber == primaryID || target->objectNumber == secondID) && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
             {
                 obj.item_number = i;
                 obj.target = target;
@@ -829,7 +829,7 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
 
     // default target
     obj.item_number = NO_ITEM;
-    obj.target = lara_item;
+    obj.target = LaraItem;
     return obj;
 }
 
@@ -838,12 +838,12 @@ OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
     ITEM_INFO* target;
     OBJECT_FOUND entity;
 
-    target = &items[0];
+    target = &Items[0];
     for (int i = 0; i < level_items; i++, target++)
     {
         // check if the entity are in a correct room and not dead already.
         // check if the ocb is not the same as the current src to not get the wrong ocb.
-        if (item->ocb_bits != target->ocb_bits && target->object_number == slotID && target->ocb_bits == ocb && target->room_number != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+        if (item->triggerBits != target->triggerBits && target->objectNumber == slotID && target->triggerBits == ocb && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
         {
             entity.item_number = i;
             entity.target = target;
@@ -858,16 +858,16 @@ OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
 
 bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target)
 {
-    if (src->pos.x != target->pos.x)
-        src->pos.x = target->pos.x;
-    if (src->pos.y != target->pos.y)
-        src->pos.y = target->pos.y;
-    if (src->pos.z != target->pos.z)
-        src->pos.z = target->pos.z;
+    if (src->pos.xPos != target->pos.xPos)
+        src->pos.xPos = target->pos.xPos;
+    if (src->pos.yPos != target->pos.yPos)
+        src->pos.yPos = target->pos.yPos;
+    if (src->pos.zPos != target->pos.zPos)
+        src->pos.zPos = target->pos.zPos;
     
-    if (src->pos.x == target->pos.x
-    &&  src->pos.y == target->pos.y
-    &&  src->pos.z == target->pos.z)
+    if (src->pos.xPos == target->pos.xPos
+    &&  src->pos.yPos == target->pos.yPos
+    &&  src->pos.zPos == target->pos.zPos)
         return true;
     else
         return false;
@@ -875,7 +875,7 @@ bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target)
 
 void ActivateEntity(short itemNumber)
 {
-    ITEM_INFO* item = &items[itemNumber];
+    ITEM_INFO* item = &Items[itemNumber];
 
     if (item->status == FITEM_INVISIBLE)
     {
@@ -903,10 +903,10 @@ bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb)
 
 void Spawner(ITEM_INFO* item)
 {
-    short real_ocb = item->ocb_bits;
+    short real_ocb = item->triggerBits;
 
     // delete the other ocb
-    if (item->ocb_bits & (1 | 2 | 3 | 4))
+    if (item->triggerBits & (1 | 2 | 3 | 4))
         real_ocb &= ~(1 | 2 | 3 | 4);
 
     for (int i = 1000; i < MAX_SPAWNER_ENTITY; i += 1000) // you can have 50 entity max with it !
@@ -919,9 +919,9 @@ void Spawner(ITEM_INFO* item)
 int CalculateLaraDistance(ITEM_INFO* item)
 {
     int x, y, z, distance;
-    x = item->pos.x - lara_item->pos.x;
-    y = item->pos.y - lara_item->pos.y;
-    z = item->pos.z - lara_item->pos.z;
+    x = item->pos.xPos - LaraItem->pos.xPos;
+    y = item->pos.yPos - LaraItem->pos.yPos;
+    z = item->pos.zPos - LaraItem->pos.zPos;
     distance = SQUARE(x) + SQUARE(y) + SQUARE(z);
     return distance;
 }
@@ -929,21 +929,21 @@ int CalculateLaraDistance(ITEM_INFO* item)
 int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
 {
     int x, y, z, distance;
-    x = src->pos.x - target->pos.x;
-    y = src->pos.y - target->pos.y;
-    z = src->pos.z - target->pos.z;
+    x = src->pos.xPos - target->pos.xPos;
+    y = src->pos.yPos - target->pos.yPos;
+    z = src->pos.zPos - target->pos.zPos;
     distance = SQUARE(x) + SQUARE(y) + SQUARE(z);
     return distance;
 }
 
 void classic_meshes(short objNumber, short meshID, short* new_meshes)
 {
-    meshes[objects[objNumber].mesh_index + meshID * 2] = new_meshes;
+    meshes[Objects[objNumber].meshIndex + meshID * 2] = new_meshes;
 }
 
 short* classic_meshes(short objNumber, short meshID)
 {
-    return meshes[objects[objNumber].mesh_index + meshID * 2];
+    return meshes[Objects[objNumber].meshIndex + meshID * 2];
 }
 
 void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
@@ -951,15 +951,15 @@ void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
     FLOOR_INFO* floor;
     short roomNumber;
 
-    roomNumber = item->room_number;
-    floor = GetFloor(item->pos.x, item->pos.y, item->pos.z, &roomNumber);
-    GetHeight(floor, item->pos.x, item->pos.y, item->pos.z);
-    coll->trigger = trigger_index;
+    roomNumber = item->roomNumber;
+    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
+    GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    coll->trigger = TriggerIndex;
 }
 
 short GetCatchAngle(ITEM_INFO * item, short angleToCheck)
 {
-    short angle = item->pos.y_rot;
+    short angle = item->pos.yRot;
     if (angle >= 0 - angleToCheck && angle <= 0 + angleToCheck)
         return 0;
     else if (angle >= 0x4000 - angleToCheck && angle <= 0x4000 + angleToCheck)
@@ -977,7 +977,7 @@ void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
     // orient lara when slidding !
     // more realistic because the foot will touch the floor like this !
     // - maybe using animation instead of that would be great for customization ?
-    S_LogValue("adif: %d, coll->tilt_x: %d, coll->tilt_z: %d, angle: %d, world_angle: %s, item->pos.x_rot: %d, lara.move_angle: %d, item->pos.y_rot: %d", adif, coll->tilt_x, coll->tilt_z, angle, WriteWorldItemAngle(item), item->pos.x_rot, lara.move_angle, item->pos.y_rot);
+    S_LogValue("adif: %d, coll->tilt_x: %d, coll->tilt_z: %d, angle: %d, world_angle: %s, item->pos.x_rot: %d, lara.move_angle: %d, item->pos.y_rot: %d", adif, coll->tilt_x, coll->tilt_z, angle, WriteWorldItemAngle(item), item->pos.xRot, lara.move_angle, item->pos.yRot);
 
     switch (lara.move_angle)
     {
@@ -985,19 +985,19 @@ void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
 
             break;
         case 0x4000:  // EAST
-            switch (item->pos.y_rot)
+            switch (item->pos.yRot)
             {
             case 0x4000:
                 if (coll->tilt_x == -3)
-                    item->pos.x_rot = -SLIDE_SLOPE3;
+                    item->pos.xRot = -SLIDE_SLOPE3;
                 else if (coll->tilt_x == -4)
-                    item->pos.x_rot = -SLIDE_SLOPE4;
+                    item->pos.xRot = -SLIDE_SLOPE4;
                 break;
             case -0x4000:
                 if (coll->tilt_x == -3)
-                    item->pos.x_rot = SLIDE_SLOPE3_INV;
+                    item->pos.xRot = SLIDE_SLOPE3_INV;
                 else if (coll->tilt_x == -4)
-                    item->pos.x_rot = SLIDE_SLOPE4_INV;
+                    item->pos.xRot = SLIDE_SLOPE4_INV;
                 break;
             }
             break;
@@ -1276,6 +1276,11 @@ void ResetLaraMeshSkin(void)
     lara.mesh.larm_l = classic_meshes(mesh_target, LARM_L);
     lara.mesh.hand_l = classic_meshes(mesh_target, HAND_L);
     lara.mesh.head = classic_meshes(mesh_target, HEAD);
+}
+
+CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item)
+{
+    return (CREATURE_INFO*)item->data;
 }
 
 bool DX_TRY(HRESULT errorThrow)

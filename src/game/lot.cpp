@@ -14,7 +14,7 @@ void InitialiseLOT(BOOL allocateBaddie)
     cinfo = baddie_slots;
     for (int i = 0; i < NUM_SLOTS; i++, cinfo++)
     {
-        cinfo->item_number = NO_ITEM;
+        cinfo->itemNumber = NO_ITEM;
         if (allocateBaddie)
             cinfo->LOT.node = (BOX_NODE*)game_malloc(number_boxes * sizeof(BOX_NODE));
     }
@@ -27,14 +27,14 @@ void DisableBaddieAI(short itemNumber)
     ITEM_INFO* item;
     CREATURE_INFO* creature;
 
-    item = &items[itemNumber];
+    item = &Items[itemNumber];
     if (item->data == NULL)
         return;
     creature = (CREATURE_INFO*)item->data;
 
     if (creature)
     {
-        creature->item_number = NO_ITEM;
+        creature->itemNumber = NO_ITEM;
         --baddie_count;
     }
 
@@ -47,7 +47,7 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     CREATURE_INFO* creature;
     int x, y, z, worstdist, worstslot;
 
-    item = &items[itemNumber];
+    item = &Items[itemNumber];
     // Return now if Baddie already got AI
     if (item->data)
         return TRUE;
@@ -57,7 +57,7 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
         creature = baddie_slots;
         for (int slot = 0; slot < NUM_SLOTS; slot++, creature++)
         {
-            if (creature->item_number == NO_ITEM)
+            if (creature->itemNumber == NO_ITEM)
             {
                 InitialiseSlot(itemNumber, slot);
                 return TRUE;
@@ -67,10 +67,10 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
 
     if (!always)
     {
-        item = &items[itemNumber];
-        x = (item->pos.x - camera.pos.x) >> 8;
-        y = (item->pos.y - camera.pos.y) >> 8;
-        z = (item->pos.z - camera.pos.z) >> 8;
+        item = &Items[itemNumber];
+        x = (item->pos.xPos - camera.pos.x) >> 8;
+        y = (item->pos.yPos - camera.pos.y) >> 8;
+        z = (item->pos.zPos - camera.pos.z) >> 8;
         worstdist = SQUARE(x) + SQUARE(y) + SQUARE(z);
     }
     else
@@ -82,10 +82,10 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     creature = baddie_slots;
     for (int slot = 0; slot < NUM_SLOTS; slot++, creature++)
     {
-        item = &items[creature->item_number];
-        x = (item->pos.x - camera.pos.x) >> 8;
-        y = (item->pos.y - camera.pos.y) >> 8;
-        z = (item->pos.z - camera.pos.z) >> 8;
+        item = &Items[creature->itemNumber];
+        x = (item->pos.xPos - camera.pos.x) >> 8;
+        y = (item->pos.yPos - camera.pos.y) >> 8;
+        z = (item->pos.zPos - camera.pos.z) >> 8;
         int dist = SQUARE(x) + SQUARE(y) + SQUARE(z);
         if (dist > worstdist)
         {
@@ -97,8 +97,8 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     // Convert Baddie on worst slot to INVISIBLE and take over slot
     if (worstslot >= 0)
     {
-        short worstnumber = baddie_slots[worstslot].item_number;
-        item = &items[worstnumber];
+        short worstnumber = baddie_slots[worstslot].itemNumber;
+        item = &Items[worstnumber];
         item->status = FITEM_INVISIBLE;
         DisableBaddieAI(worstnumber);
         InitialiseSlot(itemNumber, worstslot);
@@ -114,26 +114,26 @@ void InitialiseSlot(short itemNumber, int slots)
     ITEM_INFO* item;
 
     creature = &baddie_slots[slots];
-    item = &items[itemNumber];
+    item = &Items[itemNumber];
 
     // Default settings for creature
-    creature->item_number = itemNumber;
-    creature->mood = BORED_MOOD;
-    creature->joint_rotation[0] = 0;
-    creature->joint_rotation[1] = 0;
-    creature->joint_rotation[2] = 0;
-    creature->joint_rotation[3] = 0;
-    creature->maximum_turn = ANGLE(1);
+    creature->itemNumber = itemNumber;
+    creature->mood = MOOD_BORED;
+    creature->jointRotation[0] = 0;
+    creature->jointRotation[1] = 0;
+    creature->jointRotation[2] = 0;
+    creature->jointRotation[3] = 0;
+    creature->maximumTurn = ANGLE(1);
     creature->flags = 0;
     creature->enemy = NULL;
     creature->alerted = FALSE;
-    creature->head_left = FALSE;
-    creature->head_right = FALSE;
-    creature->reached_goal = FALSE;
-    creature->hurt_by_lara = FALSE;
+    creature->headLeft = FALSE;
+    creature->headRight = FALSE;
+    creature->reachedGoal = FALSE;
+    creature->hurtByLara = FALSE;
     creature->patrol2 = FALSE;
-    creature->jump_ahead = FALSE;
-    creature->monkey_ahead = FALSE;
+    creature->jumpAhead = FALSE;
+    creature->monkeyAhead = FALSE;
 
     // Default settings for LOT
     creature->LOT.step = STEP_L;
@@ -150,7 +150,7 @@ void InitialiseSlot(short itemNumber, int slots)
     // Assign default setting to item and the future one if creature is modified.
     item->data = creature;
 
-    switch (item->object_number)
+    switch (item->objectNumber)
     {
         case ENEMY_JEEP:
         case VON_CROY:
@@ -233,15 +233,15 @@ void CreateZone(ITEM_INFO* item)
 
     creature = (CREATURE_INFO*)item->data;
     // Basic information about baddie
-    r = &rooms[item->room_number];
-    item->box_number = XZ_GET_SECTOR(r, item->pos.x, item->pos.z).box & BOX_NUMBER;
+    r = &rooms[item->roomNumber];
+    item->boxNumber = XZ_GET_SECTOR(r, item->pos.xPos, item->pos.zPos).box & BOX_NUMBER;
 
     if (creature->LOT.fly == NO_FLY)
     {
         zone = ground_zone[creature->LOT.zone][FALSE];
         flip = ground_zone[creature->LOT.zone][TRUE];
-        zone_number = zone[item->box_number];
-        flip_number = flip[item->box_number];
+        zone_number = zone[item->boxNumber];
+        flip_number = flip[item->boxNumber];
 
         for (i = 0, creature->LOT.zone_count = 0, node = creature->LOT.node; i < number_boxes; i++, zone++, flip++)
         {

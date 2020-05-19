@@ -35,7 +35,7 @@ private:
         void inject_inventory();
         void inject_items();
         void inject_lara();
-        void inject_lara_utils();
+        void inject_larautils();
         void inject_lara1gun();
         void inject_lara2gun();
         void inject_larafire();
@@ -55,6 +55,9 @@ private:
 
         /// vehicles
         void inject_motorbike();
+
+        /// entities
+        void inject_ahmet();
     };
 
     struct f_specific

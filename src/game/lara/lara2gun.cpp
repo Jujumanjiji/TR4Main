@@ -27,7 +27,7 @@ void set_arm_info(LARA_ARM* arm, short frame)
     short anim_base;
 
     p = &pistols_table[lara.gun_type];
-    anim_base = objects[p->object_number].anim_index;
+    anim_base = Objects[p->object_number].animIndex;
 
     if (frame < p->draw1_anim)
         arm->anim_number = anim_base + 0;
@@ -38,7 +38,7 @@ void set_arm_info(LARA_ARM* arm, short frame)
     else
         arm->anim_number = anim_base + 3;
 
-    arm->frame_base = anims[arm->anim_number].frame_ptr;
+    arm->frame_base = Anims[arm->anim_number].framePtr;
     arm->frame_number = frame;
 }
 
@@ -80,7 +80,7 @@ void draw_pistols(int weapon_type)
     else if (ani == table->draw2_anim)
     {
         draw_pistol_meshes(weapon_type);
-        SoundEffect(SFX_LARA_DRAW, &lara_item->pos, 0);
+        SoundEffect(SFX_LARA_DRAW, &LaraItem->pos, 0);
     }
     else if (ani == (table->recoil_anim - 1))
     {
@@ -124,7 +124,7 @@ void undraw_pistols(int weapon_type)
         if ((frameL - 1) == (table->draw2_anim - 1))
         {
             undraw_pistols_left(weapon_type);
-            SoundEffect(SFX_LARA_UNDRAW, &lara_item->pos, 0);
+            SoundEffect(SFX_LARA_UNDRAW, &LaraItem->pos, 0);
         }
     }
     set_arm_info(&lara.l_arm, frameL);
@@ -154,7 +154,7 @@ void undraw_pistols(int weapon_type)
         if ((frameR - 1) == (table->draw2_anim - 1))
         {
             undraw_pistols_right(weapon_type);
-            SoundEffect(SFX_LARA_UNDRAW, &lara_item->pos, 0);
+            SoundEffect(SFX_LARA_UNDRAW, &LaraItem->pos, 0);
         }
     }
     set_arm_info(&lara.r_arm, frameR);
@@ -196,7 +196,7 @@ void ready_pistols(int weapon_type)
     lara.r_arm.x_rot = 0;
     lara.r_arm.lock = FALSE;
 
-    lara.l_arm.frame_base = lara.r_arm.frame_base = objects[weapon_object(weapon_type)].frame_base;
+    lara.l_arm.frame_base = lara.r_arm.frame_base = Objects[weapon_object(weapon_type)].frameBase;
 }
 
 void pistol_handler(int weapon_type)
@@ -285,17 +285,17 @@ void animate_pistols(int weapon_type)
             {
                 if (weapon_type != LG_REVOLVER)
                 {
-                    angles[0] = lara.r_arm.y_rot + lara_item->pos.y_rot;
+                    angles[0] = lara.r_arm.y_rot + LaraItem->pos.yRot;
                     angles[1] = lara.r_arm.x_rot;
 
-                    if (FireWeapon(weapon_type, lara.target, lara_item, angles))
+                    if (FireWeapon(weapon_type, lara.target, LaraItem, angles))
                     {
                         SmokeCountR = 28;
                         SmokeWeapon = weapon_type;
                         TriggerGunShell(TRUE, GUNSHELL, weapon_type);
                         lara.r_arm.flash_gun = winfo->flash_time;
-                        SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x2000000);
-                        SoundEffect(winfo->sample_id, &lara_item->pos, 0);
+                        SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x2000000);
+                        SoundEffect(winfo->sample_id, &LaraItem->pos, 0);
                         has_fired = true;
                         if (weapon_type == LG_UZIS)
                             uzi_right = true;
@@ -307,7 +307,7 @@ void animate_pistols(int weapon_type)
             }
             else if (uzi_right)
             {
-                SoundEffect(winfo->sample_id + 1, &lara_item->pos, 0);
+                SoundEffect(winfo->sample_id + 1, &LaraItem->pos, 0);
                 uzi_right = false;
             }
         }
@@ -315,7 +315,7 @@ void animate_pistols(int weapon_type)
         {
             if (weapon_type == LG_UZIS)
             {
-                SoundEffect(winfo->sample_id, &lara_item->pos, 0);
+                SoundEffect(winfo->sample_id, &LaraItem->pos, 0);
                 uzi_right = true;
             }
 
@@ -333,7 +333,7 @@ void animate_pistols(int weapon_type)
 
         if (uzi_right)
         {
-            SoundEffect(winfo->sample_id + 1, &lara_item->pos, 0);
+            SoundEffect(winfo->sample_id + 1, &LaraItem->pos, 0);
             uzi_right = false;
         }
     }
@@ -351,10 +351,10 @@ void animate_pistols(int weapon_type)
         {
             if (CHK_EXI(TrInput, IN_ACTION))
             {
-                angles[0] = lara.l_arm.y_rot + lara_item->pos.y_rot;
+                angles[0] = lara.l_arm.y_rot + LaraItem->pos.yRot;
                 angles[1] = lara.l_arm.x_rot;
 
-                if (FireWeapon(weapon_type, lara.target, lara_item, angles))
+                if (FireWeapon(weapon_type, lara.target, LaraItem, angles))
                 {
                     SmokeCountL = 28;
                     SmokeWeapon = weapon_type;
@@ -363,8 +363,8 @@ void animate_pistols(int weapon_type)
 
                     if (!has_fired)
                     {
-                        SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x2000000);
-                        SoundEffect(winfo->sample_id, &lara_item->pos, 0);
+                        SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x2000000);
+                        SoundEffect(winfo->sample_id, &LaraItem->pos, 0);
                     }
 
                     if (weapon_type == LG_UZIS)
@@ -376,7 +376,7 @@ void animate_pistols(int weapon_type)
             }
             else if (uzi_left)
             {
-                SoundEffect(winfo->sample_id + 1, &lara_item->pos, 0);
+                SoundEffect(winfo->sample_id + 1, &LaraItem->pos, 0);
                 uzi_left = false;
             }
         }
@@ -384,7 +384,7 @@ void animate_pistols(int weapon_type)
         {
             if (weapon_type == LG_UZIS)
             {
-                SoundEffect(winfo->sample_id, &lara_item->pos, 0);
+                SoundEffect(winfo->sample_id, &LaraItem->pos, 0);
                 uzi_left = true;
             }
 
@@ -402,7 +402,7 @@ void animate_pistols(int weapon_type)
 
         if (uzi_left)
         {
-            SoundEffect(winfo->sample_id + 1, &lara_item->pos, 0);
+            SoundEffect(winfo->sample_id + 1, &LaraItem->pos, 0);
             uzi_left = false;
         }
     }

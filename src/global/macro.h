@@ -89,92 +89,92 @@ else if (A < -B)\
 #define CHECK_REACHED_GOAL(item, enemy, range) abs(enemy->pos.x - item->pos.x) < range && abs(enemy->pos.z - item->pos.z) < range &&  abs(enemy->pos.y - item->pos.y) < range
 
 #define INIT_PICKUP(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->control = PickupControl;\
     obj->initialise = InitialisePickup;\
     obj->collision = PickupCollision;\
-    obj->save_flags = true;\
-    obj->save_position = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveFlags = true;\
+    obj->savePosition = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_KEY_HOLE(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->collision = KeyHoleCollision;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_PUZZLE_HOLE(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->control = PuzzleControl;\
     obj->collision = PuzzleHoleCollision;\
-    obj->save_anim = true;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveAnim = true;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_PUZZLE_DONE(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->control = PuzzleControl;\
     obj->collision = PuzzleDoneCollision;\
-    obj->save_anim = true;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveAnim = true;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_ANIMATING(slotID, haveCollision)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->control = PuzzleControl;\
     if (haveCollision)\
         obj->collision = ObjectCollision;\
-    obj->save_anim = true;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveAnim = true;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_DOOR(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->initialise = InitialiseDoor;\
     obj->control = DoorControl;\
     obj->collision = DoorCollision;\
-    obj->save_anim = true;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveAnim = true;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_SWITCH(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->control = SwitchControl;\
     obj->collision = SwitchCollision;\
-    obj->save_anim = true;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveAnim = true;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define INIT_SMASH_OBJECT(slotID)\
-obj = &objects[slotID];\
+obj = &Objects[slotID];\
 if (obj->loaded)\
 {\
     obj->control = SwitchControl;\
     obj->collision = SwitchCollision;\
-    obj->save_anim = true;\
-    obj->save_flags = true;\
-    obj->hit_effect = HIT_FRAGMENT;\
+    obj->saveAnim = true;\
+    obj->saveFlags = true;\
+    obj->hitEffect = HIT_FRAGMENT;\
 }
 
 #define GET_DD(a) App.DeviceInfo.DDInfo[a]

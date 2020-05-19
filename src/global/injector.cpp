@@ -33,6 +33,7 @@ void injector::inject_3dsystem()
 
 void injector::inject_game()
 {
+    // principal function
     _game.inject_box();
     _game.inject_camera();
     _game.inject_collide();
@@ -57,7 +58,7 @@ void injector::inject_game()
     _game.inject_larafire();
     _game.inject_laraflare();
     _game.inject_laramisc();
-    _game.inject_lara_utils();
+    _game.inject_larautils();
     _game.inject_lot();
     _game.inject_people();
     _game.inject_pickup();
@@ -72,6 +73,9 @@ void injector::inject_game()
 
     // vehicles
     _game.inject_motorbike();
+
+    // entities
+    _game.inject_ahmet();
 }
 
 void injector::inject_specific()

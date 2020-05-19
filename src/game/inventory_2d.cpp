@@ -668,10 +668,10 @@ void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, 
     ITEM_INFO item;
     INVOBJ* obj = &inventry_objects_list[num];
 
-    item.object_number = obj->object_number;
-    item.pos.x_rot = xrot + obj->xrot;
-    item.pos.y_rot = yrot + obj->yrot;
-    item.pos.z_rot = zrot + obj->zrot;
+    item.objectNumber = obj->object_number;
+    item.pos.xRot = xrot + obj->xrot;
+    item.pos.yRot = yrot + obj->yrot;
+    item.pos.zRot = zrot + obj->zrot;
 
     phd_LookAt(NULL, WALL_L, NULL, NULL, NULL, NULL, NULL);
 
@@ -694,13 +694,13 @@ void DrawThreeDeeObject2D(int x, int y, int num, int shade, int xrot, int yrot, 
     inventory_drawX = float(x);
     inventory_drawY = float(y + obj->yoff);
     
-    item.anim_number = objects[item.object_number].anim_index;
-    item.mesh_bits = obj->meshbits;
+    item.animNumber = Objects[item.objectNumber].animIndex;
+    item.meshBits = obj->meshbits;
     item.shade = -1;
-    item.pos.x = 0;
-    item.pos.y = 0;
-    item.pos.z = 0;
-    item.room_number = 0;
+    item.pos.xPos = 0;
+    item.pos.yPos = 0;
+    item.pos.zPos = 0;
+    item.roomNumber = 0;
     item.il.room_ambient.r = 127;
     item.il.room_ambient.g = 127;
     item.il.room_ambient.b = 127;
@@ -722,14 +722,14 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
     int mesh_bits;
 
     phd_PushMatrix();
-    phd_TranslateRel(item->pos.x, item->pos.y, item->pos.z);
-    phd_RotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+    phd_TranslateRel(item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    phd_RotYXZ(item->pos.yRot, item->pos.xRot, item->pos.zRot);
 
-    if (item->object_number >= EXAMINE1 && item->object_number <= EXAMINE3 && examine_mode)
+    if (item->objectNumber >= EXAMINE1 && item->objectNumber <= EXAMINE3 && examine_mode)
     {
         PHD_VECTOR examine_shift;
 
-        switch (item->object_number)
+        switch (item->objectNumber)
         {
             case EXAMINE1:
                 examine_shift.x = 0x1C00;
@@ -746,18 +746,18 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
         }
     }
 
-    obj = &objects[item->object_number];
-    anim = &anims[item->anim_number];
-    mesh = &meshes[obj->mesh_index];
-    bone = (BONE_STRUCT*)&bones[obj->bone_index];
+    obj = &Objects[item->objectNumber];
+    anim = &Anims[item->animNumber];
+    mesh = &meshes[obj->meshIndex];
+    bone = (BONE_STRUCT*)&bones[obj->boneIndex];
     mesh_bits = 1;
 
     if (!shade_flags)
-        phd_TranslateRel((int)*(anim->frame_ptr + 6), (int)*(anim->frame_ptr + 7), (int)*(anim->frame_ptr + 8));
-    rotation = anim->frame_ptr + 9;
+        phd_TranslateRel((int)*(anim->framePtr + 6), (int)*(anim->framePtr + 7), (int)*(anim->framePtr + 8));
+    rotation = anim->framePtr + 9;
     gar_RotYXZsuperpack(&rotation, 0);
 
-    if (item->mesh_bits & 1) // BODY
+    if (item->meshBits & 1) // BODY
     {
         if (overlay)
         {
@@ -776,7 +776,7 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
         }
     }
 
-    for (int i = obj->nmeshes - 1; i > 0; bone++, i--)
+    for (int i = obj->nMeshes - 1; i > 0; bone++, i--)
     {
         mesh += 2;
         mesh_bits *= 2;
@@ -792,14 +792,14 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
 
         /// DELETED COMPASS CHEAT !!!
         /// DONT NEED COMPASS CHEAT AGAIN !
-        if (item->object_number == COMPASS_ITEM)
+        if (item->objectNumber == COMPASS_ITEM)
         {
             short compass_speed = (short)(compass_needle_angle * 4 * rcossin_tbl[(item_rotation & 63) << 10 >> 3] >> W2V_SHIFT);
-            short compass_angle = (lara_item->pos.y_rot + compass_speed) - 0x8000;
+            short compass_angle = (LaraItem->pos.yRot + compass_speed) - 0x8000;
             phd_RotY(compass_angle);
         }
 
-        if (mesh_bits & item->mesh_bits)
+        if (mesh_bits & item->meshBits)
         {
             if (overlay)
             {
@@ -2389,7 +2389,7 @@ void use_current_item(void)
     int rangeBackup = BinocularRange;
     BinocularRange = 0;
     old_lara_busy = false;
-    lara_item->mesh_bits = -1;
+    LaraItem->meshBits = -1;
 
     short inv_item = ring_2d[RING_INVENTORY]->current_obj_list[ring_2d[RING_INVENTORY]->cur_obj_in_list].inv_item;
     short object_number = inventry_objects_list[inv_item].object_number;
@@ -2437,12 +2437,12 @@ void use_current_item(void)
     {
         if (lara.gun_status == LHS_ARMLESS)
         {
-            if (lara_item->state_current != STATE_LARA_CRAWL_IDLE
-            &&  lara_item->state_current != STATE_LARA_CRAWL_FORWARD
-            &&  lara_item->state_current != STATE_LARA_CRAWL_TURN_LEFT
-            &&  lara_item->state_current != STATE_LARA_CRAWL_TURN_RIGHT
-            &&  lara_item->state_current != STATE_LARA_CRAWL_BACK
-            &&  lara_item->state_current != STATE_LARA_CRAWL_TO_CLIMB)
+            if (LaraItem->currentAnimState != STATE_LARA_CRAWL_IDLE
+            &&  LaraItem->currentAnimState != STATE_LARA_CRAWL_FORWARD
+            &&  LaraItem->currentAnimState != STATE_LARA_CRAWL_TURN_LEFT
+            &&  LaraItem->currentAnimState != STATE_LARA_CRAWL_TURN_RIGHT
+            &&  LaraItem->currentAnimState != STATE_LARA_CRAWL_BACK
+            &&  LaraItem->currentAnimState != STATE_LARA_CRAWL_TO_CLIMB)
             {
                 if (lara.gun_type != LG_FLARE)
                 {
@@ -2463,15 +2463,15 @@ void use_current_item(void)
     /// MEDIKIT
     if (object_number == BIGMEDI_ITEM)
     {
-        if ((lara_item->hit_points > 0 && lara_item->hit_points < LARA_HITPOINTS) || lara.poisoned)
+        if ((LaraItem->hitPoints > 0 && LaraItem->hitPoints < LARA_HITPOINTS) || lara.poisoned)
         {
             if (lara.large_medipack_count != INFINITE_AMMO)
                 lara.large_medipack_count--;
 
             lara.poisoned_2 = 0;
-            lara_item->hit_points += LARA_HITPOINTS;
-            if (lara_item->hit_points > LARA_HITPOINTS)
-                lara_item->hit_points = LARA_HITPOINTS;
+            LaraItem->hitPoints += LARA_HITPOINTS;
+            if (LaraItem->hitPoints > LARA_HITPOINTS)
+                LaraItem->hitPoints = LARA_HITPOINTS;
             SoundEffect(SFX_MENU_MEDI, nullptr, SFX_ALWAYS);
             savegame_level.health_used++;
         }
@@ -2483,15 +2483,15 @@ void use_current_item(void)
 
     if (object_number == SMALLMEDI_ITEM)
     {
-        if ((lara_item->hit_points > 0 && lara_item->hit_points < LARA_HITPOINTS) || lara.poisoned)
+        if ((LaraItem->hitPoints > 0 && LaraItem->hitPoints < LARA_HITPOINTS) || lara.poisoned)
         {
             if (lara.small_medipack_count != INFINITE_AMMO)
                 lara.small_medipack_count--;
 
             lara.poisoned_2 = 0;
-            lara_item->hit_points += LARA_HITPOINTS / 2;
-            if (lara_item->hit_points > LARA_HITPOINTS)
-                lara_item->hit_points = LARA_HITPOINTS;
+            LaraItem->hitPoints += LARA_HITPOINTS / 2;
+            if (LaraItem->hitPoints > LARA_HITPOINTS)
+                LaraItem->hitPoints = LARA_HITPOINTS;
             SoundEffect(SFX_MENU_MEDI, nullptr, SFX_ALWAYS);
             savegame_level.health_used++;
         }
@@ -2509,7 +2509,7 @@ void use_current_item(void)
     /// BINOCULARS
     if (object_number == BINOCULARS_ITEM)
     {
-        if ((lara_item->state_current == STATE_LARA_IDLE && lara_item->anim_number == ANIMATION_LARA_STAY_IDLE) || (lara.is_ducked && CHK_NOP(TrInput, IN_DUCK)))
+        if ((LaraItem->currentAnimState == STATE_LARA_IDLE && LaraItem->animNumber == ANIMATION_LARA_STAY_IDLE) || (lara.is_ducked && CHK_NOP(TrInput, IN_DUCK)))
         {
             old_lara_busy = true;
             BinocularRange = 128;

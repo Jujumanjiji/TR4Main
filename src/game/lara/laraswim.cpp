@@ -7,9 +7,9 @@
 
 void lara_as_tread(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (item->hit_points <= 0)
+    if (item->hitPoints <= 0)
     {
-        item->state_next = STATE_LARA_WATER_DEATH;
+        item->goalAnimState = STATE_LARA_WATER_DEATH;
         return;
     }
 
@@ -25,7 +25,7 @@ void lara_as_tread(ITEM_INFO* item, COLL_INFO* coll)
     SwimTurn(item);
 
     if (CHK_EXI(TrInput, IN_JUMP))
-        item->state_next = STATE_LARA_UNDERWATER_FORWARD;
+        item->goalAnimState = STATE_LARA_UNDERWATER_FORWARD;
 
     LaraClampN(item->fallspeed, WATER_FRICTION, 0);
 
@@ -35,9 +35,9 @@ void lara_as_tread(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_as_swim(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (item->hit_points <= 0)
+    if (item->hitPoints <= 0)
     {
-        item->state_next = STATE_LARA_WATER_DEATH;
+        item->goalAnimState = STATE_LARA_WATER_DEATH;
         return;
     }
 
@@ -51,14 +51,14 @@ void lara_as_swim(ITEM_INFO* item, COLL_INFO* coll)
     LaraClampP(item->fallspeed, UW_FRICTION, UW_MAXSPEED);
 
     if (CHK_NOP(TrInput, IN_JUMP))
-        item->state_next = STATE_LARA_UNDERWATER_INERTIA;
+        item->goalAnimState = STATE_LARA_UNDERWATER_INERTIA;
 }
 
 void lara_as_glide(ITEM_INFO* item, COLL_INFO* coll)
 {
-    if (item->hit_points <= 0)
+    if (item->hitPoints <= 0)
     {
-        item->state_next = STATE_LARA_WATER_DEATH;
+        item->goalAnimState = STATE_LARA_WATER_DEATH;
         return;
     }
 
@@ -69,19 +69,19 @@ void lara_as_glide(ITEM_INFO* item, COLL_INFO* coll)
     }
 
     if (CHK_EXI(TrInput, IN_JUMP))
-        item->state_next = STATE_LARA_UNDERWATER_FORWARD;
+        item->goalAnimState = STATE_LARA_UNDERWATER_FORWARD;
 
     SwimTurn(item);
     LaraClampN(item->fallspeed, WATER_FRICTION, 0);
 
     if (item->fallspeed <= ((UW_MAXSPEED * 2) / 3))
-        item->state_next = STATE_LARA_UNDERWATER_STOP;
+        item->goalAnimState = STATE_LARA_UNDERWATER_STOP;
 }
 
 void lara_as_dive(ITEM_INFO* item, COLL_INFO* coll)
 {
     if (CHK_EXI(TrInput, IN_FORWARD))
-        item->pos.x_rot -= ONE_DEGREE;
+        item->pos.xRot -= ONE_DEGREE;
 }
 
 void lara_as_uwdeath(ITEM_INFO* item, COLL_INFO* coll)
@@ -92,12 +92,12 @@ void lara_as_uwdeath(ITEM_INFO* item, COLL_INFO* coll)
     if (item->fallspeed <= 0)
         item->fallspeed = 0;
 
-    if (item->pos.x_rot >= -ANGLE(2) && item->pos.x_rot <= ANGLE(2))
-        item->pos.x_rot = 0;
-    else if (item->pos.x_rot < 0)
-        item->pos.x_rot += ANGLE(2);
+    if (item->pos.xRot >= -ANGLE(2) && item->pos.xRot <= ANGLE(2))
+        item->pos.xRot = 0;
+    else if (item->pos.xRot < 0)
+        item->pos.xRot += ANGLE(2);
     else
-        item->pos.x_rot -= ANGLE(2);
+        item->pos.xRot -= ANGLE(2);
 }
 
 void lara_as_waterroll(ITEM_INFO* item, COLL_INFO* coll)

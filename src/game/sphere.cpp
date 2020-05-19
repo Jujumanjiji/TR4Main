@@ -70,9 +70,9 @@ void GetLaraJointAbsPosition(PHD_VECTOR* pos, int joint)
     pos->x = mptr->m03 >> W2V_SHIFT;
     pos->y = mptr->m13 >> W2V_SHIFT;
     pos->z = mptr->m23 >> W2V_SHIFT;
-    pos->x += lara_item->pos.x;
-    pos->y += lara_item->pos.y;
-    pos->z += lara_item->pos.z;
+    pos->x += LaraItem->pos.xPos;
+    pos->y += LaraItem->pos.yPos;
+    pos->z += LaraItem->pos.zPos;
     phd_PopMatrix();
 }
 

@@ -46,12 +46,12 @@ void phd_LookAt(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, shor
     int dx, dy, dz;
 
     phd_GetVectorAngles(xtar - xsrc, ytar - ysrc, ztar - zsrc, angles);
-    viewpos.x = xsrc;
-    viewpos.y = ysrc;
-    viewpos.z = zsrc;
-    viewpos.x_rot = angles[1];
-    viewpos.y_rot = angles[0];
-    viewpos.z_rot = roll;
+    viewpos.xPos = xsrc;
+    viewpos.yPos = ysrc;
+    viewpos.zPos = zsrc;
+    viewpos.xRot = angles[1];
+    viewpos.yRot = angles[0];
+    viewpos.zRot = roll;
 
     dx = SQUARE(xsrc - xtar);
     dy = ysrc - ytar;

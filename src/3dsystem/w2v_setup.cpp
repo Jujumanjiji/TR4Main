@@ -13,12 +13,12 @@ void W2V_MATRIX::SetupMatrix_Ptr()
 void W2V_MATRIX::SetupMatrix_CosAndSin(PHD_3DPOS* viewpos)
 {
     this->viewpos = viewpos;
-    sin.x = SIN(viewpos->x_rot);
-    cos.x = COS(viewpos->x_rot);
-    sin.y = SIN(viewpos->y_rot);
-    cos.y = COS(viewpos->y_rot);
-    sin.z = SIN(viewpos->z_rot);
-    cos.z = COS(viewpos->z_rot);
+    sin.x = SIN(viewpos->xRot);
+    cos.x = COS(viewpos->xRot);
+    sin.y = SIN(viewpos->yRot);
+    cos.y = COS(viewpos->yRot);
+    sin.z = SIN(viewpos->zRot);
+    cos.z = COS(viewpos->zRot);
 }
 
 void W2V_MATRIX::Matrix00()
@@ -44,7 +44,7 @@ void W2V_MATRIX::Matrix02()
 
 void W2V_MATRIX::Matrix03()
 {
-    auto value = viewpos->x;
+    auto value = viewpos->xPos;
     mptr->m03 = value;
     nptr->m03 = value;
 }
@@ -72,7 +72,7 @@ void W2V_MATRIX::Matrix12()
 
 void W2V_MATRIX::Matrix13()
 {
-    auto value = viewpos->y;
+    auto value = viewpos->yPos;
     mptr->m13 = value;
     nptr->m13 = value;
 }
@@ -100,7 +100,7 @@ void W2V_MATRIX::Matrix22()
 
 void W2V_MATRIX::Matrix23()
 {
-    auto value = viewpos->z;
+    auto value = viewpos->zPos;
     mptr->m23 = value;
     nptr->m23 = value;
 }

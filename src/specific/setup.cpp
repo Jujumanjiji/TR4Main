@@ -18,27 +18,27 @@ void InitialiseObjects(void)
 
     for (int i = 0; i < NUMBER_OBJECTS; i++)
     {
-        obj = &objects[i];
+        obj = &Objects[i];
         obj->initialise = NULL;
         obj->collision = NULL;
         obj->control = NULL;
         obj->floor = NULL;
         obj->ceiling = NULL;
-        obj->draw_routine = DrawAnimatingItem;
-        obj->draw_routine_extra = NULL;
-        obj->hit_points = DONT_TARGET;
-        obj->pivot_length = 0;
+        obj->drawRoutine = DrawAnimatingItem;
+        obj->drawRoutineExtra = NULL;
+        obj->hitPoints = DONT_TARGET;
+        obj->pivotLength = 0;
         obj->radius = 10; // default value
-        obj->shadow_size = 0;
+        obj->shadowSize = 0;
         obj->intelligent = FALSE;
-        obj->water_creature = FALSE;
-        obj->save_position = FALSE;
-        obj->save_anim = FALSE;
-        obj->save_flags = FALSE;
-        obj->save_mesh = FALSE;
-        obj->save_hitpoints = FALSE;
-        obj->using_drawanimating_item = TRUE;
-        obj->frame_base += *frames;
+        obj->waterCreature = FALSE;
+        obj->savePosition = FALSE;
+        obj->saveAnim = FALSE;
+        obj->saveFlags = FALSE;
+        obj->saveMesh = FALSE;
+        obj->saveHitpoints = FALSE;
+        obj->usingDrawAnimatingItem = TRUE;
+        obj->frameBase += *frames;
     }
 
     BaddyObjects();
@@ -226,26 +226,26 @@ void GetCarriedItems(void)
     // get all carried items by default in the same sector (512 XZmax)
     for (i = 0; i < level_items; i++)
     {
-        item = &items[i];
-        if (objects[item->object_number].intelligent)
+        item = &Items[i];
+        if (Objects[item->objectNumber].intelligent)
         {
-            item->carried_item = NO_ITEM;
-            pickup_number = rooms[item->room_number].item_number;
+            item->carriedItem = NO_ITEM;
+            pickup_number = rooms[item->roomNumber].item_number;
             do
             {
-                pickup = &items[pickup_number];
-                if (abs(pickup->pos.x - item->pos.x) < 512 &&
-                    abs(pickup->pos.y - item->pos.y) < 256 &&
-                    abs(pickup->pos.z - item->pos.z) < 512 &&
-                    objects[pickup->object_number].collision == PickupCollision)
+                pickup = &Items[pickup_number];
+                if (abs(pickup->pos.xPos - item->pos.xPos) < 512 &&
+                    abs(pickup->pos.yPos - item->pos.yPos) < 256 &&
+                    abs(pickup->pos.zPos - item->pos.zPos) < 512 &&
+                    Objects[pickup->objectNumber].collision == PickupCollision)
                 {
-                    pickup->carried_item = item->carried_item; // linked list for multiple pickup
-                    item->carried_item = pickup_number;
+                    pickup->carriedItem = item->carriedItem; // linked list for multiple pickup
+                    item->carriedItem = pickup_number;
                     RemoveDrawnItem(pickup_number);
-                    pickup->room_number = NO_ROOM;
+                    pickup->roomNumber = NO_ROOM;
                 }
 
-                pickup_number = pickup->next_item;
+                pickup_number = pickup->nextItem;
             } while (pickup_number != NO_ITEM);
         }
     }
@@ -259,20 +259,20 @@ void GetAIPickups(void)
 
     for (i = 0; i < level_items; i++)
     {
-        item = &items[i];
-        if (objects[item->object_number].intelligent)
+        item = &Items[i];
+        if (Objects[item->objectNumber].intelligent)
         {
-            item->ai_bits = NULL;
+            item->aiBits = NULL;
             for (num = 0; num < nAIObjects; num++)
             {
                 obj = &AIObjects[num];
-                if (abs(obj->x - item->pos.x) < 512 &&
-                    abs(obj->z - item->pos.z) < 512 &&
-                    obj->room_number == item->room_number &&
+                if (abs(obj->x - item->pos.xPos) < 512 &&
+                    abs(obj->z - item->pos.zPos) < 512 &&
+                    obj->room_number == item->roomNumber &&
                     obj->object_number <= AI_X2)
                 {
-                    item->ai_bits = (((1 << obj->object_number) + 114) & 0x1F) << 9;
-                    item->reserved_4 = obj->trigger_flags;
+                    item->aiBits = (((1 << obj->object_number) + 114) & 0x1F) << 9;
+                    item->item_flags[3] = obj->trigger_flags;
                     if (obj->object_number != AI_GUARD)
                         obj->room_number = NO_ROOM;
                 }

@@ -58,6 +58,7 @@ extern short GetCatchAngle(ITEM_INFO* item, short angleToCheck); // for lara gra
 extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle);
 extern LPCSTR InventoryItemDebugString(short inv_item);
 extern void ResetLaraMeshSkin(void);
+extern CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item);
 
 extern bool DX_TRY(HRESULT errorThrow);
 

@@ -248,7 +248,7 @@ void fire_shotgun(void)
     short angles[2];
     bool fired = false;
 
-    dangles[0] = lara.l_arm.y_rot + lara_item->pos.y_rot;
+    dangles[0] = lara.l_arm.y_rot + LaraItem->pos.yRot;
     dangles[1] = lara.l_arm.x_rot;
     if (!lara.l_arm.lock)
     {
@@ -263,7 +263,7 @@ void fire_shotgun(void)
         angles[0] = dangles[0] + r;
         r = (int)((GetRandomControl() - 0x4000) * random / 0x10000);
         angles[1] = dangles[1] + r;
-        if (FireWeapon(LG_SHOTGUN, lara.target, lara_item, angles))
+        if (FireWeapon(LG_SHOTGUN, lara.target, LaraItem, angles))
             fired = true;
     }
 
@@ -284,7 +284,7 @@ void fire_shotgun(void)
         SmokeCountL = 32;
         SmokeWeapon = LG_SHOTGUN;
 
-        if (lara_item->mesh_bits)
+        if (LaraItem->meshBits)
         {
             for (int i = 0; i < SHOTGUN_SMOKE_MAX; i++)
                 TriggerGunSmoke(x, y, z, pos.x - x, pos.y - y, pos.z - z, 1, SmokeWeapon, SmokeCountL);
@@ -294,8 +294,8 @@ void fire_shotgun(void)
         }
 
         lara.r_arm.flash_gun = weapons[LG_SHOTGUN].flash_time;
-        SoundEffect(SFX_EXPLOSION1, &lara_item->pos, PITCH_SHIFT | 0x1400000);
-        SoundEffect(weapons[LG_SHOTGUN].sample_id, &lara_item->pos, 0);
+        SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x1400000);
+        SoundEffect(weapons[LG_SHOTGUN].sample_id, &LaraItem->pos, 0);
         savegame_level.ammo_used++;
     }
 }
@@ -315,10 +315,10 @@ void fire_grenade(void)
         lara.has_fired = TRUE;
         if (item_number != NO_ITEM)
         {
-            item = &items[item_number];
+            item = &Items[item_number];
             item->shade = -15856;
-            item->object_number = GRENADE;
-            item->room_number = lara_item->room_number;
+            item->objectNumber = GRENADE;
+            item->roomNumber = LaraItem->roomNumber;
 
             pos.x = 0;
             pos.y = 276;
@@ -327,20 +327,20 @@ void fire_grenade(void)
             x = pos.x;
             y = pos.y;
             z = pos.z;
-            floor = GetFloor(pos.x, pos.y, pos.z, &item->room_number);
+            floor = GetFloor(pos.x, pos.y, pos.z, &item->roomNumber);
             height = GetHeight(floor, pos.x, pos.y, pos.z);
             if (height < pos.y)
             {
-                item->pos.x = lara_item->pos.x;
-                item->pos.y = pos.y;
-                item->pos.z = lara_item->pos.z;
-                item->room_number = lara_item->room_number;
+                item->pos.xPos = LaraItem->pos.xPos;
+                item->pos.yPos = pos.y;
+                item->pos.zPos = LaraItem->pos.zPos;
+                item->roomNumber = LaraItem->roomNumber;
             }
             else
             {
-                item->pos.x = pos.x;
-                item->pos.y = pos.y;
-                item->pos.z = pos.z;
+                item->pos.xPos = pos.x;
+                item->pos.yPos = pos.y;
+                item->pos.zPos = pos.z;
             }
 
             pos.x = 0;
@@ -351,40 +351,40 @@ void fire_grenade(void)
             SmokeCountL = 32;
             SmokeWeapon = LG_GRENADEGUN;
 
-            if (lara_item->mesh_bits)
+            if (LaraItem->meshBits)
             {
                 for (int i = 0; i < GRENADEGUN_SMOKE_MAX; i++)
                     TriggerGunSmoke(x, y, z, pos.x - x, pos.y - y, pos.z - z, 1, SmokeWeapon, SmokeCountL);
             }
 
             InitialiseItem(item_number);
-            item->pos.x_rot = lara_item->pos.x_rot + lara.l_arm.x_rot;
-            item->pos.y_rot = lara_item->pos.y_rot + lara.l_arm.y_rot;
-            item->pos.z_rot = 0;
+            item->pos.xRot = LaraItem->pos.xRot + lara.l_arm.x_rot;
+            item->pos.yRot = LaraItem->pos.yRot + lara.l_arm.y_rot;
+            item->pos.zRot = 0;
 
             if (!lara.l_arm.lock)
             {
-                item->pos.x_rot += lara.torso_x_rot;
-                item->pos.y_rot += lara.torso_y_rot;
+                item->pos.xRot += lara.torso_x_rot;
+                item->pos.yRot += lara.torso_y_rot;
             }
 
             item->speed          = 128;
-            item->fallspeed      = -item->speed * SIN(item->pos.x_rot) >> W2V_SHIFT;
-            item->state_current  = item->pos.x_rot;    // x rotation
-            item->state_next     = item->pos.y_rot;    // y rotation
-            item->state_required = FALSE;              // rolling on floor ?
-            item->hit_points     = GRENADE_TIMER;
+            item->fallspeed      = -item->speed * SIN(item->pos.xRot) >> W2V_SHIFT;
+            item->currentAnimState  = item->pos.xRot;    // x rotation
+            item->goalAnimState     = item->pos.yRot;    // y rotation
+            item->requiredAnimState = FALSE;              // rolling on floor ?
+            item->hitPoints     = GRENADE_TIMER;
             AddActiveItem(item_number);
 
             if (ammo != INFINITE_AMMO)
                 weapon_ammo.decrease(LG_GRENADEGUN, 1);
 
             if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO1))
-                item->reserved_1 = 1; // normal
+                item->item_flags[0] = 1; // normal
             else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO2))
-                item->reserved_1 = 2; // super
+                item->item_flags[0] = 2; // super
             else if (CHK_EXI(lara.grenadegun_type_carried, CR_AMMO3))
-                item->reserved_1 = 3; // flash
+                item->item_flags[0] = 3; // flash
             savegame_level.ammo_used++;
         }
     }
@@ -404,20 +404,20 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
         lara.has_fired = TRUE;
         if (item_number != NO_ITEM)
         {
-            item = &items[item_number];
-            item->object_number = CROSSBOW_BOLT;
+            item = &Items[item_number];
+            item->objectNumber = CROSSBOW_BOLT;
             item->shade = -15856;
 
             if (haveDefinedPos)
             {
-                item->pos.x = haveDefinedPos->x;
-                item->pos.y = haveDefinedPos->y;
-                item->pos.z = haveDefinedPos->z;
-                item->room_number = lara_item->room_number;
+                item->pos.xPos = haveDefinedPos->xPos;
+                item->pos.yPos = haveDefinedPos->yPos;
+                item->pos.zPos = haveDefinedPos->zPos;
+                item->roomNumber = LaraItem->roomNumber;
                 InitialiseItem(item_number);
-                item->pos.x_rot = haveDefinedPos->x_rot;
-                item->pos.y_rot = haveDefinedPos->y_rot;
-                item->pos.z_rot = haveDefinedPos->z_rot;
+                item->pos.xRot = haveDefinedPos->xRot;
+                item->pos.yRot = haveDefinedPos->yRot;
+                item->pos.zRot = haveDefinedPos->zRot;
             }
             else
             {
@@ -425,33 +425,33 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                 pos.y = 228;
                 pos.z = 32;
                 GetLaraJointAbsPosition(&pos, JHAND_R);
-                item->room_number = lara_item->room_number;
-                floor = GetFloor(pos.x, pos.y, pos.z, &item->room_number);
+                item->roomNumber = LaraItem->roomNumber;
+                floor = GetFloor(pos.x, pos.y, pos.z, &item->roomNumber);
                 height = GetHeight(floor, pos.x, pos.y, pos.z);
 
                 if (height < pos.y)
                 {
-                    item->pos.x = lara_item->pos.x;
-                    item->pos.y = pos.y;
-                    item->pos.z = lara_item->pos.z;
-                    item->room_number = lara_item->room_number;
+                    item->pos.xPos = LaraItem->pos.xPos;
+                    item->pos.yPos = pos.y;
+                    item->pos.zPos = LaraItem->pos.zPos;
+                    item->roomNumber = LaraItem->roomNumber;
                 }
                 else
                 {
-                    item->pos.x = pos.x;
-                    item->pos.y = pos.y;
-                    item->pos.z = pos.z;
+                    item->pos.xPos = pos.x;
+                    item->pos.yPos = pos.y;
+                    item->pos.zPos = pos.z;
                 }
 
                 InitialiseItem(item_number);
-                item->pos.x_rot = lara_item->pos.x_rot + lara.l_arm.x_rot;
-                item->pos.y_rot = lara_item->pos.y_rot + lara.l_arm.y_rot;
-                item->pos.z_rot = 0;
+                item->pos.xRot = LaraItem->pos.xRot + lara.l_arm.x_rot;
+                item->pos.yRot = LaraItem->pos.yRot + lara.l_arm.y_rot;
+                item->pos.zRot = 0;
 
                 if (!lara.l_arm.lock)
                 {
-                    item->pos.x_rot += lara.torso_x_rot;
-                    item->pos.y_rot += lara.torso_y_rot;
+                    item->pos.xRot += lara.torso_x_rot;
+                    item->pos.yRot += lara.torso_y_rot;
                 }
             }
 
@@ -462,12 +462,12 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                 weapon_ammo.decrease(LG_CROSSBOW, 1);
 
             if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO1))
-                item->reserved_1 = 1; // normal
+                item->item_flags[0] = 1; // normal
             else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO2))
-                item->reserved_1 = 2; // poison
+                item->item_flags[0] = 2; // poison
             else if (CHK_EXI(lara.crossbow_type_carried, CR_AMMO3))
-                item->reserved_1 = 3; // explosive
-            SoundEffect(SFX_LARA_CROSSBOW, &lara_item->pos, 0);
+                item->item_flags[0] = 3; // explosive
+            SoundEffect(SFX_LARA_CROSSBOW, &LaraItem->pos, 0);
             savegame_level.ammo_used++;
         }
     }
@@ -478,12 +478,12 @@ void FireCrossbowBoltFromLaserSight(GAME_VECTOR* dest, GAME_VECTOR* src)
     PHD_3DPOS pos;
     short angles[2];
     phd_GetVectorAngles(src->x - dest->x, src->y - dest->y, src->z - dest->z, angles);
-    pos.x = dest->x;
-    pos.y = dest->y;
-    pos.z = dest->z;
-    pos.x_rot = angles[1];
-    pos.y_rot = angles[0];
-    pos.z_rot = 0;
+    pos.xPos = dest->x;
+    pos.yPos = dest->y;
+    pos.zPos = dest->z;
+    pos.xRot = angles[1];
+    pos.yRot = angles[0];
+    pos.zRot = 0;
     fire_crossbow(&pos);
 }
 
@@ -509,25 +509,25 @@ void InitialiseNewWeapons(void)
     {
         case LG_PISTOLS:
         case LG_UZIS:
-            lara.r_arm.frame_base = objects[PISTOLS_ANIM].frame_base;
-            lara.l_arm.frame_base = objects[PISTOLS_ANIM].frame_base;
+            lara.r_arm.frame_base = Objects[PISTOLS_ANIM].frameBase;
+            lara.l_arm.frame_base = Objects[PISTOLS_ANIM].frameBase;
             if (lara.gun_status != LHS_ARMLESS)
                 draw_pistol_meshes(lara.gun_type);
             break;
         case LG_REVOLVER:
         case LG_SHOTGUN:
         case LG_GRENADEGUN:
-            lara.l_arm.frame_base = lara.r_arm.frame_base = objects[weapon_object(lara.gun_type)].frame_base;
+            lara.l_arm.frame_base = lara.r_arm.frame_base = Objects[weapon_object(lara.gun_type)].frameBase;
             if (lara.gun_status != LHS_ARMLESS)
                 draw_shotgun_meshes(lara.gun_type);
             break;
         case LG_FLARE:
-            lara.l_arm.frame_base = lara.r_arm.frame_base = objects[FLARE_ANIM].frame_base;
+            lara.l_arm.frame_base = lara.r_arm.frame_base = Objects[FLARE_ANIM].frameBase;
             if (lara.gun_status != LHS_ARMLESS)
                 draw_flare_meshes();
             break;
         default:
-            lara.l_arm.frame_base = lara.r_arm.frame_base = anims[lara_item->anim_number].frame_ptr;
+            lara.l_arm.frame_base = lara.r_arm.frame_base = Anims[LaraItem->animNumber].framePtr;
             break;
     }
 }
@@ -595,12 +595,12 @@ void LaraTargetInfo(WEAPON_INFO* winfo)
     src.y = 0;
     src.z = 0;
     GetLaraJointAbsPosition((PHD_VECTOR*)&src, JHAND_R);
-    src.room_number = lara_item->room_number;
+    src.room_number = LaraItem->roomNumber;
 
     find_target_point(item, &target);
     phd_GetVectorAngles(target.x - src.x, target.y - src.y, target.z - src.z, angles);
-    angles[0] -= lara_item->pos.y_rot;
-    angles[1] -= lara_item->pos.x_rot;
+    angles[0] -= LaraItem->pos.yRot;
+    angles[1] -= LaraItem->pos.xRot;
 
     if (LOS(&src, &target))
     {
@@ -659,10 +659,10 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
     short angles[2];
     short bestyrot, yrot;
 
-    src.x = lara_item->pos.x;
-    src.y = lara_item->pos.y - 650;
-    src.z = lara_item->pos.z;
-    src.room_number = lara_item->room_number;
+    src.x = LaraItem->pos.xPos;
+    src.y = LaraItem->pos.yPos - 650;
+    src.z = LaraItem->pos.zPos;
+    src.room_number = LaraItem->roomNumber;
     item = nullptr;
     bestitem = nullptr;
     bestyrot = MAXSHORT;
@@ -673,18 +673,18 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
     creature = baddie_slots;
     for (int slots = 0; slots < NUM_SLOTS; slots++, creature++)
     {
-        if (creature->item_number == NO_ITEM || creature->item_number == lara.item_number)
+        if (creature->itemNumber == NO_ITEM || creature->itemNumber == lara.item_number)
             continue;
 
-        item = &items[creature->item_number];
-        if (item->hit_points <= 0)
+        item = &Items[creature->itemNumber];
+        if (item->hitPoints <= 0)
             continue;
-        if (!objects[item->object_number].intelligent)
+        if (!Objects[item->objectNumber].intelligent)
             continue;
         
-        x = item->pos.x - src.x;
-        y = item->pos.y - src.y;
-        z = item->pos.z - src.z;
+        x = item->pos.xPos - src.x;
+        y = item->pos.yPos - src.y;
+        z = item->pos.zPos - src.z;
 
         if (abs(x) > maxdist || abs(y) > maxdist || abs(z) > maxdist)
             continue;
@@ -697,8 +697,8 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
             if (LOS(&src, &target))
             {
                 phd_GetVectorAngles(target.x - src.x, target.y - src.y, target.z - src.z, angles);
-                angles[0] -= lara_item->pos.y_rot + lara.torso_y_rot;
-                angles[1] -= lara_item->pos.x_rot = lara.torso_x_rot;
+                angles[0] -= LaraItem->pos.yRot + lara.torso_y_rot;
+                angles[1] -= LaraItem->pos.xRot = lara.torso_x_rot;
 
                 if (angles[0] >= winfo->lock_angle[0]
                 &&  angles[0] <= winfo->lock_angle[1]
@@ -768,13 +768,13 @@ void find_target_point(ITEM_INFO* item, GAME_VECTOR* target)
     x = (int)((bounds[0] + bounds[1]) / 2);
     y = (int)(bounds[2] + (bounds[3] - bounds[2]) / 3);
     z = (int)((bounds[4] + bounds[5]) / 2);
-    s = SIN(item->pos.y_rot);
-    c = COS(item->pos.y_rot);
+    s = SIN(item->pos.yRot);
+    c = COS(item->pos.yRot);
 
-    target->x = item->pos.x + ((c * x + s * z) >> W2V_SHIFT);
-    target->y = item->pos.y + y;
-    target->z = item->pos.z + ((c * z - s * x) >> W2V_SHIFT);
-    target->room_number = item->room_number;
+    target->x = item->pos.xPos + ((c * x + s * z) >> W2V_SHIFT);
+    target->y = item->pos.yPos + y;
+    target->z = item->pos.zPos + ((c * z - s * x) >> W2V_SHIFT);
+    target->room_number = item->roomNumber;
 }
 
 //  1 = BADDIE HIT
@@ -798,14 +798,14 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
         if (ammo != INFINITE_AMMO) // fix negative ammo !
             weapon_ammo.decrease(weapon_type, 1);
 
-        viewpos.x = src->pos.x;
-        viewpos.y = src->pos.y - winfo->gun_height;
-        viewpos.z = src->pos.z;
+        viewpos.xPos = src->pos.xPos;
+        viewpos.yPos = src->pos.yPos - winfo->gun_height;
+        viewpos.zPos = src->pos.zPos;
         r = (int)((GetRandomControl() - 0x4000) * winfo->shot_accuracy) / 0x10000;
-        viewpos.x_rot = angles[1] + (short)r;
+        viewpos.xRot = angles[1] + (short)r;
         r = (int)((GetRandomControl() - 0x4000) * winfo->shot_accuracy) / 0x10000;
-        viewpos.y_rot = angles[0] + (short)r;
-        viewpos.z_rot = 0;
+        viewpos.yRot = angles[0] + (short)r;
+        viewpos.zRot = 0;
 
         phd_GenerateW2V(&viewpos);
         nums = GetSpheres(target, slist, 0);
@@ -827,13 +827,13 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
             }
         }
 
-        room_number = src->room_number;
-        GetFloor(viewpos.x, viewpos.y, viewpos.z, &room_number);
+        room_number = src->roomNumber;
+        GetFloor(viewpos.xPos, viewpos.yPos, viewpos.zPos, &room_number);
 
         lara.has_fired = TRUE;
-        vdest.x = viewpos.x;
-        vdest.y = viewpos.y;
-        vdest.z = viewpos.z;
+        vdest.x = viewpos.xPos;
+        vdest.y = viewpos.yPos;
+        vdest.z = viewpos.zPos;
         vdest.room_number = room_number;
         mptr = phd_mxptr;
 
@@ -877,7 +877,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
     los = LOS(dest, src);
     GetFloor(src->x, src->y, src->z, &src->room_number);
     if (firing && LaserSight && lara.gun_type == LG_REVOLVER)
-        SoundEffect(SFX_REVOLVER_FIRE, &lara_item->pos, 0);
+        SoundEffect(SFX_REVOLVER_FIRE, &LaraItem->pos, 0);
 
     closest = ObjectOnLOS2(dest, src, &vec, &mesh);
     if (closest == 999)
@@ -893,7 +893,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
             src->y -= (src->y - dest->y) >> 5;
             src->z -= (src->z - dest->z) >> 5;
             if (firing && !los)
-                TriggerRicochetSpark(src, lara_item->pos.y_rot, 8, 0);
+                TriggerRicochetSpark(src, LaraItem->pos.yRot, 8, 0);
         }
         result = FALSE;
     }
@@ -905,8 +905,8 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
 
         if (firing)
         {
-            item = &items[closest];
-            obj = &objects[item->object_number];
+            item = &Items[closest];
+            obj = &Objects[item->objectNumber];
 
             if (lara.gun_type == LG_CROSSBOW)
             {
@@ -925,16 +925,16 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                     mesh->ocb = MESH_INVISIBLE;
                     SoundEffect(SFX_HIT_ROCK, (PHD_3DPOS*)src, 0);
                 }
-                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
-                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
+                TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
             }
-            else if (item->object_number != SWITCH_TYPE7 && item->object_number != SWITCH_TYPE8)
+            else if (item->objectNumber != SWITCH_TYPE7 && item->objectNumber != SWITCH_TYPE8)
             {
-                if (ShatterItem.bit & obj->explodable_meshbits && LaserSight)
+                if (ShatterItem.bit & obj->explodableMeshBits && LaserSight)
                 {
                     ShatterObject(&ShatterItem, nullptr, 128, src->room_number, FALSE);
-                    item->mesh_bits &= ~ShatterItem.bit;
-                    TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                    item->meshBits &= ~ShatterItem.bit;
+                    TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
                 }
                 else if (drawtarget && lara.gun_type == LG_REVOLVER)
                 {
@@ -942,34 +942,34 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                         HitTarget(item, src, weapons[LG_REVOLVER].damage, 0);
                 }
                 
-                switch (obj->hit_effect)
+                switch (obj->hitEffect)
                 {
                     case HIT_BLOOD:
-                        DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.y_rot, item->room_number);
+                        DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.yRot, item->roomNumber);
                         break;
                     case HIT_SMOKE:
-                        TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, -5); // no fragment, just smoke !
+                        TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, -5); // no fragment, just smoke !
                         break;
                     case HIT_FRAGMENT:
-                        TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                        TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
                         break;
                 }
 
-                item->hit_status = TRUE;
+                item->hitStatus = TRUE;
                 if (!obj->undead)
-                    item->hit_points -= weapons[lara.gun_type].damage;
+                    item->hitPoints -= weapons[lara.gun_type].damage;
             }
-            else if (ShatterItem.bit == 1 << (obj->nmeshes - 1) && CHK_NOP(item->flags, IFLAG_SWITCH_ONESHOT))
+            else if (ShatterItem.bit == 1 << (obj->nMeshes - 1) && CHK_NOP(item->flags, IFLAG_SWITCH_ONESHOT))
             {
-                if (item->object_number == SWITCH_TYPE7)
-                    ExplodeItemNode(item, obj->nmeshes - 1, 0, 64);
+                if (item->objectNumber == SWITCH_TYPE7)
+                    ExplodeItemNode(item, obj->nMeshes - 1, 0, 64);
 
-                room_number = item->room_number;
+                room_number = item->roomNumber;
                 if (CHK_EXI(item->flags, IFLAG_CODEBITS) && CHK_EQA(item->flags, IFLAG_CODEBITS))
                 {
-                    floor = GetFloor(item->pos.x, item->pos.y - STEP_L, item->pos.z, &room_number);
-                    GetHeight(floor, item->pos.x, item->pos.y - STEP_L, item->pos.z);
-                    TestTriggers(trigger_index, TRUE, CHK_EXI(item->flags, IFLAG_CODEBITS));
+                    floor = GetFloor(item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos, &room_number);
+                    GetHeight(floor, item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos);
+                    TestTriggers(TriggerIndex, TRUE, CHK_EXI(item->flags, IFLAG_CODEBITS));
                 }
                 else
                 {
@@ -979,14 +979,14 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                     for (int i = 0; i < number_trigger; i++)
                     {
                         AddActiveItem(item_number);
-                        items[item_number].flags |= IFLAG_CODEBITS | IFLAG_SWITCH_ONESHOT;
-                        items[item_number].status = FITEM_ACTIVE;
+                        Items[item_number].flags |= IFLAG_CODEBITS | IFLAG_SWITCH_ONESHOT;
+                        Items[item_number].status = FITEM_ACTIVE;
                     }
                 }
             }
             else
             {
-                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
             }
         }
         result = TRUE;
@@ -1009,39 +1009,39 @@ void HitTarget(ITEM_INFO* item, GAME_VECTOR* src, int damage, int flags)
         return;
 
     CREATURE_INFO* creature = (CREATURE_INFO*)item->data;
-    OBJECT_INFO* obj = &objects[item->object_number];
+    OBJECT_INFO* obj = &Objects[item->objectNumber];
 
-    item->hit_status = TRUE;
-    if (creature && item != lara_item)
-        creature->hurt_by_lara = TRUE;
+    item->hitStatus = TRUE;
+    if (creature && item != LaraItem)
+        creature->hurtByLara = TRUE;
 
     if (src)
     {
-        switch (obj->hit_effect)
+        switch (obj->hitEffect)
         {
             case HIT_BLOOD:
-                if (item->object_number == BADDY_2 && (item->state_current == 8 || GetRandomControl() & 1) && (lara.gun_type == LG_PISTOLS || lara.gun_type == LG_SHOTGUN || lara.gun_type == LG_UZIS))
+                if (item->objectNumber == BADDY_2 && (item->currentAnimState == 8 || GetRandomControl() & 1) && (lara.gun_type == LG_PISTOLS || lara.gun_type == LG_SHOTGUN || lara.gun_type == LG_UZIS))
                 {
                     SoundEffect(SFX_BAD_SWORD_RICO, &item->pos, 0);
-                    TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                    TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
                     return;
                 }
-                DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.y_rot, item->room_number);
+                DoBloodSplat(src->x, src->y, src->z, (GetRandomControl() & 3) + 3, item->pos.yRot, item->roomNumber);
                 break;
             case HIT_SMOKE:
-                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, -5); // no fragment, just smoke !
+                TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, -5); // no fragment, just smoke !
                 break;
             case HIT_FRAGMENT:
-                TriggerRicochetSpark(src, lara_item->pos.y_rot, 3, 0);
+                TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
                 break;
         }
     }
 
-    if (!obj->undead || flags || item->hit_points != DONT_TARGET)
+    if (!obj->undead || flags || item->hitPoints != DONT_TARGET)
     {
-        if (item->hit_points > 0 && item->hit_points <= damage)
+        if (item->hitPoints > 0 && item->hitPoints <= damage)
             savegame_level.kills++;
-        item->hit_points -= damage;
+        item->hitPoints -= damage;
     }
 }
 
@@ -1058,7 +1058,7 @@ void LaraGun(void)
         return;
     }
 
-    if (lara_item->hit_points <= 0)
+    if (LaraItem->hitPoints <= 0)
     {
         lara.gun_status = LHS_ARMLESS;
     }
@@ -1070,7 +1070,7 @@ void LaraGun(void)
         }
         else if (CHK_EXI(TrInput, IN_FLARE) && CHK_NOP(gfLevelFlags, SLEV_YOUNG_LARA))
         {
-            if (lara_item->state_current == STATE_LARA_CROUCH_IDLE && lara_item->anim_number != ANIMATION_LARA_CROUCH_IDLE)
+            if (LaraItem->currentAnimState == STATE_LARA_CROUCH_IDLE && LaraItem->animNumber != ANIMATION_LARA_CROUCH_IDLE)
                 return;
 
             if (lara.gun_type == LG_FLARE)
@@ -1087,7 +1087,7 @@ void LaraGun(void)
 
         if (CHK_EXI(TrInput, IN_DRAW) || lara.gun_request_type != lara.gun_type)
         {
-            short state_current = lara_item->state_current;
+            short state_current = LaraItem->currentAnimState;
             if ((state_current == STATE_LARA_CROUCH_IDLE
             ||   state_current == STATE_LARA_CROUCH_TURN_LEFT
             ||   state_current == STATE_LARA_CROUCH_TURN_RIGHT)
@@ -1147,7 +1147,7 @@ void LaraGun(void)
         case LHS_ARMLESS:
             if (lara.gun_type == LG_FLARE)
             {
-                if (lara.skidoo != NO_ITEM || CheckForHoldingState(lara_item->state_current))
+                if (lara.skidoo != NO_ITEM || CheckForHoldingState(LaraItem->currentAnimState))
                 {
                     if (lara.l_arm.frame_number != FL_HOLD_F)
                     {
@@ -1173,7 +1173,7 @@ void LaraGun(void)
         case LHS_HANDBUSY:
             if (lara.gun_type == LG_FLARE && lara.mesh.hand_l == classic_meshes(FLARE_ANIM, HAND_L))
             {
-                lara.flare_control_left = (lara.skidoo != NO_ITEM || CheckForHoldingState(lara_item->state_current));
+                lara.flare_control_left = (lara.skidoo != NO_ITEM || CheckForHoldingState(LaraItem->currentAnimState));
                 DoFlareInHand(lara.flare_age);
                 set_flare_arm(lara.l_arm.frame_number);
             }
@@ -1237,7 +1237,7 @@ void LaraGun(void)
 
             if (CHK_EXI(TrInput, IN_ACTION) && !weapon_ammo.get(lara.gun_type))
             {
-                SoundEffect(SFX_SARLID_PALACES, &lara_item->pos, 0);
+                SoundEffect(SFX_SARLID_PALACES, &LaraItem->pos, 0);
                 lara.gun_request_type = LG_PISTOLS;
                 return;
             }

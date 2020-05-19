@@ -8,10 +8,10 @@
 // used for cutscene to render lara !
 void frigup_lara(void)
 {
-    lara_item->pos.x = GLOBAL_cutpos[1];
-    lara_item->pos.y = GLOBAL_cutpos[2];
-    lara_item->pos.z = GLOBAL_cutpos[3];
-    BONE_STRUCT* bone = (BONE_STRUCT*)&bones[objects[lara_item->object_number].bone_index];
+    LaraItem->pos.xPos = GLOBAL_cutpos[1];
+    LaraItem->pos.yPos = GLOBAL_cutpos[2];
+    LaraItem->pos.zPos = GLOBAL_cutpos[3];
+    BONE_STRUCT* bone = (BONE_STRUCT*)&bones[Objects[LaraItem->objectNumber].boneIndex];
 
     UpdateAnimFrame(actor_pnodes, 16, actor_frame);
     CalcLaraMatrices_Cutscene(actor_frame, bone, 0);

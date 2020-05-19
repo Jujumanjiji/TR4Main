@@ -245,6 +245,9 @@
     <ClCompile Include="src\game\vehicle\motorbike.cpp">
       <Filter>src\game\vehicles</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\entity\ahmet.cpp">
+      <Filter>src\game\entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -438,6 +441,15 @@
     </ClInclude>
     <ClInclude Include="src\game\oldobjects.h">
       <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\entity\ahmet.h">
+      <Filter>src\game\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\vehicle\motorbike.h">
+      <Filter>src\game\vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\vehicle\vehicle_utils.h">
+      <Filter>src\game\vehicles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

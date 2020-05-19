@@ -4,27 +4,27 @@
 void InitialiseLaraLoad(short itemNumber)
 {
     lara.item_number = itemNumber;
-    lara_item = &items[itemNumber];
+    LaraItem = &Items[itemNumber];
 }
 
 void InitialiseLaraAnims(ITEM_INFO* item)
 {
-    if (RWATER(item->room_number))
+    if (RWATER(item->roomNumber))
     {
         lara.water_status = LWS_UNDERWATER;
-        item->state_next = STATE_LARA_UNDERWATER_STOP;
-        item->state_current = STATE_LARA_UNDERWATER_STOP;
-        item->anim_number = ANIMATION_LARA_UNDERWATER_IDLE;
-        item->frame_number = anims[item->anim_number].frame_base;
+        item->goalAnimState = STATE_LARA_UNDERWATER_STOP;
+        item->currentAnimState = STATE_LARA_UNDERWATER_STOP;
+        item->animNumber = ANIMATION_LARA_UNDERWATER_IDLE;
+        item->frameNumber = Anims[item->animNumber].frameBase;
         item->fallspeed = 0;
     }
     else
     {
         lara.water_status = LWS_ABOVEWATER;
-        item->state_next = STATE_LARA_IDLE;
-        item->state_current = STATE_LARA_IDLE;
-        item->anim_number = ANIMATION_LARA_STAY_SOLID;
-        item->frame_number = anims[item->anim_number].frame_base;
+        item->goalAnimState = STATE_LARA_IDLE;
+        item->currentAnimState = STATE_LARA_IDLE;
+        item->animNumber = ANIMATION_LARA_STAY_SOLID;
+        item->frameNumber = Anims[item->animNumber].frameBase;
     }
 }
 
