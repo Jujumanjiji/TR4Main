@@ -19,17 +19,17 @@ void ShiftItem(ITEM_INFO* item, COLL_INFO* coll)
 void UpdateLaraRoom(ITEM_INFO* item, int height)
 {
     FLOOR_INFO *floor;
-    short room_number;
+    short roomNumber;
     int x, y, z;
 
     x = item->pos.xPos;
     y = item->pos.yPos + height;
     z = item->pos.zPos;
-    room_number = item->roomNumber;
-    floor = GetFloor(x, y, z, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(x, y, z, &roomNumber);
     item->floor = GetHeight(floor, x, y, z);
-    if (item->roomNumber != room_number)
-        ItemNewRoom(lara.item_number, room_number);
+    if (item->roomNumber != roomNumber)
+        ItemNewRoom(lara.itemNumber, roomNumber);
 }
 
 BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
@@ -97,7 +97,7 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
     FLOOR_INFO* floor;
     PHD_3DPOS dest;
     int height;
-    short room_number;
+    short roomNumber;
 
     dest.xRot = item->pos.xRot;
     dest.yRot = item->pos.yRot;
@@ -114,8 +114,8 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
     if (item->objectNumber != FLARE_ITEM && item->objectNumber != BURNING_TORCH_ITEM && item->objectNumber != CLOCKWORK_BEETLE)
         return Move3DPosTo3DPos(&laraitem->pos, &dest, LARA_VELOCITY, ANGLE(2));
 
-    room_number = laraitem->roomNumber;
-    floor = GetFloor(dest.xPos, dest.yPos, dest.zPos, &room_number);
+    roomNumber = laraitem->roomNumber;
+    floor = GetFloor(dest.xPos, dest.yPos, dest.zPos, &roomNumber);
     height = GetHeight(floor, dest.xPos, dest.yPos, dest.zPos);
 
     if (abs(height - laraitem->pos.yPos) < CLICK(2))

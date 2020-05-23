@@ -311,11 +311,11 @@ void fire_grenade(void)
         int x, y, z;
         int height;
 
-        short item_number = CreateItem();
+        short itemNumber = CreateItem();
         lara.has_fired = TRUE;
-        if (item_number != NO_ITEM)
+        if (itemNumber != NO_ITEM)
         {
-            item = &Items[item_number];
+            item = &Items[itemNumber];
             item->shade = -15856;
             item->objectNumber = GRENADE;
             item->roomNumber = LaraItem->roomNumber;
@@ -357,7 +357,7 @@ void fire_grenade(void)
                     TriggerGunSmoke(x, y, z, pos.x - x, pos.y - y, pos.z - z, 1, SmokeWeapon, SmokeCountL);
             }
 
-            InitialiseItem(item_number);
+            InitialiseItem(itemNumber);
             item->pos.xRot = LaraItem->pos.xRot + lara.l_arm.x_rot;
             item->pos.yRot = LaraItem->pos.yRot + lara.l_arm.y_rot;
             item->pos.zRot = 0;
@@ -374,7 +374,7 @@ void fire_grenade(void)
             item->goalAnimState     = item->pos.yRot;    // y rotation
             item->requiredAnimState = FALSE;              // rolling on floor ?
             item->hitPoints     = GRENADE_TIMER;
-            AddActiveItem(item_number);
+            AddActiveItem(itemNumber);
 
             if (ammo != INFINITE_AMMO)
                 weapon_ammo.decrease(LG_GRENADEGUN, 1);
@@ -400,11 +400,11 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
         PHD_VECTOR pos;
         int height;
 
-        short item_number = CreateItem();
+        short itemNumber = CreateItem();
         lara.has_fired = TRUE;
-        if (item_number != NO_ITEM)
+        if (itemNumber != NO_ITEM)
         {
-            item = &Items[item_number];
+            item = &Items[itemNumber];
             item->objectNumber = CROSSBOW_BOLT;
             item->shade = -15856;
 
@@ -414,7 +414,7 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                 item->pos.yPos = haveDefinedPos->yPos;
                 item->pos.zPos = haveDefinedPos->zPos;
                 item->roomNumber = LaraItem->roomNumber;
-                InitialiseItem(item_number);
+                InitialiseItem(itemNumber);
                 item->pos.xRot = haveDefinedPos->xRot;
                 item->pos.yRot = haveDefinedPos->yRot;
                 item->pos.zRot = haveDefinedPos->zRot;
@@ -443,7 +443,7 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                     item->pos.zPos = pos.z;
                 }
 
-                InitialiseItem(item_number);
+                InitialiseItem(itemNumber);
                 item->pos.xRot = LaraItem->pos.xRot + lara.l_arm.x_rot;
                 item->pos.yRot = LaraItem->pos.yRot + lara.l_arm.y_rot;
                 item->pos.zRot = 0;
@@ -456,7 +456,7 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
             }
 
             item->speed = 512;
-            AddActiveItem(item_number);
+            AddActiveItem(itemNumber);
 
             if (ammo != INFINITE_AMMO)
                 weapon_ammo.decrease(LG_CROSSBOW, 1);
@@ -595,7 +595,7 @@ void LaraTargetInfo(WEAPON_INFO* winfo)
     src.y = 0;
     src.z = 0;
     GetLaraJointAbsPosition((PHD_VECTOR*)&src, JHAND_R);
-    src.room_number = LaraItem->roomNumber;
+    src.roomNumber = LaraItem->roomNumber;
 
     find_target_point(item, &target);
     phd_GetVectorAngles(target.x - src.x, target.y - src.y, target.z - src.z, angles);
@@ -662,7 +662,7 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
     src.x = LaraItem->pos.xPos;
     src.y = LaraItem->pos.yPos - 650;
     src.z = LaraItem->pos.zPos;
-    src.room_number = LaraItem->roomNumber;
+    src.roomNumber = LaraItem->roomNumber;
     item = nullptr;
     bestitem = nullptr;
     bestyrot = MAXSHORT;
@@ -673,7 +673,7 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
     creature = baddie_slots;
     for (int slots = 0; slots < NUM_SLOTS; slots++, creature++)
     {
-        if (creature->itemNumber == NO_ITEM || creature->itemNumber == lara.item_number)
+        if (creature->itemNumber == NO_ITEM || creature->itemNumber == lara.itemNumber)
             continue;
 
         item = &Items[creature->itemNumber];
@@ -774,7 +774,7 @@ void find_target_point(ITEM_INFO* item, GAME_VECTOR* target)
     target->x = item->pos.xPos + ((c * x + s * z) >> W2V_SHIFT);
     target->y = item->pos.yPos + y;
     target->z = item->pos.zPos + ((c * z - s * x) >> W2V_SHIFT);
-    target->room_number = item->roomNumber;
+    target->roomNumber = item->roomNumber;
 }
 
 //  1 = BADDIE HIT
@@ -788,7 +788,7 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
     WEAPON_INFO* winfo;
     SPHERE* sptr, slist[33];
     int r, i, nums, bestdist, best;
-    short room_number;
+    short roomNumber;
     short ammo;
     
     winfo = &weapons[weapon_type];
@@ -827,14 +827,14 @@ int FireWeapon(int weapon_type, ITEM_INFO* target, ITEM_INFO* src, short angles[
             }
         }
 
-        room_number = src->roomNumber;
-        GetFloor(viewpos.xPos, viewpos.yPos, viewpos.zPos, &room_number);
+        roomNumber = src->roomNumber;
+        GetFloor(viewpos.xPos, viewpos.yPos, viewpos.zPos, &roomNumber);
 
         lara.has_fired = TRUE;
         vdest.x = viewpos.xPos;
         vdest.y = viewpos.yPos;
         vdest.z = viewpos.zPos;
-        vdest.room_number = room_number;
+        vdest.roomNumber = roomNumber;
         mptr = phd_mxptr;
 
         if (best < 0)
@@ -871,11 +871,11 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
     PHD_VECTOR vec;
     BOOL result;
     int los, closest;
-    short room_number;
+    short roomNumber;
     short static_obj;
 
     los = LOS(dest, src);
-    GetFloor(src->x, src->y, src->z, &src->room_number);
+    GetFloor(src->x, src->y, src->z, &src->roomNumber);
     if (firing && LaserSight && lara.gun_type == LG_REVOLVER)
         SoundEffect(SFX_REVOLVER_FIRE, &LaraItem->pos, 0);
 
@@ -918,9 +918,9 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 static_obj = mesh->static_number;
                 if (static_obj >= SHATTER0 && static_obj <= SHATTER7)
                 {
-                    ShatterObject(nullptr, mesh, 128, src->room_number, FALSE);
+                    ShatterObject(nullptr, mesh, 128, src->roomNumber, FALSE);
                     short mesh_count = SmashedMeshCount++;
-                    SmashedMeshRoom[mesh_count] = src->room_number;
+                    SmashedMeshRoom[mesh_count] = src->roomNumber;
                     SmashedMesh[mesh_count] = src;
                     mesh->ocb = MESH_INVISIBLE;
                     SoundEffect(SFX_HIT_ROCK, (PHD_3DPOS*)src, 0);
@@ -932,7 +932,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
             {
                 if (ShatterItem.bit & obj->explodableMeshBits && LaserSight)
                 {
-                    ShatterObject(&ShatterItem, nullptr, 128, src->room_number, FALSE);
+                    ShatterObject(&ShatterItem, nullptr, 128, src->roomNumber, FALSE);
                     item->meshBits &= ~ShatterItem.bit;
                     TriggerRicochetSpark(src, LaraItem->pos.yRot, 3, 0);
                 }
@@ -964,23 +964,23 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 if (item->objectNumber == SWITCH_TYPE7)
                     ExplodeItemNode(item, obj->nMeshes - 1, 0, 64);
 
-                room_number = item->roomNumber;
+                roomNumber = item->roomNumber;
                 if (CHK_EXI(item->flags, IFLAG_CODEBITS) && CHK_EQA(item->flags, IFLAG_CODEBITS))
                 {
-                    floor = GetFloor(item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos, &room_number);
+                    floor = GetFloor(item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos, &roomNumber);
                     GetHeight(floor, item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos);
                     TestTriggers(TriggerIndex, TRUE, CHK_EXI(item->flags, IFLAG_CODEBITS));
                 }
                 else
                 {
-                    short item_number;
-                    short number_trigger = GetSwitchTrigger(item, &item_number, 1);
+                    short itemNumber;
+                    short number_trigger = GetSwitchTrigger(item, &itemNumber, 1);
                     
                     for (int i = 0; i < number_trigger; i++)
                     {
-                        AddActiveItem(item_number);
-                        Items[item_number].flags |= IFLAG_CODEBITS | IFLAG_SWITCH_ONESHOT;
-                        Items[item_number].status = FITEM_ACTIVE;
+                        AddActiveItem(itemNumber);
+                        Items[itemNumber].flags |= IFLAG_CODEBITS | IFLAG_SWITCH_ONESHOT;
+                        Items[itemNumber].status = FITEM_ACTIVE;
                     }
                 }
             }

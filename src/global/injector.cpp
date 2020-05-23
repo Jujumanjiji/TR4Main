@@ -76,6 +76,7 @@ void injector::inject_game()
 
     // entities
     _game.inject_ahmet();
+    _game.inject_baboon();
 }
 
 void injector::inject_specific()

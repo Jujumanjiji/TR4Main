@@ -19,7 +19,7 @@ int DrawPhaseGame(void)
     if (GnPlayingCutseq)
         frigup_lara();
     SetLaraUnderwaterNodes();
-    DrawRooms(camera.pos.room_number);
+    DrawRooms(camera.pos.roomNumber);
     DrawGameInfo(1);
     S_OutputPolyList();
     camera.number_frames = S_DumpScreen();
@@ -479,7 +479,7 @@ void CalculateObjectLighting(ITEM_INFO* item, short* frame)
 
     if (item->shade >= 0)
     {
-        S_CalculateStaticMeshLight(item->pos.x, item->pos.y, item->pos.z, item->shade & 0x7FFF, &rooms[item->room_number]);
+        S_CalculateStaticMeshLight(item->pos.x, item->pos.y, item->pos.z, item->shade & 0x7FFF, &rooms[item->roomNumber]);
     }
     else
     {

@@ -6,16 +6,16 @@ void Splash(ITEM_INFO* item)
 {
     int x, y, z;
     int wh;
-    short room_number;
+    short roomNumber;
 
     x = item->pos.xPos;
     y = item->pos.yPos;
     z = item->pos.zPos;
-    room_number = item->roomNumber;
-    GetFloor(x, y, z, &room_number);
-    if (RWATER(room_number))
+    roomNumber = item->roomNumber;
+    GetFloor(x, y, z, &roomNumber);
+    if (RWATER(roomNumber))
     {
-        wh = GetWaterHeight(x, y, z, room_number);
+        wh = GetWaterHeight(x, y, z, roomNumber);
         splash_setup.y = wh;
         splash_setup.x = x;
         splash_setup.z = z;

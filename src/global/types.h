@@ -155,15 +155,15 @@ struct BITE_INFO
 
 struct AIOBJECT
 {
-    short object_number;
-    short room_number;
+    short objectNumber;
+    short roomNumber;
     int x;
     int y;
     int z;
-    short trigger_flags;
+    short triggerFlags;
     short flags;
-    short y_rot;
-    short box_number;
+    short yRot;
+    short boxNumber;
 };
 
 struct OBJ_ROTATION
@@ -179,8 +179,8 @@ struct GAME_VECTOR
     int x;
     int y;
     int z;
-    short room_number;
-    short box_number;
+    short roomNumber;
+    short boxNumber;
 };
 
 struct OBJECT_VECTOR
@@ -301,7 +301,7 @@ struct FLOAT_VECTOR
 
 struct DOOR_INFO
 {
-    WORD room_number;
+    WORD roomNumber;
     short point[3];
     short corner[12];
 };
@@ -343,7 +343,7 @@ struct ITEM_LIGHT
     int d_r;
     int d_g;
     int d_b;
-    int room_number;
+    int roomNumber;
 };
 
 struct ROOM_INFO
@@ -375,7 +375,7 @@ struct ROOM_INFO
     short test_right;
     short test_top;
     short test_bottom;
-    short item_number;
+    short itemNumber;
     short fx_number;
     short flipped_room;
     unsigned short flags; // ROOM_INFO_Flags
@@ -434,7 +434,7 @@ struct ITEM_INFO
     unsigned int gravityStatus : 1;     // LOBYTE: 0x8
     unsigned int hitStatus : 1;         // LOBYTE: 0x10
     unsigned int collidable : 1;        // LOBYTE: 0x20
-    unsigned int lookedAt : 1;         // LOBYTE: 0x40
+    unsigned int lookedAt : 1;          // LOBYTE: 0x40
     unsigned int dynamicLight : 1;     
     unsigned int poisoned : 1;
     unsigned int aiBits : 5;
@@ -488,12 +488,12 @@ struct COLL_INFO
     WORD hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
 };
 
-typedef void(*LPINITIALISE)(short item_number);
-typedef void(*LPCONTROL)(short item_number);
+typedef void(*LPINITIALISE)(short itemNumber);
+typedef void(*LPCONTROL)(short itemNumber);
 typedef void(*LPFLOOR)(ITEM_INFO* item, int x, int y, int z, int* height);
 typedef void(*LPCEILING)(ITEM_INFO* item, int x, int y, int z, int* height);
 typedef void(*LPDRAW)(ITEM_INFO* item);
-typedef void(*LPCOLLISION)(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll);
+typedef void(*LPCOLLISION)(short itemNumber, ITEM_INFO* laraitem, COLL_INFO* coll);
 typedef void(*LPDRAWEXTRA)(ITEM_INFO* item);
 
 struct OBJECT_INFO
@@ -657,7 +657,7 @@ struct LARA_MESH
 struct FX_INFO
 {
     PHD_3DPOS pos;
-    short room_number;
+    short roomNumber;
     short object_number;
     short next_fx;
     short next_active;
@@ -764,7 +764,7 @@ struct GUNSHELL_STRUCT
 {
     PHD_3DPOS pos;
     short fallspeed;
-    short room_number;
+    short roomNumber;
     short speed;
     short counter;
     short direction_xrot;
@@ -841,7 +841,7 @@ struct SPARKS
     unsigned char extras;
     char dynamic;
     unsigned char fx_obj;
-    unsigned char room_number;
+    unsigned char roomNumber;
     unsigned char node_number;
 };
 
@@ -896,7 +896,7 @@ struct SPLASH_STRUCT
 struct BUBBLE_STRUCT
 {
     PHD_VECTOR pos;
-    short room_number;
+    short roomNumber;
     short speed;
     short size;
     short dSize;
@@ -922,7 +922,7 @@ struct DRIP_STRUCT
     short yvel;
     unsigned char gravity;
     unsigned char life;
-    short room_number;
+    short roomNumber;
     unsigned char outside;
     unsigned char pad;
 };
@@ -969,7 +969,7 @@ struct DEBRIS_STRUCT
     short xyz_offset3[3];
     short yvel;
     short gravity;
-    short room_number;
+    short roomNumber;
     unsigned char on;
     unsigned char x_rot;
     unsigned char y_rot;
@@ -986,7 +986,7 @@ struct FIRE_LIST
     int z;
     unsigned char on;
     unsigned char size;
-    short room_number;
+    short roomNumber;
 };
 
 struct BOX_NODE
@@ -1073,13 +1073,13 @@ struct ENTITY_JUMP
 
 struct OBJECT_FOUND
 {
-    short item_number;
+    short itemNumber;
     ITEM_INFO* target;
 };
 
 struct LARA_INFO
 {
-    short item_number;
+    short itemNumber;
     short gun_status;         // LHS_ enum
     short gun_type;           // LG_ enum
     short gun_request_type;   // LG_ enum

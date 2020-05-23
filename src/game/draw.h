@@ -31,6 +31,9 @@ extern short* GetBoundsAccurate(ITEM_INFO* item);
 extern short* GetBestFrame(ITEM_INFO* item);
 
 #ifdef DLL_INJECT
+#define IsRoomOutsideNo VAR_U_(0x007FE7E2, short)
+
+
 #define SetLaraUnderwaterNodes ((void(__cdecl*)(void)) 0x0041F260)
 #define DrawRooms ((void(__cdecl*)(short currentRoom)) 0x0044EC10)
 #define PrintRooms ((void(__cdecl*)(short roomNumber)) 0x0044F2D0)
@@ -42,4 +45,5 @@ extern short* GetBestFrame(ITEM_INFO* item);
 #define DrawLara_Mirror ((void(__cdecl*)(void)) 0x00455800)
 #define CalculateObjectLighting ((void(__cdecl*)(ITEM_INFO* item, short* frame)) 0x00450BB0)
 #define CalculateObjectLightingLara ((void(__cdecl*)(void)) 0x00450CB0)
+#define IsRoomOutside ((void(__cdecl*)(int x, int y, int z)) 0x0044C9C0)
 #endif

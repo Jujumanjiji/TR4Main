@@ -78,8 +78,8 @@ else if (A < -B)\
 #define FLOOR(add) ((void(__cdecl*)(ITEM_INFO* item, int x, int y, int z, int* height)) add)
 #define CEILING(add) ((void(__cdecl*)(ITEM_INFO* item, int x, int y, int z, int* height)) add)
 
-#define RWATER(room_number) rooms[room_number].flags & ROOM_WATER
-#define RNOT_WATER(room_number) !(rooms[room_number].flags & ROOM_WATER)
+#define RWATER(roomNumber) Rooms[roomNumber].flags & ROOM_WATER
+#define RNOT_WATER(roomNumber) !(Rooms[roomNumber].flags & ROOM_WATER)
 #define AI(item, ai_flags) item->ai_bits & ai_flags
 #define NOT_AI(item, ai_flags) !(item->ai_bits & ai_flags)
 

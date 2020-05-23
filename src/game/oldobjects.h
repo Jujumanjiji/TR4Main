@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ahmet.h"
-
+#include "baboon.h"
 
 
 
@@ -11,7 +11,7 @@
 ///#define InitialiseMotorBike INITIALISE(0x00464610)
 ///#define MotorBikeCollision COLLISION(0x00464680)
 ///#define DrawMotorbikeLight DRAW(0x00464850)
-///#define GetOnMotorBike ((BOOL(__cdecl*)(short item_number)) 0x004648F0)
+///#define GetOnMotorBike ((BOOL(__cdecl*)(short itemNumber)) 0x004648F0)
 ///#define DrawMotorBikeSmoke DRAW(0x00464A30)
 ///#define DrawMotorBikeEffect DRAW(0x00464C20)
 ///#define MotorBikeControl ((int(__cdecl*)(void)) 0x00464C70)
@@ -75,8 +75,6 @@
 #define WildBoarControl CONTROL(0x0041BF60)
 #define InitialiseDog INITIALISE(0x00405820)
 #define DogControl CONTROL(0x004058B0)
-#define InitialiseBaboon INITIALISE(0x00401DB0)
-#define BaboonControl CONTROL(0x00401E50)
 #define InitialiseEnemyJeepTrain INITIALISE(0x004644B0)
 #define InitialiseEnemyJeep INITIALISE(0x00469B90)
 #define EnemyJeepTrainControl CONTROL(0x00464520)

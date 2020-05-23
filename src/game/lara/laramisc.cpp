@@ -3,7 +3,7 @@
 
 void InitialiseLaraLoad(short itemNumber)
 {
-    lara.item_number = itemNumber;
+    lara.itemNumber = itemNumber;
     LaraItem = &Items[itemNumber];
 }
 

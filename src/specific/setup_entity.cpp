@@ -726,7 +726,7 @@ void SetupEntity::ahmet()
     }
 }
 
-void SetupEntity::baboon_normal()
+void SetupEntity::baboon()
 {
     obj = &Objects[BABOON_NORMAL];
     if (obj->loaded)
@@ -745,10 +745,28 @@ void SetupEntity::baboon_normal()
         obj->savePosition = true;
         obj->hitEffect = HIT_BLOOD;
     }
-}
 
-void SetupEntity::baboon_silent()
-{
+    obj = &Objects[BABOON_INV];
+    if (obj->loaded)
+    {
+        obj->initialise = InitialiseBaboon;
+        obj->control = BaboonControl;
+        obj->collision = CreatureCollision;
+        obj->shadowSize = 128;
+        obj->hitPoints = initHealth(BABOON_INV);
+        obj->pivotLength = 200;
+        obj->radius = 256;
+        obj->intelligent = true;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->saveHitpoints = true;
+        obj->savePosition = true;
+        obj->hitEffect = HIT_BLOOD;
+
+        if (Objects[BABOON_NORMAL].loaded)
+            Objects[BABOON_SILENT].animIndex = Objects[BABOON_NORMAL].animIndex;
+    }
+
     obj = &Objects[BABOON_SILENT];
     if (obj->loaded)
     {
@@ -771,31 +789,7 @@ void SetupEntity::baboon_silent()
     }
 }
 
-void SetupEntity::baboon_inv()
-{
-    obj = &Objects[BABOON_INV];
-    if (obj->loaded)
-    {
-        obj->initialise = InitialiseBaboon;
-        obj->control = BaboonControl;
-        obj->collision = CreatureCollision;
-        obj->shadowSize = 128;
-        obj->hitPoints = initHealth(BABOON_INV);
-        obj->pivotLength = 200;
-        obj->radius = 256;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->hitEffect = HIT_BLOOD;
-
-        if (Objects[BABOON_NORMAL].loaded)
-            Objects[BABOON_SILENT].animIndex = Objects[BABOON_NORMAL].animIndex;
-    }
-}
-
-// can disappear like nothing !!
+// TODO: can disappear like nothing !!
 void SetupEntity::enemy_jeep()
 {
     obj = &Objects[ENEMY_JEEP];

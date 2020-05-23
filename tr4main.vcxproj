@@ -104,6 +104,7 @@
     <ClCompile Include="src\game\camera.cpp" />
     <ClCompile Include="src\game\debris.cpp" />
     <ClCompile Include="src\game\entity\ahmet.cpp" />
+    <ClCompile Include="src\game\entity\baboon.cpp" />
     <ClCompile Include="src\game\gameflow.cpp" />
     <ClCompile Include="src\game\hair.cpp" />
     <ClCompile Include="src\game\input.cpp" />
@@ -122,7 +123,7 @@
     <ClCompile Include="src\game\lara\lara_col_routine.cpp" />
     <ClCompile Include="src\game\effect2.cpp" />
     <ClCompile Include="src\game\lara\lara_as_routine.cpp" />
-    <ClCompile Include="src\game\lara\lara_utils.cpp" />
+    <ClCompile Include="src\game\lara\larautils.cpp" />
     <ClCompile Include="src\game\people.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="framework.cpp">
@@ -183,6 +184,7 @@
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\debris.h" />
     <ClInclude Include="src\game\entity\ahmet.h" />
+    <ClInclude Include="src\game\entity\baboon.h" />
     <ClInclude Include="src\game\gameflow.h" />
     <ClInclude Include="src\game\hair.h" />
     <ClInclude Include="src\game\input.h" />

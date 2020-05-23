@@ -90,9 +90,7 @@ void BaddyObjects(void)
     setup_entity.wild_boar();
     setup_entity.dog();
     setup_entity.ahmet();
-    setup_entity.baboon_normal();
-    setup_entity.baboon_silent();
-    setup_entity.baboon_inv();
+    setup_entity.baboon();
     setup_entity.enemy_jeep();
     setup_entity.bat();
     setup_entity.big_beetle();
@@ -230,7 +228,7 @@ void GetCarriedItems(void)
         if (Objects[item->objectNumber].intelligent)
         {
             item->carriedItem = NO_ITEM;
-            pickup_number = rooms[item->roomNumber].item_number;
+            pickup_number = Rooms[item->roomNumber].itemNumber;
             do
             {
                 pickup = &Items[pickup_number];
@@ -268,13 +266,13 @@ void GetAIPickups(void)
                 obj = &AIObjects[num];
                 if (abs(obj->x - item->pos.xPos) < 512 &&
                     abs(obj->z - item->pos.zPos) < 512 &&
-                    obj->room_number == item->roomNumber &&
-                    obj->object_number <= AI_X2)
+                    obj->roomNumber == item->roomNumber &&
+                    obj->objectNumber <= AI_X2)
                 {
-                    item->aiBits = (((1 << obj->object_number) + 114) & 0x1F) << 9;
-                    item->itemFlags[3] = obj->trigger_flags;
-                    if (obj->object_number != AI_GUARD)
-                        obj->room_number = NO_ROOM;
+                    item->aiBits = (((1 << obj->objectNumber) + 114) & 0x1F) << 9;
+                    item->itemFlags[3] = obj->triggerFlags;
+                    if (obj->objectNumber != AI_GUARD)
+                        obj->roomNumber = NO_ROOM;
                 }
             }
         }

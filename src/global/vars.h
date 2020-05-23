@@ -120,7 +120,7 @@
 #define LightningRandom                     VAR_U_(0x007FDF5C, short)
 #define LightningStart                      VAR_U_(0x007FE14C, short)
 #define LightningTimer                      VAR_I_(0x004BF624, short, 0)
-#define item_room_number                    VAR_U_(0x007FDF50, short)
+#define item_roomNumber                    VAR_U_(0x007FDF50, short)
 #define item_color                          VAR_I_(0x004AD7D4, DWORD, RGBA_VECTORGET(0, 0, 0, 255)) /// argb
 #define TargetType                          VAR_U_(0x007FE9B8, short) // use TARGET_TYPE enum
 #define vbufdoor                            ARRAY_(0x007FDF20, DOOR_VBUF, [4])
@@ -215,7 +215,7 @@
 #define static_objects                      ARRAY_(0x005333C0, STATIC_INFO, [NUMBER_STATIC_OBJECTS])
 #define mesh_base                           VAR_U_(0x00533A7C, short*)
 #define meshes                              VAR_U_(0x00533A80, short**)
-#define rooms                               VAR_U_(0x00533A64, ROOM_INFO*)
+#define Rooms                               VAR_U_(0x00533A64, ROOM_INFO*)
 #define Anims                               VAR_U_(0x00533A68, ANIM_STRUCT*)
 #define changes                             VAR_U_(0x00533A6C, CHANGE_STRUCT*)
 #define ranges                              VAR_U_(0x00533A70, RANGE_STRUCT*)

@@ -44,10 +44,10 @@ static BITE_INFO ahmetBiteJaw = { 0, 0, 0, 11 };
 static void AhmetHeavyTriggers(ITEM_INFO* item)
 {
     FLOOR_INFO* floor;
-    short room_number;
+    short roomNumber;
 
-    room_number = item->roomNumber;
-    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
     GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     TestTriggers(TriggerIndex, TRUE, FALSE);
 }
@@ -73,12 +73,12 @@ void TriggerAhmetDeathEffect(ITEM_INFO* item)
     SoundEffect(SFX_LOOP_FOR_SMALL_FIRES, &item->pos, NULL);
 }
 
-void InitialiseAhmet(short item_number)
+void InitialiseAhmet(short itemNumber)
 {
     ITEM_INFO* item;
-    item = &Items[item_number];
+    item = &Items[itemNumber];
 
-    InitialiseCreature(item_number);
+    InitialiseCreature(itemNumber);
     item->animNumber = Objects[item->objectNumber].animIndex;
     item->frameNumber = Anims[item->animNumber].frameBase;
     item->goalAnimState = AHMET_IDLE;
@@ -88,17 +88,17 @@ void InitialiseAhmet(short item_number)
     item->itemFlags[2] = item->pos.zPos >> (WALL_SHIFT);
 }
 
-void AhmetControl(short item_number)
+void AhmetControl(short itemNumber)
 {
     ITEM_INFO* item;
     CREATURE_INFO* ahmet;
     AI_INFO lara_info, info;
     short angle, head_y;
 
-    if (!CreatureActive(item_number))
+    if (!CreatureActive(itemNumber))
         return;
 
-    item = &Items[item_number];
+    item = &Items[itemNumber];
     if (item->triggerFlags == 1)
     {
         item->triggerFlags = 0;
@@ -128,7 +128,7 @@ void AhmetControl(short item_number)
             item->frameNumber = Anims[item->animNumber].frameBase;
             item->currentAnimState = AHMET_DIE;
             item->goalAnimState = AHMET_DIE;
-            lara.general_ptr = (LPVOID)item_number;
+            lara.general_ptr = (LPVOID)itemNumber;
         }
     }
     else
@@ -161,7 +161,7 @@ void AhmetControl(short item_number)
         ahmet->enemy = LaraItem;
 
         if (lara_info.distance < AHMET_AWARE_DISTANCE || item->hitStatus || TargetVisible(item, &lara_info))
-            AlertAllGuards(item_number);
+            AlertAllGuards(itemNumber);
 
         if (info.ahead)
             head_y = info.angle;
@@ -347,7 +347,7 @@ void AhmetControl(short item_number)
     CreatureTilt(item, 0);
     CreatureJoint(item, 0, head_y);
     AhmetHeavyTriggers(item);
-    CreatureAnimation(item_number, angle, 0);
+    CreatureAnimation(itemNumber, angle, 0);
 }
 
 #ifdef DLL_INJECT

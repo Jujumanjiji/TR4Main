@@ -31,9 +31,7 @@ public:
     void wild_boar();
     void dog();
     void ahmet();
-    void baboon_normal();
-    void baboon_silent();
-    void baboon_inv();
+    void baboon();
     void enemy_jeep();
     void bat();
     void big_beetle();

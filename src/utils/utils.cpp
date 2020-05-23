@@ -15,8 +15,10 @@
 #include "sphere.h"
 #include "drawprimitive.h"
 #include "gameflow_utils.h"
-
 #include <dirent.h>
+
+short RoomDraw[200];
+short RoomDrawCount;
 
 ofstream flog;
 LPCSTR lpWeaponName[12] = {
@@ -802,7 +804,31 @@ bool CheckJumpPossibility(ITEM_INFO* item)
     return true;
 }
 
-OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID, short secondID)
+AIOBJECT* FoundAIObject(short objectNumber)
+{
+    for (short i = 0; i < nAIObjects; i++)
+    {
+        AIOBJECT* ai = &AIObjects[i];
+        if (ai->objectNumber == objectNumber && ai->roomNumber != NO_ROOM)
+            return ai;
+    }
+
+    return nullptr;
+}
+
+AIOBJECT* FoundAIObjectWithOCB(short objectNumber, short triggerFlags)
+{
+    for (short i = 0; i < nAIObjects; i++)
+    {
+        AIOBJECT* ai = &AIObjects[i];
+        if (ai->objectNumber == objectNumber && ai->triggerFlags == triggerFlags && ai->roomNumber != NO_ROOM)
+            return ai;
+    }
+
+    return nullptr;
+}
+
+OBJECT_FOUND FoundItem(ITEM_INFO* src, short slotID)
 {
     ITEM_INFO* target;
     OBJECT_FOUND obj;
@@ -811,16 +837,11 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
     target = &Items[0];
     for (i = 0; i < level_items; i++, target++)
     {
-        if (target == nullptr)
-            break;
-
-        // check if the targeted item is less distant than lara...
-        // now the entity will attack lara than pickup all item in the level. (maybe he will pickup the item if the distance is too long)
-        if (!creature->hurtByLara && !src->triggerFlags) // check if the entity as no ocb (stop crash (but the baddy will not pickup a item at 100%))
+        if (target != nullptr)
         {
-            if ((target->objectNumber == primaryID || target->objectNumber == secondID) && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+            if (target->objectNumber == slotID && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
             {
-                obj.item_number = i;
+                obj.itemNumber = i;
                 obj.target = target;
                 return obj;
             }
@@ -828,14 +849,93 @@ OBJECT_FOUND FoundItem(ITEM_INFO* src, CREATURE_INFO* creature, short primaryID,
     }
 
     // default target
-    obj.item_number = NO_ITEM;
-    obj.target = LaraItem;
+    obj.itemNumber = NO_ITEM;
+    obj.target = nullptr;
     return obj;
+}
+
+OBJECT_FOUND* FoundItemWithOCB(ITEM_INFO* src, short primaryID, short ocb)
+{
+    ITEM_INFO* target;
+    OBJECT_FOUND* obj = nullptr;
+    ROOM_INFO* r;
+    short target_number;
+
+    GetEntityByRooms(src, SECTOR(7), NULL);
+    for (int lp = 0; lp < draw_rooms_number; lp++)
+    {
+        r = &Rooms[draw_rooms[lp]];
+        for (target_number = Rooms[draw_rooms[lp]].itemNumber; target_number != NO_ITEM;)
+        {
+            target = &Items[target_number];
+            S_LogValue("Found Item: %d", target->objectNumber);
+            target_number = target->nextItem;
+        }
+    }
+
+    return nullptr;
+}
+
+OBJECT_FOUND FoundItemWithOCB(ITEM_INFO* src, short primaryID, short secondID, short triggerFlags)
+{
+    ITEM_INFO* target;
+    OBJECT_FOUND obj;
+    int i;
+
+    target = &Items[0];
+    for (i = 0; i < level_items; i++, target++)
+    {
+        if (target != nullptr)
+        {
+            if ((target->objectNumber == primaryID || target->objectNumber == secondID) && target->roomNumber != NO_ROOM && target->triggerFlags == triggerFlags && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+            {
+                obj.itemNumber = i;
+                obj.target = target;
+                return obj;
+            }
+        }
+    }
+
+    // default target
+    obj.itemNumber = NO_ITEM;
+    obj.target = nullptr;
+    return obj;
+}
+
+OBJECT_FOUND FoundEntity(ITEM_INFO* item, short slotID)
+{
+    ITEM_INFO* target;
+    OBJECT_INFO* obj;
+    OBJECT_FOUND entity;
+
+    target = &Items[0];
+    for (int i = 0; i < level_items; i++, target++)
+    {
+        if (target != nullptr)
+        {
+            // check if the entity are in a correct room and not dead already.
+            // check if the ocb is not the same as the current src to not get the wrong ocb.
+            if (item->triggerFlags != target->triggerFlags && target->objectNumber == slotID && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+            {
+                obj = &Objects[target->objectNumber];
+                if (!obj->intelligent)
+                    break;
+                entity.itemNumber = i;
+                entity.target = target;
+                return entity;
+            }
+        }
+    }
+
+    entity.itemNumber = NO_ITEM;
+    entity.target = nullptr;
+    return entity;
 }
 
 OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
 {
     ITEM_INFO* target;
+    OBJECT_INFO* obj;
     OBJECT_FOUND entity;
 
     target = &Items[0];
@@ -843,17 +943,55 @@ OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb)
     {
         // check if the entity are in a correct room and not dead already.
         // check if the ocb is not the same as the current src to not get the wrong ocb.
-        if (item->triggerFlags != target->triggerFlags && target->objectNumber == slotID && target->triggerFlags == ocb && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+        if (item != target && target->objectNumber == slotID && target->triggerFlags == ocb && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
         {
-            entity.item_number = i;
+            obj = &Objects[target->objectNumber];
+            if (!obj->intelligent)
+                break;
+            entity.itemNumber = i;
             entity.target = target;
             return entity;
         }
     }
 
-    entity.item_number = NO_ITEM;
+    entity.itemNumber = NO_ITEM;
     entity.target = nullptr;
     return entity;
+}
+
+static void GetNewRooms(int x, int y, int z, short roomNumber)
+{
+    GetFloor(x, y, z, &roomNumber);
+
+    int i;
+    for (i = 0; i < draw_rooms_number; i++)
+    {
+        if (draw_rooms[i] == roomNumber)
+            break;
+    }
+
+    if (i == draw_rooms_number)
+        draw_rooms[draw_rooms_number++] = roomNumber;
+}
+
+// stored at draw_rooms/draw_rooms_number
+void GetEntityByRooms(ITEM_INFO* item, int radius, int height)
+{
+    GAME_VECTOR pos;
+    pos.x = item->pos.xPos;
+    pos.y = item->pos.yPos;
+    pos.z = item->pos.zPos;
+    pos.roomNumber = item->roomNumber;
+    draw_rooms[0] = pos.roomNumber;
+    draw_rooms_number = 1;
+    GetNewRooms(pos.x + radius, pos.y, pos.z + radius, pos.roomNumber);
+    GetNewRooms(pos.x - radius, pos.y, pos.z + radius, pos.roomNumber);
+    GetNewRooms(pos.x + radius, pos.y, pos.z - radius, pos.roomNumber);
+    GetNewRooms(pos.x - radius, pos.y, pos.z - radius, pos.roomNumber);
+    GetNewRooms(pos.x + radius, pos.y - height, pos.z + radius, pos.roomNumber);
+    GetNewRooms(pos.x - radius, pos.y - height, pos.z + radius, pos.roomNumber);
+    GetNewRooms(pos.x + radius, pos.y - height, pos.z - radius, pos.roomNumber);
+    GetNewRooms(pos.x - radius, pos.y - height, pos.z - radius, pos.roomNumber);
 }
 
 bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target)
@@ -889,11 +1027,11 @@ void ActivateEntity(short itemNumber)
 bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb)
 {
     OBJECT_FOUND baddy_spawn = FoundEntityWithOCB(item, slotid, ocb);
-    if (baddy_spawn.item_number != NO_ITEM && baddy_spawn.target != nullptr)
+    if (baddy_spawn.itemNumber != NO_ITEM && baddy_spawn.target != nullptr)
     {
         if (baddy_spawn.target->status == FITEM_INVISIBLE)
         {
-            ActivateEntity(baddy_spawn.item_number);
+            ActivateEntity(baddy_spawn.itemNumber);
             return true;
         }
     }
@@ -945,6 +1083,8 @@ short* classic_meshes(short objNumber, short meshID)
 {
     return meshes[Objects[objNumber].meshIndex + meshID * 2];
 }
+
+
 
 void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
 {

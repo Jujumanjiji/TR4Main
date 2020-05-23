@@ -155,9 +155,6 @@
     <ClCompile Include="src\game\lara\lara.cpp">
       <Filter>src\game\lara</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\lara\lara_utils.cpp">
-      <Filter>src\game\lara</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\lara\lara1gun.cpp">
       <Filter>src\game\lara</Filter>
     </ClCompile>
@@ -247,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="src\game\entity\ahmet.cpp">
       <Filter>src\game\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\entity\baboon.cpp">
+      <Filter>src\game\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\lara\larautils.cpp">
+      <Filter>src\game\lara</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +453,9 @@
     </ClInclude>
     <ClInclude Include="src\game\vehicle\vehicle_utils.h">
       <Filter>src\game\vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\entity\baboon.h">
+      <Filter>src\game\entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

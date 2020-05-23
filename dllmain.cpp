@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "utils.h"
+#include "baboon.h"
 #include "gameflow_utils.h"
 
 DLL_EXPORT BOOL CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
@@ -14,7 +15,7 @@ DLL_EXPORT BOOL CALLBACK DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVO
 #endif
             break;
         case DLL_PROCESS_DETACH:
-            
+            BaboonRespawn.Free();
             break;
     }
     return TRUE;

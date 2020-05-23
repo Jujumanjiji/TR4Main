@@ -90,12 +90,12 @@ static MOTORBIKE_INFO* GetMotorbikeInfo(ITEM_INFO* item)
     return (MOTORBIKE_INFO*)item->data;
 }
 
-void InitialiseMotorBike(short item_number) // (F) (D)
+void InitialiseMotorBike(short itemNumber) // (F) (D)
 {
     ITEM_INFO* item;
     MOTORBIKE_INFO* motorbike;
 
-    item = &Items[item_number];
+    item = &Items[itemNumber];
     motorbike = (MOTORBIKE_INFO*)game_malloc(sizeof(MOTORBIKE_INFO));
     item->data = (void*)motorbike;
     motorbike->velocity = 0;
@@ -134,16 +134,16 @@ void DrawMotorbikeLight(ITEM_INFO* item) // (F) (D)
         CreateSpotLight(&start, &target, item->pos.yRot, rnd);
 }
 
-BOOL GetOnMotorBike(short item_number) // (F) (D)
+BOOL GetOnMotorBike(short itemNumber) // (F) (D)
 {
     ITEM_INFO* item;
     FLOOR_INFO* floor;
     int dx, dz, distance, height;
     unsigned short tempangle;
     short angle;
-    short room_number;
+    short roomNumber;
 
-    item = &Items[item_number];
+    item = &Items[itemNumber];
     if (item->flags & IFLAG_ONESHOT || lara.gun_status == LHS_HANDBUSY || LaraItem->gravityStatus)
         return FALSE;
 
@@ -156,8 +156,8 @@ BOOL GetOnMotorBike(short item_number) // (F) (D)
     if (distance > 170000)
         return FALSE;
 
-    room_number = item->roomNumber;
-    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
     height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     if (height < -32000)
         return FALSE;
@@ -179,14 +179,14 @@ BOOL GetOnMotorBike(short item_number) // (F) (D)
     return TRUE;
 }
 
-void MotorBikeCollision(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll) // (F) (D)
+void MotorBikeCollision(short itemNumber, ITEM_INFO* laraitem, COLL_INFO* coll) // (F) (D)
 {
     ITEM_INFO* item;
     MOTORBIKE_INFO* motorbike;
 
     if (laraitem->hitPoints >= 0 && lara.skidoo == NO_ITEM)
     {
-        item = &Items[item_number];
+        item = &Items[itemNumber];
         motorbike = GetMotorbikeInfo(item);
         
         // update motorbike light
@@ -196,9 +196,9 @@ void MotorBikeCollision(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll)
             DrawMotorbikeLight(item);
         }
 
-        if (GetOnMotorBike(item_number))
+        if (GetOnMotorBike(itemNumber))
         {
-            lara.skidoo = item_number;
+            lara.skidoo = itemNumber;
 
             if (lara.gun_type == LG_FLARE)
             {
@@ -245,7 +245,7 @@ void MotorBikeCollision(short item_number, ITEM_INFO* laraitem, COLL_INFO* coll)
         }
         else
         {
-            ObjectCollision(item_number, laraitem, coll);
+            ObjectCollision(itemNumber, laraitem, coll);
         }
     }
 }
@@ -367,7 +367,7 @@ void DrawMotorBikeEffect(ITEM_INFO* item) // (F) (D)
 // now lara explode with the vehicle !
 void MotorBikeExplode(ITEM_INFO* item) // (F) (D)
 {
-    if (rooms[item->roomNumber].flags & 1)
+    if (Rooms[item->roomNumber].flags & 1)
     {
         TriggerUnderwaterExplosion(item, TRUE);
     }
@@ -379,7 +379,7 @@ void MotorBikeExplode(ITEM_INFO* item) // (F) (D)
     }
 
     ExplodingDeath(lara.skidoo, -2, 256);
-    ExplodingDeath(lara.item_number, -2, 258); // enable blood
+    ExplodingDeath(lara.itemNumber, -2, 258); // enable blood
     LaraItem->hitPoints = 0;
     KillItem(lara.skidoo);
     item->status = FITEM_INVISIBLE;
@@ -428,7 +428,7 @@ int TestMotorbikeHeight(ITEM_INFO* item, int dz, int dx, PHD_VECTOR* pos) // (F)
 {
     FLOOR_INFO* floor;
     int c, s, ceiling, height;
-    short room_number;
+    short roomNumber;
 
     pos->y = item->pos.yPos - ((dx * SIN(item->pos.zRot) >> W2V_SHIFT) + (dz * SIN(item->pos.xRot)) >> W2V_SHIFT);
     c = COS(item->pos.yRot);
@@ -436,8 +436,8 @@ int TestMotorbikeHeight(ITEM_INFO* item, int dz, int dx, PHD_VECTOR* pos) // (F)
     pos->z = item->pos.zPos + ((dz * c - dx * s) >> W2V_SHIFT);
     pos->x = item->pos.xPos + ((dz * s + dx * c) >> W2V_SHIFT);
 
-    room_number = item->roomNumber;
-    floor = GetFloor(pos->x, pos->y, pos->z, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(pos->x, pos->y, pos->z, &roomNumber);
     ceiling = GetCeiling(floor, pos->x, pos->y, pos->z);
 
     if (pos->y < ceiling || ceiling == -NO_HEIGHT)
@@ -502,7 +502,7 @@ int MotorBikeDynamics(ITEM_INFO* item)
     FLOOR_INFO* floor;
     int hmf_old, hbl_old, hbr_old, hmtb_old, hfl_old;
     int height, collide, speed, newspeed;
-    short momentum = 0, rot, room_number;
+    short momentum = 0, rot, roomNumber;
 
     NoGetOff = FALSE;
     motorbike = GetMotorbikeInfo(item);
@@ -591,8 +591,8 @@ int MotorBikeDynamics(ITEM_INFO* item)
         }
     }
 
-    room_number = item->roomNumber;
-    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
     height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     if (item->pos.yPos >= height)
         speed = (item->speed * COS(item->pos.xRot)) >> W2V_SHIFT;
@@ -695,8 +695,8 @@ int MotorBikeDynamics(ITEM_INFO* item)
     if (rot1)
         rot2 = rot1;
 
-    room_number = item->roomNumber;
-    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
     height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     if (height < (item->pos.yPos - STEP_L))
         DoShift(item, (PHD_VECTOR*)&item->pos, &oldpos);
@@ -741,7 +741,7 @@ BOOL MotorbikeCanGetOff(void)
     FLOOR_INFO* floor;
     int x, y, z;
     int height, ceiling;
-    short room_number, angle;
+    short roomNumber, angle;
 
     item = &Items[lara.skidoo];
     angle = item->pos.yRot + 0x4000;
@@ -749,8 +749,8 @@ BOOL MotorbikeCanGetOff(void)
     y = item->pos.yPos;
     z = item->pos.zPos + ((500 * COS(angle)) >> W2V_SHIFT);
 
-    room_number = item->roomNumber;
-    floor = GetFloor(x, y, z, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(x, y, z, &roomNumber);
     height = GetHeight(floor, x, y, z);
     if (height_type == BIG_SLOPE || height_type == DIAGONAL || height == -NO_HEIGHT)
         return FALSE;
@@ -953,7 +953,7 @@ void AnimateMotorbike(ITEM_INFO* item, int collide, BOOL dead)
         LaraItem->goalAnimState = BIKE_FALLING;
     }
 
-    if (rooms[item->roomNumber].flags & 1)
+    if (Rooms[item->roomNumber].flags & 1)
     {
         LaraItem->goalAnimState = BIKE_EMPTY6;
         LaraItem->hitPoints = 0;
@@ -1160,7 +1160,7 @@ int MotorBikeControl(void)
     FLOOR_INFO* floor;
     PHD_VECTOR oldpos, fl, fr, fm;
     int drive, collide, pitch = 0, dead, height = 0, ceiling;
-    short room_number;
+    short roomNumber;
 
     item = &Items[lara.skidoo];
     motorbike = GetMotorbikeInfo(item);
@@ -1175,8 +1175,8 @@ int MotorBikeControl(void)
     int hfr = TestMotorbikeHeight(item, 500, 128, &fr);
     int hfm = TestMotorbikeHeight(item, -500, 0, &fm);
 
-    room_number = item->roomNumber;
-    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &room_number);
+    roomNumber = item->roomNumber;
+    floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
     height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
 
     TestTriggers(TriggerIndex, FALSE, FALSE);
@@ -1272,10 +1272,10 @@ int MotorBikeControl(void)
 
     if (motorbike->flags >= 0)
     {
-        if (room_number != item->roomNumber)
+        if (roomNumber != item->roomNumber)
         {
-            ItemNewRoom(lara.skidoo, room_number);
-            ItemNewRoom(lara.item_number, room_number);
+            ItemNewRoom(lara.skidoo, roomNumber);
+            ItemNewRoom(lara.itemNumber, roomNumber);
         }
         LaraItem->pos.xPos = item->pos.xPos;
         LaraItem->pos.yPos = item->pos.yPos;
@@ -1293,7 +1293,7 @@ int MotorBikeControl(void)
         {
             if (item->pos.yPos == item->floor)
             {
-                ExplodingDeath(lara.item_number, -1, 256);
+                ExplodingDeath(lara.itemNumber, -1, 256);
                 LaraItem->hitPoints = 0;
                 LaraItem->flags = IFLAG_ONESHOT;
                 MotorBikeExplode(item);

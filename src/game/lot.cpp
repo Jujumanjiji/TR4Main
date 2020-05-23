@@ -217,7 +217,7 @@ void InitialiseSlot(short itemNumber, int slots)
     }
 
     ClearLOT(&creature->LOT);
-    if (itemNumber != lara.item_number)
+    if (itemNumber != lara.itemNumber)
         CreateZone(item);
     ++baddie_count;
 }
@@ -233,7 +233,7 @@ void CreateZone(ITEM_INFO* item)
 
     creature = (CREATURE_INFO*)item->data;
     // Basic information about baddie
-    r = &rooms[item->roomNumber];
+    r = &Rooms[item->roomNumber];
     item->boxNumber = XZ_GET_SECTOR(r, item->pos.xPos, item->pos.zPos).box & BOX_NUMBER;
 
     if (creature->LOT.fly == NO_FLY)
