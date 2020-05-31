@@ -17,9 +17,6 @@
 #include "gameflow_utils.h"
 #include <dirent.h>
 
-short RoomDraw[200];
-short RoomDrawCount;
-
 ofstream flog;
 LPCSTR lpWeaponName[12] = {
     "UNARMED",

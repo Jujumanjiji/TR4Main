@@ -764,7 +764,7 @@ void SetupEntity::baboon()
         obj->hitEffect = HIT_BLOOD;
 
         if (Objects[BABOON_NORMAL].loaded)
-            Objects[BABOON_SILENT].animIndex = Objects[BABOON_NORMAL].animIndex;
+            Objects[BABOON_INV].animIndex = Objects[BABOON_NORMAL].animIndex;
     }
 
     obj = &Objects[BABOON_SILENT];
