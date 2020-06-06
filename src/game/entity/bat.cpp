@@ -28,10 +28,14 @@ enum BAT_ANIM
 #define BAT_ANGLE ANGLE(20)
 constexpr auto BAT_ATTACK_RANGE = SQUARE(CLICK(1)); // 65536
 constexpr auto BAT_TARGETING_RANGE = SQUARE(SECTOR(5)); // 0x1900000
-constexpr auto BAT_TARGET_YPOS = SQUARE(CLICK(2) / 17);
+constexpr auto BAT_TARGET_YPOS = SQUARE(CLICK(2) / 18);
 constexpr auto BAT_DAMAGE = 2;
-
 static BITE_INFO batBite = { 0, 16, 45, 4 };
+
+static bool isBatCollideTarget(ITEM_INFO* item)
+{
+    return item->touchBits >= 0;
+}
 
 void InitialiseBat(short itemNumber)
 {
@@ -108,8 +112,13 @@ void BatControl(short itemNumber)
 
         CreatureAIInfo(item, &info);
         GetCreatureMood(item, &info, TIMID);
-        if (bat->flags)
+        // note: this random dont exist in TR4 !
+        // this part set the bat in escape mood, but for too long !
+        // lara can escape and shot it easy ....
+        if (bat->flags && !(GetRandomControl() & 16))
             bat->mood = ESCAPE_MOOD;
+        else if (bat->flags && GetRandomControl() & 24) // fine maybe ? the bat react more with "16" but this reaction is too fast !
+            bat->mood = STALK_MOOD;
         CreatureMood(item, &info, TIMID);
         angle = CreatureTurn(item, BAT_ANGLE);
 
@@ -125,7 +134,7 @@ void BatControl(short itemNumber)
 
             if (!bat->flags)
             {
-                if (item->touchBits || bat->enemy != LaraItem)
+                if (isBatCollideTarget(item) || bat->enemy != LaraItem)
                 {
                     if (info.distance < BAT_ATTACK_RANGE
                     &&  info.ahead && abs(item->pos.yPos - bat->enemy->pos.yPos) < BAT_TARGET_YPOS)
@@ -136,7 +145,7 @@ void BatControl(short itemNumber)
             }
             break;
         case BAT_ATK:
-            if (!bat->flags && (item->touchBits || bat->enemy != LaraItem) && info.distance < BAT_ATTACK_RANGE && info.ahead && abs(item->pos.yPos - bat->enemy->pos.yPos) < BAT_TARGET_YPOS)
+            if (!bat->flags && (isBatCollideTarget(item) || bat->enemy != LaraItem) && info.distance < BAT_ATTACK_RANGE && info.ahead && abs(item->pos.yPos - bat->enemy->pos.yPos) < BAT_TARGET_YPOS)
             {
                 CreatureEffect(item, &batBite, DoBloodSplat);
                 if (bat->enemy == LaraItem)
