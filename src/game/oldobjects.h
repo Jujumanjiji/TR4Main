@@ -1,12 +1,5 @@
 #pragma once
 
-#include "ahmet.h"
-#include "baboon.h"
-
-
-
-#include "motorbike.h"
-
 #ifdef DLL_INJECT
 ///#define InitialiseMotorBike INITIALISE(0x00464610)
 ///#define MotorBikeCollision COLLISION(0x00464680)
@@ -79,8 +72,6 @@
 #define InitialiseEnemyJeep INITIALISE(0x00469B90)
 #define EnemyJeepTrainControl CONTROL(0x00464520)
 #define EnemyJeepControl CONTROL(0x00469C20)
-#define InitialiseBat INITIALISE(0x00402A10)
-#define BatControl CONTROL(0x00402A70)
 #define InitialiseBigBeetle INITIALISE(0x0040DE90)
 #define BigBeetleControl CONTROL(0x0040DEF0)
 #define InitialiseSentryGun INITIALISE(0x0043F7A0)

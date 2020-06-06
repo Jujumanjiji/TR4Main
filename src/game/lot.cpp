@@ -9,12 +9,12 @@ void InitialiseLOT(BOOL allocateBaddie)
     CREATURE_INFO* cinfo;
 
     if (allocateBaddie)
-        baddie_slots = (CREATURE_INFO*)game_malloc(NUM_SLOTS * sizeof(CREATURE_INFO));
+        BaddieSlots = (CREATURE_INFO*)game_malloc(NUM_SLOTS * sizeof(CREATURE_INFO));
 
-    cinfo = baddie_slots;
+    cinfo = BaddieSlots;
     for (int i = 0; i < NUM_SLOTS; i++, cinfo++)
     {
-        cinfo->itemNumber = NO_ITEM;
+        cinfo->itemNum = NO_ITEM;
         if (allocateBaddie)
             cinfo->LOT.node = (BOX_NODE*)game_malloc(number_boxes * sizeof(BOX_NODE));
     }
@@ -34,7 +34,7 @@ void DisableBaddieAI(short itemNumber)
 
     if (creature)
     {
-        creature->itemNumber = NO_ITEM;
+        creature->itemNum = NO_ITEM;
         --baddie_count;
     }
 
@@ -54,10 +54,10 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
 
     if (baddie_count < NUM_SLOTS)
     {
-        creature = baddie_slots;
+        creature = BaddieSlots;
         for (int slot = 0; slot < NUM_SLOTS; slot++, creature++)
         {
-            if (creature->itemNumber == NO_ITEM)
+            if (creature->itemNum == NO_ITEM)
             {
                 InitialiseSlot(itemNumber, slot);
                 return TRUE;
@@ -79,10 +79,10 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     }
 
     worstslot = NO_ITEM;
-    creature = baddie_slots;
+    creature = BaddieSlots;
     for (int slot = 0; slot < NUM_SLOTS; slot++, creature++)
     {
-        item = &Items[creature->itemNumber];
+        item = &Items[creature->itemNum];
         x = (item->pos.xPos - camera.pos.x) >> 8;
         y = (item->pos.yPos - camera.pos.y) >> 8;
         z = (item->pos.zPos - camera.pos.z) >> 8;
@@ -97,7 +97,7 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     // Convert Baddie on worst slot to INVISIBLE and take over slot
     if (worstslot >= 0)
     {
-        short worstnumber = baddie_slots[worstslot].itemNumber;
+        short worstnumber = BaddieSlots[worstslot].itemNum;
         item = &Items[worstnumber];
         item->status = FITEM_INVISIBLE;
         DisableBaddieAI(worstnumber);
@@ -113,11 +113,11 @@ void InitialiseSlot(short itemNumber, int slots)
     CREATURE_INFO* creature;
     ITEM_INFO* item;
 
-    creature = &baddie_slots[slots];
+    creature = &BaddieSlots[slots];
     item = &Items[itemNumber];
 
     // Default settings for creature
-    creature->itemNumber = itemNumber;
+    creature->itemNum = itemNumber;
     creature->mood = BORED_MOOD;
     creature->jointRotation[0] = 0;
     creature->jointRotation[1] = 0;

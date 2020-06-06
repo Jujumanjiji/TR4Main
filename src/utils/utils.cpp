@@ -551,12 +551,12 @@ ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature
     int i;
 
     bestdist = 0x7FFFFFFF;
-    cinfo = baddie_slots;
+    cinfo = BaddieSlots;
     for (i = 0; i < NUM_SLOTS; i++, cinfo++)
     {
-        if (cinfo->itemNumber != NO_ITEM && cinfo->itemNumber != itemNumber)
+        if (cinfo->itemNum != NO_ITEM && cinfo->itemNum != itemNumber)
         {
-            target = &Items[cinfo->itemNumber];
+            target = &Items[cinfo->itemNum];
             if (target->status == FITEM_ACTIVE && target->objectNumber == objectToTarget)
             {
                 x = target->pos.xPos - src->pos.xPos;

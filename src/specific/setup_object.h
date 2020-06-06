@@ -3,6 +3,8 @@
 class SetupObject
 {
 public:
+    void motorbike();
+    void jeep();
     void camera_target();
     void flare();
     void smash_object();

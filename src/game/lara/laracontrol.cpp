@@ -11,6 +11,7 @@
 #include "sound.h"
 #include "utils.h"
 #include "oldobjects.h"
+#include "motorbike.h"
 
 static short cheat_hit_points = 0;
 static bool cheatEnabled = false;

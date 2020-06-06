@@ -8,8 +8,51 @@
 #include "puzzle.h"
 #include "switchs.h"
 #include "oldobjects.h"
+#include "motorbike.h"
 
 SetupObject setup_object;
+
+void SetupObject::motorbike()
+{
+    obj = &Objects[MOTORBIKE];
+    if (obj->loaded)
+    {
+        obj->initialise = InitialiseMotorBike;
+        obj->control = NULL;
+        obj->collision = MotorBikeCollision;
+        obj->drawRoutineExtra = DrawMotorBikeEffect;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->saveHitpoints = true;
+        obj->savePosition = true;
+
+        Bones[obj->boneIndex + 4] |= ROT_X;
+        Bones[obj->boneIndex + 12] |= ROT_X;
+        Bones[obj->boneIndex + 28] |= ROT_X;
+    }
+}
+
+void SetupObject::jeep()
+{
+    obj = &Objects[JEEP];
+    if (obj->loaded)
+    {
+        obj->initialise = InitialiseJeep;
+        obj->control = NULL;
+        obj->collision = JeepCollision;
+        obj->drawRoutineExtra = DrawJeepEffect;
+        obj->saveAnim = true;
+        obj->saveFlags = true;
+        obj->saveHitpoints = true;
+        obj->savePosition = true;
+
+        Bones[obj->boneIndex + 32] |= ROT_X;
+        Bones[obj->boneIndex + 36] |= ROT_X;
+        Bones[obj->boneIndex + 44] |= ROT_X;
+        Bones[obj->boneIndex + 48] |= ROT_X;
+    }
+}
+
 void SetupObject::camera_target()
 {
     obj = &Objects[CAMERA_TARGET];

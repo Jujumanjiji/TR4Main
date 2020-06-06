@@ -6,6 +6,9 @@
 #include "gameflow.h"
 #include "utils.h"
 #include "oldobjects.h"
+#include "ahmet.h"
+#include "baboon.h"
+#include "bat.h"
 
 SetupEntity setup_entity;
 void SetupEntity::lara_obj()
@@ -27,47 +30,6 @@ void SetupEntity::lara_obj()
     else
     {
         MessageBox(NULL, "[BaddyObjects] LARA object is not loaded ! please include lara in your project !", "Tomb Raider 4", BOX_DEFFLAG(MB_ICONERROR));
-    }
-}
-
-void SetupEntity::motor_bike()
-{
-    obj = &Objects[MOTORBIKE];
-    if (obj->loaded)
-    {
-        obj->initialise = InitialiseMotorBike;
-        obj->control = NULL;
-        obj->collision = MotorBikeCollision;
-        obj->drawRoutineExtra = DrawMotorBikeEffect;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        
-        Bones[obj->boneIndex + 4]  |= ROT_X;
-        Bones[obj->boneIndex + 12] |= ROT_X;
-        Bones[obj->boneIndex + 28] |= ROT_X;
-    }
-}
-
-void SetupEntity::jeep()
-{
-    obj = &Objects[JEEP];
-    if (obj->loaded)
-    {
-        obj->initialise = InitialiseJeep;
-        obj->control = NULL;
-        obj->collision = JeepCollision;
-        obj->drawRoutineExtra = DrawJeepEffect;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        
-        Bones[obj->boneIndex + 32] |= ROT_X;
-        Bones[obj->boneIndex + 36] |= ROT_X;
-        Bones[obj->boneIndex + 44] |= ROT_X;
-        Bones[obj->boneIndex + 48] |= ROT_X;
     }
 }
 

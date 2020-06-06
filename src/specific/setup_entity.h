@@ -4,8 +4,6 @@ class SetupEntity
 {
 public:
     void lara_obj();
-    void motor_bike();
-    void jeep();
     void skeleton();
     void von_croy();
     void guide();

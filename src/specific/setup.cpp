@@ -63,8 +63,6 @@ void InitialiseObjects(void)
 void BaddyObjects(void)
 {
     setup_entity.lara_obj();
-    setup_entity.motor_bike();
-    setup_entity.jeep();
     setup_entity.skeleton();
     setup_entity.von_croy();
     setup_entity.guide();
@@ -114,6 +112,8 @@ void BaddyObjects(void)
 
 void ObjectObjects(void)
 {
+    setup_object.motorbike();
+    setup_object.jeep();
     setup_object.camera_target();
     setup_object.flare();
     setup_object.smash_object();

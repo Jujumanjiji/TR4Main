@@ -1058,7 +1058,7 @@ struct CREATURE_INFO
     ITEM_INFO *enemy;
     ITEM_INFO aiTarget;
     short pad;
-    short itemNumber;
+    short itemNum;
     PHD_VECTOR target;
     LOT_INFO LOT;
 };

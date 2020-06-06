@@ -670,13 +670,13 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
     maxdist = winfo->target_dist;
     maxdist2 = SQUARE(maxdist);
 
-    creature = baddie_slots;
+    creature = BaddieSlots;
     for (int slots = 0; slots < NUM_SLOTS; slots++, creature++)
     {
-        if (creature->itemNumber == NO_ITEM || creature->itemNumber == lara.itemNumber)
+        if (creature->itemNum == NO_ITEM || creature->itemNum == lara.itemNumber)
             continue;
 
-        item = &Items[creature->itemNumber];
+        item = &Items[creature->itemNum];
         if (item->hitPoints <= 0)
             continue;
         if (!Objects[item->objectNumber].intelligent)

@@ -59,6 +59,7 @@ private:
         /// entities
         void inject_ahmet();
         void inject_baboon();
+        void inject_bat();
     };
 
     struct f_specific
