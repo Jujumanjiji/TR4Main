@@ -445,47 +445,42 @@ struct ITEM_INFO
     short TOSSPAD;
 };
 
+struct COLL_FLOOR
+{
+    int floor;
+    int ceiling;
+    int type;
+};
+
 struct COLL_INFO
 {
-    int mid_floor;              // relative floor and ceiling heights at midpoint
-    int mid_ceiling;
-    int mid_type;
-    int front_floor;            // relative floor and ceiling heights at front
-    int front_ceiling;
-    int front_type;
-    int left_floor;             // relative floor and ceiling heights at front/left side
-    int left_ceiling;
-    int left_type;
-    int right_floor;            // relative floor and ceiling heights at front/right side
-    int right_ceiling;
-    int right_type;
-    int left_floor2;            // relative floor and ceiling heights at back/left side
-    int left_ceiling2;
-    int left_type2;
-    int right_floor2;           // relative floor and ceiling heights at back/right side
-    int right_ceiling2;
-    int right_type2;
-    long radius;                // INPUT Collision Radius...
-    long bad_pos, bad_neg;      // INPUT Relative Heights We want to Collide against...
-    long bad_ceiling;           // INPUT Relative Bad Ceiling Height...
-    PHD_VECTOR shift;           // Shift/Push Values..
-    PHD_VECTOR old;             // INPUT Old Positions
-    short old_anim_state;       // INPUT old animation
-    short old_anim_number;
-    short old_frame_number;
+    COLL_FLOOR middle;           // mid
+    COLL_FLOOR front;            // front
+    COLL_FLOOR frontLeft;        // left
+    COLL_FLOOR frontRight;       // right
+    COLL_FLOOR backLeft;         // left2
+    COLL_FLOOR backRight;        // right2
+    int radius;                  // INPUT Collision Radius...
+    int badPos, badNeg;          // INPUT Relative Heights We want to Collide against...
+    int badCeiling;              // INPUT Relative Bad Ceiling Height...
+    PHD_VECTOR shift;            // Shift/Push Values..
+    PHD_VECTOR old;              // INPUT Old Positions
+    short oldAnimState;          // INPUT old animation
+    short oldAnimNumber;
+    short oldFrameNumber;
     short facing;                // INPUT Angle we are Moving...
     short quadrant;              // Quadrant we are moving ( Not necessarily facing! )
-    short coll_type;             // Type of Collision (COLL_TYPE enum)
+    short collType;              // Type of Collision (COLL_TYPE enum)
     short* trigger;              // Trigger info index
-    char tilt_x, tilt_z;         // Type of Tilt of Floor
-    char hit_by_baddie;          // Flag to indicate Lara has been hit by a Baddie
-    char hit_static;             // Flag to indicate Lara has collided with a Static object
-    WORD slopes_are_walls : 2;   // Treat big slopesUp as walls
-    WORD slopes_are_pits : 1;    // Treat big slopesDown as pits
-    WORD lava_is_pit : 1;        // Treat Lava as Bad place to go onto
-    WORD enable_baddie_push : 1; // Baddies can push Lara
-    WORD enable_spaz : 1;        // Spaz animations are enabled
-    WORD hit_ceiling : 1;        // Has Lara hit ceiling? (For up jump only).
+    char tiltX, tiltZ;           // Type of Tilt of Floor
+    char hitByBaddie;            // Flag to indicate Lara has been hit by a Baddie
+    char hitStatic;              // Flag to indicate Lara has collided with a Static object
+    WORD slopesAreWalls : 2;     // Treat big slopesUp as walls
+    WORD slopesArePits : 1;      // Treat big slopesDown as pits
+    WORD lavaIsPit : 1;          // Treat Lava as Bad place to go onto
+    WORD enableBaddiePush : 1;   // Baddies can push Lara
+    WORD enableSpaz : 1;         // Spaz animations are enabled
+    WORD hitCeiling : 1;         // Has Lara hit ceiling? (For up jump only).
 };
 
 typedef void(*LPINITIALISE)(short itemNumber);
@@ -618,21 +613,14 @@ struct CAMERA_INFO
 
 struct LARA_ARM
 {
-    short *frame_base;
-    short frame_number;
-    short anim_number;
+    short *frameBase;
+    short frameNumber;
+    short animNumber;
     short lock;
-    short y_rot;
-    short x_rot;
-    short z_rot;
+    short yRot;
+    short xRot;
+    short zRot;
     short flash_gun;
-};
-
-struct LOCATION
-{
-    char current;
-    char highest;
-    char pad;
 };
 
 struct LARA_MESH
@@ -1080,88 +1068,88 @@ struct OBJECT_FOUND
 struct LARA_INFO
 {
     short itemNumber;
-    short gun_status;         // LHS_ enum
-    short gun_type;           // LG_ enum
-    short gun_request_type;   // LG_ enum
-    short gun_last_type;      // LG_ enum
-    short calc_fallspeed;
-    short water_status;       // LWS_ enum
-    short climb_status;
-    short pose_count;
-    short hit_frame;
-    short hit_direction;
+    short gunStatus;        // LHS_ enum
+    short gunType;          // LG_ enum
+    short requestGunType;   // LG_ enum
+    short lastGunType;      // LG_ enum
+    short calcFallspeed;
+    short waterStatus;      // LWS_ enum
+    short climbStatus;
+    short poseCount;
+    short hitFrame;
+    short hitDirection;
     short air;
-    short dive_count;
-    short death_count;
-    short current_active;
-    short current_xvel;
-    short current_yvel;
-    short current_zvel;
-    short spaz_effect_count;
-    short flare_age;
+    short diveCount;
+    short deathCount;
+    short currentActive;
+    short currentXvel;
+    short currentYvel;
+    short currentZvel;
+    short spazEffectCount;
+    short flareAge;
     short skidoo;
-    short weapon_item;
-    short back_gun;
-    short flare_frame;
+    short weaponItem;
+    short backGun;
+    short flareFrame;
     short poisoned;
-    short poisoned_2;
+    short dpoisoned;
     unsigned char anxiety;
     unsigned char wet[15];
-    WORD flare_control_left : 1; // LOBYTE: 0x1
-    WORD flare_control_right : 1;// LOBYTE: 0x2
+    WORD flareControlLeft : 1;   // LOBYTE: 0x1
+    WORD flareControlRight : 1;  // LOBYTE: 0x2
     WORD look : 1;               // LOBYTE: 0x4
     WORD burn : 1;               // LOBYTE: 0x8
-    WORD keep_ducked : 1;        // LOBYTE: 0x10
-    WORD is_moving : 1;          // LOBYTE: 0x20
-    WORD can_monkey_swing : 1;   // LOBYTE: 0x40
-    WORD burn_blue : 1;          // LOBYTE: 0x80
-    WORD not_used : 1;           // LOBYTE: 0x100,  HIBYTE: 0x1
-    WORD burn_smoke : 1;         // LOBYTE: 0x200,  HIBYTE: 0x2
-    WORD is_ducked : 1;          // LOBYTE: 0x400,  HIBYTE: 0x4
-    WORD has_fired : 1;          // LOBYTE: 0x800,  HIBYTE: 0x8
+    WORD keepDucked : 1;         // LOBYTE: 0x10
+    WORD isMoving : 1;           // LOBYTE: 0x20
+    WORD canMonkeySwing : 1;     // LOBYTE: 0x40
+    WORD burnBlue : 1;           // LOBYTE: 0x80
+    WORD gassed : 1;             // LOBYTE: 0x100,  HIBYTE: 0x1
+    WORD burnSmoke : 1;          // LOBYTE: 0x200,  HIBYTE: 0x2
+    WORD isDucked : 1;           // LOBYTE: 0x400,  HIBYTE: 0x4
+    WORD hasFired : 1;           // LOBYTE: 0x800,  HIBYTE: 0x8
     WORD busy : 1;               // LOBYTE: 0x1000, HIBYTE: 0x10
-    WORD lit_torch : 1;          // LOBYTE: 0x2000, HIBYTE: 0x20
-    WORD is_climbing : 1;        // LOBYTE: 0x4000, HIBYTE: 0x40
+    WORD litTorch : 1;           // LOBYTE: 0x2000, HIBYTE: 0x20
+    WORD isClimbing : 1;         // LOBYTE: 0x4000, HIBYTE: 0x40
     WORD fired : 1;              // LOBYTE: 0x8000, HIBYTE: 0x80
-    long water_surface_dist;
-    PHD_VECTOR last_pos;
-    FX_INFO *spaz_effect;
-    int mesh_effects;
+    int waterSurfaceDist;
+    PHD_VECTOR lastPos;
+    FX_INFO *spazEffect;
+    int meshEffects;
     LARA_MESH mesh;
     ITEM_INFO *target;
-    short target_angles[2];
-    short turn_rate;
-    short move_angle;
-    short head_y_rot;
-    short head_x_rot;
-    short head_z_rot;
-    short torso_y_rot;
-    short torso_x_rot;
-    short torso_z_rot;
-    LARA_ARM l_arm;
-    LARA_ARM r_arm;
+    short targetAngles[2];
+    short turnRate;
+    short moveAngle;
+    short headYrot;
+    short headXrot;
+    short headZrot;
+    short torsoYrot;
+    short torsoXrot;
+    short torsoZrot;
+    LARA_ARM leftArm;
+    LARA_ARM rightArm;
     WORD holsters;
     CREATURE_INFO *creature;
-    long corner_x;
-    long corner_z;
-    char rope_segment;
-    char rope_direction;
-    short rope_arc_front;
-    short rope_arc_back;
-    short rope_last_x;
-    short rope_maxX_forward;
-    short rope_maxX_backward;
-    long rope_dframe;
-    long rope_frame;
-    WORD rope_framerate;
-    WORD rope_y;
-    long rope_ptr;
-    LPVOID general_ptr;
-    int rope_offset;
-    DWORD rope_downvel;
-    char rope_flag;
-    char move_count;
-    int rope_count;
+    int cornerX;
+    int cornerZ;
+    BYTE ropeSegment;
+    BYTE ropeDirection;
+    short ropeArcFront;
+    short ropeArcBack;
+    short ropeLastX;
+    short ropeMaxXForward;
+    short ropeMaxXBackward;
+    int ropeDFrame;
+    int ropeFrame;
+    WORD ropeFrameRate;
+    WORD ropeY;
+    int ropePtr;
+    LPVOID generalPtr;
+    int ropeOffset;
+    int ropeDownVel;
+    BYTE ropeFlag;
+    BYTE moveCount;
+    int ropeCount;
     char pistols_type_carried;    // CR_ flags
     char uzi_type_carried;        // CR_ flags
     char shotgun_type_carried;    // CR_ flags
@@ -1199,9 +1187,11 @@ struct LARA_INFO
     short crossbow_ammo2_count;
     short crossbow_ammo3_count;
     char unknown;
-    char blind_timer;
-    LOCATION locate;
-    short dash_timer;
+    char blindTimer;
+    BYTE location;
+    BYTE highestLocation;
+    BYTE locationPad;
+    short dashTimer;
 };
 
 struct BONE

@@ -217,7 +217,7 @@ void InitialiseSlot(short itemNumber, int slots)
     }
 
     ClearLOT(&creature->LOT);
-    if (itemNumber != lara.itemNumber)
+    if (itemNumber != Lara.itemNumber)
         CreateZone(item);
     ++baddie_count;
 }

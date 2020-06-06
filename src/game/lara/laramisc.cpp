@@ -3,7 +3,7 @@
 
 void InitialiseLaraLoad(short itemNumber)
 {
-    lara.itemNumber = itemNumber;
+    Lara.itemNumber = itemNumber;
     LaraItem = &Items[itemNumber];
 }
 
@@ -11,7 +11,7 @@ void InitialiseLaraAnims(ITEM_INFO* item)
 {
     if (RWATER(item->roomNumber))
     {
-        lara.water_status = LWS_UNDERWATER;
+        Lara.waterStatus = LWS_UNDERWATER;
         item->goalAnimState = STATE_LARA_UNDERWATER_STOP;
         item->currentAnimState = STATE_LARA_UNDERWATER_STOP;
         item->animNumber = ANIMATION_LARA_UNDERWATER_IDLE;
@@ -20,7 +20,7 @@ void InitialiseLaraAnims(ITEM_INFO* item)
     }
     else
     {
-        lara.water_status = LWS_ABOVEWATER;
+        Lara.waterStatus = LWS_ABOVEWATER;
         item->goalAnimState = STATE_LARA_IDLE;
         item->currentAnimState = STATE_LARA_IDLE;
         item->animNumber = ANIMATION_LARA_STAY_SOLID;
@@ -33,28 +33,28 @@ void LaraInitialiseMeshes(void)
     ResetLaraMeshSkin();
 
     // NOTE: normally you have the weapon if the gun_type is set to these weapon...
-    switch (lara.gun_type)
+    switch (Lara.gunType)
     {
     case LG_SHOTGUN:
-        if (CHK_EXI(lara.shotgun_type_carried, CR_PRESENT))
-            lara.back_gun = SHOTGUN_ANIM;
+        if (CHK_EXI(Lara.shotgun_type_carried, CR_PRESENT))
+            Lara.backGun = SHOTGUN_ANIM;
         break;
     case LG_GRENADEGUN:
-        if (CHK_EXI(lara.grenadegun_type_carried, CR_PRESENT))
-            lara.back_gun = GRENADE_GUN_ANIM;
+        if (CHK_EXI(Lara.grenadegun_type_carried, CR_PRESENT))
+            Lara.backGun = GRENADE_GUN_ANIM;
         break;
     case LG_CROSSBOW:
-        if (CHK_EXI(lara.crossbow_type_carried, CR_PRESENT))
-            lara.back_gun = CROSSBOW_ANIM;
+        if (CHK_EXI(Lara.crossbow_type_carried, CR_PRESENT))
+            Lara.backGun = CROSSBOW_ANIM;
         break;
     }
 
-    lara.gun_status = LHS_ARMLESS;
-    lara.l_arm.frame_number = 0;
-    lara.r_arm.frame_number = 0;
-    lara.target = NULL;
-    lara.r_arm.lock = FALSE;
-    lara.l_arm.lock = FALSE;
+    Lara.gunStatus = LHS_ARMLESS;
+    Lara.leftArm.frameNumber = 0;
+    Lara.rightArm.frameNumber = 0;
+    Lara.target = NULL;
+    Lara.rightArm.lock = FALSE;
+    Lara.leftArm.lock = FALSE;
 }
 
 #ifdef DLL_INJECT

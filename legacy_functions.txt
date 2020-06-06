@@ -390,3 +390,20 @@
 #define AlignLaraPosition ((void(__cdecl*)(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)) 0x00448070)
 #define MoveLaraPosition ((BOOL(__cdecl*)(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)) 0x004483E0)
 #define Move3DPosTo3DPos ((BOOL(__cdecl*)(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angadd)) 0x00448140)
+
+// AHMET.CPP
+#define InitialiseAhmet ((void(__cdecl*)(short itemNumber)) 0x00401000)
+#define AhmetControl ((void(__cdecl*)(short itemNumber)) 0x00401080)
+#define TriggerAhmetDeathEffect ((void(__cdecl*)(ITEM_INFO* item)) 0x00401730)
+
+// BABOON.CPP
+#define InitialiseBaboon ((void(__cdecl*)(short itemNumber)) 0x00401DB0)
+#define BaboonControl ((void(__cdecl*)(short itemNumber)) 0x00401E50)
+#define BaboonSearchCrowbarSwitch ((void(__cdecl*)(ITEM_INFO *item, short flags)) 0x004027E0)
+#define BaboonRespawn ((void(__cdecl*)(short itemNumber)) 0x00402850)
+#define BaboonDieEffect ((void(__cdecl*)(ITEM_INFO* item)) 0x00402970)
+
+// BAT.CPP
+#define InitialiseBat ((void(__cdecl*)(short itemNumber)) 0x00402A10)
+#define BatControl ((void(__cdecl*)(short itemNumber)) 0x00402A70)
+

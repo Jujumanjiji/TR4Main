@@ -1114,9 +1114,9 @@ void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
     // orient lara when slidding !
     // more realistic because the foot will touch the floor like this !
     // - maybe using animation instead of that would be great for customization ?
-    S_LogValue("adif: %d, coll->tilt_x: %d, coll->tilt_z: %d, angle: %d, world_angle: %s, item->pos.x_rot: %d, lara.move_angle: %d, item->pos.y_rot: %d", adif, coll->tilt_x, coll->tilt_z, angle, WriteWorldItemAngle(item), item->pos.xRot, lara.move_angle, item->pos.yRot);
+    S_LogValue("adif: %d, coll->tilt_x: %d, coll->tilt_z: %d, angle: %d, world_angle: %s, item->pos.x_rot: %d, lara.move_angle: %d, item->pos.y_rot: %d", adif, coll->tiltX, coll->tiltZ, angle, WriteWorldItemAngle(item), item->pos.xRot, Lara.moveAngle, item->pos.yRot);
 
-    switch (lara.move_angle)
+    switch (Lara.moveAngle)
     {
         case 0:       // NORTH
 
@@ -1125,15 +1125,15 @@ void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
             switch (item->pos.yRot)
             {
             case 0x4000:
-                if (coll->tilt_x == -3)
+                if (coll->tiltX == -3)
                     item->pos.xRot = -SLIDE_SLOPE3;
-                else if (coll->tilt_x == -4)
+                else if (coll->tiltX == -4)
                     item->pos.xRot = -SLIDE_SLOPE4;
                 break;
             case -0x4000:
-                if (coll->tilt_x == -3)
+                if (coll->tiltX == -3)
                     item->pos.xRot = SLIDE_SLOPE3_INV;
-                else if (coll->tilt_x == -4)
+                else if (coll->tiltX == -4)
                     item->pos.xRot = SLIDE_SLOPE4_INV;
                 break;
             }
@@ -1398,21 +1398,21 @@ void ResetLaraMeshSkin(void)
         classic_meshes(LARA, i, classic_meshes(LARA_SKIN, i));
 
     short mesh_target = LARA_SKIN;
-    lara.mesh.hips = classic_meshes(mesh_target, HIPS);
-    lara.mesh.thigh_l = classic_meshes(mesh_target, THIGH_L);
-    lara.mesh.calf_l = classic_meshes(mesh_target, CALF_L);
-    lara.mesh.foot_l = classic_meshes(mesh_target, FOOT_L);
-    lara.mesh.thigh_r = classic_meshes(mesh_target, THIGH_R);
-    lara.mesh.calf_r = classic_meshes(mesh_target, CALF_R);
-    lara.mesh.foot_r = classic_meshes(mesh_target, FOOT_R);
-    lara.mesh.torso = classic_meshes(mesh_target, TORSO);
-    lara.mesh.uarm_r = classic_meshes(mesh_target, UARM_R);
-    lara.mesh.larm_r = classic_meshes(mesh_target, LARM_R);
-    lara.mesh.hand_r = classic_meshes(mesh_target, HAND_R);
-    lara.mesh.uarm_l = classic_meshes(mesh_target, UARM_L);
-    lara.mesh.larm_l = classic_meshes(mesh_target, LARM_L);
-    lara.mesh.hand_l = classic_meshes(mesh_target, HAND_L);
-    lara.mesh.head = classic_meshes(mesh_target, HEAD);
+    Lara.mesh.hips = classic_meshes(mesh_target, HIPS);
+    Lara.mesh.thigh_l = classic_meshes(mesh_target, THIGH_L);
+    Lara.mesh.calf_l = classic_meshes(mesh_target, CALF_L);
+    Lara.mesh.foot_l = classic_meshes(mesh_target, FOOT_L);
+    Lara.mesh.thigh_r = classic_meshes(mesh_target, THIGH_R);
+    Lara.mesh.calf_r = classic_meshes(mesh_target, CALF_R);
+    Lara.mesh.foot_r = classic_meshes(mesh_target, FOOT_R);
+    Lara.mesh.torso = classic_meshes(mesh_target, TORSO);
+    Lara.mesh.uarm_r = classic_meshes(mesh_target, UARM_R);
+    Lara.mesh.larm_r = classic_meshes(mesh_target, LARM_R);
+    Lara.mesh.hand_r = classic_meshes(mesh_target, HAND_R);
+    Lara.mesh.uarm_l = classic_meshes(mesh_target, UARM_L);
+    Lara.mesh.larm_l = classic_meshes(mesh_target, LARM_L);
+    Lara.mesh.hand_l = classic_meshes(mesh_target, HAND_L);
+    Lara.mesh.head = classic_meshes(mesh_target, HEAD);
 }
 
 CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item)
@@ -1582,38 +1582,38 @@ short WEAPON_AMMO::get(int weapon_type)
     switch (weapon_type)
     {
         case LG_REVOLVER:
-            return lara.revolver_ammo_count;
+            return Lara.revolver_ammo_count;
 
         case LG_UZIS:
-            return lara.uzi_ammo_count;
+            return Lara.uzi_ammo_count;
 
         case LG_SHOTGUN:
-            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
-                return lara.shotgun_ammo1_count;
+            if (CHK_ANY(Lara.shotgun_type_carried, CR_AMMO1))
+                return Lara.shotgun_ammo1_count;
             else
-                return lara.shotgun_ammo2_count;
+                return Lara.shotgun_ammo2_count;
             break;
         case LG_GRENADEGUN:
-            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
-                return lara.grenade_ammo1_count;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
-                return lara.grenade_ammo2_count;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
-                return lara.grenade_ammo3_count;
+            if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO1))
+                return Lara.grenade_ammo1_count;
+            else if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO2))
+                return Lara.grenade_ammo2_count;
+            else if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO3))
+                return Lara.grenade_ammo3_count;
             break;
 
         case LG_CROSSBOW:
-            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
-                return lara.crossbow_ammo1_count;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
-                return lara.crossbow_ammo2_count;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
-                return lara.crossbow_ammo3_count;
+            if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO1))
+                return Lara.crossbow_ammo1_count;
+            else if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO2))
+                return Lara.crossbow_ammo2_count;
+            else if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO3))
+                return Lara.crossbow_ammo3_count;
             break;
 
         case LG_PISTOLS:
         default:
-            return lara.pistol_ammo_count;
+            return Lara.pistol_ammo_count;
     }
 
     return -2; // NOT FOUND!
@@ -1624,41 +1624,41 @@ void WEAPON_AMMO::increase(int weapon_type, int value)
     switch (weapon_type)
     {
         case LG_REVOLVER:
-            lara.revolver_ammo_count += value;
+            Lara.revolver_ammo_count += value;
             break;
 
         case LG_UZIS:
-            lara.uzi_ammo_count += value;
+            Lara.uzi_ammo_count += value;
             break;
 
         case LG_SHOTGUN:
-            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
-                lara.shotgun_ammo1_count += value;
+            if (CHK_ANY(Lara.shotgun_type_carried, CR_AMMO1))
+                Lara.shotgun_ammo1_count += value;
             else
-                lara.shotgun_ammo2_count += value;
+                Lara.shotgun_ammo2_count += value;
             break;
 
         case LG_GRENADEGUN:
-            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
-                lara.grenade_ammo1_count += value;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
-                lara.grenade_ammo2_count += value;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
-                lara.grenade_ammo3_count += value;
+            if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO1))
+                Lara.grenade_ammo1_count += value;
+            else if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO2))
+                Lara.grenade_ammo2_count += value;
+            else if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO3))
+                Lara.grenade_ammo3_count += value;
             break;
 
         case LG_CROSSBOW:
-            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
-                lara.crossbow_ammo1_count += value;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
-                lara.crossbow_ammo2_count += value;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
-                lara.crossbow_ammo3_count += value;
+            if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO1))
+                Lara.crossbow_ammo1_count += value;
+            else if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO2))
+                Lara.crossbow_ammo2_count += value;
+            else if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO3))
+                Lara.crossbow_ammo3_count += value;
             break;
 
         case LG_PISTOLS:
         default:
-            lara.pistol_ammo_count += value;
+            Lara.pistol_ammo_count += value;
             break;
     }
 }
@@ -1668,41 +1668,41 @@ void WEAPON_AMMO::decrease(int weapon_type, int value)
     switch (weapon_type)
     {
         case LG_REVOLVER:
-            lara.revolver_ammo_count -= value;
+            Lara.revolver_ammo_count -= value;
             break;
 
         case LG_UZIS:
-            lara.uzi_ammo_count -= value;
+            Lara.uzi_ammo_count -= value;
             break;
 
         case LG_SHOTGUN:
-            if (CHK_ANY(lara.shotgun_type_carried, CR_AMMO1))
-                lara.shotgun_ammo1_count -= value;
+            if (CHK_ANY(Lara.shotgun_type_carried, CR_AMMO1))
+                Lara.shotgun_ammo1_count -= value;
             else
-                lara.shotgun_ammo2_count -= value;
+                Lara.shotgun_ammo2_count -= value;
             break;
 
         case LG_GRENADEGUN:
-            if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO1))
-                lara.grenade_ammo1_count -= value;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO2))
-                lara.grenade_ammo2_count -= value;
-            else if (CHK_ANY(lara.grenadegun_type_carried, CR_AMMO3))
-                lara.grenade_ammo3_count -= value;
+            if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO1))
+                Lara.grenade_ammo1_count -= value;
+            else if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO2))
+                Lara.grenade_ammo2_count -= value;
+            else if (CHK_ANY(Lara.grenadegun_type_carried, CR_AMMO3))
+                Lara.grenade_ammo3_count -= value;
             break;
 
         case LG_CROSSBOW:
-            if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO1))
-                lara.crossbow_ammo1_count -= value;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO2))
-                lara.crossbow_ammo2_count -= value;
-            else if (CHK_ANY(lara.crossbow_type_carried, CR_AMMO3))
-                lara.crossbow_ammo3_count -= value;
+            if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO1))
+                Lara.crossbow_ammo1_count -= value;
+            else if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO2))
+                Lara.crossbow_ammo2_count -= value;
+            else if (CHK_ANY(Lara.crossbow_type_carried, CR_AMMO3))
+                Lara.crossbow_ammo3_count -= value;
             break;
 
         case LG_PISTOLS:
         default:
-            lara.pistol_ammo_count -= value;
+            Lara.pistol_ammo_count -= value;
             break;
     }
 }

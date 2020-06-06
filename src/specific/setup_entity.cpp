@@ -6,9 +6,12 @@
 #include "gameflow.h"
 #include "utils.h"
 #include "oldobjects.h"
+
+// entities
 #include "ahmet.h"
 #include "baboon.h"
 #include "bat.h"
+#include "crocodile.h"
 
 SetupEntity setup_entity;
 void SetupEntity::lara_obj()

@@ -144,7 +144,7 @@ BOOL GetOnMotorBike(short itemNumber) // (F) (D)
     short roomNumber;
 
     item = &Items[itemNumber];
-    if (item->flags & IFLAG_ONESHOT || lara.gun_status == LHS_HANDBUSY || LaraItem->gravityStatus)
+    if (item->flags & IFLAG_ONESHOT || Lara.gunStatus == LHS_HANDBUSY || LaraItem->gravityStatus)
         return FALSE;
 
     if ((abs(item->pos.yPos - LaraItem->pos.yPos) >= 256 || !(TrInput & IN_ACTION)) && GLOBAL_invitemchosen != PUZZLE_ITEM1)
@@ -184,7 +184,7 @@ void MotorBikeCollision(short itemNumber, ITEM_INFO* laraitem, COLL_INFO* coll) 
     ITEM_INFO* item;
     MOTORBIKE_INFO* motorbike;
 
-    if (laraitem->hitPoints >= 0 && lara.skidoo == NO_ITEM)
+    if (laraitem->hitPoints >= 0 && Lara.skidoo == NO_ITEM)
     {
         item = &Items[itemNumber];
         motorbike = GetMotorbikeInfo(item);
@@ -198,19 +198,19 @@ void MotorBikeCollision(short itemNumber, ITEM_INFO* laraitem, COLL_INFO* coll) 
 
         if (GetOnMotorBike(itemNumber))
         {
-            lara.skidoo = itemNumber;
+            Lara.skidoo = itemNumber;
 
-            if (lara.gun_type == LG_FLARE)
+            if (Lara.gunType == LG_FLARE)
             {
                 CreateFlare(FLARE_ITEM, FALSE);
                 undraw_flare_meshes();
-                lara.flare_control_left = FALSE;
-                lara.gun_type = LG_UNARMED;
-                lara.gun_request_type = LG_UNARMED;
-                lara.flare_age = 0;
+                Lara.flareControlLeft = FALSE;
+                Lara.gunType = LG_UNARMED;
+                Lara.requestGunType = LG_UNARMED;
+                Lara.flareAge = 0;
             }
 
-            lara.gun_status = LHS_HANDBUSY;
+            Lara.gunStatus = LHS_HANDBUSY;
 
             short angle = phd_atan(item->pos.zPos - laraitem->pos.zPos, item->pos.xPos - laraitem->pos.xPos) - item->pos.yRot;
             if (angle <= -8190 || angle >= 24570)
@@ -234,11 +234,11 @@ void MotorBikeCollision(short itemNumber, ITEM_INFO* laraitem, COLL_INFO* coll) 
             laraitem->pos.yPos = item->pos.yPos;
             laraitem->pos.zPos = item->pos.zPos;
             laraitem->pos.yRot = item->pos.yRot;
-            lara.head_y_rot = 0;
-            lara.head_x_rot = 0;
-            lara.torso_y_rot = 0;
-            lara.torso_x_rot = 0;
-            lara.hit_direction = -1;
+            Lara.headYrot = 0;
+            Lara.headXrot = 0;
+            Lara.torsoYrot = 0;
+            Lara.torsoXrot = 0;
+            Lara.hitDirection = -1;
             AnimateItem(laraitem);
             motorbike->revs = 0;
             item->collidable = TRUE;
@@ -320,7 +320,7 @@ void TriggerMotorbikeExhaustSmoke(int x, int y, int z, short angle, short speed,
 
 void DrawMotorBikeSmoke(ITEM_INFO* item) // (F) (D)
 {
-    if (lara.skidoo == NO_ITEM)
+    if (Lara.skidoo == NO_ITEM)
         return;
 
     if (LaraItem->currentAnimState != BIKE_ENTER && LaraItem->currentAnimState != BIKE_EXIT)
@@ -359,7 +359,7 @@ void DrawMotorBikeSmoke(ITEM_INFO* item) // (F) (D)
 void DrawMotorBikeEffect(ITEM_INFO* item) // (F) (D)
 {
     MOTORBIKE_INFO* motorbike = GetMotorbikeInfo(item);
-    if (lara.skidoo != NO_ITEM)
+    if (Lara.skidoo != NO_ITEM)
         DrawMotorBikeSpeedoMeter(phd_winwidth - 64, phd_winheight - 16, motorbike->velocity, ANGLE(180), ANGLE(270), 32); // angle are 2D angle...
     DrawMotorBikeSmoke(item);
 }
@@ -378,21 +378,21 @@ void MotorBikeExplode(ITEM_INFO* item) // (F) (D)
             TriggerExplosionSparks(item->pos.xPos, item->pos.yPos, item->pos.zPos, 3, -1, 0, item->roomNumber);
     }
 
-    ExplodingDeath(lara.skidoo, -2, 256);
-    ExplodingDeath(lara.itemNumber, -2, 258); // enable blood
+    ExplodingDeath(Lara.skidoo, -2, 256);
+    ExplodingDeath(Lara.itemNumber, -2, 258); // enable blood
     LaraItem->hitPoints = 0;
-    KillItem(lara.skidoo);
+    KillItem(Lara.skidoo);
     item->status = FITEM_INVISIBLE;
     SoundEffect(SFX_EXPLOSION1, nullptr, NULL);
     SoundEffect(SFX_EXPLOSION2, nullptr, NULL);
-    lara.skidoo = NO_ITEM;
+    Lara.skidoo = NO_ITEM;
 }
 
 int MotorBikeCheckGetOff(void)
 {
     ITEM_INFO* item;
 
-    item = &Items[lara.skidoo];
+    item = &Items[Lara.skidoo];
     if (LaraItem->currentAnimState == BIKE_EXIT && LaraItem->frameNumber == Anims[LaraItem->animNumber].frameEnd)
     {
         LaraItem->pos.yRot -= 0x4000;
@@ -404,9 +404,9 @@ int MotorBikeCheckGetOff(void)
         LaraItem->pos.zPos -= 2 * COS(item->pos.yRot) >> W2V_SHIFT;
         LaraItem->pos.xRot = 0;
         LaraItem->pos.zRot = 0;
-        lara.skidoo = NO_ITEM;
-        lara.gun_status = LHS_ARMLESS;
-        lara.dash_timer = 120;
+        Lara.skidoo = NO_ITEM;
+        Lara.gunStatus = LHS_ARMLESS;
+        Lara.dashTimer = 120;
         return TRUE;
     }
 
@@ -717,7 +717,7 @@ int MotorBikeDynamics(ITEM_INFO* item)
     if (collide)
     {
         newspeed = ((item->pos.zPos - oldpos.z) * COS(motorbike->momentumAngle) +  (item->pos.xPos - oldpos.x) * SIN(motorbike->momentumAngle)) >> 6;
-        if (&Items[lara.skidoo] == item && motorbike->velocity >= 0x8000 && newspeed < (motorbike->velocity - 10))
+        if (&Items[Lara.skidoo] == item && motorbike->velocity >= 0x8000 && newspeed < (motorbike->velocity - 10))
         {
             LaraItem->hitPoints -= (motorbike->velocity - newspeed) >> 7;
             LaraItem->hitStatus = TRUE;
@@ -743,7 +743,7 @@ BOOL MotorbikeCanGetOff(void)
     int height, ceiling;
     short roomNumber, angle;
 
-    item = &Items[lara.skidoo];
+    item = &Items[Lara.skidoo];
     angle = item->pos.yRot + 0x4000;
     x = item->pos.xPos + ((500 * SIN(angle)) >> W2V_SHIFT);
     y = item->pos.yPos;
@@ -986,14 +986,14 @@ int MotorbikeUserControl(ITEM_INFO* item, int height, int* pitch)
         motorbike->revs = 0;
     }
 
-    if ((TrInput & IN_SPRINT) && (TrInput & IN_ACTION) && lara.dash_timer)
+    if ((TrInput & IN_SPRINT) && (TrInput & IN_ACTION) && Lara.dashTimer)
     {
         motorbike->flags |= 0x1;
-        lara.dash_timer -= 2;
-        if (lara.dash_timer > 0x8000)
+        Lara.dashTimer -= 2;
+        if (Lara.dashTimer > 0x8000)
         {
             motorbike->flags &= ~0x1;
-            lara.dash_timer = 0;
+            Lara.dashTimer = 0;
         }
     }
     else
@@ -1139,8 +1139,8 @@ void SetLaraOnMotorBike(ITEM_INFO* item, ITEM_INFO* laraitem)
     MOTORBIKE_INFO* motorbike;
     motorbike = GetMotorbikeInfo(item);
 
-    lara.gun_status = LHS_HANDBUSY;
-    lara.hit_direction = -1;
+    Lara.gunStatus = LHS_HANDBUSY;
+    Lara.hitDirection = -1;
     laraitem->currentAnimState = BIKE_IDLE;
     laraitem->goalAnimState = BIKE_IDLE;
     laraitem->animNumber = Objects[VEHICLE_EXTRA].animIndex + BIKE_IDLE_ANIM;
@@ -1162,7 +1162,7 @@ int MotorBikeControl(void)
     int drive, collide, pitch = 0, dead, height = 0, ceiling;
     short roomNumber;
 
-    item = &Items[lara.skidoo];
+    item = &Items[Lara.skidoo];
     motorbike = GetMotorbikeInfo(item);
     collide = MotorBikeDynamics(item);
     drive = -1;
@@ -1274,8 +1274,8 @@ int MotorBikeControl(void)
     {
         if (roomNumber != item->roomNumber)
         {
-            ItemNewRoom(lara.skidoo, roomNumber);
-            ItemNewRoom(lara.itemNumber, roomNumber);
+            ItemNewRoom(Lara.skidoo, roomNumber);
+            ItemNewRoom(Lara.itemNumber, roomNumber);
         }
         LaraItem->pos.xPos = item->pos.xPos;
         LaraItem->pos.yPos = item->pos.yPos;
@@ -1293,7 +1293,7 @@ int MotorBikeControl(void)
         {
             if (item->pos.yPos == item->floor)
             {
-                ExplodingDeath(lara.itemNumber, -1, 256);
+                ExplodingDeath(Lara.itemNumber, -1, 256);
                 LaraItem->hitPoints = 0;
                 LaraItem->flags = IFLAG_ONESHOT;
                 MotorBikeExplode(item);

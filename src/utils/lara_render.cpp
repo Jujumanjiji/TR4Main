@@ -59,25 +59,25 @@ void LARA_RENDER::check_hitdirection(short* frameCutscene)
     }
     else
     {
-        if (lara.hit_direction >= 0)
+        if (Lara.hitDirection >= 0)
         {
             short spaz;
-            switch (lara.hit_direction)
+            switch (Lara.hitDirection)
             {
                 case NORTH:
-                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_BACKWARD : ANIMATION_LARA_AH_FORWARD;
+                    spaz = Lara.isDucked ? ANIMATION_LARA_CROUCH_SMASH_BACKWARD : ANIMATION_LARA_AH_FORWARD;
                     break;
                 case SOUTH:
-                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_FORWARD : ANIMATION_LARA_AH_BACKWARD;
+                    spaz = Lara.isDucked ? ANIMATION_LARA_CROUCH_SMASH_FORWARD : ANIMATION_LARA_AH_BACKWARD;
                     break;
                 case EAST:
-                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_RIGHT : ANIMATION_LARA_AH_LEFT;
+                    spaz = Lara.isDucked ? ANIMATION_LARA_CROUCH_SMASH_RIGHT : ANIMATION_LARA_AH_LEFT;
                     break;
                 case WEST:
-                    spaz = lara.is_ducked ? ANIMATION_LARA_CROUCH_SMASH_LEFT : ANIMATION_LARA_AH_RIGHT;
+                    spaz = Lara.isDucked ? ANIMATION_LARA_CROUCH_SMASH_LEFT : ANIMATION_LARA_AH_RIGHT;
                     break;
             }
-            frame = &Anims[spaz].framePtr[lara.hit_frame * (Anims[spaz].interpolation >> 8)];
+            frame = &Anims[spaz].framePtr[Lara.hitFrame * (Anims[spaz].interpolation >> 8)];
         }
         else
         {
@@ -113,12 +113,12 @@ void LARA_RENDER::assign_weapon()
 {
     gun_type = LG_UNARMED;
 
-    if (lara.gun_status == LHS_READY
-    ||  lara.gun_status == LHS_SPECIAL
-    ||  lara.gun_status == LHS_DRAW
-    ||  lara.gun_status == LHS_UNDRAW)
+    if (Lara.gunStatus == LHS_READY
+    ||  Lara.gunStatus == LHS_SPECIAL
+    ||  Lara.gunStatus == LHS_DRAW
+    ||  Lara.gunStatus == LHS_UNDRAW)
     {
-        gun_type = lara.gun_type;
+        gun_type = Lara.gunType;
     }
 }
 
@@ -288,14 +288,14 @@ void LARA_RENDER::mesh_torso()
     {
         phd_TranslateRel_I(bone[MTB(TORSO)].x, bone[MTB(TORSO)].y, bone[MTB(TORSO)].z);
         gar_RotYXZsuperpack_I(&rotation1, &rotation2, 0);
-        phd_RotYXZ_I(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
+        phd_RotYXZ_I(Lara.torsoYrot, Lara.torsoXrot, Lara.torsoZrot);
         phd_PutMatrix_I(&mptr->torso);
     }
     else
     {
         phd_TranslateRel(bone[MTB(TORSO)].x, bone[MTB(TORSO)].y, bone[MTB(TORSO)].z);
         gar_RotYXZsuperpack(&rotation1, 0);
-        phd_RotYXZ(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
+        phd_RotYXZ(Lara.torsoYrot, Lara.torsoXrot, Lara.torsoZrot);
         phd_PutMatrix(&mptr->torso);
     }
 }
@@ -309,7 +309,7 @@ void LARA_RENDER::mesh_head()
         rotationw1 = rotation1;
         rotationw2 = rotation2;
         gar_RotYXZsuperpack_I(&rotationw1, &rotationw2, 6);
-        phd_RotYXZ_I(lara.head_y_rot, lara.head_x_rot, lara.head_z_rot);
+        phd_RotYXZ_I(Lara.headYrot, Lara.headXrot, Lara.headZrot);
         phd_PutMatrix_I(&mptr->head);
         phd_PopMatrix_I();
     }
@@ -319,7 +319,7 @@ void LARA_RENDER::mesh_head()
         phd_TranslateRel(bone[MTB(HEAD)].x, bone[MTB(HEAD)].y, bone[MTB(HEAD)].z);
         rotationw1 = rotation1;
         gar_RotYXZsuperpack(&rotationw1, 6);
-        phd_RotYXZ(lara.head_y_rot, lara.head_x_rot, lara.head_z_rot);
+        phd_RotYXZ(Lara.headYrot, Lara.headXrot, Lara.headZrot);
         phd_PutMatrix(&mptr->head);
         phd_PopMatrix();
     }
@@ -348,9 +348,9 @@ void LARA_RENDER::mesh_unarmed()
             phd_PushMatrix_I();
             phd_TranslateRel_I(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
 
-            if (lara.flare_control_left)
+            if (Lara.flareControlLeft)
             {
-                rotation1 = rotation2 = lara.l_arm.frame_base + (lara.l_arm.frame_number - Anims[lara.l_arm.anim_number].frameBase) * (Anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
+                rotation1 = rotation2 = Lara.leftArm.frameBase + (Lara.leftArm.frameNumber - Anims[Lara.leftArm.animNumber].frameBase) * (Anims[Lara.leftArm.animNumber].interpolation >> 8) + 9;
                 gar_RotYXZsuperpack_I(&rotation1, &rotation2, 11);
             }
             else
@@ -386,9 +386,9 @@ void LARA_RENDER::mesh_unarmed()
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
 
-            if (lara.flare_control_left)
+            if (Lara.flareControlLeft)
             {
-                rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - Anims[lara.l_arm.anim_number].frameBase) * (Anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
+                rotation1 = Lara.leftArm.frameBase + (Lara.leftArm.frameNumber - Anims[Lara.leftArm.animNumber].frameBase) * (Anims[Lara.leftArm.animNumber].interpolation >> 8) + 9;
                 gar_RotYXZsuperpack(&rotation1, 11);
             }
             else
@@ -419,7 +419,7 @@ void LARA_RENDER::mesh_1gun()
             /// RIGHT_ARM
             phd_PushMatrix_I();
             phd_TranslateRel_I(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
-            rotation1 = rotation2 = lara.r_arm.frame_base + lara.r_arm.frame_number * (Anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
+            rotation1 = rotation2 = Lara.rightArm.frameBase + Lara.rightArm.frameNumber * (Anims[Lara.rightArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack_I(&rotation1, &rotation2, 8);
             phd_PutMatrix_I(&mptr->uarm_r);
             phd_TranslateRel_I(bone[MTB(LARM_R)].x, bone[MTB(LARM_R)].y, bone[MTB(LARM_R)].z);
@@ -448,7 +448,7 @@ void LARA_RENDER::mesh_1gun()
             /// RIGHT_ARM
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
-            rotation1 = lara.r_arm.frame_base + lara.r_arm.frame_number * (Anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
+            rotation1 = Lara.rightArm.frameBase + Lara.rightArm.frameNumber * (Anims[Lara.rightArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
             phd_PutMatrix(&mptr->uarm_r);
             phd_TranslateRel(bone[MTB(LARM_R)].x, bone[MTB(LARM_R)].y, bone[MTB(LARM_R)].z);
@@ -486,8 +486,8 @@ void LARA_RENDER::mesh_2gun()
             phd_PushMatrix_I();
             phd_TranslateRel_I(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
             InterpolateArmMatrix();
-            phd_RotYXZ(lara.r_arm.y_rot, lara.r_arm.x_rot, lara.r_arm.z_rot);
-            rotation1 = lara.r_arm.frame_base + (lara.r_arm.frame_number - Anims[lara.r_arm.anim_number].frameBase) * (Anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ(Lara.rightArm.yRot, Lara.rightArm.xRot, Lara.rightArm.zRot);
+            rotation1 = Lara.rightArm.frameBase + (Lara.rightArm.frameNumber - Anims[Lara.rightArm.animNumber].frameBase) * (Anims[Lara.rightArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
             phd_PutMatrix(&mptr->uarm_r);
             phd_TranslateRel(bone[MTB(LARM_R)].x, bone[MTB(LARM_R)].y, bone[MTB(LARM_R)].z);
@@ -502,8 +502,8 @@ void LARA_RENDER::mesh_2gun()
             phd_PushMatrix_I();
             phd_TranslateRel_I(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
             InterpolateArmMatrix();
-            phd_RotYXZ(lara.l_arm.y_rot, lara.l_arm.x_rot, lara.l_arm.z_rot);
-            rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - Anims[lara.l_arm.anim_number].frameBase) * (Anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ(Lara.leftArm.yRot, Lara.leftArm.xRot, Lara.leftArm.zRot);
+            rotation1 = Lara.leftArm.frameBase + (Lara.leftArm.frameNumber - Anims[Lara.leftArm.animNumber].frameBase) * (Anims[Lara.leftArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 11);
             phd_PutMatrix(&mptr->uarm_l);
             phd_TranslateRel(bone[MTB(LARM_L)].x, bone[MTB(LARM_L)].y, bone[MTB(LARM_L)].z);
@@ -520,8 +520,8 @@ void LARA_RENDER::mesh_2gun()
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
             InterpolateArm();
-            phd_RotYXZ(lara.r_arm.y_rot, lara.r_arm.x_rot, lara.r_arm.z_rot);
-            rotation1 = lara.r_arm.frame_base + (lara.r_arm.frame_number - Anims[lara.r_arm.anim_number].frameBase) * (Anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ(Lara.rightArm.yRot, Lara.rightArm.xRot, Lara.rightArm.zRot);
+            rotation1 = Lara.rightArm.frameBase + (Lara.rightArm.frameNumber - Anims[Lara.rightArm.animNumber].frameBase) * (Anims[Lara.rightArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
             phd_PutMatrix(&mptr->uarm_r);
             phd_TranslateRel(bone[MTB(LARM_R)].x, bone[MTB(LARM_R)].y, bone[MTB(LARM_R)].z);
@@ -536,8 +536,8 @@ void LARA_RENDER::mesh_2gun()
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
             InterpolateArm();
-            phd_RotYXZ(lara.l_arm.y_rot, lara.l_arm.x_rot, lara.l_arm.z_rot);
-            rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - Anims[lara.l_arm.anim_number].frameBase) * (Anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ(Lara.leftArm.yRot, Lara.leftArm.xRot, Lara.leftArm.zRot);
+            rotation1 = Lara.leftArm.frameBase + (Lara.leftArm.frameNumber - Anims[Lara.leftArm.animNumber].frameBase) * (Anims[Lara.leftArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 11);
             phd_PutMatrix(&mptr->uarm_l);
             phd_TranslateRel(bone[MTB(LARM_L)].x, bone[MTB(LARM_L)].y, bone[MTB(LARM_L)].z);
@@ -561,8 +561,8 @@ void LARA_RENDER::mesh_revolver()
             phd_PushMatrix_I();
             phd_TranslateRel_I(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
             InterpolateArmMatrix();
-            phd_RotYXZ_I(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
-            rotation1 = lara.r_arm.frame_base + (lara.r_arm.frame_number - Anims[lara.r_arm.anim_number].frameBase) * (Anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ_I(Lara.torsoYrot, Lara.torsoXrot, Lara.torsoZrot);
+            rotation1 = Lara.rightArm.frameBase + (Lara.rightArm.frameNumber - Anims[Lara.rightArm.animNumber].frameBase) * (Anims[Lara.rightArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
             phd_PutMatrix(&mptr->uarm_r);
             phd_TranslateRel(bone[MTB(LARM_R)].x, bone[MTB(LARM_R)].y, bone[MTB(LARM_R)].z);
@@ -577,8 +577,8 @@ void LARA_RENDER::mesh_revolver()
             phd_PushMatrix_I();
             phd_TranslateRel_I(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
             InterpolateArmMatrix();
-            phd_RotYXZ_I(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
-            rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - Anims[lara.l_arm.anim_number].frameBase) * (Anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ_I(Lara.torsoYrot, Lara.torsoXrot, Lara.torsoZrot);
+            rotation1 = Lara.leftArm.frameBase + (Lara.leftArm.frameNumber - Anims[Lara.leftArm.animNumber].frameBase) * (Anims[Lara.leftArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 11);
             phd_PutMatrix(&mptr->uarm_l);
             phd_TranslateRel(bone[MTB(LARM_L)].x, bone[MTB(LARM_L)].y, bone[MTB(LARM_L)].z);
@@ -595,8 +595,8 @@ void LARA_RENDER::mesh_revolver()
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_R)].x, bone[MTB(UARM_R)].y, bone[MTB(UARM_R)].z);
             InterpolateArm();
-            phd_RotYXZ(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
-            rotation1 = lara.r_arm.frame_base + (lara.r_arm.frame_number - Anims[lara.r_arm.anim_number].frameBase) * (Anims[lara.r_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ(Lara.torsoYrot, Lara.torsoXrot, Lara.torsoZrot);
+            rotation1 = Lara.rightArm.frameBase + (Lara.rightArm.frameNumber - Anims[Lara.rightArm.animNumber].frameBase) * (Anims[Lara.rightArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 8);
             phd_PutMatrix(&mptr->uarm_r);
             phd_TranslateRel(bone[MTB(LARM_R)].x, bone[MTB(LARM_R)].y, bone[MTB(LARM_R)].z);
@@ -611,8 +611,8 @@ void LARA_RENDER::mesh_revolver()
             phd_PushMatrix();
             phd_TranslateRel(bone[MTB(UARM_L)].x, bone[MTB(UARM_L)].y, bone[MTB(UARM_L)].z);
             InterpolateArm();
-            phd_RotYXZ(lara.torso_y_rot, lara.torso_x_rot, lara.torso_z_rot);
-            rotation1 = lara.l_arm.frame_base + (lara.l_arm.frame_number - Anims[lara.l_arm.anim_number].frameBase) * (Anims[lara.l_arm.anim_number].interpolation >> 8) + 9;
+            phd_RotYXZ(Lara.torsoYrot, Lara.torsoXrot, Lara.torsoZrot);
+            rotation1 = Lara.leftArm.frameBase + (Lara.leftArm.frameNumber - Anims[Lara.leftArm.animNumber].frameBase) * (Anims[Lara.leftArm.animNumber].interpolation >> 8) + 9;
             gar_RotYXZsuperpack(&rotation1, 11);
             phd_PutMatrix(&mptr->uarm_l);
             phd_TranslateRel(bone[MTB(LARM_L)].x, bone[MTB(LARM_L)].y, bone[MTB(LARM_L)].z);

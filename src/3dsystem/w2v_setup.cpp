@@ -108,15 +108,15 @@ void W2V_MATRIX::Matrix23()
 // TODO: check if the poison have the nausea effect ?
 void W2V_MATRIX::SetupPoisonEffect()
 {
-    poison = lara.poisoned;
-    if (lara.poisoned_2 != poison)
+    poison = Lara.poisoned;
+    if (Lara.dpoisoned != poison)
     {
-        poison = ((lara.poisoned_2 - lara.poisoned) >> 4) + lara.poisoned;
-        lara.poisoned = poison;
-        if (abs(lara.poisoned_2 - poison) < 16)
+        poison = ((Lara.dpoisoned - Lara.poisoned) >> 4) + Lara.poisoned;
+        Lara.poisoned = poison;
+        if (abs(Lara.dpoisoned - poison) < 16)
         {
-            poison = lara.poisoned_2;
-            lara.poisoned = lara.poisoned_2;
+            poison = Lara.dpoisoned;
+            Lara.poisoned = Lara.dpoisoned;
         }
     }
 

@@ -29,8 +29,8 @@ void lara_as_tread(ITEM_INFO* item, COLL_INFO* coll)
 
     LaraClampN(item->fallspeed, WATER_FRICTION, 0);
 
-    if (lara.gun_status == LHS_HANDBUSY)
-        lara.gun_status = LHS_ARMLESS;
+    if (Lara.gunStatus == LHS_HANDBUSY)
+        Lara.gunStatus = LHS_ARMLESS;
 }
 
 void lara_as_swim(ITEM_INFO* item, COLL_INFO* coll)
@@ -86,7 +86,7 @@ void lara_as_dive(ITEM_INFO* item, COLL_INFO* coll)
 
 void lara_as_uwdeath(ITEM_INFO* item, COLL_INFO* coll)
 {
-    lara.look = FALSE;
+    Lara.look = FALSE;
 
     item->fallspeed -= UW_FRICTION;
     if (item->fallspeed <= 0)

@@ -60,6 +60,7 @@ private:
         void inject_ahmet();
         void inject_baboon();
         void inject_bat();
+        void inject_crocodile();
     };
 
     struct f_specific

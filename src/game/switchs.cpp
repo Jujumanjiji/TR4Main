@@ -17,7 +17,7 @@ void found_item_with_detector(short object_number)
         case PUZZLE_ITEM10:
         case PUZZLE_ITEM11:
         case PUZZLE_ITEM12:
-            lara.puzzleitems[object_number - PUZZLE_ITEM1]--;
+            Lara.puzzleitems[object_number - PUZZLE_ITEM1]--;
             break;
         case PUZZLE_ITEM1_COMBO1:
         case PUZZLE_ITEM1_COMBO2:
@@ -33,7 +33,7 @@ void found_item_with_detector(short object_number)
         case PUZZLE_ITEM6_COMBO2:
         case PUZZLE_ITEM8_COMBO1:
         case PUZZLE_ITEM8_COMBO2:
-            lara.puzzleitemscombo &= ~(1 << (object_number + 69));
+            Lara.puzzleitemscombo &= ~(1 << (object_number + 69));
             break;
         case KEY_ITEM1:
         case KEY_ITEM2:
@@ -47,7 +47,7 @@ void found_item_with_detector(short object_number)
         case KEY_ITEM10:
         case KEY_ITEM11:
         case KEY_ITEM12:
-            lara.keyitems &= ~(1 << (object_number + 53));
+            Lara.keyitems &= ~(1 << (object_number + 53));
             break;
         case KEY_ITEM1_COMBO1:
         case KEY_ITEM1_COMBO2:
@@ -65,13 +65,13 @@ void found_item_with_detector(short object_number)
         case KEY_ITEM7_COMBO2:
         case KEY_ITEM8_COMBO1:
         case KEY_ITEM8_COMBO2:
-            lara.keyitemscombo &= ~(1 << (object_number + 41));
+            Lara.keyitemscombo &= ~(1 << (object_number + 41));
             break;
         case PICKUP_ITEM1:
         case PICKUP_ITEM2:
         case PICKUP_ITEM3:
         case PICKUP_ITEM4:
-            lara.pickupitems &= ~(1 << (object_number + 25));
+            Lara.pickupitems &= ~(1 << (object_number + 25));
             break;
         case PICKUP_ITEM1_COMBO1:
         case PICKUP_ITEM1_COMBO2:
@@ -81,7 +81,7 @@ void found_item_with_detector(short object_number)
         case PICKUP_ITEM3_COMBO2:
         case PICKUP_ITEM4_COMBO1:
         case PICKUP_ITEM4_COMBO2:
-            lara.pickupitemscombo &= ~(1 << (object_number + 21));
+            Lara.pickupitemscombo &= ~(1 << (object_number + 21));
             break;
         case QUEST_ITEM1:
         case QUEST_ITEM2:
@@ -89,7 +89,7 @@ void found_item_with_detector(short object_number)
         case QUEST_ITEM4:
         case QUEST_ITEM5:
         case QUEST_ITEM6:
-            lara.questitems &= ~(1 << (object_number + 4));
+            Lara.questitems &= ~(1 << (object_number + 4));
             break;
     }
 }

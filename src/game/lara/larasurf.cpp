@@ -36,13 +36,13 @@ void lara_as_surftread(ITEM_INFO* item, COLL_INFO* coll)
 
     if (CHK_EXI(TrInput, IN_JUMP))
     {
-        lara.dive_count++;
-        if (lara.dive_count == DIVE_COUNT)
+        Lara.diveCount++;
+        if (Lara.diveCount == DIVE_COUNT)
             item->goalAnimState = STATE_LARA_UNDERWATER_FORWARD;
     }
     else
     {
-        lara.dive_count = 0;
+        Lara.diveCount = 0;
     }
 }
 
@@ -54,7 +54,7 @@ void lara_as_surfswim(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    lara.dive_count = 0;
+    Lara.diveCount = 0;
     if (CHK_EXI(TrInput, IN_LEFT))
         item->pos.yRot -= LARA_SLOW_TURN;
     else if (CHK_EXI(TrInput, IN_RIGHT))
@@ -76,7 +76,7 @@ void lara_as_surfback(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    lara.dive_count = 0;
+    Lara.diveCount = 0;
     if (CHK_EXI(TrInput, IN_LEFT))
         item->pos.yRot -= LARA_SLOW_TURN / 2;
     else if (CHK_EXI(TrInput, IN_RIGHT))
@@ -96,7 +96,7 @@ void lara_as_surfleft(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    lara.dive_count = 0;
+    Lara.diveCount = 0;
     if (CHK_EXI(TrInput, IN_LEFT))
         item->pos.yRot -= LARA_SLOW_TURN / 2;
     else if (CHK_EXI(TrInput, IN_RIGHT))
@@ -116,7 +116,7 @@ void lara_as_surfright(ITEM_INFO* item, COLL_INFO* coll)
         return;
     }
 
-    lara.dive_count = 0;
+    Lara.diveCount = 0;
     if (CHK_EXI(TrInput, IN_LEFT))
         item->pos.yRot -= LARA_SLOW_TURN / 2;
     else if (CHK_EXI(TrInput, IN_RIGHT))

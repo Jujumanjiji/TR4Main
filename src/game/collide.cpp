@@ -29,7 +29,7 @@ void UpdateLaraRoom(ITEM_INFO* item, int height)
     floor = GetFloor(x, y, z, &roomNumber);
     item->floor = GetHeight(floor, x, y, z);
     if (item->roomNumber != roomNumber)
-        ItemNewRoom(lara.itemNumber, roomNumber);
+        ItemNewRoom(Lara.itemNumber, roomNumber);
 }
 
 BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
@@ -125,10 +125,10 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
         return Move3DPosTo3DPos(&laraitem->pos, &dest, LARA_VELOCITY, ANGLE(2));
     }
 
-    if (lara.is_moving)
+    if (Lara.isMoving)
     {
-        lara.is_moving = FALSE;
-        lara.gun_status = LHS_ARMLESS;
+        Lara.isMoving = FALSE;
+        Lara.gunStatus = LHS_ARMLESS;
     }
 
     return FALSE;
@@ -160,9 +160,9 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
         src->zPos = dest->zPos;
     }
 
-    if (!lara.is_moving)
+    if (!Lara.isMoving)
     {
-        if (lara.water_status != LWS_UNDERWATER)
+        if (Lara.waterStatus != LWS_UNDERWATER)
         {
             matrix_angle = mGetAngle(dest->xPos, dest->zPos, src->xPos, src->zPos);
             angle_src = (WORD)((short(matrix_angle) + ANGLE(45)) / ANGLE(90));
@@ -198,9 +198,9 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
             }
         }
 
-        lara.gun_status = LHS_HANDBUSY;
-        lara.is_moving = TRUE;
-        lara.move_count = 0;
+        Lara.gunStatus = LHS_HANDBUSY;
+        Lara.isMoving = TRUE;
+        Lara.moveCount = 0;
     }
     
     // Do x rotation alignement

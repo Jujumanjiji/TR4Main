@@ -207,7 +207,7 @@
 #define wibble                              VAR_I_(0x004BF360, int, 0)
 #define fire_bounds                         ARRAY_(0x0080D7C0, short, [6])
 #define dynamics                            ARRAY_(0x00804860, DYNAMIC, [MAX_DYNAMICS])
-#define lara                                VAR_U_(0x0080DFE0, LARA_INFO)
+#define Lara                                VAR_U_(0x0080DFE0, LARA_INFO)
 #define LaraItem                            VAR_U_(0x0080E13C, ITEM_INFO*)
 #define lara_coll                           VAR_U_(0x004AD9C4, COLL_INFO*)
 #define Items                               VAR_U_(0x007FE28C, ITEM_INFO*)

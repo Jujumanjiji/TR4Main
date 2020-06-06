@@ -128,7 +128,7 @@ void AhmetControl(short itemNumber)
             item->frameNumber = Anims[item->animNumber].frameBase;
             item->currentAnimState = AHMET_DIE;
             item->goalAnimState = AHMET_DIE;
-            lara.general_ptr = (LPVOID)itemNumber;
+            Lara.generalPtr = (LPVOID)itemNumber;
         }
     }
     else
@@ -213,7 +213,7 @@ void AhmetControl(short itemNumber)
             }
             else
             {
-                if (lara.target == item || !info.ahead)
+                if (Lara.target == item || !info.ahead)
                     item->goalAnimState = AHMET_RUN;
                 else
                     item->goalAnimState = AHMET_IDLE;
@@ -240,7 +240,7 @@ void AhmetControl(short itemNumber)
             ahmet->maximumTurn = AHMET_RUN_ANGLE;
             ahmet->flags = 0;
 
-            if (item->aiBits & GUARD || (ahmet->mood == BORED_MOOD || ahmet->mood == ESCAPE_MOOD) && (lara.target == item && info.ahead) || (info.bite && info.distance < AHMET_IDLE_RANGE))
+            if (item->aiBits & GUARD || (ahmet->mood == BORED_MOOD || ahmet->mood == ESCAPE_MOOD) && (Lara.target == item && info.ahead) || (info.bite && info.distance < AHMET_IDLE_RANGE))
                 item->goalAnimState = AHMET_IDLE;
             else if (info.ahead && info.distance < AHMET_RUN_RANGE && (info.enemyFacing < -AHMET_ENEMY_ANGLE || info.enemyFacing > AHMET_ENEMY_ANGLE))
                 item->goalAnimState = AHMET_WALK;

@@ -9,35 +9,35 @@
 
 void draw_shotgun_meshes(int weapon_type)
 {
-    lara.back_gun = LG_UNARMED;
-    lara.mesh.hand_r = classic_meshes(weapon_meshes(weapon_type), HAND_R);
+    Lara.backGun = LG_UNARMED;
+    Lara.mesh.hand_r = classic_meshes(weapon_meshes(weapon_type), HAND_R);
 }
 
 void undraw_shotgun_meshes(int weapon_type)
 {
-    lara.back_gun = weapon_object(weapon_type);
-    lara.mesh.hand_r = classic_meshes(LARA, HAND_R);
+    Lara.backGun = WeaponObject(weapon_type);
+    Lara.mesh.hand_r = classic_meshes(LARA, HAND_R);
 }
 
 void ready_shotgun(int weapon_type)
 {
-    short *frame = Objects[weapon_object(weapon_type)].frameBase;
-    lara.gun_status = LHS_READY;
-    lara.target = NULL;
+    short *frame = Objects[WeaponObject(weapon_type)].frameBase;
+    Lara.gunStatus = LHS_READY;
+    Lara.target = NULL;
 
-    lara.l_arm.frame_base = frame;
-    lara.l_arm.x_rot = 0;
-    lara.l_arm.y_rot = 0;
-    lara.l_arm.z_rot = 0;
-    lara.l_arm.lock = FALSE;
-    lara.l_arm.flash_gun = 0;
+    Lara.leftArm.frameBase = frame;
+    Lara.leftArm.xRot = 0;
+    Lara.leftArm.yRot = 0;
+    Lara.leftArm.zRot = 0;
+    Lara.leftArm.lock = FALSE;
+    Lara.leftArm.flash_gun = 0;
 
-    lara.r_arm.frame_base = frame;
-    lara.r_arm.x_rot = 0;
-    lara.r_arm.y_rot = 0;
-    lara.r_arm.z_rot = 0;
-    lara.r_arm.lock = FALSE;
-    lara.r_arm.flash_gun = 0;
+    Lara.rightArm.frameBase = frame;
+    Lara.rightArm.xRot = 0;
+    Lara.rightArm.yRot = 0;
+    Lara.rightArm.zRot = 0;
+    Lara.rightArm.lock = FALSE;
+    Lara.rightArm.flash_gun = 0;
 }
 
 void draw_shotgun(int weapon_type)
@@ -45,22 +45,22 @@ void draw_shotgun(int weapon_type)
     ITEM_INFO* item;
 
     // create the back item if not exist.
-    if (lara.weapon_item == NO_ITEM)
+    if (Lara.weaponItem == NO_ITEM)
     {
-        lara.weapon_item = CreateItem();
-        item = &Items[lara.weapon_item];
-        item->objectNumber = weapon_object(weapon_type);
+        Lara.weaponItem = CreateItem();
+        item = &Items[Lara.weaponItem];
+        item->objectNumber = WeaponObject(weapon_type);
         item->animNumber = (weapon_type == LG_GRENADEGUN) ? (Objects[item->objectNumber].animIndex) : (Objects[item->objectNumber].animIndex + 1);
         item->frameNumber = Anims[item->animNumber].frameBase;
         item->currentAnimState = W_DRAW;
         item->goalAnimState = W_DRAW;
         item->status = FITEM_ACTIVE;
         item->roomNumber = NO_ROOM;
-        lara.l_arm.frame_base = lara.r_arm.frame_base = Objects[item->objectNumber].frameBase;
+        Lara.leftArm.frameBase = Lara.rightArm.frameBase = Objects[item->objectNumber].frameBase;
     }
     else
     {
-        item = &Items[lara.weapon_item];
+        item = &Items[Lara.weaponItem];
     }
 
     AnimateItem(item);
@@ -69,18 +69,18 @@ void draw_shotgun(int weapon_type)
         ready_shotgun(weapon_type);
     else if ((item->frameNumber - Anims[item->animNumber].frameBase) == weapons[weapon_type].draw_frame)
         draw_shotgun_meshes(weapon_type);
-    else if (lara.water_status == LWS_UNDERWATER)
+    else if (Lara.waterStatus == LWS_UNDERWATER)
         item->goalAnimState = W_UAIM;
 
-    lara.l_arm.frame_base = lara.r_arm.frame_base = Anims[item->animNumber].framePtr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frameNumber - Anims[item->animNumber].frameBase;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->animNumber;
+    Lara.leftArm.frameBase = Lara.rightArm.frameBase = Anims[item->animNumber].framePtr;
+    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = item->frameNumber - Anims[item->animNumber].frameBase;
+    Lara.leftArm.animNumber  = Lara.rightArm.animNumber  = item->animNumber;
 }
 
 void undraw_shotgun(int weapon_type)
 {
-    ITEM_INFO* item = &Items[lara.weapon_item];
-    if (lara.water_status == LWS_SURFACE)
+    ITEM_INFO* item = &Items[Lara.weaponItem];
+    if (Lara.waterStatus == LWS_SURFACE)
         item->goalAnimState = W_SURF_UNDRAW;
     else
         item->goalAnimState = W_UNDRAW;
@@ -89,23 +89,23 @@ void undraw_shotgun(int weapon_type)
 
     if (item->status == FITEM_DEACTIVATED)
     {
-        lara.gun_status = LG_UNARMED;
-        lara.target = NULL;
-        lara.r_arm.y_rot = 0;
-        lara.l_arm.y_rot = 0;
-        KillItem(lara.weapon_item);
-        lara.weapon_item = NO_ITEM;
-        lara.r_arm.frame_number = 0;
-        lara.l_arm.frame_number = 0;
+        Lara.gunStatus = LG_UNARMED;
+        Lara.target = NULL;
+        Lara.rightArm.yRot = 0;
+        Lara.leftArm.yRot = 0;
+        KillItem(Lara.weaponItem);
+        Lara.weaponItem = NO_ITEM;
+        Lara.rightArm.frameNumber = 0;
+        Lara.leftArm.frameNumber = 0;
     }
     else if (item->currentAnimState == W_UNDRAW && GetCurrentFrame(item) == 21)
     {
         undraw_shotgun_meshes(weapon_type);
     }
 
-    lara.l_arm.frame_base   = lara.r_arm.frame_base   = Anims[item->animNumber].framePtr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frameNumber - Anims[item->animNumber].frameBase;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->animNumber;
+    Lara.leftArm.frameBase   = Lara.rightArm.frameBase   = Anims[item->animNumber].framePtr;
+    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = item->frameNumber - Anims[item->animNumber].frameBase;
+    Lara.leftArm.animNumber  = Lara.rightArm.animNumber  = item->animNumber;
 }
 
 void shotgun_handler(int weapon_type)
@@ -116,31 +116,31 @@ void shotgun_handler(int weapon_type)
     LaraGetNewTarget(winfo);
     if (TrInput & IN_ACTION)
         LaraTargetInfo(winfo);
-    AimWeapon(winfo, &lara.l_arm);
+    AimWeapon(winfo, &Lara.leftArm);
 
-    if (lara.l_arm.lock)
+    if (Lara.leftArm.lock)
     {
-        lara.torso_x_rot = lara.l_arm.x_rot;
-        lara.torso_y_rot = lara.l_arm.y_rot;
+        Lara.torsoXrot = Lara.leftArm.xRot;
+        Lara.torsoYrot = Lara.leftArm.yRot;
         if (camera.old_type != LOOK_CAMERA && !BinocularRange)
         {
-            lara.head_x_rot = 0;
-            lara.head_y_rot = 0;
+            Lara.headXrot = 0;
+            Lara.headYrot = 0;
         }
     }
 
 #ifdef DEBUG_CHEAT
     if (CHK_EXI(TrInput, IN_SPRINT))
     {
-        lara.revolver_ammo_count = INFINITE_AMMO;
-        lara.shotgun_ammo1_count = INFINITE_AMMO;
-        lara.shotgun_ammo2_count = INFINITE_AMMO;
-        lara.grenade_ammo1_count = INFINITE_AMMO;
-        lara.grenade_ammo2_count = INFINITE_AMMO;
-        lara.grenade_ammo3_count = INFINITE_AMMO;
-        lara.crossbow_ammo1_count = INFINITE_AMMO;
-        lara.crossbow_ammo2_count = INFINITE_AMMO;
-        lara.crossbow_ammo3_count = INFINITE_AMMO;
+        Lara.revolver_ammo_count = INFINITE_AMMO;
+        Lara.shotgun_ammo1_count = INFINITE_AMMO;
+        Lara.shotgun_ammo2_count = INFINITE_AMMO;
+        Lara.grenade_ammo1_count = INFINITE_AMMO;
+        Lara.grenade_ammo2_count = INFINITE_AMMO;
+        Lara.grenade_ammo3_count = INFINITE_AMMO;
+        Lara.crossbow_ammo1_count = INFINITE_AMMO;
+        Lara.crossbow_ammo2_count = INFINITE_AMMO;
+        Lara.crossbow_ammo3_count = INFINITE_AMMO;
     }
 #endif
 
@@ -149,7 +149,7 @@ void shotgun_handler(int weapon_type)
     else
         animate_shotgun(weapon_type);
 
-    if (lara.r_arm.flash_gun)
+    if (Lara.rightArm.flash_gun)
     {
         switch (weapon_type)
         {
@@ -173,7 +173,7 @@ void shotgun_handler(int weapon_type)
 
 void animate_shotgun(int weapon_type)
 {
-    ITEM_INFO* item = &Items[lara.weapon_item];
+    ITEM_INFO* item = &Items[Lara.weaponItem];
     PHD_VECTOR pos;
     static BOOL m16_fired = FALSE, harpoon_reload = FALSE;
     short frame;
@@ -215,9 +215,9 @@ void animate_shotgun(int weapon_type)
                 item->goalAnimState = W_RELOAD;
                 harpoon_reload = FALSE;
             }
-            else if (lara.water_status == LWS_UNDERWATER)
+            else if (Lara.waterStatus == LWS_UNDERWATER)
                 item->goalAnimState = W_UAIM;
-            else if ((CHK_EXI(TrInput, IN_ACTION) && !lara.target) || lara.l_arm.lock)
+            else if ((CHK_EXI(TrInput, IN_ACTION) && !Lara.target) || Lara.leftArm.lock)
                 item->goalAnimState = W_RECOIL;
             else
                 item->goalAnimState = W_UNAIM;
@@ -227,9 +227,9 @@ void animate_shotgun(int weapon_type)
             {
                 item->goalAnimState = W_UNAIM;
 
-                if (lara.water_status != LWS_UNDERWATER && !harpoon_reload)
+                if (Lara.waterStatus != LWS_UNDERWATER && !harpoon_reload)
                 {
-                    if (CHK_EXI(TrInput, IN_ACTION) && (!lara.target || lara.l_arm.lock))
+                    if (CHK_EXI(TrInput, IN_ACTION) && (!Lara.target || Lara.leftArm.lock))
                     {
                         switch (weapon_type)
                         {
@@ -247,7 +247,7 @@ void animate_shotgun(int weapon_type)
 
                         item->goalAnimState = W_RECOIL;
                     }
-                    else if (lara.l_arm.lock)
+                    else if (Lara.leftArm.lock)
                     {
                         item->goalAnimState = W_AIM;
                     }
@@ -264,7 +264,7 @@ void animate_shotgun(int weapon_type)
                 SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x5000000);
                 SoundEffect(SFX_HECKLER_KOCH_FIRE, &LaraItem->pos, 0);
             }
-            else if (weapon_type == LG_SHOTGUN && CHK_NOP(TrInput, IN_ACTION) && !lara.l_arm.lock)
+            else if (weapon_type == LG_SHOTGUN && CHK_NOP(TrInput, IN_ACTION) && !Lara.leftArm.lock)
             {
                 item->goalAnimState = W_UNAIM;
             }
@@ -281,9 +281,9 @@ void animate_shotgun(int weapon_type)
     }
 
     AnimateItem(item);
-    lara.l_arm.frame_base = lara.r_arm.frame_base = Anims[item->animNumber].framePtr;
-    lara.l_arm.frame_number = lara.r_arm.frame_number = item->frameNumber - Anims[item->animNumber].frameBase;
-    lara.l_arm.anim_number  = lara.r_arm.anim_number  = item->animNumber;
+    Lara.leftArm.frameBase = Lara.rightArm.frameBase = Anims[item->animNumber].framePtr;
+    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = item->frameNumber - Anims[item->animNumber].frameBase;
+    Lara.leftArm.animNumber  = Lara.rightArm.animNumber  = item->animNumber;
 }
 
 #ifdef DLL_INJECT

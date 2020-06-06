@@ -472,7 +472,7 @@ extern void ready_pistols(int weapon_type);
 extern void pistol_handler(int weapon_type);
 extern void animate_pistols(int weapon_type);
 extern void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv);
-extern int weapon_object(int weapon_type);
+extern int WeaponObject(int weapon_type);
 extern int weapon_meshes(int weapon_type);
 extern void fire_shotgun(void);
 extern void fire_grenade(void);

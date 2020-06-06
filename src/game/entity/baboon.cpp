@@ -265,7 +265,7 @@ void BaboonControl(short itemNumber)
             }
             else if (baboon->mood == ESCAPE_MOOD)
             {
-                if (info.ahead && lara.target != item)
+                if (info.ahead && Lara.target != item)
                     item->goalAnimState = BABOON_IDLE;
                 else
                     item->goalAnimState = BABOON_RUN;
@@ -418,7 +418,7 @@ void BaboonControl(short itemNumber)
             }
             else if (baboon->mood == ESCAPE_MOOD)
             {
-                if (info.ahead && lara.target != item)
+                if (info.ahead && Lara.target != item)
                     item->goalAnimState = BABOON_IDLE;
             }
             else if (item->aiBits & FOLLOW && (item->gravityStatus || info.distance > BABOON_FOLLOW_RANGE))

@@ -78,6 +78,7 @@ void injector::inject_game()
     _game.inject_ahmet();
     _game.inject_baboon();
     _game.inject_bat();
+    _game.inject_crocodile();
 }
 
 void injector::inject_specific()
