@@ -158,7 +158,7 @@ BOOL GetOnMotorBike(short itemNumber) // (F) (D)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    height = GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     if (height < -32000)
         return FALSE;
 
@@ -442,7 +442,7 @@ int TestMotorbikeHeight(ITEM_INFO* item, int dz, int dx, PHD_VECTOR* pos) // (F)
 
     if (pos->y < ceiling || ceiling == -NO_HEIGHT)
         return -NO_HEIGHT;
-    height = GetHeight(floor, pos->x, pos->y, pos->z);
+    height = GetFloorHeight(floor, pos->x, pos->y, pos->z);
     if (pos->y > height)
         pos->y = height;
     return height;
@@ -593,7 +593,7 @@ int MotorBikeDynamics(ITEM_INFO* item)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    height = GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     if (item->pos.yPos >= height)
         speed = (item->speed * COS(item->pos.xRot)) >> W2V_SHIFT;
     else
@@ -697,7 +697,7 @@ int MotorBikeDynamics(ITEM_INFO* item)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    height = GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     if (height < (item->pos.yPos - STEP_L))
         DoShift(item, (PHD_VECTOR*)&item->pos, &oldpos);
     
@@ -751,7 +751,7 @@ BOOL MotorbikeCanGetOff(void)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height = GetHeight(floor, x, y, z);
+    height = GetFloorHeight(floor, x, y, z);
     if (height_type == BIG_SLOPE || height_type == DIAGONAL || height == -NO_HEIGHT)
         return FALSE;
 
@@ -1177,7 +1177,7 @@ int MotorBikeControl(void)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    height = GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
 
     TestTriggers(TriggerIndex, FALSE, FALSE);
     TestTriggers(TriggerIndex, TRUE, FALSE);

@@ -25,7 +25,7 @@ short LaraFloorFront(ITEM_INFO* item, short angle, int distance)
     newZ = item->pos.zPos + cos;
     roomNumber = item->roomNumber;
     floor = GetFloor(newX, newY, newZ, &roomNumber);
-    height = GetHeight(floor, newX, newY, newZ);
+    height = GetFloorHeight(floor, newX, newY, newZ);
     if (height != -NO_HEIGHT)
         height -= item->pos.yPos;
     return short(height);
@@ -1097,7 +1097,7 @@ BOOL LaraCheckForLetGo(ITEM_INFO* item, COLL_INFO* coll)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     coll->trigger = TriggerIndex;
 
     if (CHK_NOP(TrInput, IN_ACTION) || item->hitPoints <= 0)
@@ -1164,7 +1164,7 @@ int LaraTestClimbUpPos(ITEM_INFO* item, int front, int right, int* shift, int* l
         *shift = ceiling;
 
     floor = GetFloor(x + xfront, y, z + zfront, &roomNumber);
-    height = GetHeight(floor, x + xfront, y, z + zfront);
+    height = GetFloorHeight(floor, x + xfront, y, z + zfront);
     if (height == NO_HEIGHT)
     {
         *ledge = NO_HEIGHT;
@@ -1258,7 +1258,7 @@ int LaraTestClimb(int x, int y, int z, int xfront, int zfront, int item_height, 
         return 0;
     roomNumber = item_room;
     floor = GetFloor(x, y - (STEP_L / 2), z, &roomNumber);
-    height = GetHeight(floor, x, y, z);
+    height = GetFloorHeight(floor, x, y, z);
     if (height == -NO_HEIGHT)
         return 0;
 
@@ -1286,7 +1286,7 @@ int LaraTestClimb(int x, int y, int z, int xfront, int zfront, int item_height, 
     old_zfront = zfront + z;
     old_xfront = xfront + x;
     floor = GetFloor(xfront + x, y, zfront + z, &roomNumber);
-    height = GetHeight(floor, xfront + x, y, zfront + z);
+    height = GetFloorHeight(floor, xfront + x, y, zfront + z);
     if (height != -NO_HEIGHT)
         height -= y;
 
@@ -1539,7 +1539,7 @@ void LaraTestWaterDepth(ITEM_INFO* item, COLL_INFO* coll)
     else if (water_depth <= (STEP_L * 2))
     {
         Lara.waterStatus = LWS_WADE;
-        item->pos.yPos = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+        item->pos.yPos = GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
         item->pos.xRot = 0;
         item->pos.zRot = 0;
         item->speed = 0;
@@ -1929,7 +1929,7 @@ BOOL TestHangSwingIn(ITEM_INFO* item, short angle)
     }
 
     floor = GetFloor(x, y, z, &roomNumber);
-    height = GetHeight(floor, x, y, z);
+    height = GetFloorHeight(floor, x, y, z);
     ceiling = GetCeiling(floor, x, y, z);
 
     if (height != -NO_HEIGHT)
@@ -1990,7 +1990,7 @@ BOOL TestWall(ITEM_INFO* item, int front, int right, int height)
     }
 
     floor = GetFloor(x, y, z, &roomNumber);
-    right = GetHeight(floor, x, y, z);
+    right = GetFloorHeight(floor, x, y, z);
     ceiling = GetCeiling(floor, x, y, z);
     if (right == -NO_HEIGHT)
         return 1;
@@ -2288,7 +2288,7 @@ short GetClimbTrigger(int x, int y, int z, short roomNumber)
     short* index;
 
     floor = GetFloor(x, y, z, &roomNumber);
-    GetHeight(floor, x, y, z);
+    GetFloorHeight(floor, x, y, z);
     index = TriggerIndex;
 
     if (!index)

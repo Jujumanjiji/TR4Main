@@ -215,8 +215,8 @@ void BaboonControl(short itemNumber)
             baboon->enemy = LaraItem;
         }
 
-        GetCreatureMood(item, &info, TRUE);
-        CreatureMood(item, &info, TRUE);
+        GetCreatureMood(item, &info, VIOLENT);
+        CreatureMood(item, &info, VIOLENT);
         angle = CreatureTurn(item, baboon->maximumTurn);
 
         if (baboon->enemy != nullptr && baboon->enemy != LaraItem && baboon->enemy->objectNumber == AI_FOLLOW)
@@ -236,7 +236,7 @@ void BaboonControl(short itemNumber)
                 item->currentAnimState = BABOON_ACTIVATE_SWITCH;
                 item->aiBits &= ~(FOLLOW);
                 floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &item->roomNumber);
-                GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+                GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
                 TestTriggers(TriggerIndex, TRUE, FALSE);
                 baboon->enemy = nullptr;
             }
@@ -477,7 +477,7 @@ void BaboonControl(short itemNumber)
                 pos.y = item->pos.yPos;
                 pos.roomNumber = item->roomNumber;
                 floor = GetFloor(pos.x, pos.y, pos.z, &pos.roomNumber);
-                int height = GetHeight(floor, pos.x, pos.y, pos.z);
+                int height = GetFloorHeight(floor, pos.x, pos.y, pos.z);
                 item->floor = height;
                 TestTriggerXYZ(pos.x, pos.y, pos.z, pos.roomNumber, TRUE, NULL);
                 item->triggerFlags = 1;

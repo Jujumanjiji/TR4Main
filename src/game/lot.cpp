@@ -139,7 +139,7 @@ void InitialiseSlot(short itemNumber, int slots)
     creature->LOT.step = STEP_L;
     creature->LOT.drop = -STEP_L;
     creature->LOT.block_mask = BLOCKED;
-    creature->LOT.fly = NO_FLY;
+    creature->LOT.fly = NO_FLYING;
     creature->LOT.can_jump = FALSE;
     creature->LOT.can_monkey = FALSE;
     creature->LOT.is_amphibious = FALSE;
@@ -236,7 +236,7 @@ void CreateZone(ITEM_INFO* item)
     r = &Rooms[item->roomNumber];
     item->boxNumber = XZ_GET_SECTOR(r, item->pos.xPos, item->pos.zPos).box & BOX_NUMBER;
 
-    if (creature->LOT.fly == NO_FLY)
+    if (creature->LOT.fly == NO_FLYING)
     {
         zone = ground_zone[creature->LOT.zone][FALSE];
         flip = ground_zone[creature->LOT.zone][TRUE];

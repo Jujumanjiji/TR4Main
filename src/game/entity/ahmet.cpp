@@ -48,7 +48,7 @@ static void AhmetHeavyTriggers(ITEM_INFO* item)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     TestTriggers(TriggerIndex, TRUE, FALSE);
 }
 
@@ -154,8 +154,8 @@ void AhmetControl(short itemNumber)
             lara_info.distance = SQUARE(dx) + SQUARE(dz);
         }
 
-        GetCreatureMood(item, &info, TRUE);
-        CreatureMood(item, &info, TRUE);
+        GetCreatureMood(item, &info, VIOLENT);
+        CreatureMood(item, &info, VIOLENT);
 
         angle = CreatureTurn(item, ahmet->maximumTurn);
         ahmet->enemy = LaraItem;

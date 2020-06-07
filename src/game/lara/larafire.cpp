@@ -322,7 +322,7 @@ void fire_grenade(void)
             y = pos.y;
             z = pos.z;
             floor = GetFloor(pos.x, pos.y, pos.z, &item->roomNumber);
-            height = GetHeight(floor, pos.x, pos.y, pos.z);
+            height = GetFloorHeight(floor, pos.x, pos.y, pos.z);
             if (height < pos.y)
             {
                 item->pos.xPos = LaraItem->pos.xPos;
@@ -421,7 +421,7 @@ void fire_crossbow(PHD_3DPOS* haveDefinedPos)
                 GetLaraJointAbsPosition(&pos, JHAND_R);
                 item->roomNumber = LaraItem->roomNumber;
                 floor = GetFloor(pos.x, pos.y, pos.z, &item->roomNumber);
-                height = GetHeight(floor, pos.x, pos.y, pos.z);
+                height = GetFloorHeight(floor, pos.x, pos.y, pos.z);
 
                 if (height < pos.y)
                 {
@@ -717,9 +717,10 @@ void LaraGetNewTarget(WEAPON_INFO* winfo)
 
 void AimWeapon(WEAPON_INFO* winfo, LARA_ARM* arm)
 {
-    short curr, speed = winfo->aim_speed;
+    short curr, speed;
     short destx, desty;
     
+    speed = winfo->aim_speed;
     if (arm->lock)
     {
         desty = Lara.targetAngles[0];
@@ -762,8 +763,8 @@ void find_target_point(ITEM_INFO* item, GAME_VECTOR* target)
     x = (int)((bounds[0] + bounds[1]) / 2);
     y = (int)(bounds[2] + (bounds[3] - bounds[2]) / 3);
     z = (int)((bounds[4] + bounds[5]) / 2);
-    s = SIN(item->pos.yRot);
     c = COS(item->pos.yRot);
+    s = SIN(item->pos.yRot);
 
     target->x = item->pos.xPos + ((c * x + s * z) >> W2V_SHIFT);
     target->y = item->pos.yPos + y;
@@ -950,7 +951,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 }
 
                 item->hitStatus = TRUE;
-                if (!obj->undead)
+                if (!obj->undead && obj->hitPoints != DONT_TARGET)
                     item->hitPoints -= weapons[Lara.gunType].damage;
             }
             else if (ShatterItem.bit == 1 << (obj->nMeshes - 1) && CHK_NOP(item->flags, IFLAG_SWITCH_ONESHOT))
@@ -962,7 +963,7 @@ int GetTargetOnLOS(GAME_VECTOR* dest, GAME_VECTOR* src, BOOL drawtarget, BOOL fi
                 if (CHK_EXI(item->flags, IFLAG_CODEBITS) && CHK_EQA(item->flags, IFLAG_CODEBITS))
                 {
                     floor = GetFloor(item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos, &roomNumber);
-                    GetHeight(floor, item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos);
+                    GetFloorHeight(floor, item->pos.xPos, item->pos.yPos - STEP_L, item->pos.zPos);
                     TestTriggers(TriggerIndex, TRUE, CHK_EXI(item->flags, IFLAG_CODEBITS));
                 }
                 else
@@ -1275,6 +1276,5 @@ void injector::f_game::inject_larafire()
     inject(0x0044D890, GetTargetOnLOS);
     inject(0x0042E920, HitTarget);
     inject(0x0042D840, LaraGun);
-
 }
 #endif

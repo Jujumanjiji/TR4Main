@@ -34,6 +34,16 @@ struct STATS
     BYTE health_used;
 };
 
+struct ANIM_FRAME
+{
+    short minX;
+    short maxX;
+    short minY;
+    short maxY;
+    short minZ;
+    short maxZ;
+};
+
 struct BONE_STRUCT
 {
     DWORD flags;

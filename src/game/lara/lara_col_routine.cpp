@@ -1955,7 +1955,7 @@ void lara_col_poledown(ITEM_INFO* item, COLL_INFO* coll)
     {
         roomNumber = item->roomNumber;
         floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-        height = GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+        height = GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
         item->pos.yPos = height;
         item->floor = height;
         item->itemFlags[2] = 0;

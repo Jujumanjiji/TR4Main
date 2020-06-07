@@ -2,6 +2,8 @@
 
 using namespace std;
 
+constexpr auto RADIAN = 0.01745329252f;
+
 #define DEBUG_CHEAT
 #define LOG_DEBUG
 #define LOG_FOLDER "log"
@@ -38,7 +40,7 @@ using namespace std;
 
 #define ALL_MESH -1
 #define NO_TRACK -1
-#define NO_FLY 0
+#define NO_FLYING 0
 #define NO_HORIZON -1
 #define NO_CLIP -1
 #define NOT_EXIST -1

@@ -15,7 +15,7 @@
 #define ObjectOnLOS2 ((int(__cdecl*)(GAME_VECTOR* start, GAME_VECTOR* end, PHD_VECTOR* vec, MESH_INFO** mesh)) 0x0044CBE0)
 #define GetFloor ((FLOOR_INFO*(__cdecl*)(int x, int y, int z, short* roomNumber)) 0x0044A1A0)
 #define GetWaterHeight ((int(__cdecl*)(int x, int y, int z, short roomNumber)) 0x0044A390)
-#define GetHeight ((int(__cdecl*)(FLOOR_INFO* floor, int x, int y, int z)) 0x0044A530)
+#define GetFloorHeight ((int(__cdecl*)(FLOOR_INFO* floor, int x, int y, int z)) 0x0044A530)
 #define GetCeiling ((int(__cdecl*)(FLOOR_INFO* floor, int x, int y, int z)) 0x0044B690)
 #define GetWaterDepth ((int(__cdecl*)(int x, int y, int z, short roomNumber)) 0x00432BF0)
 #define TestTriggers ((void(__cdecl*)(short* data, BOOL heavy, short heavy_flags)) 0x0044AB50)

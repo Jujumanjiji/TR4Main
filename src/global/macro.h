@@ -83,9 +83,6 @@ else if (A < -B)\
 #define AI(item, ai_flags) item->ai_bits & ai_flags
 #define NOT_AI(item, ai_flags) !(item->ai_bits & ai_flags)
 
-#define JZON_INT(rtrn, from, name, to) if (from.has(name)) to = (rtrn)from.get(name).toInt()
-#define JZON_BOOL(rtrn, from, name, to) if (from.has(name)) to = (rtrn)from.get(name).toBoolean()
-
 #define CHECK_REACHED_GOAL(item, enemy, range) abs(enemy->pos.x - item->pos.x) < range && abs(enemy->pos.z - item->pos.z) < range &&  abs(enemy->pos.y - item->pos.y) < range
 
 #define INIT_PICKUP(slotID)\

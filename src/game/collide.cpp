@@ -27,7 +27,7 @@ void UpdateLaraRoom(ITEM_INFO* item, int height)
     z = item->pos.zPos;
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    item->floor = GetHeight(floor, x, y, z);
+    item->floor = GetFloorHeight(floor, x, y, z);
     if (item->roomNumber != roomNumber)
         ItemNewRoom(Lara.itemNumber, roomNumber);
 }
@@ -116,7 +116,7 @@ BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)
 
     roomNumber = laraitem->roomNumber;
     floor = GetFloor(dest.xPos, dest.yPos, dest.zPos, &roomNumber);
-    height = GetHeight(floor, dest.xPos, dest.yPos, dest.zPos);
+    height = GetFloorHeight(floor, dest.xPos, dest.yPos, dest.zPos);
 
     if (abs(height - laraitem->pos.yPos) < CLICK(2))
     {
@@ -236,6 +236,42 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
          && src->xRot == dest->xRot
          && src->yRot == dest->yRot
          && src->zRot == dest->zRot);
+}
+
+void CalcItemToFloorRotation(ITEM_INFO* item, int radiusZ, int radiusX)
+{
+    FLOOR_INFO* floor;
+    GAME_VECTOR pos;
+    int ratioXZ, frontHDif, sideHDif;
+    int frontX, frontZ, leftX, leftZ, rightX, rightZ;
+    int frontHeight, backHeight, leftHeight, rightHeight;
+
+    pos.x = item->pos.xPos;
+    pos.y = item->pos.yPos;
+    pos.z = item->pos.zPos;
+    pos.roomNumber = item->roomNumber;
+
+    ratioXZ = radiusZ / radiusX;
+    frontX = (SIN(item->pos.yRot) * radiusZ) >> W2V_SHIFT;
+    frontZ = (COS(item->pos.yRot) * radiusZ) >> W2V_SHIFT;
+    leftX = -frontZ * ratioXZ;
+    leftZ = frontX * ratioXZ;
+    rightX = frontZ * ratioXZ;
+    rightZ = -frontX * ratioXZ;
+
+    floor = GetFloor(pos.x + frontX, pos.y, pos.z + frontZ, &pos.roomNumber);
+    frontHeight = GetFloorHeight(floor, pos.x + frontX, pos.y, pos.z + frontZ);
+    floor = GetFloor(pos.x - frontX, pos.y, pos.z - frontZ, &pos.roomNumber);
+    backHeight = GetFloorHeight(floor, pos.x - frontX, pos.y, pos.z - frontZ);
+    floor = GetFloor(pos.x + leftX, pos.y, pos.z + leftZ, &pos.roomNumber);
+    leftHeight = GetFloorHeight(floor, pos.x + leftX, pos.y, pos.z + leftZ);
+    floor = GetFloor(pos.x + rightX, pos.y, pos.z + rightZ, &pos.roomNumber);
+    rightHeight = GetFloorHeight(floor, pos.x + rightX, pos.y, pos.z + rightZ);
+
+    frontHDif = backHeight - frontHeight;
+    sideHDif = rightHeight - leftHeight;
+    item->pos.xRot = ANGLEF(atan2(frontHDif, 2 * radiusZ) / RADIAN);
+    item->pos.zRot = ANGLEF(atan2(sideHDif, 2 * radiusX) / RADIAN);
 }
 
 #ifdef DLL_INJECT

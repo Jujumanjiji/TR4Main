@@ -65,6 +65,7 @@ extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short a
 extern LPCSTR InventoryItemDebugString(short inv_item);
 extern void ResetLaraMeshSkin(void);
 extern CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item);
+extern short ANGLEF(float angle);
 
 extern bool DX_TRY(HRESULT errorThrow);
 

@@ -6,6 +6,7 @@ extern BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* larai
 extern void AlignLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem);
 extern BOOL MoveLaraPosition(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem);
 extern BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angadd);
+extern void CalcItemToFloorRotation(ITEM_INFO* item, int radiusZ, int radiusX);
 
 #ifdef DLL_INJECT
 #define GetCollisionInfo ((void(__cdecl*)(COLL_INFO* coll, int x, int y, int z, short roomNumber, int height)) 0x00446170)

@@ -349,7 +349,7 @@ void SpawnPickup(ITEM_INFO *item)
 
         pickup->pos.xPos = pos.x;
         pickup->pos.zPos = pos.z;
-        pickup->pos.yPos = GetHeight(floor, pickup->pos.xPos, item->pos.yPos, pickup->pos.zPos);
+        pickup->pos.yPos = GetFloorHeight(floor, pickup->pos.xPos, item->pos.yPos, pickup->pos.zPos);
         pickup->pos.yPos -= GetBoundsAccurate(pickup)[3]; // maxY
         
         if (pickup->objectNumber == BIGMEDI_ITEM) // bigmedi item is not oriented correctly.
@@ -694,21 +694,21 @@ ENTITY_JUMP CheckMegaJumpPossibility(ITEM_INFO* item, CREATURE_INFO* creature)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height1 = GetHeight(floor, x, y, z);
+    height1 = GetFloorHeight(floor, x, y, z);
 
     x += sin;
     z += cos;
 
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height2 = GetHeight(floor, x, y, z);
+    height2 = GetFloorHeight(floor, x, y, z);
 
     x += sin;
     z += cos;
 
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height3 = GetHeight(floor, x, y, z);
+    height3 = GetFloorHeight(floor, x, y, z);
 
     jump.can_jump_1click = true;
     if (creature->enemy && item->boxNumber == creature->enemy->boxNumber
@@ -749,7 +749,7 @@ bool CheckRollPossibility(ITEM_INFO* item)
     z = item->pos.zPos + cos;
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height = GetHeight(floor, x, y, z);
+    height = GetFloorHeight(floor, x, y, z);
 
     // second height
     sin = ((942 * SIN(item->pos.yRot - 14336)) >> W2V_SHIFT);
@@ -759,7 +759,7 @@ bool CheckRollPossibility(ITEM_INFO* item)
     z = item->pos.zPos + cos;
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height2 = GetHeight(floor, x, y, z) - y;
+    height2 = GetFloorHeight(floor, x, y, z) - y;
 
     if (abs(height2) > STEP_L || ((height + (STEP_L * 2)) >= y))
         return false;
@@ -783,7 +783,7 @@ bool CheckJumpPossibility(ITEM_INFO* item)
     z = item->pos.zPos + cos;
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height = GetHeight(floor, x, y, z);
+    height = GetFloorHeight(floor, x, y, z);
 
     // second height
     sin = ((942 * SIN(item->pos.yRot + 14336)) >> W2V_SHIFT);
@@ -793,7 +793,7 @@ bool CheckJumpPossibility(ITEM_INFO* item)
     z = item->pos.zPos + cos;
     roomNumber = item->roomNumber;
     floor = GetFloor(x, y, z, &roomNumber);
-    height2 = GetHeight(floor, x, y, z) - y;
+    height2 = GetFloorHeight(floor, x, y, z) - y;
 
     if (abs(height2) <= STEP_L || ((height + (STEP_L * 2)) < y))
         return false;
@@ -1090,7 +1090,7 @@ void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
 
     roomNumber = item->roomNumber;
     floor = GetFloor(item->pos.xPos, item->pos.yPos, item->pos.zPos, &roomNumber);
-    GetHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
+    GetFloorHeight(floor, item->pos.xPos, item->pos.yPos, item->pos.zPos);
     coll->trigger = TriggerIndex;
 }
 
@@ -1705,4 +1705,9 @@ void WEAPON_AMMO::decrease(int weapon_type, int value)
             Lara.pistol_ammo_count -= value;
             break;
     }
+}
+
+short ANGLEF(float angle)
+{
+    return angle * 65536.0f / 360.0f;
 }
