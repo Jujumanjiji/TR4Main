@@ -966,7 +966,6 @@ int MotorbikeUserControl(ITEM_INFO* item, int height, int* pitch)
     MOTORBIKE_INFO* motorbike;
     PHD_VECTOR pos;
     int drive = 0;
-    int vel, newvel;
 
     motorbike = GetMotorbikeInfo(item);
     if (motorbike->lightPower < 127)
@@ -1159,7 +1158,7 @@ int MotorBikeControl(void)
     MOTORBIKE_INFO* motorbike;
     FLOOR_INFO* floor;
     PHD_VECTOR oldpos, fl, fr, fm;
-    int drive, collide, pitch = 0, dead, height = 0, ceiling;
+    int drive, collide, pitch = 0, dead, height = 0;
     short roomNumber;
 
     item = &Items[Lara.skidoo];

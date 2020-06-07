@@ -803,7 +803,7 @@ bool CheckJumpPossibility(ITEM_INFO* item)
 
 AIOBJECT* FoundAIObject(short objectNumber)
 {
-    for (short i = 0; i < nAIObjects; i++)
+    for (int i = 0; i < nAIObjects; i++)
     {
         AIOBJECT* ai = &AIObjects[i];
         if (ai->objectNumber == objectNumber && ai->roomNumber != NO_ROOM)
@@ -815,7 +815,7 @@ AIOBJECT* FoundAIObject(short objectNumber)
 
 AIOBJECT* FoundAIObjectWithOCB(short objectNumber, short triggerFlags)
 {
-    for (short i = 0; i < nAIObjects; i++)
+    for (int i = 0; i < nAIObjects; i++)
     {
         AIOBJECT* ai = &AIObjects[i];
         if (ai->objectNumber == objectNumber && ai->triggerFlags == triggerFlags && ai->roomNumber != NO_ROOM)
@@ -1709,5 +1709,5 @@ void WEAPON_AMMO::decrease(int weapon_type, int value)
 
 short ANGLEF(float angle)
 {
-    return angle * 65536.0f / 360.0f;
+    return short(angle * 65536.0f / 360.0f); // else warning !
 }

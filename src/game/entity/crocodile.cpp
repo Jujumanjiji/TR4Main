@@ -7,7 +7,7 @@
 #include "draw.h"
 #include "collide.h"
 
-typedef struct CROCODILE_BONE
+struct CROCODILE_BONE
 {
     short torsoY;
     short torsoX;
@@ -66,7 +66,8 @@ constexpr auto CROC_ALERT_RANGE = SQUARE(SECTOR(1) + CLICK(2));
 constexpr auto CROC_VISIBILITY_RANGE = SQUARE(SECTOR(5));
 constexpr auto CROC_RUN_RANGE = SQUARE(SECTOR(1));
 constexpr auto CROC_MAXRUN_RANGE = SQUARE(SECTOR(1) + CLICK(2));
-constexpr auto CROC_ATTACK_RANGE = SQUARE(CLICK(2));
+constexpr auto CROC_ATTACK_RANGE = SQUARE(CLICK(2)); // NOTE: TR4 is CLICK(3), but the crocodile not go near lara to do damage in certain case !
+constexpr auto CROC_TOUCHBITS = 768;
 constexpr auto CROC_DAMAGE = 120;
 static BITE_INFO crocBite = { 0, -100, 500, 9 };
 
@@ -114,8 +115,6 @@ void CrocodileControl(short itemNumber)
     crocodile = GetCreatureInfo(item);
     angle = 0;
     bone_angle = 0;
-
-    // check diff floor and slope here
 
     if (item->hitPoints <= 0)
     {
@@ -241,7 +240,7 @@ void CrocodileControl(short itemNumber)
             if (item->frameNumber == Anims[item->animNumber].frameBase)
                 item->requiredAnimState = 0;
 
-            if (info.bite && item->touchBits) // TODO: change that, touchBits is wrong !!!
+            if (info.bite && (item->touchBits & CROC_TOUCHBITS))
             {
                 if (!item->requiredAnimState)
                 {
@@ -275,7 +274,7 @@ void CrocodileControl(short itemNumber)
             if (item->frameNumber == Anims[item->animNumber].frameBase)
                 item->requiredAnimState = CROC_EMPTY;
 
-            if (info.bite && item->touchBits) // TODO: change that, touchBits is wrong !!!
+            if (info.bite && (item->touchBits & CROC_TOUCHBITS))
             {
                 if (!item->requiredAnimState)
                 {
@@ -303,10 +302,7 @@ void CrocodileControl(short itemNumber)
     CreatureJoint(item, 2, boneRot.hipsY);
     CreatureJoint(item, 3, boneRot.hipsX);
     if (item->currentAnimState < WCROC_SWIM)
-    {
-        ANIM_FRAME* bounds = (ANIM_FRAME*)GetBoundsAccurate(item);
-        CalcItemToFloorRotation(item, bounds->maxZ / 2, bounds->maxX); // need to be "/ 2" else it's too much !
-    }
+        CalcItemToFloorRotation(item, 2);
     CreatureAnimation(itemNumber, angle, 0);
 
     // transition from water to land and land to water

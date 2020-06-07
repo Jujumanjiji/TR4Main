@@ -3,6 +3,7 @@
 #include "3d_gen.h"
 #include "3d_gen_a.h"
 #include "control.h"
+#include "draw.h"
 #include "items.h"
 #include "lara.h"
 
@@ -238,18 +239,23 @@ BOOL Move3DPosTo3DPos(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angad
          && src->zRot == dest->zRot);
 }
 
-void CalcItemToFloorRotation(ITEM_INFO* item, int radiusZ, int radiusX)
+void CalcItemToFloorRotation(ITEM_INFO* item, int radiusDivide)
 {
     FLOOR_INFO* floor;
+    ANIM_FRAME* bounds;
     GAME_VECTOR pos;
     int ratioXZ, frontHDif, sideHDif;
     int frontX, frontZ, leftX, leftZ, rightX, rightZ;
     int frontHeight, backHeight, leftHeight, rightHeight;
+    int radiusZ, radiusX;
 
+    bounds = (ANIM_FRAME*)GetBoundsAccurate(item);
     pos.x = item->pos.xPos;
     pos.y = item->pos.yPos;
     pos.z = item->pos.zPos;
     pos.roomNumber = item->roomNumber;
+    radiusX = bounds->maxX;
+    radiusZ = bounds->maxZ / radiusDivide; // need divide in any case else it's too much !
 
     ratioXZ = radiusZ / radiusX;
     frontX = (SIN(item->pos.yRot) * radiusZ) >> W2V_SHIFT;
@@ -270,8 +276,9 @@ void CalcItemToFloorRotation(ITEM_INFO* item, int radiusZ, int radiusX)
 
     frontHDif = backHeight - frontHeight;
     sideHDif = rightHeight - leftHeight;
-    item->pos.xRot = ANGLEF(atan2(frontHDif, 2 * radiusZ) / RADIAN);
-    item->pos.zRot = ANGLEF(atan2(sideHDif, 2 * radiusX) / RADIAN);
+    // NOTE: float(atan2()) is required, else warning about double !
+    item->pos.xRot = ANGLEF(float(atan2(frontHDif, 2 * radiusZ)) / RADIAN);
+    item->pos.zRot = ANGLEF(float(atan2(sideHDif, 2 * radiusX)) / RADIAN);
 }
 
 #ifdef DLL_INJECT
