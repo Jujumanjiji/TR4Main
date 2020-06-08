@@ -48,7 +48,7 @@ public:
     void wraith3();
     void wraith4();
     void little_beetle();
-    void fish();
+    void locusts();
 
 private:
     OBJECT_INFO* obj;

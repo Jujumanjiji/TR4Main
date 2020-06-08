@@ -12,6 +12,7 @@
 #include "baboon.h"
 #include "bat.h"
 #include "crocodile.h"
+#include "mutant.h"
 
 SetupEntity setup_entity;
 void SetupEntity::lara_obj()
@@ -24,11 +25,11 @@ void SetupEntity::lara_obj()
         obj->hitPoints = initHealth(LARA);
         obj->hitEffect = HIT_BLOOD;
         obj->drawRoutine = NULL; // custom render elsewhere !
-        obj->usingDrawAnimatingItem = false;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->usingDrawAnimatingItem = FALSE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
     }
     else
     {
@@ -49,12 +50,12 @@ void SetupEntity::skeleton()
         obj->pivotLength = 50;
         obj->radius = 128;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->undead = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE;
         obj->hitEffect = HIT_SMOKE;
         obj->explodableMeshBits = 2560;
     }
@@ -75,11 +76,11 @@ void SetupEntity::von_croy()
         obj->hitPoints = initHealth(VON_CROY);
         obj->shadowSize = 128;
         obj->radius = 128;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->mipDistance = 5120;
         obj->explodableMeshBits = 0x200000;
         obj->hitEffect = HIT_BLOOD;
@@ -113,12 +114,12 @@ void SetupEntity::guide()
         obj->pivotLength = 0;
         obj->radius = 128;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->saveMesh = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->saveMesh = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_SMOKE;
         
         Bones[obj->boneIndex + 24] |= ROT_Y | ROT_X;
@@ -152,12 +153,12 @@ void SetupEntity::baddy_1()
         obj->pivotLength = 50;
         obj->radius = 102;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->usingDrawAnimatingItem = false;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->usingDrawAnimatingItem = FALSE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 7 * 4] |= ROT_Y | ROT_X; // TORSO
@@ -182,11 +183,11 @@ void SetupEntity::baddy_2()
         obj->pivotLength = 50;
         obj->radius = 102;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 7 * 4] |= ROT_Y | ROT_X; // TORSO
@@ -214,11 +215,11 @@ void SetupEntity::scorpion()
         obj->pivotLength = 50;
         obj->radius = 512;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
     }
 }
@@ -235,11 +236,11 @@ void SetupEntity::small_scorpion()
         obj->hitPoints = initHealth(SMALL_SCORPION);
         obj->pivotLength = 20;
         obj->radius = 128;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
     }
 }
@@ -256,13 +257,13 @@ void SetupEntity::mummy()
         obj->hitPoints = initHealth(MUMMY);
         obj->radius = 170;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_SMOKE;
-        obj->undead = true;
+        obj->undead = TRUE;
         
         Bones[obj->boneIndex + 28] |= ROT_Y | ROT_X;
         Bones[obj->boneIndex + 72] |= ROT_Y;
@@ -282,12 +283,12 @@ void SetupEntity::knight_templar()
         obj->pivotLength = 0;
         obj->radius = 128;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->undead = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE;
         
         Bones[obj->boneIndex + 24] |= ROT_Y | ROT_X;
         Bones[obj->boneIndex + 56] |= ROT_Y;
@@ -308,12 +309,12 @@ void SetupEntity::sphinx()
         obj->radius = 512;
         obj->mipDistance = 5120;
         obj->hitEffect = HIT_FRAGMENT;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->undead = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE;
     }
 }
 
@@ -329,12 +330,12 @@ void SetupEntity::setha()
         obj->hitPoints = initHealth(SETHA);
         obj->pivotLength = 50;
         obj->radius = 341;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->saveMesh = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->saveMesh = TRUE;
+        obj->savePosition = TRUE;
         obj->mipDistance = 5120;
     }
 }
@@ -351,12 +352,12 @@ void SetupEntity::lara_double()
         obj->hitPoints = initHealth(LARA_DOUBLE);
         obj->pivotLength = 50;
         obj->radius = 128;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->undead = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE;
         obj->hitEffect = HIT_FRAGMENT;
     }
 }
@@ -374,13 +375,13 @@ void SetupEntity::horseman()
         obj->pivotLength = 50;
         obj->radius = 409;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->saveMesh = true;
-        obj->savePosition = true;
-        obj->undead = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->saveMesh = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE;
         obj->hitEffect = HIT_FRAGMENT;
     }
 }
@@ -398,12 +399,12 @@ void SetupEntity::hammerhead()
         obj->pivotLength = 300;
         obj->radius = 341;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->waterCreature = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->waterCreature = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 0] |= ROT_Y;
@@ -426,12 +427,12 @@ void SetupEntity::crocodile()
         obj->pivotLength = 300;
         obj->radius = 402;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        obj->waterCreature = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        obj->waterCreature = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 0] |= ROT_Y;
@@ -454,12 +455,12 @@ void SetupEntity::demigod1()
         obj->pivotLength = 0;
         obj->radius = 341;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        //obj->non_lot = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        //obj->non_lot = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 32] |= ROT_ALL;
@@ -480,12 +481,12 @@ void SetupEntity::demigod2()
         obj->pivotLength = 50;
         obj->radius = 341;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        //obj->non_lot = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        //obj->non_lot = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 32] |= ROT_ALL;
@@ -506,12 +507,12 @@ void SetupEntity::demigod3()
         obj->pivotLength = 50;
         obj->radius = 341;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
-        //obj->non_lot = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
+        //obj->non_lot = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 32] |= ROT_ALL;
@@ -531,12 +532,12 @@ void SetupEntity::mutant()
         obj->hitPoints = initHealth(MUTANT);
         obj->pivotLength = 50;
         obj->radius = 128;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveMesh = true;
-        obj->savePosition = true;
-        obj->undead = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveMesh = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE;
         obj->hitEffect = HIT_SMOKE;
         
         Bones[obj->boneIndex + 24] |= ROT_Y | ROT_X;
@@ -558,11 +559,11 @@ void SetupEntity::troops()
         obj->pivotLength = 50;
         obj->radius = 102;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 0] |= ROT_Y | ROT_X;
@@ -584,11 +585,11 @@ void SetupEntity::sas()
         obj->pivotLength = 50;
         obj->radius = 102;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 0] |= ROT_Y | ROT_X;
@@ -609,11 +610,11 @@ void SetupEntity::harpy()
         obj->pivotLength = 50;
         obj->radius = 409;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
     }
 }
@@ -630,11 +631,11 @@ void SetupEntity::wild_boar()
         obj->hitPoints = initHealth(WILD_BOAR);
         obj->pivotLength = 50;
         obj->radius = 102;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 48] |= ROT_Z | ROT_Y;
@@ -655,11 +656,11 @@ void SetupEntity::dog()
         obj->pivotLength = 300;
         obj->radius = 341;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
         
         Bones[obj->boneIndex + 0] |= ROT_Y;
@@ -703,11 +704,11 @@ void SetupEntity::baboon()
         obj->hitPoints = initHealth(BABOON_NORMAL);
         obj->pivotLength = 200;
         obj->radius = 256;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
     }
 
@@ -721,11 +722,11 @@ void SetupEntity::baboon()
         obj->hitPoints = initHealth(BABOON_INV);
         obj->pivotLength = 200;
         obj->radius = 256;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
 
         if (Objects[BABOON_NORMAL].loaded)
@@ -742,11 +743,11 @@ void SetupEntity::baboon()
         obj->hitPoints = initHealth(BABOON_SILENT);
         obj->pivotLength = 200;
         obj->radius = 256;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
 
         if (Objects[BABOON_NORMAL].loaded)
@@ -767,10 +768,10 @@ void SetupEntity::enemy_jeep()
             obj->control = EnemyJeepTrainControl;
             obj->collision = CreatureCollision;
             obj->shadowSize = 128; // not exist in TR4 Train level by default !!
-            obj->saveAnim = true;
-            obj->saveFlags = true;
-            obj->saveHitpoints = true;
-            obj->savePosition = true;
+            obj->saveAnim = TRUE;
+            obj->saveFlags = TRUE;
+            obj->saveHitpoints = TRUE;
+            obj->savePosition = TRUE;
             obj->hitEffect = HIT_FRAGMENT;
         }
         else
@@ -782,12 +783,12 @@ void SetupEntity::enemy_jeep()
             obj->hitPoints = initHealth(ENEMY_JEEP);
             obj->pivotLength = 500;
             obj->radius = 512;
-            obj->intelligent = true;
-            obj->saveAnim = true;
-            obj->saveFlags = true;
-            obj->saveHitpoints = true;
-            obj->saveMesh = true;
-            obj->savePosition = true;
+            obj->intelligent = TRUE;
+            obj->saveAnim = TRUE;
+            obj->saveFlags = TRUE;
+            obj->saveHitpoints = TRUE;
+            obj->saveMesh = TRUE;
+            obj->savePosition = TRUE;
             obj->hitEffect = HIT_FRAGMENT;
             
             Bones[obj->boneIndex + 32] |= ROT_X;
@@ -810,11 +811,11 @@ void SetupEntity::bat()
         obj->hitPoints = initHealth(BAT);
         obj->pivotLength = 10;
         obj->radius = 102;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
     }
 }
@@ -832,11 +833,11 @@ void SetupEntity::big_beetle()
         obj->pivotLength = 50;
         obj->radius = 204;
         obj->mipDistance = 5120;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
         obj->hitEffect = HIT_BLOOD;
     }
 }
@@ -854,13 +855,13 @@ void SetupEntity::sentry_gun()
         obj->pivotLength = 50;
         obj->radius = 204;
         obj->explodableMeshBits = 64;
-        obj->intelligent = true;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->saveMesh = true;
-        obj->savePosition = true;
-        obj->undead = true; // only killable by grenadegun or crossbow
+        obj->intelligent = TRUE;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->saveMesh = TRUE;
+        obj->savePosition = TRUE;
+        obj->undead = TRUE; // only killable by grenadegun or crossbow
         obj->hitEffect = HIT_FRAGMENT;
         
         Bones[obj->boneIndex + 0] |= ROT_Y;
@@ -877,8 +878,8 @@ void SetupEntity::horse()
     {
         obj->initialise = InitialiseHorse;
         obj->collision = ObjectCollision;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
     }
 }
 
@@ -890,9 +891,9 @@ void SetupEntity::sas_dying()
         obj->initialise = InitialiseSasDying;
         obj->control = SasDyingControl;
         obj->collision = ObjectCollision;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -904,9 +905,9 @@ void SetupEntity::sas_captain()
         obj->initialise = InitialiseSasDying;
         obj->control = SasDyingControl;
         obj->collision = ObjectCollision;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -918,9 +919,9 @@ void SetupEntity::jean_yves()
         obj->initialise = InitialiseJeanYves;
         obj->control = JeanYvesControl;
         obj->collision = ObjectCollision;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
         obj->mipDistance = 10240;
     }
 }
@@ -933,9 +934,9 @@ void SetupEntity::game_piece1()
         obj->initialise = InitialiseGamePiece;
         obj->control = GamePieceControl;
         obj->collision = ObjectCollision;
-        obj->saveHitpoints = true;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveHitpoints = TRUE;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -947,9 +948,9 @@ void SetupEntity::game_piece2()
         obj->initialise = InitialiseGamePiece;
         obj->control = GamePieceControl;
         obj->collision = ObjectCollision;
-        obj->saveHitpoints = true;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveHitpoints = TRUE;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -961,9 +962,9 @@ void SetupEntity::game_piece3()
         obj->initialise = InitialiseGamePiece;
         obj->control = GamePieceControl;
         obj->collision = ObjectCollision;
-        obj->saveHitpoints = true;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveHitpoints = TRUE;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -973,8 +974,8 @@ void SetupEntity::enemy_piece()
     if (obj->loaded)
     {
         obj->collision = ObjectCollision;
-        obj->saveFlags = true;
-        obj->savePosition = true;
+        obj->saveFlags = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -987,8 +988,8 @@ void SetupEntity::wheel_of_fortune()
         obj->control = WheelOfFortuneControl;
         obj->collision = WheelOfFortuneCollision;
         obj->hitPoints = 1;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
         
         Bones[obj->boneIndex + 0] |= ROT_Z;
         Bones[obj->boneIndex + 4] |= ROT_Z;
@@ -1005,10 +1006,10 @@ void SetupEntity::wraith1()
         obj->initialise = InitialiseWraith;
         obj->control = WraithControl;
         obj->drawRoutine = DrawWraith;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -1020,10 +1021,10 @@ void SetupEntity::wraith2()
         obj->initialise = InitialiseWraith;
         obj->control = WraithControl;
         obj->drawRoutine = DrawWraith;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -1035,10 +1036,10 @@ void SetupEntity::wraith3()
         obj->initialise = InitialiseWraith;
         obj->control = WraithControl;
         obj->drawRoutine = DrawWraith;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -1050,10 +1051,10 @@ void SetupEntity::wraith4()
         obj->initialise = InitialiseWraith;
         obj->control = WraithControl;
         obj->drawRoutine = DrawWraith;
-        obj->saveAnim = true;
-        obj->saveFlags = true;
-        obj->saveHitpoints = true;
-        obj->savePosition = true;
+        obj->saveAnim = TRUE;
+        obj->saveFlags = TRUE;
+        obj->saveHitpoints = TRUE;
+        obj->savePosition = TRUE;
     }
 }
 
@@ -1068,14 +1069,14 @@ void SetupEntity::little_beetle()
     }
 }
 
-void SetupEntity::fish()
+void SetupEntity::locusts()
 {
-    obj = &Objects[FISH];
+    obj = &Objects[LOCUSTS];
     if (obj->loaded)
     {
-        obj->initialise = InitialiseFish;
-        obj->control = FishControl;
+        obj->initialise = InitialiseLocusts;
+        obj->control = LocustsControl;
         obj->drawRoutine = NULL;
-        obj->saveFlags = true;
+        obj->saveFlags = TRUE;
     }
 }

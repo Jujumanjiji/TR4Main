@@ -107,7 +107,7 @@ void BaddyObjects(void)
     setup_entity.wraith3();
     setup_entity.wraith4();
     setup_entity.little_beetle();
-    setup_entity.fish();
+    setup_entity.locusts();
 }
 
 void ObjectObjects(void)

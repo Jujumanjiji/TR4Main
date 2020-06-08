@@ -54,8 +54,6 @@
 #define HammerheadControl CONTROL(0x00407060)
 #define InitialiseDemigod INITIALISE(0x00404E00)
 #define DemigodControl CONTROL(0x00404EA0)
-#define InitialiseMutant INITIALISE(0x00403ED0)
-#define MutantControl CONTROL(0x00403F30)
 #define InitialiseTroops INITIALISE(0x004183B0)
 #define TroopsControl CONTROL(0x00418430)
 #define InitialiseSAS INITIALISE(0x0040D040)
@@ -89,8 +87,8 @@
 #define DrawWraith DRAW(0x0048AD60)
 #define InitialiseLittleBeetle INITIALISE(0x0040E6B0)
 #define LittleBeetleControl CONTROL(0x0040E2D0)
-#define InitialiseFish INITIALISE(0x004037B0)
-#define FishControl CONTROL(0x00403810)
+#define InitialiseLocusts INITIALISE(0x004037B0)
+#define LocustsControl CONTROL(0x00403810)
 
 /// traps
 

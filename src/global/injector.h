@@ -61,6 +61,7 @@ private:
         void inject_baboon();
         void inject_bat();
         void inject_crocodile();
+        void inject_mutant();
     };
 
     struct f_specific

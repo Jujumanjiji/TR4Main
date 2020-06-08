@@ -107,6 +107,7 @@
     <ClCompile Include="src\game\entity\baboon.cpp" />
     <ClCompile Include="src\game\entity\bat.cpp" />
     <ClCompile Include="src\game\entity\crocodile.cpp" />
+    <ClCompile Include="src\game\entity\mutant.cpp" />
     <ClCompile Include="src\game\gameflow.cpp" />
     <ClCompile Include="src\game\hair.cpp" />
     <ClCompile Include="src\game\input.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="src\game\entity\baboon.h" />
     <ClInclude Include="src\game\entity\bat.h" />
     <ClInclude Include="src\game\entity\crocodile.h" />
+    <ClInclude Include="src\game\entity\mutant.h" />
     <ClInclude Include="src\game\gameflow.h" />
     <ClInclude Include="src\game\hair.h" />
     <ClInclude Include="src\game\input.h" />

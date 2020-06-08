@@ -257,6 +257,9 @@
     <ClCompile Include="src\game\entity\crocodile.cpp">
       <Filter>src\game\entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\entity\mutant.cpp">
+      <Filter>src\game\entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -467,6 +470,9 @@
       <Filter>src\game\entity</Filter>
     </ClInclude>
     <ClInclude Include="src\game\entity\crocodile.h">
+      <Filter>src\game\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\entity\mutant.h">
       <Filter>src\game\entity</Filter>
     </ClInclude>
   </ItemGroup>

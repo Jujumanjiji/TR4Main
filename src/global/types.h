@@ -115,18 +115,18 @@ struct HANG_STRUCT
 
 struct BOUNDARY
 {
-    short x_min;
-    short x_max;
-    short y_min;
-    short y_max;
-    short z_min;
-    short z_max;
-    short xrot_min;
-    short xrot_max;
-    short yrot_min;
-    short yrot_max;
-    short zrot_min;
-    short zrot_max;
+    short xMin;
+    short xMax;
+    short yMin;
+    short yMax;
+    short zMin;
+    short zMax;
+    short xRotMin;
+    short xRotMax;
+    short yRotMin;
+    short yRotMax;
+    short zRotMin;
+    short zRotMax;
 };
 
 struct WEAPON_INFO
@@ -153,7 +153,6 @@ struct PISTOL_DEF
     char draw2_anim;
     char recoil_anim;
 };
-
 
 struct BITE_INFO
 {
@@ -200,6 +199,45 @@ struct OBJECT_VECTOR
     int z;
     short data;
     short flags;
+};
+
+struct EntityStoringInfo
+{
+    // position of the entity
+    int x;
+    int y;
+    int z;
+    // waterLevel is mostly -NO_HEIGHT but if the position are in water then it's 0
+    // waterDepth is the depth starting for the water room ceiling (0) and increase 1 by 1
+    // to store from GetWaterDepth() and GetWaterHeight()
+    int waterLevel;
+    int waterDepth;
+    // to store roomNumber from GetFloor()
+    short roomNumber;
+    // store the boxNumber from LOT or from room->floor[].box
+    short boxNumber;
+
+    EntityStoringInfo()
+    {
+        this->x = 0;
+        this->y = 0;
+        this->z = 0;
+        this->waterLevel = 0;
+        this->waterDepth = 0;
+        this->roomNumber = 0;
+        this->boxNumber = 0;
+    }
+
+    EntityStoringInfo(int xpos, int ypos, int zpos)
+    {
+        this->x = xpos;
+        this->y = ypos;
+        this->z = zpos;
+        this->waterLevel = 0;
+        this->waterDepth = 0;
+        this->roomNumber = 0;
+        this->boxNumber = 0;
+    }
 };
 
 struct PHD_3DPOS

@@ -6,6 +6,7 @@
 #include "effect2.h"
 #include "draw.h"
 #include "collide.h"
+#include "items.h"
 
 struct CROCODILE_BONE
 {
@@ -67,12 +68,39 @@ constexpr auto CROC_VISIBILITY_RANGE = SQUARE(SECTOR(5));
 constexpr auto CROC_RUN_RANGE = SQUARE(SECTOR(1));
 constexpr auto CROC_MAXRUN_RANGE = SQUARE(SECTOR(1) + CLICK(2));
 constexpr auto CROC_ATTACK_RANGE = SQUARE(CLICK(2)); // NOTE: TR4 is CLICK(3), but the crocodile not go near lara to do damage in certain case !
+constexpr auto CROC_SWIM_SPEED = 16;
 constexpr auto CROC_TOUCHBITS = 768;
 constexpr auto CROC_DAMAGE = 120;
 static BITE_INFO crocBite = { 0, -100, 500, 9 };
 
 // crocodile mode (land or swim) transition anim
 constexpr auto CROC_ANIM_SWIM_MODE = 17;
+constexpr auto CROC_ANIM_LAND_MODE = 18;
+
+static bool CrocodileIsInWater(ITEM_INFO* item, CREATURE_INFO* crocodile)
+{
+    EntityStoringInfo info;
+    info.x = item->pos.xPos;
+    info.y = item->pos.yPos;
+    info.z = item->pos.zPos;
+    info.roomNumber = item->roomNumber;
+    GetFloor(info.x, info.y, info.z, &info.roomNumber);
+    info.waterDepth = GetWaterDepth(info.x, info.y, info.z, info.roomNumber);
+    if (info.waterDepth != -NO_HEIGHT)
+    {
+        crocodile->LOT.step = SECTOR(20);
+        crocodile->LOT.drop = -SECTOR(20);
+        crocodile->LOT.fly = CROC_SWIM_SPEED;
+        return true;
+    }
+    else
+    {
+        crocodile->LOT.step = CLICK(1);
+        crocodile->LOT.drop = -CLICK(1);
+        crocodile->LOT.fly = NO_FLYING;
+        return false;
+    }
+}
 
 void InitialiseCrocodile(short itemNumber)
 {
@@ -148,13 +176,9 @@ void CrocodileControl(short itemNumber)
     else
     {
         if (item->aiBits & ALL_AIOBJ)
-        {
             GetAITarget(crocodile);
-        }
         else if (crocodile->hurtByLara)
-        {
             crocodile->enemy = LaraItem;
-        }
 
         CreatureAIInfo(item, &info);
         GetCreatureMood(item, &info, VIOLENT);
@@ -204,37 +228,39 @@ void CrocodileControl(short itemNumber)
             break;
         case CROC_WALK:
             crocodile->maximumTurn = CROC_WALK_ANGLE;
-            crocodile->LOT.step = CLICK(1);
-            crocodile->LOT.drop = -CLICK(1);
+
+            // land to water transition:
+            if (CrocodileIsInWater(item, crocodile))
+            {
+                item->requiredAnimState = WCROC_SWIM;
+                item->goalAnimState = WCROC_SWIM;
+                break;
+            }
 
             if (item->requiredAnimState)
-            {
                 item->goalAnimState = item->requiredAnimState;
-            }
             else if (info.bite && info.distance < CROC_ATTACK_RANGE)
-            {
                 item->goalAnimState = CROC_IDLE;
-            }
             else if (!info.ahead || info.distance > CROC_MAXRUN_RANGE)
-            {
                 item->goalAnimState = CROC_RUN;
-            }
             break;
         case CROC_RUN:
             crocodile->maximumTurn = CROC_RUN_ANGLE;
             
-            if (item->requiredAnimState)
+            // land to water transition:
+            if (CrocodileIsInWater(item, crocodile))
             {
-                item->goalAnimState = item->requiredAnimState;
-            }
-            else if (info.bite && info.distance < CROC_ATTACK_RANGE)
-            {
-                item->goalAnimState = CROC_IDLE;
-            }
-            else if (info.ahead && info.distance < CROC_RUN_RANGE)
-            {
+                item->requiredAnimState = CROC_WALK;
                 item->goalAnimState = CROC_WALK;
+                break;
             }
+
+            if (item->requiredAnimState)
+                item->goalAnimState = item->requiredAnimState;
+            else if (info.bite && info.distance < CROC_ATTACK_RANGE)
+                item->goalAnimState = CROC_IDLE;
+            else if (info.ahead && info.distance < CROC_RUN_RANGE)
+                item->goalAnimState = CROC_WALK;
             break;
         case CROC_ATK:
             if (item->frameNumber == Anims[item->animNumber].frameBase)
@@ -257,8 +283,17 @@ void CrocodileControl(short itemNumber)
             break;
         case WCROC_SWIM:
             crocodile->maximumTurn = CROC_SWIM_ANGLE;
-            crocodile->LOT.step = SECTOR(20);
-            crocodile->LOT.drop = -SECTOR(20);
+
+            // water to land transition:
+            if (!CrocodileIsInWater(item, crocodile))
+            {
+                item->animNumber = obj->animIndex + CROC_ANIM_LAND_MODE;
+                item->frameNumber = Anims[item->animNumber].frameBase;
+                item->requiredAnimState = CROC_WALK;
+                item->currentAnimState = CROC_WALK;
+                item->goalAnimState = CROC_WALK;
+                break;
+            }
 
             if (item->requiredAnimState)
             {
@@ -296,71 +331,22 @@ void CrocodileControl(short itemNumber)
         boneRot = CROCODILE_BONE(info.angle, info.xAngle);
     else
         boneRot = CROCODILE_BONE(bone_angle);
+
     CreatureTilt(item, 0);
     CreatureJoint(item, 0, boneRot.torsoY);
     CreatureJoint(item, 1, boneRot.torsoX);
     CreatureJoint(item, 2, boneRot.hipsY);
     CreatureJoint(item, 3, boneRot.hipsX);
+
     if (item->currentAnimState < WCROC_SWIM)
         CalcItemToFloorRotation(item, 2);
+    
     CreatureAnimation(itemNumber, angle, 0);
 
-    // transition from water to land and land to water
-    int x, y, z;
-    short roomNumber = item->roomNumber;
-    if (item->currentAnimState == WCROC_SWIM)
-    {
-        x = item->pos.xPos + (192 * SIN(item->pos.yRot) >> W2V_SHIFT);
-        y = item->pos.yPos;
-        z = item->pos.zPos + (192 * COS(item->pos.yRot) >> W2V_SHIFT);
-        GetFloor(x, y, z, &roomNumber);
-    }
+    if (item->currentAnimState >= WCROC_SWIM && item->currentAnimState <= WCROC_DIE)
+        CreatureUnderwater(item, CLICK(1));
     else
-    {
-        x = item->pos.xPos + (176 * SIN(item->pos.yRot) >> W2V_SHIFT);
-        y = item->pos.yPos;
-        z = item->pos.zPos + (192 * COS(item->pos.yRot) >> W2V_SHIFT);
-        GetFloor(x, y, z, &roomNumber);
-    }
-
-    // check the current room
-    if (Rooms[item->roomNumber].flags & ROOM_WATER)
-    {
-        // check the room destination
-        if (Rooms[roomNumber].flags & ROOM_WATER)
-        {
-            if (item->currentAnimState == CROC_RUN)
-            {
-                item->requiredAnimState = CROC_WALK;
-                item->goalAnimState = CROC_WALK;
-            }
-            else if (item->currentAnimState == CROC_WALK)
-            {
-                item->requiredAnimState = WCROC_SWIM;
-                item->goalAnimState = WCROC_SWIM;
-            }
-            else if (item->animNumber != (obj->animIndex + CROC_ANIM_SWIM_MODE))
-            {
-                crocodile->LOT.step = SECTOR(20);
-                crocodile->LOT.drop = -SECTOR(20);
-                crocodile->LOT.fly = 16;
-                CreatureUnderwater(item, CLICK(1));
-            }
-        }
-        else
-        {
-            item->requiredAnimState = CROC_WALK;
-            item->goalAnimState = CROC_WALK;
-            crocodile->LOT.step = CLICK(1);
-            crocodile->LOT.drop = -CLICK(1);
-            crocodile->LOT.fly = NO_FLYING;
-            CreatureUnderwater(item, CLICK(0));
-        }
-    }
-    else
-    {
-        crocodile->LOT.fly = NO_FLYING;
-    }
+        CreatureUnderwater(item, CLICK(0));
 }
 
 #ifdef DLL_INJECT

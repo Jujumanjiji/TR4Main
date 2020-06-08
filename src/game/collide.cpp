@@ -37,16 +37,16 @@ BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
 {
     PHD_MATRIX* mptr;
     int x, y, z, x2, y2, z2;
-    short rot_x, rot_y, rot_z;
+    short rotX, rotY, rotZ;
 
-    rot_x = laraitem->pos.xRot - item->pos.xRot;
-    rot_y = laraitem->pos.yRot - item->pos.yRot;
-    rot_z = laraitem->pos.zRot - item->pos.zRot;
-    if (rot_x < bounds->xrot_min || rot_x > bounds->xrot_max)
+    rotX = laraitem->pos.xRot - item->pos.xRot;
+    rotY = laraitem->pos.yRot - item->pos.yRot;
+    rotZ = laraitem->pos.zRot - item->pos.zRot;
+    if (rotX < bounds->xRotMin || rotX > bounds->xRotMax)
         return FALSE;
-    if (rot_y < bounds->yrot_min || rot_y > bounds->yrot_max)
+    if (rotY < bounds->yRotMin || rotY > bounds->yRotMax)
         return FALSE;
-    if (rot_z < bounds->zrot_min || rot_z > bounds->zrot_max)
+    if (rotZ < bounds->zRotMin || rotZ > bounds->zRotMax)
         return FALSE;
 
     phd_PushUnitMatrix();
@@ -60,11 +60,11 @@ BOOL TestLaraPosition(BOUNDARY* bounds, ITEM_INFO* item, ITEM_INFO* laraitem)
     z2 = ((mptr->m20 * x) + (mptr->m21 * y) + (mptr->m22 * z)) >> W2V_SHIFT;
     phd_PopMatrix();
 
-    if (x2 < bounds->x_min || x2 > bounds->x_max)
+    if (x2 < bounds->xMin || x2 > bounds->xMax)
         return FALSE;
-    if (y2 < bounds->y_min || y2 > bounds->y_max)
+    if (y2 < bounds->yMin || y2 > bounds->yMax)
         return FALSE;
-    if (z2 < bounds->z_min || z2 > bounds->z_max)
+    if (z2 < bounds->zMin || z2 > bounds->zMax)
         return FALSE;
 
     return TRUE;
