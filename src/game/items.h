@@ -1,5 +1,8 @@
 #pragma once
 
+extern BOOL ItemNearLara(PHD_VECTOR* pos, int radius);
+extern bool ItemNearTarget(PHD_3DPOS* src, ITEM_INFO* target, int radius);
+
 #ifdef DLL_INJECT
 #define next_item_active            VAR_U_(0x007FD20A, short)
 #define next_item_free              VAR_U_(0x007FD208, short)
@@ -19,4 +22,5 @@
 #define CreateEffect ((short(__cdecl*)(short roomNumber)) 0x00454900)
 #define KillEffect ((void(__cdecl*)(short fxNumber)) 0x00454970)
 #define EffectNewRoom ((void(__cdecl*)(short fxNumber, short roomNumber)) 0x00454A90)
+//#define ItemNearLara ((BOOL(__cdecl*)(PHD_VECTOR* pos, int radius)) 0x00437050)
 #endif

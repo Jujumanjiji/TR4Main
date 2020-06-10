@@ -23,6 +23,54 @@ struct JMP
     DWORD offset;    // jump offset
 };
 
+struct OBJECT_BONES
+{
+    short bone0;
+    short bone1;
+    short bone2;
+    short bone3;
+
+    OBJECT_BONES()
+    {
+        this->bone0 = 0;
+        this->bone1 = 0;
+        this->bone2 = 0;
+        this->bone3 = 0;
+    }
+
+    OBJECT_BONES(short all)
+    {
+        this->bone0 = all;
+        this->bone1 = all;
+        this->bone2 = -all;
+        this->bone3 = -all;
+    }
+
+    OBJECT_BONES(short angleY, short angleX)
+    {
+        this->bone0 = angleY;
+        this->bone1 = angleX;
+        this->bone2 = angleY;
+        this->bone3 = angleX;
+    }
+
+    OBJECT_BONES(short angleY, short angleX, bool total)
+    {
+        this->bone0 = angleY;
+        this->bone1 = angleX;
+        if (total)
+        {
+            this->bone2 = angleY;
+            this->bone3 = angleX;
+        }
+        else
+        {
+            this->bone2 = 0;
+            this->bone3 = 0;
+        }
+    }
+};
+
 struct STATS
 {
     DWORD timer;
@@ -242,12 +290,12 @@ struct EntityStoringInfo
 
 struct PHD_3DPOS
 {
-    int xPos;
-    int yPos;
-    int zPos;
-    short xRot;
-    short yRot;
-    short zRot;
+    int xPos; // 0
+    int yPos; // 4
+    int zPos; // 8
+    short xRot; // 12
+    short yRot; // 14
+    short zRot; // 16
 };
 
 struct PHD_VECTOR
@@ -694,12 +742,12 @@ struct FX_INFO
 {
     PHD_3DPOS pos;
     short roomNumber;
-    short object_number;
-    short next_fx;
-    short next_active;
+    short objectNumber;
+    short nextFx;
+    short nextActive;
     short speed;
     short fallspeed;
-    short frame_number;
+    short frameNumber;
     short counter;
     short shade;
     short flag1;
@@ -845,21 +893,21 @@ struct SPARKS
     int x;
     int y;
     int z;
-    short xvel;
-    short yvel;
-    short zvel;
+    short xVel;
+    short yVel;
+    short zVel;
     short gravity;
-    short rotang;
+    short rotAng;
     short flags; // SPF_ flags
-    unsigned char sSize;
-    unsigned char dSize;
-    unsigned char size;
-    unsigned char friction;
-    unsigned char scalar;
-    unsigned char def; // sprite id (need SPF_DEF flags !)
-    char rotadd;
+    BYTE sSize;
+    BYTE dSize;
+    BYTE size;
+    BYTE friction;
+    BYTE scalar;
+    BYTE def; // sprite id (need SPF_DEF flags !)
+    char rotAdd;
     char maxyvel;
-    unsigned char on; // can be bool later
+    BYTE on; // can be bool later
     BYTE sR;
     BYTE sG;
     BYTE sB;
@@ -869,16 +917,16 @@ struct SPARKS
     BYTE r;
     BYTE g;
     BYTE b;
-    unsigned char colfadespeed;
-    unsigned char fadetoblack;
-    unsigned char sLife;
-    unsigned char life;
-    unsigned char transtype; // TRANS_ flags
-    unsigned char extras;
+    BYTE colFadeSpeed;
+    BYTE fadeToBlack;
+    BYTE sLife;
+    BYTE life;
+    BYTE transtype; // TRANS_ flags
+    BYTE extras;
     char dynamic;
-    unsigned char fx_obj;
-    unsigned char roomNumber;
-    unsigned char node_number;
+    BYTE fxObj;
+    BYTE roomNumber;
+    BYTE nodeNumber;
 };
 
 struct BLOOD_STRUCT

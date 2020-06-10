@@ -1,8 +1,8 @@
 #include "framework.h"
 #include "lot.h"
-#include "specific/init.h"
+#include "init.h"
 
-int baddie_count = 0;
+int BaddieCount = 0;
 
 void InitialiseLOT(BOOL allocateBaddie)
 {
@@ -19,7 +19,7 @@ void InitialiseLOT(BOOL allocateBaddie)
             cinfo->LOT.node = (BOX_NODE*)game_malloc(number_boxes * sizeof(BOX_NODE));
     }
 
-    baddie_count = 0;
+    BaddieCount = 0;
 }
 
 void DisableBaddieAI(short itemNumber)
@@ -35,7 +35,7 @@ void DisableBaddieAI(short itemNumber)
     if (creature)
     {
         creature->itemNum = NO_ITEM;
-        --baddie_count;
+        --BaddieCount;
     }
 
     item->data = NULL;
@@ -52,7 +52,7 @@ BOOL EnableBaddieAI(short itemNumber, BOOL always)
     if (item->data)
         return TRUE;
 
-    if (baddie_count < NUM_SLOTS)
+    if (BaddieCount < NUM_SLOTS)
     {
         creature = BaddieSlots;
         for (int slot = 0; slot < NUM_SLOTS; slot++, creature++)
@@ -219,7 +219,7 @@ void InitialiseSlot(short itemNumber, int slots)
     ClearLOT(&creature->LOT);
     if (itemNumber != Lara.itemNumber)
         CreateZone(item);
-    ++baddie_count;
+    ++BaddieCount;
 }
 
 void CreateZone(ITEM_INFO* item)

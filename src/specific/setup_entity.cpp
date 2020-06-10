@@ -5,6 +5,7 @@
 #include "lara.h"
 #include "gameflow.h"
 #include "utils.h"
+#include "locusts.h"
 #include "oldobjects.h"
 
 // entities
@@ -87,17 +88,17 @@ void SetupEntity::von_croy()
         
         Bones[obj->boneIndex + 24] |= ROT_Y | ROT_X;
         Bones[obj->boneIndex + 80] |= ROT_Y | ROT_X;
-        meshes[obj->meshIndex + 15] = meshes[Objects[MESHSWAP1].meshIndex + 14];
-        meshes[obj->meshIndex + 31] = meshes[Objects[MESHSWAP1].meshIndex + 30];
-        meshes[obj->meshIndex + 37] = meshes[Objects[MESHSWAP1].meshIndex + 36];
+        Meshes[obj->meshIndex + 15] = Meshes[Objects[MESHSWAP1].meshIndex + 14];
+        Meshes[obj->meshIndex + 31] = Meshes[Objects[MESHSWAP1].meshIndex + 30];
+        Meshes[obj->meshIndex + 37] = Meshes[Objects[MESHSWAP1].meshIndex + 36];
     }
 
     obj = &Objects[VON_CROY_MIP];
     if (obj->loaded)
     {
-        meshes[obj->meshIndex + 15] = meshes[Objects[MESHSWAP1].meshIndex + 14];
-        meshes[obj->meshIndex + 31] = meshes[Objects[MESHSWAP1].meshIndex + 30];
-        meshes[obj->meshIndex + 37] = meshes[Objects[MESHSWAP1].meshIndex + 36];
+        Meshes[obj->meshIndex + 15] = Meshes[Objects[MESHSWAP1].meshIndex + 14];
+        Meshes[obj->meshIndex + 31] = Meshes[Objects[MESHSWAP1].meshIndex + 30];
+        Meshes[obj->meshIndex + 37] = Meshes[Objects[MESHSWAP1].meshIndex + 36];
     }
 }
 
@@ -124,17 +125,17 @@ void SetupEntity::guide()
         
         Bones[obj->boneIndex + 24] |= ROT_Y | ROT_X;
         Bones[obj->boneIndex + 80] |= ROT_Y | ROT_X;
-        meshes[obj->meshIndex + 31] = meshes[Objects[MESHSWAP2].meshIndex + 30];
-        meshes[obj->meshIndex + 37] = meshes[Objects[MESHSWAP2].meshIndex + 36];
-        meshes[obj->meshIndex + 43] = meshes[Objects[MESHSWAP2].meshIndex + 42];
+        Meshes[obj->meshIndex + 31] = Meshes[Objects[MESHSWAP2].meshIndex + 30];
+        Meshes[obj->meshIndex + 37] = Meshes[Objects[MESHSWAP2].meshIndex + 36];
+        Meshes[obj->meshIndex + 43] = Meshes[Objects[MESHSWAP2].meshIndex + 42];
     }
 
     obj = &Objects[GUIDE_MIP];
     if (obj->loaded)
     {
-        meshes[obj->meshIndex + 31] = meshes[Objects[MESHSWAP2].meshIndex + 30];
-        meshes[obj->meshIndex + 37] = meshes[Objects[MESHSWAP2].meshIndex + 36];
-        meshes[obj->meshIndex + 43] = meshes[Objects[MESHSWAP2].meshIndex + 42];
+        Meshes[obj->meshIndex + 31] = Meshes[Objects[MESHSWAP2].meshIndex + 30];
+        Meshes[obj->meshIndex + 37] = Meshes[Objects[MESHSWAP2].meshIndex + 36];
+        Meshes[obj->meshIndex + 43] = Meshes[Objects[MESHSWAP2].meshIndex + 42];
     }
 }
 
@@ -197,8 +198,8 @@ void SetupEntity::baddy_2()
     obj = &Objects[BADDY_2_MIP];
     if (obj->loaded)
     {
-        meshes[obj->meshIndex + 4 * 2] = meshes[Objects[MESHSWAP2].meshIndex + 4 * 2]; // enable swap ?
-        meshes[obj->meshIndex + 7 * 2] = meshes[Objects[MESHSWAP2].meshIndex + 7 * 2]; //
+        Meshes[obj->meshIndex + 4 * 2] = Meshes[Objects[MESHSWAP2].meshIndex + 4 * 2]; // enable swap ?
+        Meshes[obj->meshIndex + 7 * 2] = Meshes[Objects[MESHSWAP2].meshIndex + 7 * 2]; //
     }
 }
 
@@ -539,9 +540,8 @@ void SetupEntity::mutant()
         obj->savePosition = TRUE;
         obj->undead = TRUE;
         obj->hitEffect = HIT_SMOKE;
-        
-        Bones[obj->boneIndex + 24] |= ROT_Y | ROT_X;
-        Bones[obj->boneIndex + 28] |= ROT_Y | ROT_X;
+        Bones[obj->boneIndex + 6 * 4] |= ROT_Y | ROT_X;
+        Bones[obj->boneIndex + 7 * 4] |= ROT_Y | ROT_X;
     }
 }
 
@@ -1071,11 +1071,11 @@ void SetupEntity::little_beetle()
 
 void SetupEntity::locusts()
 {
-    obj = &Objects[LOCUSTS];
+    obj = &Objects[LOCUSTS_EMITTER];
     if (obj->loaded)
     {
-        obj->initialise = InitialiseLocusts;
-        obj->control = LocustsControl;
+        obj->initialise = InitialiseLocust;
+        obj->control = LocustControl;
         obj->drawRoutine = NULL;
         obj->saveFlags = TRUE;
     }

@@ -33,6 +33,9 @@
     <Filter Include="src\game\lara">
       <UniqueIdentifier>{af623c05-120b-4a0b-9b7e-b6e0561ecd3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\game\effects">
+      <UniqueIdentifier>{99650dd8-c951-49a8-a497-fa4bd54dfd0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -260,6 +263,9 @@
     <ClCompile Include="src\game\entity\mutant.cpp">
       <Filter>src\game\entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\effects\locusts.cpp">
+      <Filter>src\game\effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -474,6 +480,9 @@
     </ClInclude>
     <ClInclude Include="src\game\entity\mutant.h">
       <Filter>src\game\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\effects\locusts.h">
+      <Filter>src\game\effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

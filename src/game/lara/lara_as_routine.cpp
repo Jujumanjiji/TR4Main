@@ -1278,7 +1278,7 @@ void lara_as_controlled(ITEM_INFO* item, COLL_INFO* coll)
             meshIndex = Objects[MESHSWAP3].meshIndex;
         else if (item->frameNumber == (Anims[ANIMATION_LARA_DETONATOR_USE].frameBase + 118))
             meshIndex = Objects[LARA_SKIN].meshIndex;
-        Lara.mesh.hand_r = meshes[meshIndex + HAND_R * 2];
+        Lara.mesh.hand_r = Meshes[meshIndex + HAND_R * 2];
     }
 
     if (item->frameNumber == (Anims[item->animNumber].frameEnd - 1))

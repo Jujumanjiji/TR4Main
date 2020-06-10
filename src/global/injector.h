@@ -16,6 +16,10 @@ private:
 
     struct f_game
     {
+        // effects
+        void inject_locusts();
+
+        // basic
         void inject_box();
         void inject_camera();
         void inject_collide();

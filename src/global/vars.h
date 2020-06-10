@@ -25,6 +25,7 @@
 ///             OTHER             ///
 ///===============================///
 
+#define GlobalCounter                       VAR_I_(0x004BF3FA, short, 0)
 #define CurrentFOV                          VAR_U_(0x007F58F4, short)
 #define lara_matrix_normal_type2            ARRAY_(0x0080EA00, int, [12][12])
 #define lara_matrix_holsters_type2          ARRAY_(0x0080E720, int, [12][12]) // first [12] = joint, second [12] = matrix
@@ -214,7 +215,7 @@
 #define Objects                             ARRAY_(0x0052B850, OBJECT_INFO, [NUMBER_OBJECTS])
 #define static_objects                      ARRAY_(0x005333C0, STATIC_INFO, [NUMBER_STATIC_OBJECTS])
 #define mesh_base                           VAR_U_(0x00533A7C, short*)
-#define meshes                              VAR_U_(0x00533A80, short**)
+#define Meshes                              VAR_U_(0x00533A80, short**)
 #define Rooms                               VAR_U_(0x00533A64, ROOM_INFO*)
 #define Anims                               VAR_U_(0x00533A68, ANIM_STRUCT*)
 #define changes                             VAR_U_(0x00533A6C, CHANGE_STRUCT*)
@@ -226,13 +227,13 @@
 #define boxes                               VAR_U_(0x007FE9B0, BOX_INFO*)
 #define floor_data                          VAR_U_(0x00533A78, short*)
 #define camera                              VAR_U_(0x007FE820, CAMERA_INFO)
-#define effects                             VAR_U_(0x008012E0, FX_INFO*)
+#define Effects                             VAR_U_(0x008012E0, FX_INFO*)
 #define flip_status                         VAR_U_(0x007FE218, int)
 ///#define weapons                          ARRAY_(0x004AD848, WEAPON_INFO, [8])
 ///#define pistols_table                    ARRAY_(0x004AD820, PISTOL_DEF, [4])
 #define ground_zone                         ARRAY_(0x007FE980, short*, [5][2]) // [ZONE_TYPE][flip_status] (return short*)
 #define gunshells                           ARRAY_(0x007FF680, GUNSHELL_STRUCT, [MAX_GUNSHELLS])
-#define sparks                              ARRAY_(0x00801400, SPARKS, [MAX_SPARKS])
+#define Sparks                              ARRAY_(0x00801400, SPARKS, [MAX_SPARKS])
 #define gunflashes                          ARRAY_(0x00800CE0, GUNFLASH_STRUCT, [MAX_GUNFLASH])
 #define firesparks                          ARRAY_(0x00800600, FIRE_SPARKS, [MAX_FIRE_SPARKS])
 #define smokesparks                         ARRAY_(0x007FF100, SMOKE_SPARKS, [MAX_SMOKESPARKS])

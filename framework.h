@@ -9,14 +9,18 @@
 #define NOMINMAX
 #include <windows.h>
 #include <windowsx.h>
+#include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <cstdlib>
 #include <iostream>
 #include <ostream>
 #include <sstream>
 #include <fstream>
+#include <time.h>
+#include <ctime>
 
 #ifdef _WIN32
 #include <direct.h>

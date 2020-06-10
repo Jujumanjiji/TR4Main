@@ -87,11 +87,8 @@
 #define DrawWraith DRAW(0x0048AD60)
 #define InitialiseLittleBeetle INITIALISE(0x0040E6B0)
 #define LittleBeetleControl CONTROL(0x0040E2D0)
-#define InitialiseLocusts INITIALISE(0x004037B0)
-#define LocustsControl CONTROL(0x00403810)
 
 /// traps
-
 #define FourBladeControl CONTROL(0x00416E40)
 #define BirdBladeControl CONTROL(0x00416F00)
 #define InitialiseSethBlade INITIALISE(0x004535F0)

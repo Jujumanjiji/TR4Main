@@ -256,7 +256,7 @@ void TriggerMotorbikeExhaustSmoke(int x, int y, int z, short angle, short speed,
     int rnd = 0;
     BYTE trans, size;
 
-    sptr = &sparks[GetFreeSparks()];
+    sptr = &Sparks[GetFreeSparks()];
     sptr->dR = 96;
     sptr->dG = 96;
     sptr->on = 1;
@@ -271,8 +271,8 @@ void TriggerMotorbikeExhaustSmoke(int x, int y, int z, short angle, short speed,
         sptr->dG = trans;
         sptr->dB = trans;
     }
-    sptr->colfadespeed = 4;
-    sptr->fadetoblack = 4;
+    sptr->colFadeSpeed = 4;
+    sptr->fadeToBlack = 4;
     rnd = (GetRandomControl() & 3) - (speed >> 12) + 20;
     if (rnd < 9)
     {
@@ -289,19 +289,19 @@ void TriggerMotorbikeExhaustSmoke(int x, int y, int z, short angle, short speed,
     sptr->x = x + (GetRandomControl() & 0xF) - 8;
     sptr->y = y + (GetRandomControl() & 0xF) - 8;
     sptr->z = z + (GetRandomControl() & 0xF) - 8;
-    sptr->xvel = (speed * SIN(angle)) >> 16;
-    sptr->yvel = (GetRandomControl() & 7) - 8;
-    sptr->zvel = (speed * COS(angle)) >> 16;
+    sptr->xVel = (speed * SIN(angle)) >> 16;
+    sptr->yVel = (GetRandomControl() & 7) - 8;
+    sptr->zVel = (speed * COS(angle)) >> 16;
     sptr->friction = 4;
 
     if (GetRandomControl() & 1)
     {
         sptr->flags = SPF_EXPDEF | SPF_ROTATE | SPF_DEF | SPF_SCALE;
-        sptr->rotang = (GetRandomControl() & 0xFFF);
+        sptr->rotAng = (GetRandomControl() & 0xFFF);
         if (GetRandomControl() & 1)
-            sptr->rotadd = (GetRandomControl() & 7) - 24;
+            sptr->rotAdd = (GetRandomControl() & 7) - 24;
         else
-            sptr->rotadd = (GetRandomControl() & 7) + 24;
+            sptr->rotAdd = (GetRandomControl() & 7) + 24;
     }
     else
     {

@@ -1,7 +1,10 @@
 #pragma once
 
+extern BOOL TargetVisible(ITEM_INFO* item, AI_INFO* info);
+extern BOOL TargetVisibleCustom(ITEM_INFO* item, AI_INFO* info, int height);
+
 #ifdef DLL_INJECT
-#define TargetVisible ((BOOL(__cdecl*)(ITEM_INFO *item, AI_INFO *info)) 0x0040AEB0)
+//#define TargetVisible ((BOOL(__cdecl*)(ITEM_INFO *item, AI_INFO *info)) 0x0040AEB0)
 #define Targetable ((BOOL(__cdecl*)(ITEM_INFO *item, AI_INFO *info)) 0x0040AF80)
 #define GunHit ((short(__cdecl*)(int x, int y, int z, short speed, short y_rot, short roomNumber)) 0x0040B060)
 #define GunMiss ((short(__cdecl*)(int x, int y, int z, short speed, short y_rot, short roomNumber)) 0x0040B120)

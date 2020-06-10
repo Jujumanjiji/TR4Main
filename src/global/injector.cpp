@@ -33,6 +33,9 @@ void injector::inject_3dsystem()
 
 void injector::inject_game()
 {
+    // effects
+    _game.inject_locusts();
+
     // principal function
     _game.inject_box();
     _game.inject_camera();

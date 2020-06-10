@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\TokyoSU\Documents\DXF\include;$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\game\entity;$(SolutionDir)src\game\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\TokyoSU\Documents\DXF\include;$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\game\effects;$(SolutionDir)src\game\entity;$(SolutionDir)src\game\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <ShowIncludes>false</ShowIncludes>
     </ClCompile>
@@ -84,7 +84,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;TR4MAIN_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\TokyoSU\Documents\DXF\include;$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\game\entity;$(SolutionDir)src\game\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\TokyoSU\Documents\DXF\include;$(SolutionDir);$(SolutionDir)src;$(SolutionDir)src\3dsystem;$(SolutionDir)src\game;$(SolutionDir)src\specific;$(SolutionDir)src\utils;$(SolutionDir)src\game\lara;$(SolutionDir)src\game\effects;$(SolutionDir)src\game\entity;$(SolutionDir)src\game\vehicle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,6 +103,7 @@
     <ClCompile Include="src\3dsystem\w2v_setup.cpp" />
     <ClCompile Include="src\game\camera.cpp" />
     <ClCompile Include="src\game\debris.cpp" />
+    <ClCompile Include="src\game\effects\locusts.cpp" />
     <ClCompile Include="src\game\entity\ahmet.cpp" />
     <ClCompile Include="src\game\entity\baboon.cpp" />
     <ClCompile Include="src\game\entity\bat.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="src\3dsystem\w2v_setup.h" />
     <ClInclude Include="src\game\camera.h" />
     <ClInclude Include="src\game\debris.h" />
+    <ClInclude Include="src\game\effects\locusts.h" />
     <ClInclude Include="src\game\entity\ahmet.h" />
     <ClInclude Include="src\game\entity\baboon.h" />
     <ClInclude Include="src\game\entity\bat.h" />

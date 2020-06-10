@@ -391,6 +391,14 @@
 #define MoveLaraPosition ((BOOL(__cdecl*)(PHD_VECTOR* pos, ITEM_INFO* item, ITEM_INFO* laraitem)) 0x004483E0)
 #define Move3DPosTo3DPos ((BOOL(__cdecl*)(PHD_3DPOS* src, PHD_3DPOS* dest, int velocity, short angadd)) 0x00448140)
 
+// LOCUSTS.CPP
+#define CreateLocust ((int(__cdecl*)(void)) 0x004035D0)
+#define SpawnLocust ((void(__cdecl*)(ITEM_INFO *item)) 0x00403640)
+#define InitialiseLocust ((void(__cdecl*)(short itemNumber)) 0x004037B0)
+#define LocustControl ((void(__cdecl*)(short itemNumber)) 0x00403810)
+#define UpdateLocusts ((void(__cdecl*)(void)) 0x00403870)
+#define DrawLocust ((void(__cdecl*)(void)) 0x00403C10)
+
 // AHMET.CPP
 #define InitialiseAhmet ((void(__cdecl*)(short itemNumber)) 0x00401000)
 #define AhmetControl ((void(__cdecl*)(short itemNumber)) 0x00401080)
@@ -410,3 +418,9 @@
 // CROCODILE.CPP
 #define InitialiseCrocodile ((void(__cdecl*)(short itemNumber)) 0x00402D90)
 #define CrocodileControl ((void(__cdecl*)(short itemNumber)) 0x00402E30)
+
+// MUTANT.CPP
+#define InitialiseMutant ((void(__cdecl*)(short itemNumber)) 0x00403ED0)
+#define MutantControl ((void(__cdecl*)(short itemNumber)) 0x00403F30)
+#define TriggerMutantRocket ((void(__cdecl*)(PHD_3DPOS *src, short roomNumber, short counter)) 0x00403C90)
+#define TriggerMutantRocketEffects ((void(__cdecl*)(short fxNumber, short xVel, short yVel, short zVel)) 0x00403D30)

@@ -23,7 +23,7 @@ extern void phd_RotX(short rx);
 extern void phd_RotY(short ry);
 extern void phd_RotZ(short rz);
 extern void phd_RotYXZpack(int angs);
-extern void phd_RotYXZ(short rx, short ry, short rz);
+extern void phd_RotYXZ(short ry, short rx, short rz);
 extern void phd_GetVectorAngles(int x, int y, int z, short* dest);
 extern void ScaleCurrentMatrix(PHD_VECTOR* scale);
 extern void SetupZ(int nNear, int nFar);

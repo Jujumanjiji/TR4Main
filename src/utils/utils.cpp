@@ -899,7 +899,65 @@ OBJECT_FOUND FoundItemWithOCB(ITEM_INFO* src, short primaryID, short secondID, s
     return obj;
 }
 
-OBJECT_FOUND FoundEntity(ITEM_INFO* item, short slotID)
+void TargetNearestEntity(ITEM_INFO* item, CREATURE_INFO* creature)
+{
+    ITEM_INFO* target;
+    int bestdistance;
+    int distance;
+    int x, z;
+
+    bestdistance = MAXINT;
+    for (int i = 0; i < level_items; i++)
+    {
+        target = &Items[i];
+        if (target != nullptr)
+        {
+            if (target != item && target->hitPoints > 0 && target->status != FITEM_INVISIBLE)
+            {
+                x = target->pos.xPos - item->pos.xPos;
+                z = target->pos.zPos - item->pos.zPos;
+                distance = SQUARE(z) + SQUARE(x);
+                if (distance < bestdistance)
+                {
+                    creature->enemy = target;
+                    bestdistance = distance;
+                }
+            }
+        }
+    }
+}
+
+ITEM_INFO* FoundNearestEntity(PHD_3DPOS* pos)
+{
+    ITEM_INFO* target;
+    int bestdistance;
+    int distance;
+    int x, z;
+
+    bestdistance = MAXINT;
+    for (int i = 0; i < level_items; i++)
+    {
+        target = &Items[i];
+        if (target != nullptr)
+        {
+            if (target->hitPoints > 0 && target->status != FITEM_INVISIBLE)
+            {
+                x = target->pos.xPos - pos->xPos;
+                z = target->pos.zPos - pos->zPos;
+                distance = SQUARE(z) + SQUARE(x);
+                if (distance < bestdistance)
+                {
+                    bestdistance = distance;
+                    return target;
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+OBJECT_FOUND FoundEntity(short slotID)
 {
     ITEM_INFO* target;
     OBJECT_INFO* obj;
@@ -912,10 +970,10 @@ OBJECT_FOUND FoundEntity(ITEM_INFO* item, short slotID)
         {
             // check if the entity are in a correct room and not dead already.
             // check if the ocb is not the same as the current src to not get the wrong ocb.
-            if (item->triggerFlags != target->triggerFlags && target->objectNumber == slotID && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
+            if (target->objectNumber == slotID && target->roomNumber != NO_ROOM && CHK_NOP(target->flags, IFLAG_KILLED_ITEM))
             {
                 obj = &Objects[target->objectNumber];
-                if (!obj->intelligent)
+                if (!obj->intelligent || slotID != LARA)
                     break;
                 entity.itemNumber = i;
                 entity.target = target;
@@ -1008,6 +1066,28 @@ bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target)
         return false;
 }
 
+void MoveEntityToAnother(PHD_3DPOS* src, PHD_3DPOS* target, ANIM_FRAME* bounds, int speed)
+{
+    int x, y, z, dist;
+    x = target->xPos - src->xPos;
+    y = (target->yPos + (bounds->minY - bounds->maxY)) - src->yPos;
+    z = target->zPos - src->zPos;
+    dist = phd_sqrt(SQUARE(x) + SQUARE(y) + SQUARE(z));
+
+    if (speed < dist)
+    {
+        src->xPos += (speed * x) / dist;
+        src->yPos += (speed * y) / dist;
+        src->zPos += (speed * z) / dist;
+    }
+    else
+    {
+        src->xPos = target->xPos;
+        src->yPos = target->yPos;
+        src->zPos = target->zPos;
+    }
+}
+
 void ActivateEntity(short itemNumber)
 {
     ITEM_INFO* item = &Items[itemNumber];
@@ -1073,12 +1153,12 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
 
 void classic_meshes(short objNumber, short meshID, short* new_meshes)
 {
-    meshes[Objects[objNumber].meshIndex + meshID * 2] = new_meshes;
+    Meshes[Objects[objNumber].meshIndex + meshID * 2] = new_meshes;
 }
 
 short* classic_meshes(short objNumber, short meshID)
 {
-    return meshes[Objects[objNumber].meshIndex + meshID * 2];
+    return Meshes[Objects[objNumber].meshIndex + meshID * 2];
 }
 
 
@@ -1418,6 +1498,11 @@ void ResetLaraMeshSkin(void)
 CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item)
 {
     return (CREATURE_INFO*)item->data;
+}
+
+short ConvertToDegrees(short angle)
+{
+    return short((unsigned short)angle * 360.0f / 65536.0f);
 }
 
 bool DX_TRY(HRESULT errorThrow)

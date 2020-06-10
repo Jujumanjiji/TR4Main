@@ -13,6 +13,7 @@
 #define TriggerUnderwaterExplosion ((void(__cdecl*)(ITEM_INFO* item, BOOL createBubble)) 0x0042B430)
 #define TriggerExplosionSparks ((void(__cdecl*)(int x, int y, int z, int extraTrig, int dynamic, int uw, int roomNumber)) 0x004349F0)
 #define DoBloodSplat ((short(__cdecl*)(int x, int y, int z, short speed, short y_rot, short roomNumber)) 0x00437180)
+#define TriggerBlood ((void(__cdecl*)(int x, int y, int z, int value, int count)) 0x00438F00)
 #define TriggerGunSmoke ((void(__cdecl*)(int x, int y, int z, int xv, int yv, int zv, int initial, int weapon_type, int count)) 0x00438940)
 #define TriggerGunShell ((void(__cdecl*)(BOOL right, short objNumber, int weapon_type)) 0x004390F0)
 #define TriggerRicochetSpark ((void(__cdecl*)(GAME_VECTOR *pos, int angle, int size, int flags)) 0x00434440)

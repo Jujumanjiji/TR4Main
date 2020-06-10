@@ -8,6 +8,18 @@ enum HEADINGS
     WEST
 };
 
+enum CARDINAL_POINT
+{
+    C_NORTH = 0,
+    C_NORTH_EAST = 45,
+    C_EAST = 90,
+    C_EAST_SOUTH = 135,
+    C_SOUTH = 180,
+    C_SOUTH_WEST = 225,
+    C_WEST = 270,
+    C_WEST_NORTH = 315,
+};
+
 enum MESH_OCB
 {
     MESH_INVISIBLE,

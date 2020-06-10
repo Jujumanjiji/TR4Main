@@ -41,8 +41,8 @@ void DrawEffect(short fx_number)
     FX_INFO* fx;
     OBJECT_INFO* obj;
 
-    fx = &effects[fx_number];
-    obj = &Objects[fx->object_number];
+    fx = &Effects[fx_number];
+    obj = &Objects[fx->objectNumber];
     if (obj->loaded && obj->drawRoutine)
     {
         phd_PushMatrix();
@@ -52,9 +52,9 @@ void DrawEffect(short fx_number)
         {
             phd_RotYXZ(fx->pos.yRot, fx->pos.xRot, fx->pos.zRot);
             if (obj->nMeshes > 0)
-                phd_PutPolygons(meshes[obj->meshIndex], NO_CLIP);
+                phd_PutPolygons(Meshes[obj->meshIndex], NO_CLIP);
             else
-                phd_PutPolygons(meshes[fx->frame_number], NO_CLIP);
+                phd_PutPolygons(Meshes[fx->frameNumber], NO_CLIP);
         }
         phd_PopMatrix();
     }
@@ -105,7 +105,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
         if (!extra_rotation)
             extra_rotation = dummy_rotation;
         bone = (BONE_STRUCT*)&Bones[obj->boneIndex];
-        mesh = &meshes[obj->meshIndex];
+        mesh = &Meshes[obj->meshIndex];
         meshBN = 1;
         meshBI = 1;
 
@@ -164,7 +164,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
                     phd_TranslateRel_I(offset->x, offset->y, offset->z);
                     phd_RotYXZ_I(0, -16380, (GetRandomControl() << 14) + (GetRandomControl() >> 2) - 4096);
                     InterpolateMatrix();
-                    phd_PutPolygons(meshes[Objects[GUN_FLASH].meshIndex], clip);
+                    phd_PutPolygons(Meshes[Objects[GUN_FLASH].meshIndex], clip);
                     phd_PopMatrix_I();
                     item->firedWeapon--;
                 }
@@ -225,7 +225,7 @@ void DrawAnimatingItem(ITEM_INFO* item)
                     phd_PushMatrix();
                     phd_TranslateRel(offset->x, offset->y, offset->z);
                     phd_RotX(-16380);
-                    phd_PutPolygons(meshes[Objects[GUN_FLASH].meshIndex], clip);
+                    phd_PutPolygons(Meshes[Objects[GUN_FLASH].meshIndex], clip);
                     phd_PopMatrix();
                     item->firedWeapon--;
                 }

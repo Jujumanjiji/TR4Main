@@ -71,39 +71,49 @@ void phd_LookAt(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, shor
 
 int phd_atan(int x, int y)
 {
-    if (x == 0 && y == 0)
+    if ((x == 0) && (y == 0))
         return 0;
 
-    int result = 0;
-    int swapBuf;
-    char flags = 0;
+    int octant = 0;
 
     if (x < 0)
     {
-        flags |= 4;
+        octant += 4;
         x = -x;
     }
 
     if (y < 0)
     {
-        flags |= 2;
+        octant += 2;
         y = -y;
     }
 
     if (y > x)
     {
-        flags |= 1;
-        SWAP(x, y, swapBuf);
+        octant++;
+        int n = x;
+        x = y;
+        y = n;
     }
 
-    for (; (short)y != y; x >>= 1)
+    while ((short)y != y)
+    {
         y >>= 1;
+        x >>= 1;
+    }
 
-    if (x == 0)
+    if (!x)
         x = 1;
 
-    result = atanBase[flags] + atanTable[(y << 11) / x];
-    return abs(result);
+    int n = atanTable[(y << 11) / x] + atanBase[octant];
+    short angle;
+
+    if (n < 0)
+        angle = -n;
+    else
+        angle = n;
+
+    return angle;
 }
 
 int phd_sqrt(int x)
@@ -215,38 +225,20 @@ void phd_RotZ(short rz)
 
 void phd_RotYXZpack(int angs)
 {
-    PHD_MATRIX* mptr = phd_mxptr;
-    int ang = (angs >> 4) & 0xFFC0;     // EXTRACT Y
-    UnpackRotation(ang, mptr->m00, mptr->m02, W2V_SHIFT, true);
-    UnpackRotation(ang, mptr->m10, mptr->m12, W2V_SHIFT, true);
-    UnpackRotation(ang, mptr->m20, mptr->m22, W2V_SHIFT, true);
-
+    int ang = 0;
+    ang = (angs >> 4) & 0xFFC0;         // EXTRACT Y
+    phd_RotY(short(ang));
     ang = (angs >> 14) & 0xFFC0;        // EXTRACT X
-    UnpackRotation(ang, mptr->m01, mptr->m02, W2V_SHIFT, false);
-    UnpackRotation(ang, mptr->m11, mptr->m12, W2V_SHIFT, false);
-    UnpackRotation(ang, mptr->m21, mptr->m22, W2V_SHIFT, false);
-
+    phd_RotX(short(ang));
     ang = (angs & 0x3FF) << 6;          // EXTRACT Z
-    UnpackRotation(ang, mptr->m00, mptr->m01, W2V_SHIFT, false);
-    UnpackRotation(ang, mptr->m10, mptr->m11, W2V_SHIFT, false);
-    UnpackRotation(ang, mptr->m20, mptr->m21, W2V_SHIFT, false);
+    phd_RotZ(short(ang));
 }
 
-void phd_RotYXZ(short rx, short ry, short rz)
+void phd_RotYXZ(short ry, short rx, short rz)
 {
-    PHD_MATRIX* mptr = phd_mxptr;
-    // EXTRACT Y
-    UnpackRotation(rx, mptr->m00, mptr->m02, W2V_SHIFT, true);
-    UnpackRotation(rx, mptr->m10, mptr->m12, W2V_SHIFT, true);
-    UnpackRotation(rx, mptr->m20, mptr->m22, W2V_SHIFT, true);
-    // EXTRACT X
-    UnpackRotation(ry, mptr->m01, mptr->m02, W2V_SHIFT, false);
-    UnpackRotation(ry, mptr->m11, mptr->m12, W2V_SHIFT, false);
-    UnpackRotation(ry, mptr->m21, mptr->m22, W2V_SHIFT, false);
-    // EXTRACT Z
-    UnpackRotation(rz, mptr->m00, mptr->m01, W2V_SHIFT, false);
-    UnpackRotation(rz, mptr->m10, mptr->m11, W2V_SHIFT, false);
-    UnpackRotation(rz, mptr->m20, mptr->m21, W2V_SHIFT, false);
+    phd_RotY(ry);
+    phd_RotX(rx);
+    phd_RotZ(rz);
 }
 
 void phd_GetVectorAngles(int x, int y, int z, short* dest)

@@ -48,10 +48,13 @@ extern AIOBJECT* FoundAIObjectWithOCB(short objectNumber, short triggerFlags);
 extern OBJECT_FOUND FoundItem(ITEM_INFO* src, short slotID);
 extern OBJECT_FOUND* FoundItemWithOCB(ITEM_INFO* src, short primaryID, short triggerFlags);
 extern OBJECT_FOUND FoundItemWithOCB(ITEM_INFO* src, short primaryID, short secondID, short triggerFlags);
-extern OBJECT_FOUND FoundEntity(ITEM_INFO* item, short slotID);
+extern void TargetNearestEntity(ITEM_INFO* item, CREATURE_INFO* creature);
+extern ITEM_INFO* FoundNearestEntity(PHD_3DPOS* pos);
+extern OBJECT_FOUND FoundEntity(short slotID);
 extern OBJECT_FOUND FoundEntityWithOCB(ITEM_INFO* item, short slotID, short ocb);
 extern void GetEntityByRooms(ITEM_INFO* item, int radius, int height);
 extern bool AlignItemToTarget(ITEM_INFO* src, ITEM_INFO* target);
+extern void MoveEntityToAnother(PHD_3DPOS* src, PHD_3DPOS* target, ANIM_FRAME* bounds, int speed);
 extern void ActivateEntity(short itemNumber);
 extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
 extern void Spawner(ITEM_INFO* item);
@@ -66,6 +69,7 @@ extern LPCSTR InventoryItemDebugString(short inv_item);
 extern void ResetLaraMeshSkin(void);
 extern CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item);
 extern short ANGLEF(float angle);
+extern short ConvertToDegrees(short angle);
 
 extern bool DX_TRY(HRESULT errorThrow);
 

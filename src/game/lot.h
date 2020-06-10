@@ -1,5 +1,5 @@
 #pragma once
-extern int baddie_count;
+extern int BaddieCount;
 
 extern void InitialiseLOT(BOOL allocateBaddie);
 extern void DisableBaddieAI(short itemNumber);

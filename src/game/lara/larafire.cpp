@@ -166,7 +166,7 @@ WEAPON_INFO weapons[LG_MAX_HOLD] =
 // work nice :D
 void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv)
 {
-    SPARKS *sptr = &sparks[GetFreeSparks()];
+    SPARKS *sptr = &Sparks[GetFreeSparks()];
     sptr->on = TRUE;
     sptr->sR = 255;
     sptr->sG = 255;
@@ -174,17 +174,17 @@ void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv)
     sptr->dR = 255;
     sptr->dG = (GetRandomControl() & 127) + 64;
     sptr->dB = 0;
-    sptr->colfadespeed = 3;
-    sptr->fadetoblack = 5;
+    sptr->colFadeSpeed = 3;
+    sptr->fadeToBlack = 5;
     sptr->sLife = sptr->life = 10;
     sptr->transtype = TS_COLADD;
     sptr->dynamic = -1;
     sptr->x = x + (GetRandomControl() & 7) - 3;
     sptr->y = y + (GetRandomControl() & 7) - 3;
     sptr->z = z + (GetRandomControl() & 7) - 3;
-    sptr->xvel = xv + ((GetRandomControl() & 511) - 256);
-    sptr->yvel = yv + ((GetRandomControl() & 511) - 256);
-    sptr->zvel = zv + ((GetRandomControl() & 511) - 256);
+    sptr->xVel = xv + ((GetRandomControl() & 511) - 256);
+    sptr->yVel = yv + ((GetRandomControl() & 511) - 256);
+    sptr->zVel = zv + ((GetRandomControl() & 511) - 256);
     sptr->friction = 0;
     sptr->flags = SPF_SCALE;
     sptr->scalar = 2;

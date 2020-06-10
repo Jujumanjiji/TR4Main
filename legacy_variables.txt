@@ -1,3 +1,6 @@
+#define Locusts                             ARRAY_(0x0080FA00, LOCUST_INFO, [MAX_LOCUSTS])
+#define NextLocust                          VAR_I_(0x004BF2E0, int, 0)
+
 #define old_lara_busy                       VAR_U_(0x007FE9C0, char)
 #define current_selected_option             VAR_U_(0x007FEA1B, char)
 

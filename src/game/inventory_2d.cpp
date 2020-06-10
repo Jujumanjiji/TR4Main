@@ -748,7 +748,7 @@ void DrawInventoryItem(ITEM_INFO* item, int shade, int overlay, BOOL shade_flags
 
     obj = &Objects[item->objectNumber];
     anim = &Anims[item->animNumber];
-    mesh = &meshes[obj->meshIndex];
+    mesh = &Meshes[obj->meshIndex];
     bone = (BONE_STRUCT*)&Bones[obj->boneIndex];
     mesh_bits = 1;
 
