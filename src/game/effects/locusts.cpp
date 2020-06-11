@@ -123,9 +123,6 @@ void LocustControl(short itemNumber)
 void UpdateLocusts(void)
 {
     LOCUST_INFO* locust;
-    ITEM_INFO* target;
-    OBJECT_FOUND found;
-    PHD_VECTOR pos_angle;
     int distance, bestdistance;
     int square;
     short angles[2];

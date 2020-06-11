@@ -2153,8 +2153,8 @@ void combine_revolver(int flag)
 
     if (Lara.gunStatus != LG_UNARMED && Lara.gunType == LG_REVOLVER)
     {
-        undraw_pistols_left(LG_REVOLVER);
-        draw_pistol_meshes(LG_REVOLVER);
+        UndrawPistolsLeft(LG_REVOLVER);
+        DrawPistolsMeshes(LG_REVOLVER);
     }
 }
 
@@ -2174,8 +2174,8 @@ void combine_crossbow(int flag)
 
     if (Lara.gunStatus != LG_UNARMED && Lara.gunType == LG_CROSSBOW)
     {
-        undraw_shotgun_meshes(LG_CROSSBOW);
-        draw_shotgun_meshes(LG_CROSSBOW);
+        UndrawShotgunMeshes(LG_CROSSBOW);
+        DrawShotgunMeshes(LG_CROSSBOW);
     }
 }
 

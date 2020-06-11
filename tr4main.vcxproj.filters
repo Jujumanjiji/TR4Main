@@ -266,6 +266,9 @@
     <ClCompile Include="src\game\effects\locusts.cpp">
       <Filter>src\game\effects</Filter>
     </ClCompile>
+    <ClCompile Include="src\3dsystem\phd_math.cpp">
+      <Filter>src\3dsystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -483,6 +486,9 @@
     </ClInclude>
     <ClInclude Include="src\game\effects\locusts.h">
       <Filter>src\game\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\3dsystem\phd_math.h">
+      <Filter>src\3dsystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

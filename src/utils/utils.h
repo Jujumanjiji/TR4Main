@@ -35,8 +35,8 @@ extern void SpawnPickup(ITEM_INFO* item);
 extern void SetGunFlash_Left(int weapon_type);
 extern void SetGunFlash_Right(int weapon_type);
 extern PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right);
-extern void set_gun_smoke_left(int weapon_type);
-extern void set_gun_smoke_right(int weapon_type);
+extern void SetGunSmokeLeft(int weapon_type);
+extern void SetGunSmokeRight(int weapon_type);
 extern ITEM_INFO* FoundTarget(short itemNumber, ITEM_INFO* src, CREATURE_INFO* creature, short objectToTarget);
 extern short initHealth(short objNumber);
 extern void DrawFlashWithSmoke(ITEM_INFO* item, BITE_INFO* bite);
@@ -60,8 +60,8 @@ extern bool FoundEntityAndActivate(ITEM_INFO* item, short slotid, short ocb);
 extern void Spawner(ITEM_INFO* item);
 extern int CalculateLaraDistance(ITEM_INFO* item);
 extern int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target);
-extern void classic_meshes(short objNumber, short meshID, short* new_meshes);
-extern short* classic_meshes(short objNumber, short meshID);
+extern void ClassicMeshes(short objNumber, short meshID, short* new_meshes);
+extern short* ClassicMeshes(short objNumber, short meshID);
 extern void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll);
 extern short GetCatchAngle(ITEM_INFO* item, short angleToCheck); // for lara grapping angle.
 extern void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle);
@@ -69,7 +69,6 @@ extern LPCSTR InventoryItemDebugString(short inv_item);
 extern void ResetLaraMeshSkin(void);
 extern CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item);
 extern short ANGLEF(float angle);
-extern short ConvertToDegrees(short angle);
 
 extern bool DX_TRY(HRESULT errorThrow);
 

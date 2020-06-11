@@ -7,21 +7,21 @@
 #include "sound.h"
 #include "utils.h"
 
-void draw_shotgun_meshes(int weapon_type)
+void DrawShotgunMeshes(int weaponType)
 {
     Lara.backGun = LG_UNARMED;
-    Lara.mesh.hand_r = classic_meshes(weapon_meshes(weapon_type), HAND_R);
+    Lara.mesh.hand_r = ClassicMeshes(WeaponMeshes(weaponType), HAND_R);
 }
 
-void undraw_shotgun_meshes(int weapon_type)
+void UndrawShotgunMeshes(int weaponType)
 {
-    Lara.backGun = WeaponObject(weapon_type);
-    Lara.mesh.hand_r = classic_meshes(LARA, HAND_R);
+    Lara.backGun = WeaponObject(weaponType);
+    Lara.mesh.hand_r = ClassicMeshes(LARA, HAND_R);
 }
 
-void ready_shotgun(int weapon_type)
+void ReadyShotgun(int weaponType)
 {
-    short *frame = Objects[WeaponObject(weapon_type)].frameBase;
+    short *frame = Objects[WeaponObject(weaponType)].frameBase;
     Lara.gunStatus = LHS_READY;
     Lara.target = NULL;
 
@@ -40,7 +40,7 @@ void ready_shotgun(int weapon_type)
     Lara.rightArm.flash_gun = 0;
 }
 
-void draw_shotgun(int weapon_type)
+void DrawShotgun(int weaponType)
 {
     ITEM_INFO* item;
 
@@ -49,8 +49,8 @@ void draw_shotgun(int weapon_type)
     {
         Lara.weaponItem = CreateItem();
         item = &Items[Lara.weaponItem];
-        item->objectNumber = WeaponObject(weapon_type);
-        item->animNumber = (weapon_type == LG_GRENADEGUN) ? (Objects[item->objectNumber].animIndex) : (Objects[item->objectNumber].animIndex + 1);
+        item->objectNumber = WeaponObject(weaponType);
+        item->animNumber = (weaponType == LG_GRENADEGUN) ? (Objects[item->objectNumber].animIndex) : (Objects[item->objectNumber].animIndex + 1);
         item->frameNumber = Anims[item->animNumber].frameBase;
         item->currentAnimState = W_DRAW;
         item->goalAnimState = W_DRAW;
@@ -66,9 +66,9 @@ void draw_shotgun(int weapon_type)
     AnimateItem(item);
 
     if (item->currentAnimState == W_AIM || item->currentAnimState == W_UAIM)
-        ready_shotgun(weapon_type);
-    else if ((item->frameNumber - Anims[item->animNumber].frameBase) == weapons[weapon_type].draw_frame)
-        draw_shotgun_meshes(weapon_type);
+        ReadyShotgun(weaponType);
+    else if ((item->frameNumber - Anims[item->animNumber].frameBase) == Weapons[weaponType].drawFrame)
+        DrawShotgunMeshes(weaponType);
     else if (Lara.waterStatus == LWS_UNDERWATER)
         item->goalAnimState = W_UAIM;
 
@@ -77,7 +77,7 @@ void draw_shotgun(int weapon_type)
     Lara.leftArm.animNumber  = Lara.rightArm.animNumber  = item->animNumber;
 }
 
-void undraw_shotgun(int weapon_type)
+void UndrawShotgun(int weapon_type)
 {
     ITEM_INFO* item = &Items[Lara.weaponItem];
     if (Lara.waterStatus == LWS_SURFACE)
@@ -100,17 +100,17 @@ void undraw_shotgun(int weapon_type)
     }
     else if (item->currentAnimState == W_UNDRAW && GetCurrentFrame(item) == 21)
     {
-        undraw_shotgun_meshes(weapon_type);
+        UndrawShotgunMeshes(weapon_type);
     }
 
     Lara.leftArm.frameBase   = Lara.rightArm.frameBase   = Anims[item->animNumber].framePtr;
-    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = item->frameNumber - Anims[item->animNumber].frameBase;
+    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = GetCurrentFrame(item);
     Lara.leftArm.animNumber  = Lara.rightArm.animNumber  = item->animNumber;
 }
 
-void shotgun_handler(int weapon_type)
+void ShotgunHandler(int weaponType)
 {
-    WEAPON_INFO* winfo = &weapons[weapon_type];
+    WEAPON_INFO* winfo = &Weapons[weaponType];
     PHD_VECTOR pos;
 
     LaraGetNewTarget(winfo);
@@ -144,14 +144,14 @@ void shotgun_handler(int weapon_type)
     }
 #endif
 
-    if (weapon_type == LG_REVOLVER)
-        animate_pistols(weapon_type);
+    if (weaponType == LG_REVOLVER)
+        AnimatePistols(LG_REVOLVER);
     else
-        animate_shotgun(weapon_type);
+        AnimateShotgun(weaponType);
 
     if (Lara.rightArm.flash_gun)
     {
-        switch (weapon_type)
+        switch (weaponType)
         {
             case LG_SHOTGUN:
                 pos.x = SHOTGUN_GUNPOS_X;
@@ -171,7 +171,7 @@ void shotgun_handler(int weapon_type)
     }
 }
 
-void animate_shotgun(int weapon_type)
+void AnimateShotgun(int weaponType)
 {
     ITEM_INFO* item = &Items[Lara.weaponItem];
     PHD_VECTOR pos;
@@ -231,17 +231,17 @@ void animate_shotgun(int weapon_type)
                 {
                     if (CHK_EXI(TrInput, IN_ACTION) && (!Lara.target || Lara.leftArm.lock))
                     {
-                        switch (weapon_type)
+                        switch (weaponType)
                         {
                             case LG_SHOTGUN:
-                                fire_shotgun();
+                                FireShotgun();
                                 break;
                             case LG_GRENADEGUN:
-                                fire_grenade();
+                                FireGrenade();
                                 break;
                             case LG_CROSSBOW:
                                 if (!LaserSight) // dont delete more ammo that necessary !
-                                    fire_crossbow(nullptr);
+                                    FireCrossbow(nullptr);
                                 break;
                         }
 
@@ -264,12 +264,12 @@ void animate_shotgun(int weapon_type)
                 SoundEffect(SFX_EXPLOSION1, &LaraItem->pos, PITCH_SHIFT | 0x5000000);
                 SoundEffect(SFX_HECKLER_KOCH_FIRE, &LaraItem->pos, 0);
             }
-            else if (weapon_type == LG_SHOTGUN && CHK_NOP(TrInput, IN_ACTION) && !Lara.leftArm.lock)
+            else if (weaponType == LG_SHOTGUN && CHK_NOP(TrInput, IN_ACTION) && !Lara.leftArm.lock)
             {
                 item->goalAnimState = W_UNAIM;
             }
 
-            if (frame == 12 && weapon_type == LG_SHOTGUN)
+            if (frame == 12 && weaponType == LG_SHOTGUN)
                 TriggerGunShell(TRUE, SHOTGUNSHELL, LG_SHOTGUN);
             break;
 
@@ -281,20 +281,20 @@ void animate_shotgun(int weapon_type)
     }
 
     AnimateItem(item);
-    Lara.leftArm.frameBase = Lara.rightArm.frameBase = Anims[item->animNumber].framePtr;
-    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = item->frameNumber - Anims[item->animNumber].frameBase;
+    Lara.leftArm.frameBase   = Lara.rightArm.frameBase   = Anims[item->animNumber].framePtr;
+    Lara.leftArm.frameNumber = Lara.rightArm.frameNumber = GetCurrentFrame(item);
     Lara.leftArm.animNumber  = Lara.rightArm.animNumber  = item->animNumber;
 }
 
 #ifdef DLL_INJECT
 void injector::f_game::inject_lara1gun()
 {
-    inject(0x00428E40, draw_shotgun_meshes);
-    inject(0x00428E70, undraw_shotgun_meshes);
-    inject(0x00428EA0, ready_shotgun);
-    inject(0x0042AE50, draw_shotgun);
-    inject(0x0042AFE0, undraw_shotgun);
-    inject(0x00428F10, shotgun_handler);
-    inject(0x0042B100, animate_shotgun);
+    inject(0x00428E40, DrawShotgunMeshes);
+    inject(0x00428E70, UndrawShotgunMeshes);
+    inject(0x00428EA0, ReadyShotgun);
+    inject(0x0042AE50, DrawShotgun);
+    inject(0x0042AFE0, UndrawShotgun);
+    inject(0x00428F10, ShotgunHandler);
+    inject(0x0042B100, AnimateShotgun);
 }
 #endif

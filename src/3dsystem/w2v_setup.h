@@ -24,7 +24,7 @@ public:
 private:
     PHD_MATRIX* nptr, *mptr;
     PHD_3DPOS* viewpos;
-    PHD_VECTOR sin, cos;
+    PHD_VECTOR s, c;
     PHD_VECTOR pos;
     short angx, angy, angz;
     short power;

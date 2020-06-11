@@ -13,31 +13,31 @@ void W2V_MATRIX::SetupMatrix_Ptr()
 void W2V_MATRIX::SetupMatrix_CosAndSin(PHD_3DPOS* viewpos)
 {
     this->viewpos = viewpos;
-    sin.x = SIN(viewpos->xRot);
-    cos.x = COS(viewpos->xRot);
-    sin.y = SIN(viewpos->yRot);
-    cos.y = COS(viewpos->yRot);
-    sin.z = SIN(viewpos->zRot);
-    cos.z = COS(viewpos->zRot);
+    s.x = phd_sin(viewpos->xRot);
+    c.x = phd_cos(viewpos->xRot);
+    s.y = phd_sin(viewpos->yRot);
+    c.y = phd_cos(viewpos->yRot);
+    s.z = phd_sin(viewpos->zRot);
+    c.z = phd_cos(viewpos->zRot);
 }
 
 void W2V_MATRIX::Matrix00()
 {
-    auto value = TRIGMULT2(cos.y, cos.z) + TRIGMULT3(sin.x, sin.y, sin.z);
+    auto value = TRIGMULT2(c.y, c.z) + TRIGMULT3(s.x, s.y, s.z);
     mptr->m00 = value;
     nptr->m00 = value;
 }
 
 void W2V_MATRIX::Matrix01()
 {
-    auto value = TRIGMULT2(cos.x, sin.z);
+    auto value = TRIGMULT2(c.x, s.z);
     mptr->m01 = value;
     nptr->m01 = value;
 }
 
 void W2V_MATRIX::Matrix02()
 {
-    auto value = TRIGMULT3(sin.x, cos.y, sin.z) - TRIGMULT2(sin.y, cos.z);
+    auto value = TRIGMULT3(s.x, c.y, s.z) - TRIGMULT2(s.y, c.z);
     mptr->m02 = value;
     nptr->m02 = value;
 }
@@ -51,21 +51,21 @@ void W2V_MATRIX::Matrix03()
 
 void W2V_MATRIX::Matrix10()
 {
-    auto value = TRIGMULT3(sin.x, sin.y, cos.z) - TRIGMULT2(cos.y, sin.z);
+    auto value = TRIGMULT3(s.x, s.y, c.z) - TRIGMULT2(c.y, s.z);
     mptr->m10 = value;
     nptr->m10 = value;
 }
 
 void W2V_MATRIX::Matrix11()
 {
-    auto value = TRIGMULT2(cos.x, cos.z);
+    auto value = TRIGMULT2(c.x, c.z);
     mptr->m11 = value;
     nptr->m11 = value;
 }
 
 void W2V_MATRIX::Matrix12()
 {
-    auto value = TRIGMULT2(sin.y, sin.z) + TRIGMULT3(sin.x, cos.y, cos.z);
+    auto value = TRIGMULT2(s.y, s.z) + TRIGMULT3(s.x, c.y, c.z);
     mptr->m12 = value;
     nptr->m12 = value;
 }
@@ -79,21 +79,21 @@ void W2V_MATRIX::Matrix13()
 
 void W2V_MATRIX::Matrix20()
 {
-    auto value = TRIGMULT2(cos.x, sin.y);
+    auto value = TRIGMULT2(c.x, s.y);
     mptr->m20 = value;
     nptr->m20 = value;
 }
 
 void W2V_MATRIX::Matrix21()
 {
-    auto value = -sin.x;
+    auto value = -s.x;
     mptr->m21 = value;
     nptr->m21 = value;
 }
 
 void W2V_MATRIX::Matrix22()
 {
-    auto value = TRIGMULT2(cos.x, cos.y);
+    auto value = TRIGMULT2(c.x, c.y);
     mptr->m22 = value;
     nptr->m22 = value;
 }

@@ -281,8 +281,8 @@ enum WEAPON_ANIM
 
 /// ==============================================================
 
-extern PISTOL_DEF pistols_table[4];
-extern WEAPON_INFO weapons[LG_MAX_HOLD];
+extern PISTOL_DEF PistolsTable[4];
+extern WEAPON_INFO Weapons[LG_MAX_HOLD];
 
 extern void LaraCheat(ITEM_INFO *item, COLL_INFO *coll);
 extern void LaraControl(void);
@@ -454,32 +454,32 @@ LARA_FUNC(lara_col_duck2);
 LARA_FUNC(lara_col_rope);
 LARA_FUNC(lara_col_ropefwd);
 
-extern void draw_shotgun_meshes(int weapon_type);
-extern void undraw_shotgun_meshes(int weapon_type);
-extern void ready_shotgun(int weapon_type);
-extern void draw_shotgun(int weapon_type);
-extern void undraw_shotgun(int weapon_type);
-extern void shotgun_handler(int weapon_type);
-extern void animate_shotgun(int weapon_type);
-extern int weapon_holsters(int weapon_type);
-extern void set_arm_info(LARA_ARM* arm, short frame);
-extern void draw_pistol_meshes(int weapon_type);
-extern void undraw_pistols_left(int weapon_type);
-extern void undraw_pistols_right(int weapon_type);
-extern void draw_pistols(int weapon_type);
-extern void undraw_pistols(int weapon_type);
-extern void ready_pistols(int weapon_type);
-extern void pistol_handler(int weapon_type);
-extern void animate_pistols(int weapon_type);
+extern void DrawShotgunMeshes(int weaponType);
+extern void UndrawShotgunMeshes(int weaponType);
+extern void ReadyShotgun(int weaponType);
+extern void DrawShotgun(int weaponType);
+extern void UndrawShotgun(int weaponType);
+extern void ShotgunHandler(int weaponType);
+extern void AnimateShotgun(int weaponType);
+extern int WeaponHolsters(int weaponType);
+extern void SetArmInfo(LARA_ARM* arm, short frame);
+extern void DrawPistolsMeshes(int weaponType);
+extern void UndrawPistolsLeft(int weaponType);
+extern void UndrawPistolsRight(int weaponType);
+extern void DrawPistols(int weaponType);
+extern void UndrawPistols(int weaponType);
+extern void ReadyPistols(int weaponType);
+extern void PistolHandler(int weaponType);
+extern void AnimatePistols(int weaponType);
 extern void TriggerShotgunSparks(int x, int y, int z, int xv, int yv, int zv);
-extern int WeaponObject(int weapon_type);
-extern int weapon_meshes(int weapon_type);
-extern void fire_shotgun(void);
-extern void fire_grenade(void);
-extern void fire_crossbow(PHD_3DPOS* haveDefinedPos);
+extern int WeaponObject(int weaponType);
+extern int WeaponMeshes(int weaponType);
+extern void FireShotgun(void);
+extern void FireGrenade(void);
+extern void FireCrossbow(PHD_3DPOS* haveDefinedPos);
 extern void FireCrossbowBoltFromLaserSight(GAME_VECTOR* dest, GAME_VECTOR* src);
 extern void InitialiseNewWeapons(void);
-extern short* GetCurrentAmmo(int weapon_type);
+extern short* GetCurrentAmmo(int weaponType);
 extern void LaraTargetInfo(WEAPON_INFO* winfo);
 extern void LaraGetNewTarget(WEAPON_INFO* winfo);
 extern void AimWeapon(WEAPON_INFO* winfo, LARA_ARM* arm);
@@ -542,22 +542,23 @@ extern short GetClimbTrigger(int x, int y, int z, short roomNumber);
 extern void SnapLaraToEdgeOfBlock(ITEM_INFO* item, COLL_INFO* coll, short angle);
 extern void GetLaraCollisionInfo(ITEM_INFO* item, COLL_INFO* coll);
 extern void AnimateLara(ITEM_INFO* item);
+extern short GetLaraCardinalRotation(short angle);
 extern BOOL LaraTestHangJump(ITEM_INFO* item, COLL_INFO* coll);
 extern BOOL LaraTestHangJumpUp(ITEM_INFO* item, COLL_INFO* coll);
 
 #ifdef DLL_INJECT
 #define UseSpecialItem ((BOOL(__cdecl*)(ITEM_INFO* item)) 0x00424E90)
-#define CheckForHoldingState ((int(__cdecl*)(short state_current)) 0x0042DDC0)
+#define CheckForHoldingState ((int(__cdecl*)(short currrentAnimState)) 0x0042DDC0)
 #define TorchControl ((void(__cdecl*)(void)) 0x0041F7C0)
 #define DoFlareLight ((BOOL(__cdecl*)(PHD_3DPOS *pos, short age)) 0x0042F510)
 #define DoFlareInHand ((void(__cdecl*)(short age)) 0x0042F6F0)
-#define set_flare_arm ((void(__cdecl*)(short frame)) 0x0042FB00)
-#define CreateFlare ((void(__cdecl*)(short objNumber, BOOL isThrowed)) 0x0042F880)
-#define ready_flare ((void(__cdecl*)(void)) 0x0042FF50)
-#define draw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF10)
-#define undraw_flare_meshes ((void(__cdecl*)(void)) 0x0042FF30)
-#define draw_flare ((void(__cdecl*)(void)) 0x0042FB50)
-#define undraw_flare ((void(__cdecl*)(void)) 0x0042FC60)
-#define FlareItemControl CONTROL(0x0042FF90)
-#define DrawFlareItem DRAW(0x0042F7B0)
+#define SetFlareArm ((void(__cdecl*)(short frame)) 0x0042FB00)
+#define CreateFlare ((void(__cdecl*)(short objectNumber, BOOL isThrowed)) 0x0042F880)
+#define ReadyFlare ((void(__cdecl*)(void)) 0x0042FF50)
+#define DrawFlareMeshes ((void(__cdecl*)(void)) 0x0042FF10)
+#define UndrawFlareMeshes ((void(__cdecl*)(void)) 0x0042FF30)
+#define DrawFlare ((void(__cdecl*)(void)) 0x0042FB50)
+#define UndrawFlare ((void(__cdecl*)(void)) 0x0042FC60)
+#define FlareItemControl ((void(__cdecl*)(short itemNumber)) 0x0042FF90)
+#define DrawFlareItem ((void(__cdecl*)(ITEM_INFO* item)) 0x0042F7B0)
 #endif

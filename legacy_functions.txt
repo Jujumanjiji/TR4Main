@@ -21,6 +21,10 @@
 #define InitD3DMatrix ((void(__cdecl*)(D3DMATRIX* mptr)) 0x00490DD0)
 #define SetupDXW2V ((void(__cdecl*)(D3DMATRIX* dest, PHD_MATRIX* pptr)) 0x00490C30)
 
+// 3D_GEN_A.CPP
+#define phd_PushMatrix ((void(__cdecl*)(void)) 0x004902B0)
+#define phd_PushUnitMatrix ((void(__cdecl*)(void)) 0x00490310)
+
 // DRAW.CPP
 #define DrawPhaseGame ((int(__cdecl*)(void)) 0x0044EBA0)
 #define DrawEffect ((void(__cdecl*)(short fxNumber)) 0x0044FB10)

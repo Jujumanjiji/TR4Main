@@ -181,7 +181,7 @@ static void GetTargetPosition(ITEM_INFO* item, PHD_3DPOS* target)
 
 static void MoveItemFront(ITEM_INFO* item, int distance)
 {
-    switch (ConvertToDegrees(item->pos.yRot))
+    switch (short(to_degrees(item->pos.yRot)))
     {
     case C_NORTH:
         item->pos.zPos += distance;
@@ -200,7 +200,7 @@ static void MoveItemFront(ITEM_INFO* item, int distance)
 
 static void MoveItemBack(ITEM_INFO* item, int distance)
 {
-    switch (ConvertToDegrees(item->pos.yRot))
+    switch (short(to_degrees(item->pos.yRot)))
     {
     case C_NORTH:
         item->pos.zPos -= distance;

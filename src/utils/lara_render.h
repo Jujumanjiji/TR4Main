@@ -4,10 +4,9 @@ class LARA_RENDER
 {
 private:
     short pprot;
-    ITEM_INFO* item;
     OBJECT_INFO* obj;
     LARA_MATRIX* mptr;
-    BONE_STRUCT* bone;
+    int* bone;
     int frac;
     int rate;
     short* frmptr[2];
@@ -20,13 +19,7 @@ private:
     bool cutsceneMode;
 
 public:
-    void enable_cutscene(bool value);
-    void assign_pprot(short pprot);
-    void assign_matrixptr();
-    void create_item();
-    void create_object();
-    void create_bone(BONE_STRUCT* boneIfCutscene);
-    void create_frame();
+    void initialise(bool isCutscene = false, int* ifCutscene = nullptr, short rotation = 0);
     void check_hitdirection(short* frameCutscene);
     void create_rotation(short* frameCutscene);
     void create_shadow(short* frameCutscene);

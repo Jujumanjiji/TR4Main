@@ -477,13 +477,13 @@ PHD_VECTOR GetGunFlashPosition(int weapon_type, bool right)
     return pos;
 }
 
-void set_gun_smoke_left(int weapon_type)
+void SetGunSmokeLeft(int weaponType)
 {
     if (LaraItem->meshBits && SmokeCountL)
     {
         PHD_VECTOR pos;
 
-        switch (SmokeWeapon)
+        switch (weaponType)
         {
             case LG_PISTOLS:
                 pos.x = PISTOLS_GUNPOS_X;
@@ -503,17 +503,17 @@ void set_gun_smoke_left(int weapon_type)
         }
 
         GetLaraJointAbsPosition(&pos, JHAND_L);
-        TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
+        TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, weaponType, SmokeCountL);
     }
 }
 
-void set_gun_smoke_right(int weapon_type)
+void SetGunSmokeRight(int weaponType)
 {
     if (LaraItem->meshBits && SmokeCountR)
     {
         PHD_VECTOR pos;
 
-        switch (SmokeWeapon)
+        switch (weaponType)
         {
             case LG_PISTOLS:
                 pos.x = -PISTOLS_GUNPOS_X;
@@ -538,7 +538,7 @@ void set_gun_smoke_right(int weapon_type)
         }
 
         GetLaraJointAbsPosition(&pos, JHAND_R);
-        TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountR);
+        TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, weaponType, SmokeCountR);
     }
 }
 
@@ -1151,17 +1151,15 @@ int CalculateItemDistanceToTarget(ITEM_INFO* src, ITEM_INFO* target)
     return distance;
 }
 
-void classic_meshes(short objNumber, short meshID, short* new_meshes)
+void ClassicMeshes(short objNumber, short meshID, short* new_meshes)
 {
     Meshes[Objects[objNumber].meshIndex + meshID * 2] = new_meshes;
 }
 
-short* classic_meshes(short objNumber, short meshID)
+short* ClassicMeshes(short objNumber, short meshID)
 {
     return Meshes[Objects[objNumber].meshIndex + meshID * 2];
 }
-
-
 
 void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
 {
@@ -1174,7 +1172,7 @@ void TestTriggersCollision(ITEM_INFO* item, COLL_INFO* coll)
     coll->trigger = TriggerIndex;
 }
 
-short GetCatchAngle(ITEM_INFO * item, short angleToCheck)
+short GetCatchAngle(ITEM_INFO *item, short angleToCheck)
 {
     short angle = item->pos.yRot;
     if (angle >= 0 - angleToCheck && angle <= 0 + angleToCheck)
@@ -1186,7 +1184,7 @@ short GetCatchAngle(ITEM_INFO * item, short angleToCheck)
     else if (angle >= -0x4000 - angleToCheck && angle <= -0x4000 + angleToCheck)
         return -0x4000;
     else
-        return 0;
+        return angle;
 }
 
 void LaraSlideAngle(ITEM_INFO* item, COLL_INFO* coll, short adif, short angle)
@@ -1475,34 +1473,29 @@ LPCSTR InventoryItemDebugString(short inv_item)
 void ResetLaraMeshSkin(void)
 {
     for (int i = 0; i < MAX_LARA_MESHES; i++)
-        classic_meshes(LARA, i, classic_meshes(LARA_SKIN, i));
+        ClassicMeshes(LARA, i, ClassicMeshes(LARA_SKIN, i));
 
     short mesh_target = LARA_SKIN;
-    Lara.mesh.hips = classic_meshes(mesh_target, HIPS);
-    Lara.mesh.thigh_l = classic_meshes(mesh_target, THIGH_L);
-    Lara.mesh.calf_l = classic_meshes(mesh_target, CALF_L);
-    Lara.mesh.foot_l = classic_meshes(mesh_target, FOOT_L);
-    Lara.mesh.thigh_r = classic_meshes(mesh_target, THIGH_R);
-    Lara.mesh.calf_r = classic_meshes(mesh_target, CALF_R);
-    Lara.mesh.foot_r = classic_meshes(mesh_target, FOOT_R);
-    Lara.mesh.torso = classic_meshes(mesh_target, TORSO);
-    Lara.mesh.uarm_r = classic_meshes(mesh_target, UARM_R);
-    Lara.mesh.larm_r = classic_meshes(mesh_target, LARM_R);
-    Lara.mesh.hand_r = classic_meshes(mesh_target, HAND_R);
-    Lara.mesh.uarm_l = classic_meshes(mesh_target, UARM_L);
-    Lara.mesh.larm_l = classic_meshes(mesh_target, LARM_L);
-    Lara.mesh.hand_l = classic_meshes(mesh_target, HAND_L);
-    Lara.mesh.head = classic_meshes(mesh_target, HEAD);
+    Lara.mesh.hips = ClassicMeshes(mesh_target, HIPS);
+    Lara.mesh.thigh_l = ClassicMeshes(mesh_target, THIGH_L);
+    Lara.mesh.calf_l = ClassicMeshes(mesh_target, CALF_L);
+    Lara.mesh.foot_l = ClassicMeshes(mesh_target, FOOT_L);
+    Lara.mesh.thigh_r = ClassicMeshes(mesh_target, THIGH_R);
+    Lara.mesh.calf_r = ClassicMeshes(mesh_target, CALF_R);
+    Lara.mesh.foot_r = ClassicMeshes(mesh_target, FOOT_R);
+    Lara.mesh.torso = ClassicMeshes(mesh_target, TORSO);
+    Lara.mesh.uarm_r = ClassicMeshes(mesh_target, UARM_R);
+    Lara.mesh.larm_r = ClassicMeshes(mesh_target, LARM_R);
+    Lara.mesh.hand_r = ClassicMeshes(mesh_target, HAND_R);
+    Lara.mesh.uarm_l = ClassicMeshes(mesh_target, UARM_L);
+    Lara.mesh.larm_l = ClassicMeshes(mesh_target, LARM_L);
+    Lara.mesh.hand_l = ClassicMeshes(mesh_target, HAND_L);
+    Lara.mesh.head = ClassicMeshes(mesh_target, HEAD);
 }
 
 CREATURE_INFO* GetCreatureInfo(ITEM_INFO* item)
 {
     return (CREATURE_INFO*)item->data;
-}
-
-short ConvertToDegrees(short angle)
-{
-    return short((unsigned short)angle * 360.0f / 65536.0f);
 }
 
 bool DX_TRY(HRESULT errorThrow)

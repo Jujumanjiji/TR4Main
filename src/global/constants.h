@@ -2,8 +2,6 @@
 
 using namespace std;
 
-constexpr auto RADIAN = 0.01745329252f;
-
 #define DEBUG_CHEAT
 #define LOG_DEBUG
 #define LOG_FOLDER "log"
@@ -12,7 +10,7 @@ constexpr auto RADIAN = 0.01745329252f;
 #define DEBUG_MODE
 
 #define PISTOLS_GUNPOS_X 10
-#define PISTOLS_GUNPOS_Y 190
+#define PISTOLS_GUNPOS_Y 140
 #define PISTOLS_GUNPOS_Z 50
 #define UZIS_GUNPOS_X 10
 #define UZIS_GUNPOS_Y 190
@@ -38,20 +36,15 @@ constexpr auto RADIAN = 0.01745329252f;
 #define LT_Warning             "Warning"
 #define LT_Version             "Version"
 
-#define ALL_MESH -1
-#define NO_TRACK -1
-#define NO_FLYING 0
-#define NO_HORIZON -1
-#define NO_CLIP -1
-#define NOT_EXIST -1
-#define NO_ROPE -1
-#define NO_TILT 0
-
-#define ONE_DEGREE 182
-#define ANGLE(x) ((x) * ONE_DEGREE)
-#define GAME_FOV 80
-#define DEFAULT_FOV (GAME_FOV * ONE_DEGREE)
-#define BADDIE_POISON_DAMAGE 1
+constexpr auto ALL_MESH = -1;
+constexpr auto NO_TRACK = -1;
+constexpr auto NO_FLYING = 0;
+constexpr auto NO_HORIZON = -1;
+constexpr auto NO_CLIP = -1;
+constexpr auto NOT_EXIST = -1;
+constexpr auto NO_ROPE = -1;
+constexpr auto NO_TILT = 0;
+constexpr auto BADDIE_POISON_DAMAGE = 1;
 
 #define GUARD 0x0001
 #define AMBUSH 0x0002
@@ -64,37 +57,34 @@ constexpr auto RADIAN = 0.01745329252f;
 #define TIMID FALSE
 #define VIOLENT TRUE
 
-#define MAX_PICKUPS 8
-#define MAX_SLOTS 32
-#define MAX_EXPANSION 5
-#define MAX_SHOCKWAVE 16
-#define MAX_BUBBLES 30
-#define MAX_DRIPS 32
-#define MAX_RIPPLES 16
-#define MAX_SPLASHES 4
-#define MAX_BLOOD 32
-#define MAX_DEBRIS 256
-#define MAX_GUNSHELLS 24
-#define MAX_SMOKESPARKS 32
-#define MAX_SPARKS 256
-#define MAX_GUNFLASH 4
-#define MAX_FIRE_SPARKS 20
-#define MAX_FIRE_LIST 32
-#define MAX_LIGHTNING 3
-#define MAX_DYNAMICS 32
-#define MAX_ROPES 4
-#define MAX_SPAWNER_ENTITY 50000 // ~50
+constexpr auto MAX_PICKUPS = 8;
+constexpr auto MAX_SLOTS = 32;
+constexpr auto MAX_EXPANSION = 5;
+constexpr auto MAX_SHOCKWAVE = 16;
+constexpr auto MAX_BUBBLES = 30;
+constexpr auto MAX_DRIPS = 32;
+constexpr auto MAX_RIPPLES = 16;
+constexpr auto MAX_SPLASHES = 4;
+constexpr auto MAX_BLOOD = 32;
+constexpr auto MAX_DEBRIS = 256;
+constexpr auto MAX_GUNSHELLS = 24;
+constexpr auto MAX_SMOKESPARKS = 32;
+constexpr auto MAX_SPARKS = 256;
+constexpr auto MAX_GUNFLASH = 4;
+constexpr auto MAX_FIRE_SPARKS = 20;
+constexpr auto MAX_FIRE_LIST = 32;
+constexpr auto MAX_LIGHTNING = 3;
+constexpr auto MAX_DYNAMICS = 32;
+constexpr auto MAX_ROPES = 4;
+constexpr auto MAX_SPAWNER_ENTITY = 50000; // ~50 (1000 = 1)
 
-#define SFX_ALWAYS 2
-#define DONT_TARGET (-16384)
-#define NO_ROOM 0xFF
-#define NO_HEIGHT (32512)
-#define WALL_L 1024
-#define STEP_L 256
-#define FLY_ZONE 0x2000
-#define STEPUP_HEIGHT ((STEP_L*3)/2) // (STEPUP_HEIGHT = 384)
+constexpr auto SFX_ALWAYS = 2;
+constexpr auto DONT_TARGET = -16384;
+constexpr auto NO_ROOM = 0xFF;
+constexpr auto NO_HEIGHT = 32512;
+constexpr auto STEPUP_HEIGHT = ((3 * STEP_L) / 2);
 
-#define NUM_SLOTS 5
+constexpr auto NUM_SLOTS = 5;
 #define NO_BOX 0x7FF
 #define BOX_NUMBER 0x7FF
 #define BOX_END_BIT 0x8000

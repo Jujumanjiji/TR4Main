@@ -5,13 +5,7 @@
 void CalcLaraMatrices(short pprot)
 {
     // lara render (mesh + weapon) (normal and interpolate)
-    lara_render.enable_cutscene(false);
-    lara_render.assign_pprot(pprot);
-    lara_render.assign_matrixptr(); // normal mesh and holsters mesh
-    lara_render.create_item();
-    lara_render.create_object();
-    lara_render.create_bone(NULL);
-    lara_render.create_frame();
+    lara_render.initialise(false, nullptr, pprot);
     lara_render.check_hitdirection(NULL);
     lara_render.create_rotation(NULL);
     lara_render.create_shadow(NULL);
@@ -39,16 +33,10 @@ void CalcLaraMatrices(short pprot)
     lara_render.end_world();
 }
 
-void CalcLaraMatrices_Cutscene(short *frame, BONE_STRUCT *bone, short pprot)
+void CalcLaraMatrices_Cutscene(short *frame, int *bone, short pprot)
 {
     // lara render (mesh + weapon) (normal and interpolate)
-    lara_render.enable_cutscene(true);
-    lara_render.assign_pprot(pprot);
-    lara_render.assign_matrixptr(); // normal mesh and holsters mesh
-    lara_render.create_item();
-    lara_render.create_object();
-    lara_render.create_bone(bone);
-    lara_render.create_frame();
+    lara_render.initialise(true, bone, pprot);
     lara_render.check_hitdirection(frame);
     lara_render.create_rotation(frame);
     lara_render.create_shadow(frame);
@@ -76,7 +64,7 @@ void CalcLaraMatrices_Cutscene(short *frame, BONE_STRUCT *bone, short pprot)
     lara_render.end_world();
 }
 
-void DEL_CalcLaraMatrices_Interpolate(short *frame1, short *frame2, int frac, int rate, BONE_STRUCT *bone, short pprot)
+void DEL_CalcLaraMatrices_Interpolate(short *frame1, short *frame2, int frac, int rate, int *bone, short pprot)
 {
     // not used anymore since CalcLaraMatrices() contains all the render !
 }

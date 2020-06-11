@@ -179,27 +179,27 @@ struct BOUNDARY
 
 struct WEAPON_INFO
 {
-    short lock_angle[4];
-    short left_angle[4];
-    short right_angle[4];
-    short aim_speed;
-    short shot_accuracy;
-    short gun_height;
-    short target_dist;
+    short lockAngles[4];
+    short leftAngles[4];
+    short rightAngles[4];
+    short aimSpeed;
+    short shotAccuracy;
+    short gunHeight;
+    short targetDist;
     char damage;
-    char recoil_frame;
-    char flash_time;
-    char draw_frame;
-    short sample_id;
+    char recoilFrame;
+    char flashTime;
+    char drawFrame;
+    short sampleNum;
 };
 
 struct PISTOL_DEF
 {
-    short object_number;
-    char draw1_anim2;
-    char draw1_anim;
-    char draw2_anim;
-    char recoil_anim;
+    short objectNumber;
+    char draw1Anim2;
+    char draw1Anim;
+    char draw2Anim;
+    char recoilAnim;
 };
 
 struct BITE_INFO

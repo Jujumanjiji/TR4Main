@@ -5,7 +5,7 @@
 void AlterFOV(short newFov)
 {
     CurrentFOV = newFov;
-    phd_persp = phd_winwidth / 2 * COS(newFov / 2) / SIN(newFov / 2);
+    phd_persp = phd_winwidth / 2 * phd_cos(newFov / 2) / phd_sin(newFov / 2);
     f_persp = float(phd_persp);
     f_oneopersp = one / f_persp;
     f_perspoznear = f_persp / f_znear;
@@ -35,7 +35,7 @@ void phd_GenerateW2V(PHD_3DPOS* viewpos)
     w2v.AspectCorrection(M10);
     w2v.AspectCorrection(M11);
     w2v.AspectCorrection(M12);
-    SetupDXW2V(&dx_mxw2v, &w2v_matrix);
+    SetupDX_W2VMatrix(&dx_mxw2v, &w2v_matrix);
 }
 
 void phd_LookAt(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, short roll)
@@ -67,78 +67,6 @@ void phd_LookAt(int xsrc, int ysrc, int zsrc, int xtar, int ytar, int ztar, shor
     cam_pos.z = zsrc;
     phd_GenerateW2V(&viewpos);
     SetupDXMatrixTransformState();
-}
-
-int phd_atan(int x, int y)
-{
-    if ((x == 0) && (y == 0))
-        return 0;
-
-    int octant = 0;
-
-    if (x < 0)
-    {
-        octant += 4;
-        x = -x;
-    }
-
-    if (y < 0)
-    {
-        octant += 2;
-        y = -y;
-    }
-
-    if (y > x)
-    {
-        octant++;
-        int n = x;
-        x = y;
-        y = n;
-    }
-
-    while ((short)y != y)
-    {
-        y >>= 1;
-        x >>= 1;
-    }
-
-    if (!x)
-        x = 1;
-
-    int n = atanTable[(y << 11) / x] + atanBase[octant];
-    short angle;
-
-    if (n < 0)
-        angle = -n;
-    else
-        angle = n;
-
-    return angle;
-}
-
-int phd_sqrt(int x)
-{
-    int result;
-    int base = 0x40000000;
-    int based_result;
-
-    result = 0;
-    for (; base != 0; base >>= 2)
-    {
-        for (; base != 0; base >>= 2)
-        {
-            based_result = base + result;
-            result >>= 1;
-
-            if (based_result > x)
-                break;
-
-            x -= based_result;
-            result |= base;
-        }
-    }
-
-    return result;
 }
 
 BOOL phd_TranslateRel(int x, int y, int z)
@@ -173,65 +101,58 @@ void phd_TranslateAbs(int x, int y, int z)
 }
 
 template<typename T>
-static void UnpackRotation(T ang, int& matrix1, int& matrix2, int shift, bool invert)
+static void UnpackRotation(T angles, int* matrix1, int* matrix2, int shift, bool invert)
 {
     int r0, r1;
     int cos, sin;
 
-    if (ang)
+    if (angles)
     {
-        sin = SIN(ang);
-        cos = COS(ang);
+        sin = SIN(angles);
+        cos = COS(angles);
 
         if (invert)
         {
-            r0 = ((matrix1 * cos) - (matrix2 * sin));
-            r1 = ((matrix2 * cos) + (matrix1 * sin));
+            r0 = ((*matrix1 * cos) - (*matrix2 * sin));
+            r1 = ((*matrix2 * cos) + (*matrix1 * sin));
         }
         else
         {
-            r0 = ((matrix1 * cos) + (matrix2 * sin));
-            r1 = ((matrix2 * cos) - (matrix1 * sin));
+            r0 = ((*matrix1 * cos) + (*matrix2 * sin));
+            r1 = ((*matrix2 * cos) - (*matrix1 * sin));
         }
 
-        matrix1 = r0 >> shift;
-        matrix2 = r1 >> shift;
+        *matrix1 = r0 >> shift;
+        *matrix2 = r1 >> shift;
     }
 }
 
 void phd_RotX(short rx)
 {
-    PHD_MATRIX* mptr = phd_mxptr;
-    UnpackRotation(rx, mptr->m01, mptr->m02, W2V_SHIFT, false);
-    UnpackRotation(rx, mptr->m11, mptr->m12, W2V_SHIFT, false);
-    UnpackRotation(rx, mptr->m21, mptr->m22, W2V_SHIFT, false);
+    UnpackRotation(rx, &phd_mxptr->m01, &phd_mxptr->m02, W2V_SHIFT, false);
+    UnpackRotation(rx, &phd_mxptr->m11, &phd_mxptr->m12, W2V_SHIFT, false);
+    UnpackRotation(rx, &phd_mxptr->m21, &phd_mxptr->m22, W2V_SHIFT, false);
 }
 
 void phd_RotY(short ry)
 {
-    PHD_MATRIX* mptr = phd_mxptr;
-    UnpackRotation(ry, mptr->m00, mptr->m02, W2V_SHIFT, true);
-    UnpackRotation(ry, mptr->m10, mptr->m12, W2V_SHIFT, true);
-    UnpackRotation(ry, mptr->m20, mptr->m22, W2V_SHIFT, true);
+    UnpackRotation(ry, &phd_mxptr->m00, &phd_mxptr->m02, W2V_SHIFT, true);
+    UnpackRotation(ry, &phd_mxptr->m10, &phd_mxptr->m12, W2V_SHIFT, true);
+    UnpackRotation(ry, &phd_mxptr->m20, &phd_mxptr->m22, W2V_SHIFT, true);
 }
 
 void phd_RotZ(short rz)
 {
-    PHD_MATRIX* mptr = phd_mxptr;
-    UnpackRotation(rz, mptr->m00, mptr->m01, W2V_SHIFT, false);
-    UnpackRotation(rz, mptr->m10, mptr->m11, W2V_SHIFT, false);
-    UnpackRotation(rz, mptr->m20, mptr->m21, W2V_SHIFT, false);
+    UnpackRotation(rz, &phd_mxptr->m00, &phd_mxptr->m01, W2V_SHIFT, false);
+    UnpackRotation(rz, &phd_mxptr->m10, &phd_mxptr->m11, W2V_SHIFT, false);
+    UnpackRotation(rz, &phd_mxptr->m20, &phd_mxptr->m21, W2V_SHIFT, false);
 }
 
 void phd_RotYXZpack(int angs)
 {
-    int ang = 0;
-    ang = (angs >> 4) & 0xFFC0;         // EXTRACT Y
-    phd_RotY(short(ang));
-    ang = (angs >> 14) & 0xFFC0;        // EXTRACT X
-    phd_RotX(short(ang));
-    ang = (angs & 0x3FF) << 6;          // EXTRACT Z
-    phd_RotZ(short(ang));
+    phd_RotY((angs >> 4) & 0xFFC0);
+    phd_RotX((angs >> 14) & 0xFFC0);
+    phd_RotZ((angs & 0x3FF) << 6);
 }
 
 void phd_RotYXZ(short ry, short rx, short rz)
@@ -247,12 +168,12 @@ void phd_GetVectorAngles(int x, int y, int z, short* dest)
     
     while ((short)x != x || (short)y != y || (short)z != z)
     {
-        x >>= 2;            //
-        y >>= 2;            // Scale to World Size
-        z >>= 2;            //
+        x >>= 2; //
+        y >>= 2; // Scale to World Size
+        z >>= 2; //
     }
 
-    short pitch = phd_atan(phd_sqrt(SQUARE(z) + SQUARE(x)), y);
+    short pitch = static_cast<short>(phd_atan(phd_sqrt(SQUARE(z) + SQUARE(x)), y));
     if ((y > 0 && pitch > 0) || (y < 0 && pitch < 0))
         pitch = -pitch;
     *(dest + 1) = pitch;
@@ -306,7 +227,7 @@ void SetupZ(int nNear, int nFar)
     SetupZRange();
 }
 
-void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, short view_angle)
+void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, short viewAngle)
 {
     phd_winxmin = x;
     phd_winymin = y;
@@ -325,7 +246,7 @@ void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, sh
     f_winxmax = float(phd_winxmax + 1);
     f_winymax = float(phd_winymax + 1);
 
-    AlterFOV(ANGLE(view_angle));
+    AlterFOV(ANGLE(viewAngle));
     SetupZ(phd_znear, phd_zfar);
     
     phd_right = phd_winxmax;
@@ -335,58 +256,11 @@ void phd_InitWindow(int x, int y, int width, int height, int nearz, int farz, sh
     phd_mxptr = matrix_stack;
 }
 
-long mGetAngle(long srcX, long srcZ, long targetX, long targetZ)
-{
-    long angleX;
-    long angleZ;
-    long swapBuf;
-    long result;
-    char flags;
-
-    result = 0;
-    angleX = targetX - srcX;
-    angleZ = targetZ - srcZ;
-
-    if (targetX != srcX || targetZ != srcZ)
-    {
-        flags = 0;
-        if (angleX < 0)
-        {
-            flags |= 4;
-            angleX = srcX - targetX;
-        }
-
-        if (angleZ < 0)
-        {
-            flags |= 2;
-            angleZ = srcZ - targetZ;
-        }
-
-        if (angleZ > angleX)
-        {
-            flags |= 1;
-            SWAP(angleX, angleZ, swapBuf);
-        }
-
-        for (; (short)angleZ != angleZ; angleX >>= 1)
-            angleZ >>= 1;
-
-        if (angleX == 0)
-            angleX = 1;
-        result = atanBase[flags] + atanTable[(angleZ << 11) / angleX];
-    }
-
-    if (result == 0)
-        return 0;
-
-    return abs(result) & 0xFFFF;
-}
-
 void SetupDXMatrixTransformState(void)
 {
     InitD3DMatrix(&dx_mxworld);
     InitD3DMatrix(&dx_mxprojection);
-    dx_mxprojection._22 = -1.0;
+    dx_mxprojection._22 = -1.0f;
 
     DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, &dx_mxworld));
     DX_TRY(App.lpD3DDevice->SetTransform(D3DTRANSFORMSTATE_PROJECTION, &dx_mxprojection));
@@ -396,15 +270,15 @@ void SetD3DViewMatrix(void)
 {
     PHD_MATRIX* mptr = phd_mxptr;
     InitD3DMatrix(&dx_mxview);
-    dx_mxview._11 = float(mptr->m00) * W2V_D3DVALUE;
-    dx_mxview._21 = float(mptr->m01) * W2V_D3DVALUE;
-    dx_mxview._31 = float(mptr->m02) * W2V_D3DVALUE;
-    dx_mxview._12 = float(mptr->m10) * W2V_D3DVALUE;
-    dx_mxview._22 = float(mptr->m11) * W2V_D3DVALUE;
-    dx_mxview._32 = float(mptr->m12) * W2V_D3DVALUE;
-    dx_mxview._13 = float(mptr->m20) * W2V_D3DVALUE;
-    dx_mxview._23 = float(mptr->m21) * W2V_D3DVALUE;
-    dx_mxview._33 = float(mptr->m22) * W2V_D3DVALUE;
+    dx_mxview._11 = float(mptr->m00) * W2V_D3D_ASPECT;
+    dx_mxview._21 = float(mptr->m01) * W2V_D3D_ASPECT;
+    dx_mxview._31 = float(mptr->m02) * W2V_D3D_ASPECT;
+    dx_mxview._12 = float(mptr->m10) * W2V_D3D_ASPECT;
+    dx_mxview._22 = float(mptr->m11) * W2V_D3D_ASPECT;
+    dx_mxview._32 = float(mptr->m12) * W2V_D3D_ASPECT;
+    dx_mxview._13 = float(mptr->m20) * W2V_D3D_ASPECT;
+    dx_mxview._23 = float(mptr->m21) * W2V_D3D_ASPECT;
+    dx_mxview._33 = float(mptr->m22) * W2V_D3D_ASPECT;
     dx_mxview._41 = float(mptr->m03 >> W2V_SHIFT);
     dx_mxview._42 = float(mptr->m13 >> W2V_SHIFT);
     dx_mxview._43 = float(mptr->m23 >> W2V_SHIFT);
@@ -431,18 +305,18 @@ void InitD3DMatrix(D3DMATRIX *mptr)
     mptr->_44 = 1.0f;
 }
 
-void SetupDXW2V(D3DMATRIX* dest, PHD_MATRIX* pptr)
+void SetupDX_W2VMatrix(D3DMATRIX* dest, PHD_MATRIX* pptr)
 {
     InitD3DMatrix(dest);
-    dest->_11 = float(pptr->m00) * W2V_D3DVALUE;
-    dest->_21 = float(pptr->m01) * W2V_D3DVALUE;
-    dest->_31 = float(pptr->m02) * W2V_D3DVALUE;
-    dest->_12 = float(pptr->m10) * W2V_D3DVALUE;
-    dest->_22 = float(pptr->m11) * W2V_D3DVALUE;
-    dest->_32 = float(pptr->m12) * W2V_D3DVALUE;
-    dest->_13 = float(pptr->m20) * W2V_D3DVALUE;
-    dest->_23 = float(pptr->m21) * W2V_D3DVALUE;
-    dest->_33 = float(pptr->m22) * W2V_D3DVALUE;
+    dest->_11 = float(pptr->m00) * W2V_D3D_ASPECT;
+    dest->_21 = float(pptr->m01) * W2V_D3D_ASPECT;
+    dest->_31 = float(pptr->m02) * W2V_D3D_ASPECT;
+    dest->_12 = float(pptr->m10) * W2V_D3D_ASPECT;
+    dest->_22 = float(pptr->m11) * W2V_D3D_ASPECT;
+    dest->_32 = float(pptr->m12) * W2V_D3D_ASPECT;
+    dest->_13 = float(pptr->m20) * W2V_D3D_ASPECT;
+    dest->_23 = float(pptr->m21) * W2V_D3D_ASPECT;
+    dest->_33 = float(pptr->m22) * W2V_D3D_ASPECT;
     dest->_41 = float(pptr->m03 >> W2V_SHIFT);
     dest->_42 = float(pptr->m13 >> W2V_SHIFT);
     dest->_43 = float(pptr->m23 >> W2V_SHIFT);
@@ -473,6 +347,6 @@ void injector::f_3dsystem::inject_3d_gen()
     inject(0x00490CF0, SetupDXMatrixTransformState);
     inject(0x00490B30, SetD3DViewMatrix);
     inject(0x00490DD0, InitD3DMatrix);
-    inject(0x00490C30, SetupDXW2V);
+    inject(0x00490C30, SetupDX_W2VMatrix);
 }
 #endif

@@ -36,16 +36,16 @@
 #include <dinput.h>
 #include <mmreg.h>
 #include <dsound.h>
-//#include <zlib.h>
 
 #include "features.h"
-#include "global/injector.h"
-#include "global/objects.h"
-#include "global/enums.h"
-#include "global/constants.h"
-#include "global/types.h"
-#include "global/vars.h"
-#include "global/macro.h"
+#include "injector.h"
+#include "objects.h"
+#include "phd_math.h"
+#include "enums.h"
+#include "constants.h"
+#include "types.h"
+#include "vars.h"
+#include "macro.h"
 #include "utils.h"
 
 using namespace std;

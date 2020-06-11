@@ -203,7 +203,7 @@ void MotorBikeCollision(short itemNumber, ITEM_INFO* laraitem, COLL_INFO* coll) 
             if (Lara.gunType == LG_FLARE)
             {
                 CreateFlare(FLARE_ITEM, FALSE);
-                undraw_flare_meshes();
+                UndrawFlareMeshes();
                 Lara.flareControlLeft = FALSE;
                 Lara.gunType = LG_UNARMED;
                 Lara.requestGunType = LG_UNARMED;

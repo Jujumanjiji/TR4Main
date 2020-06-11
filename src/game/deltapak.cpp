@@ -8,20 +8,20 @@
 // used for cutscene to render lara !
 void frigup_lara(void)
 {
-    LaraItem->pos.xPos = GLOBAL_cutpos[1];
-    LaraItem->pos.yPos = GLOBAL_cutpos[2];
-    LaraItem->pos.zPos = GLOBAL_cutpos[3];
-    BONE_STRUCT* bone = (BONE_STRUCT*)&Bones[Objects[LaraItem->objectNumber].boneIndex];
+    LaraItem->pos.xPos = ActorCutPos[1];
+    LaraItem->pos.yPos = ActorCutPos[2];
+    LaraItem->pos.zPos = ActorCutPos[3];
+    int* bone = &Bones[Objects[LaraItem->objectNumber].boneIndex];
 
-    UpdateAnimFrame(actor_pnodes, 16, actor_frame);
-    CalcLaraMatrices_Cutscene(actor_frame, bone, 0);
+    UpdateAnimFrame(ActorPlayerNodes, 16, ActorFrame);
+    CalcLaraMatrices_Cutscene(ActorFrame, bone, 0);
     phd_PushUnitMatrix();
-    CalcLaraMatrices_Cutscene(actor_frame, bone, 1);
+    CalcLaraMatrices_Cutscene(ActorFrame, bone, 1);
     phd_PopMatrix();
     
-    HairControl(FALSE, FALSE, actor_frame);
-    if (CHK_ANY(gfLevelFlags, SLEV_YOUNG_LARA))
-        HairControl(FALSE, TRUE, actor_frame);
+    HairControl(FALSE, FALSE, ActorFrame);
+    if (CHK_EXI(gfLevelFlags, SLEV_YOUNG_LARA))
+        HairControl(FALSE, TRUE, ActorFrame);
 
     lara_shadow_bbox = frig_shadow_bbox;
     if (cutseq_num == 12)
